@@ -1,0 +1,41 @@
+import { broadcasts } from "../Interfaces/broadcasts";
+
+export const town_options = (() => {
+
+    class TownAbility {
+        #name;
+        #tooltip;
+        #trigger;
+
+        /**
+         * @param {player_skills.Skill} skill 
+         * @returns 
+         */
+        static increaseSkill(skill) {return new TownAbility("Erhoehe Attribut", 
+            "Wenn deine Attributslevel gleich oder kleiner als dein Hexerlevel ist, kannst du das Level um 1 erhoehen.",
+            broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase")
+        );}
+
+        constructor(name, tooltip, trigger) {
+            this.#name = name;
+            this.#tooltip = tooltip;
+            this.#trigger = trigger;
+        }
+
+        get trigger() {
+            return this.#trigger;
+        }
+        
+        get name(){
+            return this.#name;
+        }
+
+        get tooltip() {
+            return this.#tooltip;
+        }
+    }
+
+    return {
+        TownAbility : TownAbility
+    }
+}) ();
