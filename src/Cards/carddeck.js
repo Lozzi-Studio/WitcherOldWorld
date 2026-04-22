@@ -32,10 +32,19 @@ export const carddeck_component = (() => {
             this._RegisterHandler('card.shuffle', (msg) => this.#Shuffle(msg));
         }
 
+        /**
+         * 
+         * @param {int} cardslot 
+         * @returns 
+         */
         getHandCard(cardslot) {
             return this.#cardHand[this.#cardHand.length - 1 - cardslot];
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #LoadStartdeck(msg){
             switch (msg.deck) {
                 case "Player":
@@ -46,6 +55,10 @@ export const carddeck_component = (() => {
             //TODO
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #DrawCard(msg){
             for (let i = 0; i < msg.amount; i++) {
                 switch (msg.mode) {
@@ -68,6 +81,10 @@ export const carddeck_component = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #AddCard(msg){
             switch(msg.destination) {
                 case "Hand":
@@ -85,6 +102,10 @@ export const carddeck_component = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #DiscardCard(msg){
             switch (msg.mode) {
                 case "Discard":
@@ -106,13 +127,17 @@ export const carddeck_component = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #Shuffle(msg) {
             if (msg.includeDiscard) {
                 this.#cardDeck = this.#cardDeck.concat(this.#cardDiscard);
                 this.#cardDiscard = [];
             }
             
-            //Fisher-Yates_shuffle (src:wikipedia)
+            //Fisher-Yates_shuffle (src:https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
             for (let i = this.#cardDeck.length - 1; i >= 1; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [this.#cardDeck[i], this.#cardDeck[j]] = [this.#cardDeck[j], this.#cardDeck[i]];

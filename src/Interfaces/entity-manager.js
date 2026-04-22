@@ -9,19 +9,33 @@ export const entity_manager = (() => {
             this._entities = [];
         }
 
+        /**
+         * 
+         * @returns {string}
+         */
         _GenerateName() {
             this._ids += 1;
             return '__name__' + this._ids;
         }
 
-        FindEntity(entity) {
-            return this._entitiesMap[entity];
+        /**
+         * 
+         * @param {string} entity_name 
+         * @returns 
+         */
+        FindEntity(entity_name) {
+            return this._entitiesMap[entity_name];
         }
 
         Filter(condition) {
             return this._entities.filter(condition);
         }
 
+        /**
+         * 
+         * @param {entity.Entity} entity 
+         * @param {string} name 
+         */
         AddEntity(entity,name) {
             if (!name) {
                 name = this._GenerateName();
@@ -33,6 +47,11 @@ export const entity_manager = (() => {
             entity.name = name;
         }
 
+        /**
+         * 
+         * @param {entity.Entity} entity 
+         * @param {bool} bool 
+         */
         SetActive(entity, bool) {
             if (bool) {
                 if (!(entity in this._entities)) {
@@ -48,12 +67,21 @@ export const entity_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {float} timeElapsed 
+         */
         Update(timeElapsed) {
             for (let e of this._entities) {
                 e.Update(timeElapsed);
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         * @param {entity.Entity} entityToIgnore 
+         */
         Broadcast(msg, entityToIgnore) {
             for (let e of this._entities) {
                 if (e != entityToIgnore) {

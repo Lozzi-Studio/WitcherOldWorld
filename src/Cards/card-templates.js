@@ -3,13 +3,15 @@ import { card_options } from "./card-options";
 
 export const cards = (() => {
 
-    /**
-     * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions
-     */
     class CardTemplates {
 
 
-
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getRiposte(comboOptions, region){
             return new card.Card(
                 "Riposte",
@@ -21,6 +23,12 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getDeckung(comboOptions, region) {
             return new card.Card(
                 "Deckung",
@@ -32,6 +40,12 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getAbwehr(comboOptions, region) {
             return new card.Card(
                 "Abwehr",
@@ -43,6 +57,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getBlitzschnelleReflexe(comboOptions) {
             return new card.Card(
                 "Blitzschnelle Reflexe",
@@ -54,6 +73,12 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getPraeziserSchnitt(comboOptions, region) {
             return new card.Card(
                 "Praezischer Schnitt",
@@ -65,6 +90,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getDrehungForest(comboOptions) {
             return new card.Card(
                 "Drehung",
@@ -76,6 +106,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getDrehungMountain(comboOptions) {
             return new card.Card(
                 "Drehung",
@@ -87,6 +122,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getVerchnichtenderSchlag(comboOptions) {
             return new card.Card(
                 "Vernichtender Schlag",
@@ -98,6 +138,12 @@ export const cards = (() => {
                 )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getSchmetterschlag(comboOptions, region) {
             return new card.Card(
                 "Schmetterschlag",
@@ -109,6 +155,12 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getPraeziserSchlag(comboOptions, region) {
             return new card.Card(
                 "Praeziser Schlag",
@@ -120,6 +172,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getWuchtschlag(comboOptions) {
             return card.Card(
                 "Wutchschlag",
@@ -131,6 +188,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getVerstaerktesAxii(comboOptions) {
             return card.Card(
                 "Verstaerktes Axii",
@@ -142,6 +204,12 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getVerstaerktesYrden(comboOptions, region) {
             return card.Card(
                 "Verstaerktes Yrden",
@@ -153,6 +221,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getMagiefalle(comboOptions) {
             return card.Card(
                 "Magiefalle",
@@ -164,6 +237,12 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getVerstaerktesQwen(comboOptions, region) {
             return card.Card(
                 "Verstaerktes Qwen",
@@ -175,6 +254,12 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @param {card_options.Region} region 
+         * @returns {object}
+         */
         static getExplosiverSchild(comboOptions, region) {
             return card.Card(
                 "Explosiver Schild",
@@ -186,6 +271,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getVerstaerktesAard(comboOptions) {
             return card.Card(
                 "Verstaerktes Aard",
@@ -197,6 +287,10 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @returns {object}
+         */
         static getVertaerktesIgni() {
             return card.Card(
                 "Verstaerktes Igni",
@@ -211,6 +305,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getRuestungSchmelzen(comboOptions) {
             return card.Card(
                 "Rüstung Schmelzen",
@@ -222,6 +321,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getSchockwelle(comboOptions) {
             return card.Card(
                 "Schockwelle",
@@ -233,6 +337,11 @@ export const cards = (() => {
             )
         }
 
+        /**
+         * 
+         * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
+         * @returns {object}
+         */
         static getFeuerstrahl(comboOptions) {
             return card.Card(
                 "Feuerstrahl",

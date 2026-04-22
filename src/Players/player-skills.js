@@ -23,6 +23,10 @@ export const player_skills = (() => {
             this._RegisterHandler('skill.change_level', (msg) => {this.#ChangeLevel(msg)});
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #ChangeLevel(msg) {
             let skill = null;
             switch(msg.skill.toIdentifier()) {

@@ -10,13 +10,19 @@ export const town_options = (() => {
         //TODO Implement COndition to Town Ability; Perfectly this is done in frontend by disabling the confirm button
         /**
          * @param {player_skills.Skill} skill 
-         * @returns 
+         * @returns {TownAbility}
          */
         static increaseSkill(skill) {return new TownAbility("Erhoehe Attribut", 
             "Wenn deine Attributslevel gleich oder kleiner als dein Hexerlevel ist, kannst du das Level um 1 erhoehen.",
             broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase")
         );}
 
+        /**
+         * 
+         * @param {string} name 
+         * @param {string} tooltip 
+         * @param {object} trigger 
+         */
         constructor(name, tooltip, trigger) {
             this.#name = name;
             this.#tooltip = tooltip;

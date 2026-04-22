@@ -12,6 +12,10 @@ export const player_options = (() => {
         static Wolf() {return new WitcherSchool("Wolfsschule");}
         static Griffin() {return new WitcherSchool("Greifenschule");}
 
+        /**
+         * Use static function constructor instead of default constructor!
+         * @param {string} name 
+         */
         constructor(name){
             this.#name = name
             this.#ability = WitcherSchool.getAbilityFromName(name);
@@ -30,6 +34,11 @@ export const player_options = (() => {
             return this.#homeTown;
         }
 
+        /**
+         * 
+         * @param {string} name 
+         * @returns {string}
+         */
         static getAbilityFromName(name) {
             switch(name) {
                 case "Vipernschule":
@@ -45,6 +54,11 @@ export const player_options = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {string} name 
+         * @returns {town_components.Town}
+         */
         static getHomeTownFromName(name) {
             //implement as town_components
             switch(name) {

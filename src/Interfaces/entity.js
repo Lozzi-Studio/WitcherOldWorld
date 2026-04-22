@@ -25,6 +25,11 @@ export const entity = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {string} name 
+         * @param {doSomethingCallback} handler 
+         */
         _RegisterHandler(name, handler) {
             if (!(name in this._handlers)) {
                 this._handlers[name] = []
@@ -32,6 +37,11 @@ export const entity = (() => {
             this._handlers[name].push(handler);
         }
 
+        /**
+         * 
+         * @param {component.Component} component 
+         * @param {string} name 
+         */
         AddComponent(component, name) {
             if(name == undefined) {
                 name = component.constructor.name;
@@ -41,14 +51,28 @@ export const entity = (() => {
             component.InitComponent();
         }
 
-        FindComponent(component) {
-            return this._components[component];
+        /**
+         * 
+         * @param {string} component 
+         * @returns {component.Component}
+         */
+        FindComponent(component_name) {
+            return this._components[component_name];
         }
 
-        FindEntity(entity) {
-            return this._parent?.FindEntity(entity);
+        /**
+         * 
+         * @param {string} entity_name 
+         * @returns {entity.Entity} 
+         */
+        FindEntity(entity_name) {
+            return this._parent?.FindEntity(entity_name);
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         Broadcast(msg) {
             if (msg.topic in this._handlers) {
                 for (let curHandler of this._handlers[msg.topic]) {
@@ -57,10 +81,18 @@ export const entity = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         BroadcastOthers(msg) {
             this._parent?.Broadcast(msg,this);
         }
 
+        /**
+         * 
+         * @param {float} timeElapsed 
+         */
         Update(timeElapsed) {
             for (let component in this._components) {
                 this._components[component].Update(timeElapsed);

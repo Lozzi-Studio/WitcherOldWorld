@@ -27,7 +27,7 @@ export const broadcasts = (() => {
         /**
          * @param {town_component.town} town 
          * @param {THREE.Vector3} position 
-         * @returns 
+         * @returns {object}
          */
         static PlayerMove(town, position) {
             return {topic: 'player.move', town: town, position: position}
@@ -39,6 +39,7 @@ export const broadcasts = (() => {
         /**
          * @param {card.Card} card
          * @param {string} mode - Options: "Discard", "Delete"
+         * @returns {object}
          */
         static DiscardCard(card, mode) {
             return {topic: 'card.discardCard', card: card, mode: mode}
@@ -47,6 +48,7 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {int} card_slot 
+         * @returns {object}
          */
         static SelectCard(card_slot){
             return {topic: 'card.select', card_slot: card_slot}
@@ -54,6 +56,7 @@ export const broadcasts = (() => {
 
         /**
          * @param {string} deck - Options: "Player", "Shop"
+         * @returns {object}
         */
         static LoadCarddeck(deck) {
             return {topic: 'card.loadDeck', deck: deck}
@@ -62,6 +65,7 @@ export const broadcasts = (() => {
         /**
          * @param {card.Card} card
          * @param {string} destination - Options: "Hand", "Deck", "Discard"
+         * @returns {object}
         */
         static AddCard(card, destination) {
             return {topic: 'card.addCard', card: card, destination: destination}
@@ -70,6 +74,7 @@ export const broadcasts = (() => {
         /**
          * @param {int} amount 
          * @param {string} mode - Options: "Deck", "Discard", "Potion"
+         * @returns {object}
          */
         static DrawCard(mode, amount) {
             return {topic: 'card.drawCard', mode: mode, amount: amount}
@@ -78,7 +83,7 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {bool} includeDiscard 
-         * @returns 
+         * @returns {object}
          */
         static ShuffleDeck(includeDiscard) {
             return {topic: 'card.shuffle', includeDiscard: includeDiscard}
@@ -89,7 +94,7 @@ export const broadcasts = (() => {
         /**
          * @param {player_skills.Skill} skill 
          * @param {string} mode - Options: "Increase", "Decrease" 
-         * @returns 
+         * @returns {object}
          */
         static ChangeSkillLevel(skill, mode) {
             return {topic: 'skill.change_level', skill: skill, mode: mode}
@@ -99,7 +104,7 @@ export const broadcasts = (() => {
          * @param {string} mode - Options: "Increase", "Decrease" 
          * @param {int} level 
          * @param {int} amount 
-         * @returns 
+         * @returns {object}
          */
         static ChangeShield(mode, level, amount) {
             return {topic: 'skill.change_shield', mode: mode, level: level, amount: amount}
@@ -108,7 +113,7 @@ export const broadcasts = (() => {
         /**
          * @param {string} mode - Options: "Increase", "Decrease" 
          * @param {int} amount 
-         * @returns 
+         * @returns {object}
          */
         static ChangeCurrentShield(mode, amount) {
             return {topic: 'skill.change_currentshield', mode: mode, amount: amount}
@@ -116,10 +121,10 @@ export const broadcasts = (() => {
     }
 
     class BroadcastTemplateTown {
-                /**
+        /**
          * 
          * @param {town_component.Town} town 
-         * @returns 
+         * @returns {object} 
          */
         static SelectTown(town) {
             return {topic: 'town.selection', town : town}
@@ -127,6 +132,7 @@ export const broadcasts = (() => {
 
         /**
          * @param {town_component.Town} town
+         * @returns {object}
          */
         static TownAction(town) {
             return {topic: 'town.action', town: town}
@@ -135,6 +141,10 @@ export const broadcasts = (() => {
 
 
     class BroadcastTemplateGame {
+        /**
+         * 
+         * @returns {object}
+         */
         static nextPhase() {
             return {topic: 'game.nextPhase'};
         }

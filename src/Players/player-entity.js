@@ -31,6 +31,11 @@ export const player_entity = (() => {
 
         }
 
+        /**
+         * 
+         * @param {int} cardslot 
+         * @returns {card.Card}
+         */
         getHandCard(cardslot){
             return this.FindComponent('Carddeck').getHandCard(cardslot);
         }

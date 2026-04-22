@@ -33,6 +33,10 @@ export const town_component = (() => {
             this._RegisterHandler('town.action', (msg) => {this.#executeAbility(msg)});
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #executeAbility(msg) {
             if (msg.town.id == this.#id){
 
@@ -41,6 +45,11 @@ export const town_component = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {Array<card.Card>} cards 
+         * @returns 
+         */
         canEnter(cards) {
             for (let card of cards) {
                 if (card.region.toIdentifier() == this.#region.toIdentifier()){

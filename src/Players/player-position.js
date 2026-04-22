@@ -17,6 +17,10 @@ export const player_position = (() => {
             this._RegisterHandler('player.move', (msg) => {this.#PlayerMove(msg)});
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #PlayerMove(msg) {
             this.#currentTown = msg.town;
             this.#currentPosition = msg.position;

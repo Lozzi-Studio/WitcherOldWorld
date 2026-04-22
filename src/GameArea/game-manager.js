@@ -27,10 +27,18 @@ export const game_manager = (() => {
 
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #NextTurnPhase(msg){
             this.#currentRound.next();
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #OnCardSelect(msg){
             switch(this.#currentRound.toIdentifier()){
                 case 1:
@@ -44,6 +52,10 @@ export const game_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #OnTownSelection(msg){
             const player = this.FindEntity(this.#GetPlayer(this.#currentPlayer));
             switch(this.#currentRound.toIdentifier()) {
@@ -59,6 +71,10 @@ export const game_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #OnTownAbility(msg) {
             const player = this.FindEntity(this.#GetPlayer(this.#currentPlayer));
             switch(this.#currentRound.toIdentifier()) {
@@ -86,10 +102,19 @@ export const game_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @returns {string}
+         */
         GetCurrentPlayer(){
             return "Player_" + this.#currentPlayer;
         }
 
+        /**
+         * 
+         * @param {int} id 
+         * @returns {string}
+         */
         #GetPlayer(id) {
             return "Player_" + id;
         }
@@ -120,6 +145,10 @@ export const game_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @returns {int}
+         */
         toIdentifier() {
             return this.#number;
         }

@@ -11,15 +11,27 @@ export const card_options = (() => {
         static Purple(){ return new Color("Purple");}
         static Green(){ return new Color("Green");}
 
-
+        /**
+         * Use static function constructor instead of default constructor!
+         * @param {string} color 
+         */
         constructor(color){
             this.#color = color;
         }
 
-        equlas(color){
+        /**
+         * 
+         * @param {Color} color 
+         * @returns {bool}
+         */
+        equals(color){
             return Object.equlas(this.toIdentifier(), color.toIdentifier());
         }
 
+        /**
+         * 
+         * @returns {string}
+         */
         toIdentifier(){
             return this.#color;
         }
@@ -34,14 +46,27 @@ export const card_options = (() => {
         static Forest() {return new Region("Forest");}
         static Mountain() {return new Region("Mountain");}
 
-        constructor(destination){
-            this.#region = destination;
+        /**
+         * Use static function constructor instead of default constructor!
+         * @param {string} region 
+         */
+        constructor(region){
+            this.#region = region;
         }
 
-        equals(destination){
-            return Object.equlas(this.toIdentifier(), destination.toIdentifier());
+        /**
+         * 
+         * @param {Region} region 
+         * @returns {bool}
+         */
+        equals(region){
+            return Object.equlas(this.toIdentifier(), region.toIdentifier());
         }
 
+        /**
+         * 
+         * @returns {string}
+         */
         toIdentifier(){
             return this.#region;
         }
