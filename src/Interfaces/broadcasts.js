@@ -149,6 +149,18 @@ export const broadcasts = (() => {
         static nextPhase() {
             return {topic: 'game.nextPhase'};
         }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static startWuerfelpoker(player1, player2) {
+            return {topic: 'game.startPoker'};
+        }
+
+        static getGeruecht(region) {
+            return {topic: 'game.geruecht', region: region};
+        }
     }
 
     return {
