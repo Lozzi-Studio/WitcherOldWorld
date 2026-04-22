@@ -115,8 +115,8 @@ export const broadcasts = (() => {
         }
     }
 
-    class BroadcastTemplateAction {
-        /**
+    class BroadcastTemplateTown {
+                /**
          * 
          * @param {town_component.Town} town 
          * @returns 
@@ -126,14 +126,13 @@ export const broadcasts = (() => {
         }
 
         /**
-         * 
-         * @param {int} id 
-         * @returns 
+         * @param {town_component.Town} town
          */
-        static TownAction(id) {
-            return {topic: 'town.action', id: id}
+        static TownAction(town) {
+            return {topic: 'town.action', town: town}
         }
     }
+
 
     class BroadcastTemplateGame {
         static nextPhase() {
@@ -144,8 +143,8 @@ export const broadcasts = (() => {
     return {
         BroadcastTemplatePlayer : BroadcastTemplatePlayer,
         BroadcastTemplateSkills : BroadcastTemplateSkills,
-        BroadcastTemplateAction : BroadcastTemplateAction,
         BroadcastTemplateCards : BroadcastTemplateCards,
-        BroadcastTemplateGame : BroadcastTemplateGame
+        BroadcastTemplateGame : BroadcastTemplateGame,
+        BroadcastTemplateTown : BroadcastTemplateTown,
     }
 })();

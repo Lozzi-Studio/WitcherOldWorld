@@ -34,14 +34,20 @@ export const town_component = (() => {
         }
 
         #executeAbility(msg) {
-            if (msg.id == this.#id){
+            if (msg.town.id == this.#id){
+
                 let player = this._parent.FindComponent("GameManager").GetCurrentPlayer();
                 this._parent.FindEntity(player).Broadcast(this.#ability.trigger);
             }
         }
 
-        canEnter(card) {
-            return (card.region.toIdentifier() == this.#region.toIdentifier());
+        canEnter(cards) {
+            for (let card of cards) {
+                if (card.region.toIdentifier() == this.#region.toIdentifier()){
+                    return {condition: true, card: card};
+                }
+            }
+            return {condition: false}
         }
 
         get id() {

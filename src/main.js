@@ -131,12 +131,10 @@ class DemoBackend {
         const gameArea = new game_area_entity.GameArea();
         entityManager.AddEntity(gameArea, "GameArea");
         gameArea.Broadcast(broadcasts.BroadcastTemplateGame.nextPhase());
-        gameArea.FindComponent("UIManager").selectArdModron();
-        console.log(player1.FindComponent("PlayerSkills").combat);
         gameArea.FindComponent("UIManager").cardSlot1();
         player1.Broadcast(broadcasts.BroadcastTemplateCards
             .AddCard(cards.CardTemplates
-                .getDrehung(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])), "Hand"));
+                .getDrehungMountain(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])), "Hand"));
         player1.Broadcast(broadcasts.BroadcastTemplateCards
             .AddCard(cards.CardTemplates
                 .getVerchnichtenderSchlag(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)],[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])), "Hand"));

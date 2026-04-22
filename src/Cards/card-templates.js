@@ -71,7 +71,7 @@ export const cards = (() => {
                 card_options.Color.Blue(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(2,0,0,false,false),
-                card_options.Region.Mountain(),
+                card_options.Region.Forest(),
                 1
             )
         }
@@ -82,7 +82,7 @@ export const cards = (() => {
                 card_options.Color.Blue(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(1,0,0,false,false),
-                card_options.Region.Forest(),
+                card_options.Region.Mountain(),
                 1
             )
         }

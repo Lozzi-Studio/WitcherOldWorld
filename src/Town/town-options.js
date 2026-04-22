@@ -7,6 +7,7 @@ export const town_options = (() => {
         #tooltip;
         #trigger;
 
+        //TODO Implement COndition to Town Ability; Perfectly this is done in frontend by disabling the confirm button
         /**
          * @param {player_skills.Skill} skill 
          * @returns 
