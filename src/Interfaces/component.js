@@ -1,6 +1,7 @@
 export const component = (() => {
 
     class Component {
+
         constructor() {
             this._parent = null;
         }
@@ -35,7 +36,7 @@ export const component = (() => {
          * @param {object} msg 
          */
         BroadcastOthers(msg) {
-            this.parent?.BroadcastOthers(msg);
+            this._parent?.BroadcastOthers(msg);
         }
 
         /**

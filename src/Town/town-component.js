@@ -40,8 +40,8 @@ export const town_component = (() => {
         #executeAbility(msg) {
             if (msg.town.id == this.#id){
 
-                let player = this._parent.FindComponent("GameManager").GetCurrentPlayer();
-                this._parent.FindEntity(player).Broadcast(this.#ability.trigger);
+                let player = this._parent.FindComponent("GameManager").currentPlayer;
+                player.Broadcast(this.#ability.trigger);
             }
         }
 

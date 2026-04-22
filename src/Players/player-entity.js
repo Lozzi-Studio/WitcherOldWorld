@@ -23,12 +23,13 @@ export const player_entity = (() => {
             this.#witcherSchool = witcherSchool;
             this.#homeTownPosition = witcherSchool.homeTown;
             this.#currentTown = witcherSchool.homeTown;
+        }
 
+        InitComponents() {
             this.AddComponent(new carddeck_component.Carddeck(7));
             this.AddComponent(new player_position.PlayerPosition(this.#currentTown, this.#currentTown.position));
             this.AddComponent(new player_skills.PlayerSkills());
             this.AddComponent(new player_skills.Shield());
-
         }
 
         /**

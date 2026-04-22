@@ -5,14 +5,16 @@ export const game_manager = (() => {
 
     class GameManager extends component.Component {
         #currentRound;
+        #currentPlayerId;
         #currentPlayer;
         #selection;
         
-        //TODO player as member variable with finding new player on turn change (if finding undefined start with player 1 again)
+
         constructor() {
             super();
             this.#currentRound = Phase.Start;
-            this.#currentPlayer = 1;
+            this.#currentPlayerId = 1;
+            this.#currentPlayer = null;
             this.#selection = [];
         }
 
@@ -21,6 +23,8 @@ export const game_manager = (() => {
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
             this._RegisterHandler('town.ability', (msg) => {this.#OnTownAbility(msg);});
             this._RegisterHandler('game.nextPhase', (msg) => {this.#NextTurnPhase(msg);});
+            this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
+
         }
 
         Update() {
@@ -32,7 +36,15 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #NextTurnPhase(msg){
-            this.#currentRound.next();
+            const nextPlayer = this.#currentRound.next();
+            if (nextPlayer) {
+                this.#currentPlayerId += 1;
+                this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
+                if (this.#currentPlayer == undefined) {
+                    this.#currentPlayerId = 1;
+                    this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
+                }
+            }
         }
 
         /**
@@ -104,14 +116,6 @@ export const game_manager = (() => {
 
         /**
          * 
-         * @returns {string}
-         */
-        GetCurrentPlayer(){
-            return "Player_" + this.#currentPlayer;
-        }
-
-        /**
-         * 
          * @param {int} id 
          * @returns {string}
          */
@@ -121,6 +125,10 @@ export const game_manager = (() => {
 
         get selection() {
             return this.#selection;
+        }
+
+        get currentPlayer() {
+            return this.#currentPlayer;
         }
     };
 
@@ -138,11 +146,17 @@ export const game_manager = (() => {
             this.#number = number;
         }
 
+        /**
+         * 
+         * @returns {bool}
+         */
         next() {
             this.#number += 1;
             if (this.#number > 3) {
                 this.#number = 0;
+                return true;
             }
+            return false;
         }
 
         /**

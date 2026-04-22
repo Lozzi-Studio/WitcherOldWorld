@@ -21,7 +21,7 @@ export const entity_manager = (() => {
         /**
          * 
          * @param {string} entity_name 
-         * @returns 
+         * @returns {entity}
          */
         FindEntity(entity_name) {
             return this._entitiesMap[entity_name];
@@ -45,6 +45,7 @@ export const entity_manager = (() => {
             this._entities.push(entity);
             entity.parent = this;
             entity.name = name;
+            entity.InitComponents();
         }
 
         /**

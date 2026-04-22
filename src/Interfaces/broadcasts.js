@@ -94,10 +94,11 @@ export const broadcasts = (() => {
         /**
          * @param {player_skills.Skill} skill 
          * @param {string} mode - Options: "Increase", "Decrease" 
+         * @param {bool} payMoney
          * @returns {object}
          */
-        static ChangeSkillLevel(skill, mode) {
-            return {topic: 'skill.change_level', skill: skill, mode: mode}
+        static ChangeSkillLevel(skill, mode, payMoney) {
+            return {topic: 'skill.change_level', skill: skill, mode: mode, payMoney: payMoney}
         }
 
         /**

@@ -13,6 +13,10 @@ export const game_area_entity = (() => {
 
         constructor() {
             super();
+
+        }
+
+        InitComponents() {
             this.AddComponent(new game_manager.GameManager());
             this.AddComponent(new ui_manager.UIManager());
 

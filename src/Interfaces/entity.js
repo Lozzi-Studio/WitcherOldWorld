@@ -37,6 +37,8 @@ export const entity = (() => {
             this._handlers[name].push(handler);
         }
 
+        InitComponents() {}
+
         /**
          * 
          * @param {component.Component} component 
