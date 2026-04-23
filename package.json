@@ -1,0 +1,19 @@
+{
+  "name": "WitcherOldWorld",
+  "version": "1.0.0",
+  "description": "Digital Interpretation of Witcher Old World",
+  "license": "ISC",
+  "author": "Janik Kusch, Tim Foerster, Lana Michler, Luca Illegen",
+  "type": "commonjs",
+  "main": "src/main.js",
+  "dependencies": {
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "vite": "^8.0.8",
+    "vitest": "^4.1.4"
+  },
+  "scripts": {
+    "test": "vitest"
+  }
+}
