@@ -1,5 +1,5 @@
 import { card_options } from "./card-options";
-
+import { region } from "../GameArea/region";
 
 export const card = (() => {
 
@@ -19,7 +19,7 @@ export const card = (() => {
          * @param {card_options.Color} color
          * @param {Map<card_colors.Color,card_options.CardEffect>} combo 
          * @param {card_options.CardEffect} effects 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @param {int} cost
         */
         constructor(name, color, combo, effects, region, cost){

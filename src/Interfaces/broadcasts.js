@@ -1,6 +1,7 @@
 import { card } from "../Cards/card";
 import { town_component } from "../Town/town-component";
 import * as THREE from 'three';
+import { region } from "../GameArea/region";
 
 export const broadcasts = (() => {
 
@@ -158,8 +159,25 @@ export const broadcasts = (() => {
             return {topic: 'game.startPoker'};
         }
 
+        /**
+         * 
+         * @param {region.Region} region 
+         * @returns {object}
+         */
         static getGeruecht(region) {
             return {topic: 'game.geruecht', region: region};
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static removeShopCards() {
+            return {topic: 'game.removeShop'}
+        }
+
+        static swapoutCard() {
+            return {topic: 'game.swapoutCard'}
         }
     }
 

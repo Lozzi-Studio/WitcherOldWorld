@@ -1,5 +1,6 @@
 import { card } from "./card";
 import { card_options } from "./card-options";
+import { region } from "../GameArea/region";
 
 export const cards = (() => {
 
@@ -9,7 +10,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getRiposte(comboOptions, region){
@@ -26,7 +27,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getDeckung(comboOptions, region) {
@@ -43,7 +44,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getAbwehr(comboOptions, region) {
@@ -68,7 +69,7 @@ export const cards = (() => {
                 card_options.Color.Green(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(0,2,0,false,false),
-                card_options.Region.Mountain(),
+                region.Region.Mountain(),
                 2
             )
         }
@@ -76,7 +77,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getPraeziserSchnitt(comboOptions, region) {
@@ -101,7 +102,7 @@ export const cards = (() => {
                 card_options.Color.Blue(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(2,0,0,false,false),
-                card_options.Region.Forest(),
+                region.Region.Forest(),
                 1
             )
         }
@@ -117,7 +118,7 @@ export const cards = (() => {
                 card_options.Color.Blue(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(1,0,0,false,false),
-                card_options.Region.Mountain(),
+                region.Region.Mountain(),
                 1
             )
         }
@@ -133,7 +134,7 @@ export const cards = (() => {
                 card_options.Color.Blue(), 
                 comboOptions, 
                 card_options.CardEffect.createCardEffect(2,0,0,false,false),
-                card_options.Region.River(),
+                region.Region.River(),
                 2
                 )
         }
@@ -141,7 +142,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getSchmetterschlag(comboOptions, region) {
@@ -158,7 +159,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getPraeziserSchlag(comboOptions, region) {
@@ -183,7 +184,7 @@ export const cards = (() => {
                 card_options.Color.Red(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(3,0,-1,false,false),
-                card_options.Region.Mountain(),
+                region.Region.Mountain(),
                 2
             )
         }
@@ -199,7 +200,7 @@ export const cards = (() => {
                 card_options.Color.Yellow(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(0,0,0,false,true),
-                card_options.Region.River(),
+                region.Region.River(),
                 0
             )
         }
@@ -207,7 +208,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getVerstaerktesYrden(comboOptions, region) {
@@ -232,7 +233,7 @@ export const cards = (() => {
                 card_options.Color.Yellow(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(0,0,0,false,true),
-                card_options.Region.Mountain(),
+                region.Region.Mountain(),
                 1
             )
         }
@@ -240,7 +241,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getVerstaerktesQwen(comboOptions, region) {
@@ -257,7 +258,7 @@ export const cards = (() => {
         /**
          * 
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
-         * @param {card_options.Region} region 
+         * @param {region.Region} region 
          * @returns {object}
          */
         static getExplosiverSchild(comboOptions, region) {
@@ -282,7 +283,7 @@ export const cards = (() => {
                 card_options.Color.Purple(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(1,0,0,false,false),
-                card_options.Region.Forest(),
+                region.Region.Forest(),
                 0
             )
         }
@@ -300,7 +301,7 @@ export const cards = (() => {
                 [card_options.Color.Blue, card_options.CardEffect.createCardEffect(0,0,0,false,false)],
                 [card_options.Color.Red, card_options.CardEffect.createCardEffect(0,0,0,false,false)]]),
                 card_options.CardEffect.createCardEffect(1,0,1,false,false),
-                card_options.Region.River(),
+                region.Region.River(),
                 0
             )
         }
@@ -316,7 +317,7 @@ export const cards = (() => {
                 card_options.Color.Purple(),
                 comboOptions,
                 card_options.CardEffect.createCardEffectI(2,0,0,false,false),
-                card_options.Region.Mountain(),
+                region.Region.Mountain(),
                 1
             )
         }
@@ -332,7 +333,7 @@ export const cards = (() => {
                 card_options.Color.Purple(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(2,0,0,false,false),
-                card_options.Region.Mountain(),
+                region.Region.Mountain(),
                 1
             )
         }
@@ -348,7 +349,7 @@ export const cards = (() => {
                 card_options.Color.Purple(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(2,0,2,false,false),
-                card_options.Region.Mountain(),
+                region.Region.Mountain(),
                 2
             )
         }

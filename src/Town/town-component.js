@@ -2,6 +2,7 @@ import { component } from "../Interfaces/component";
 import { town_options } from "./town-options";
 import { card_options } from "../Cards/card-options";
 import * as THREE from 'three';
+import { region } from "../GameArea/region";
 
 export const town_component = (() => {
 
@@ -17,7 +18,7 @@ export const town_component = (() => {
          * @param {string} name 
          * @param {town_options.TownAbility} ability 
          * @param {THREE.Vector3} position 
-         * @param {card_options.Region} region
+         * @param {region.Region} region
          */
         constructor(id, name, ability, position, region) {
             super();

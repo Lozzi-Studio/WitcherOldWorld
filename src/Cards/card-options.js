@@ -37,41 +37,6 @@ export const card_options = (() => {
         }
     }
 
-    /**
-     * Enum for Movement Options
-     */
-    class Region {
-        #region;
-        static River() {return new Region("River");}
-        static Forest() {return new Region("Forest");}
-        static Mountain() {return new Region("Mountain");}
-
-        /**
-         * Use static function constructor instead of default constructor!
-         * @param {string} region 
-         */
-        constructor(region){
-            this.#region = region;
-        }
-
-        /**
-         * 
-         * @param {Region} region 
-         * @returns {bool}
-         */
-        equals(region){
-            return Object.equlas(this.toIdentifier(), region.toIdentifier());
-        }
-
-        /**
-         * 
-         * @returns {string}
-         */
-        toIdentifier(){
-            return this.#region;
-        }
-
-    }
 
     class CardEffect {
         /**
@@ -96,7 +61,6 @@ export const card_options = (() => {
 
     return {
         Color : Color,
-        Region : Region,
         CardEffect : CardEffect
     }
 })();
