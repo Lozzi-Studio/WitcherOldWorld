@@ -7,10 +7,10 @@
   "type": "commonjs",
   "main": "src/main.js",
   "dependencies": {
-    "three": "^0.183.2"
+    "three": "^0.183.2",
+    "vite": "^8.0.8"
   },
   "devDependencies": {
-    "vite": "^8.0.8",
     "vitest": "^4.1.4"
   },
   "scripts": {
