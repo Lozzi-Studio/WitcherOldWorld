@@ -25,7 +25,7 @@ export const card_options = (() => {
          * @returns {bool}
          */
         equals(color){
-            return Object.equlas(this.toIdentifier(), color.toIdentifier());
+            return (this.toIdentifier() == color.toIdentifier());
         }
 
         /**

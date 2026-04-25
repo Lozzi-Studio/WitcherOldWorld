@@ -23,7 +23,7 @@ export const region = (() => {
          * @returns {bool}
          */
         equals(region){
-            return Object.equlas(this.toIdentifier(), region.toIdentifier());
+            return (this.toIdentifier() == region.toIdentifier());
         }
 
         /**
