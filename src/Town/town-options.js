@@ -40,25 +40,25 @@ export const town_options = (() => {
         */
         static playWuerfelpoker() {
             return new TownAbility("Spiele Wuerfelpoker", "Du spielst Wuerfelpoker. Wenn du gewinnst erhaelst du 3 Gold. Bei einer Niederlage verlierst du 1 Gold",
-                broadcasts.BroadcastTemplateGame.startWuerfelpoker()
+                broadcasts.BroadcastTemplateGame.StartWuerfelpoker()
             );
         }
 
         static getGeruechte(region) {
             return new TownAbility("Bekomme ein Geruecht", "Erhalte 1 Gold und erhalte danach ein Geruecht. Beim Einsammeln dieses erhaelts du noch ein Gold.",
-                broadcasts.BroadcastTemplateGame.getGeruecht(region)
+                broadcasts.BroadcastTemplateGame.GetGeruecht(region)
             );
         }
 
         static removeShopCards() {
             return new TownAbility("Entferne Karten im Shop", "Erhalte 1 Gold, falls du kein Gold hast und ersetze danach bis zu 2 Karten im Shop",
-                broadcasts.BroadcastTemplateGame.removeShopCards()
+                broadcasts.BroadcastTemplateGame.RemoveShopCards()  
             );
         }
 
         static swapoutCard() {
             return new TownAbility("Kartentausch", "Entferne eine Karte aus deiner Hand. Fuege eine neue Karte aus dem die Shop hinzu die bis zu eins mehr kostet als die alte Karte.",
-                broadcasts.BroadcastTemplateGame.swapoutCard()
+                broadcasts.BroadcastTemplateGame.SwapoutCard()
             );
         }
 

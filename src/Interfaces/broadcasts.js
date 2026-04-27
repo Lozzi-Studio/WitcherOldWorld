@@ -147,7 +147,7 @@ export const broadcasts = (() => {
          * 
          * @returns {object}
          */
-        static nextPhase() {
+        static NextPhase() {
             return {topic: 'game.nextPhase'};
         }
 
@@ -155,7 +155,7 @@ export const broadcasts = (() => {
          * 
          * @returns {object}
          */
-        static startWuerfelpoker(player1, player2) {
+        static StartWuerfelpoker(player1, player2) {
             return {topic: 'game.startPoker'};
         }
 
@@ -164,7 +164,7 @@ export const broadcasts = (() => {
          * @param {region.Region} region 
          * @returns {object}
          */
-        static getGeruecht(region) {
+        static GetGeruecht(region) {
             return {topic: 'game.geruecht', region: region};
         }
 
@@ -172,12 +172,27 @@ export const broadcasts = (() => {
          * 
          * @returns {object}
          */
-        static removeShopCards() {
+        static RemoveShopCards() {
             return {topic: 'game.removeShop'}
         }
 
-        static swapoutCard() {
+        static SwapoutCard() {
             return {topic: 'game.swapoutCard'}
+        }
+    }
+
+    class BroadcastTemnplateCamera {
+
+        static MoveTo(position, target) {
+            return {topic: 'camera.moveTo', position: position, target: target}
+        }
+
+        static FocusOn(target) {
+            return {topic: 'camera.focusOn', target: target}
+        }
+
+        static StopFocus() {
+            return {topic: 'camera.stopFocus'}
         }
     }
 
@@ -187,5 +202,6 @@ export const broadcasts = (() => {
         BroadcastTemplateCards : BroadcastTemplateCards,
         BroadcastTemplateGame : BroadcastTemplateGame,
         BroadcastTemplateTown : BroadcastTemplateTown,
+        BroadcastTemnplateCamera : BroadcastTemnplateCamera,
     }
 })();
