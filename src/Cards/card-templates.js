@@ -296,10 +296,10 @@ export const cards = (() => {
             return card.Card(
                 "Verstaerktes Igni",
                 card_options.Color.Purple(),
-                new Map([[card_options.Color.Green, card_options.CardEffect.createCardEffect(0,0,0,false,false)],
-                [card_options.Color.Yellow, card_options.CardEffect.createCardEffect(0,0,0,false,false)],
-                [card_options.Color.Blue, card_options.CardEffect.createCardEffect(0,0,0,false,false)],
-                [card_options.Color.Red, card_options.CardEffect.createCardEffect(0,0,0,false,false)]]),
+                new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],
+                [card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],
+                [card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],
+                [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]),
                 card_options.CardEffect.createCardEffect(1,0,1,false,false),
                 region.Region.River(),
                 0
