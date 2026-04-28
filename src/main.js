@@ -85,8 +85,8 @@ class DemoThreeJS {
         this._entityManager = new entity_manager.EntityManager();
         this._entityManager.AddEntity(cameraEntity);
 
-        cameraEntity.Broadcast(broadcasts.BroadcastTemnplateCamera.FocusOn(cube2));
-        cameraEntity.Broadcast(broadcasts.BroadcastTemnplateCamera.StopFocus());
+        cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(cube2));
+        cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.StopFocus());
 
         this._previousRAF = null;
         this._RAF();

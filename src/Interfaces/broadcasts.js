@@ -181,7 +181,7 @@ export const broadcasts = (() => {
         }
     }
 
-    class BroadcastTemnplateCamera {
+    class BroadcastTemplateCamera {
 
         static MoveTo(position, target) {
             return {topic: 'camera.moveTo', position: position, target: target}
@@ -202,6 +202,6 @@ export const broadcasts = (() => {
         BroadcastTemplateCards : BroadcastTemplateCards,
         BroadcastTemplateGame : BroadcastTemplateGame,
         BroadcastTemplateTown : BroadcastTemplateTown,
-        BroadcastTemnplateCamera : BroadcastTemnplateCamera,
+        BroadcastTemplateCamera : BroadcastTemplateCamera,
     }
 })();
