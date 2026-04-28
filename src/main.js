@@ -7,6 +7,7 @@ import { game_area_entity } from './GameArea/game-area-entity.js';
 import { broadcasts } from './Interfaces/broadcasts.js';
 import { cards } from './Cards/card-templates.js';
 import { card_options } from './Cards/card-options.js';
+import { camera_entity } from './Camera/camera_entity.js';
 
 //architecture style inspired by simondev (youtube)
 //https://github.com/simondevyoutube/Quick_3D_RPG
@@ -60,21 +61,32 @@ class DemoThreeJS {
         light.shadow.camera.bottom = -100;
         this._scene.add(light);
 
-        const plane = new THREE.Mesh(
-            new THREE.PlaneGeometry(10, 10),
-            new THREE.MeshStandardMaterial({
-                color: 0x8c4e03,
-            }));
-        plane.castShadow = false;
-        plane.receiveShadow = true;
-        plane.rotation.x = -Math.PI / 2;
-        this._scene.add(plane);
+        const geometry = new THREE.BoxGeometry( 5, 5, 5 );
+        const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        const cube = new THREE.Mesh( geometry, material );
+        this._scene.add( cube );
+
+        const geometry2 = new THREE.BoxGeometry( 5, 5, 5 );
+        const material2 = new THREE.MeshBasicMaterial( { color: 0xff0000} );
+        const cube2 = new THREE.Mesh( geometry2, material2 );
+        cube2.position.x += 50;
+        this._scene.add( cube2 );
+
         this._controls = new OrbitControls(this._camera, this._threejs.domElement);
-        this._camera.position.set( 0, 20, 100 );
+        this._controls.minPolarAngle = Math.PI / 4;
+        this._controls.maxPolarAngle = Math.PI * 0.44;
+        this._controls.minDistance = 10;
+        this._controls.maxDistance = 55;
+        this._camera.position.set( 0, 20, 50 );
         const axesHelper = new THREE.AxesHelper( 100000 );
         this._scene.add( axesHelper );
 
+        const cameraEntity = new camera_entity.Camera(this._camera, this._controls);
         this._entityManager = new entity_manager.EntityManager();
+        this._entityManager.AddEntity(cameraEntity);
+
+        cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(cube2));
+        cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.StopFocus());
 
         this._previousRAF = null;
         this._RAF();
@@ -148,7 +160,7 @@ class DemoBackend {
 let _APP = null;
 
 window.addEventListener('DOMContentLoaded', () => {
-  _APP = new DemoBackend();
+  _APP = new DemoThreeJS();
 });
 
 
