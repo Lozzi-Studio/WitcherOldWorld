@@ -45,6 +45,20 @@ export const ui_manager = (() => {
         selectArdModron() {
             this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
         }
+
+        ReplaceUmlaute(string) {
+            if (string.includes("ae")) {
+                string = string.replace("ae", "&auml;");
+            }
+            if (string.includes("oe")) {
+                string = string.replace("oe", "&ouml;");
+            }
+            if (string.includes("ue")) {
+                string = string.replace("ue", "&uuml;");
+            }
+
+            return string;
+        }
   
     }
 

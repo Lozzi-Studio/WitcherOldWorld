@@ -8,6 +8,7 @@ import { broadcasts } from './Interfaces/broadcasts.js';
 import { cards } from './Cards/card-templates.js';
 import { card_options } from './Cards/card-options.js';
 import { camera_entity } from './Camera/camera_entity.js';
+import { test } from 'vitest';
 
 //architecture style inspired by simondev (youtube)
 //https://github.com/simondevyoutube/Quick_3D_RPG
@@ -88,6 +89,18 @@ class DemoThreeJS {
         cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(cube2));
         cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.StopFocus());
 
+
+
+        const testPlayer = new player_entity.Player("Geralt", player_options.WitcherSchool.Bear());
+        this._entityManager.AddEntity(testPlayer, "Player_1");
+        const testGameArea = new game_area_entity.GameArea();
+        this._entityManager.AddEntity(testGameArea, "Game_Area");
+
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
+
+
+
         this._previousRAF = null;
         this._RAF();
     }
@@ -150,10 +163,25 @@ class DemoBackend {
         player1.Broadcast(broadcasts.BroadcastTemplateCards
             .AddCard(cards.CardTemplates
                 .getVerchnichtenderSchlag(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)],[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])), "Hand"));
-        gameArea.FindComponent("UIManager").selectArdModron();
+        gameArea.FindComponent("UIManager").SelectArdModron();
         console.log(player1.FindComponent("PlayerSkills").combat);
-        gameArea.FindComponent("UIManager").selectArdModron();
+        gameArea.FindComponent("UIManager").SelectArdModron();
         console.log(player1.FindComponent("PlayerSkills").combat);
+    }
+}
+
+class DemoFrontend {
+    constructor() {
+        this.#Initialized()
+    }
+
+    #Initialized() {
+        const testEntityManager = new entity_manager.EntityManager();
+        const testPlayer = new player_entity.Player("Hansi", player_options.WitcherSchool.Bear());
+        testEntityManager.AddEntity(testPlayer, "Player_1");
+        const testGameArea = new game_area_entity.GameArea();
+
+        testEntityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
     }
 }
 
