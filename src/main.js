@@ -8,7 +8,8 @@ import { broadcasts } from './Interfaces/broadcasts.js';
 import { cards } from './Cards/card-templates.js';
 import { card_options } from './Cards/card-options.js';
 import { camera_entity } from './Camera/camera_entity.js';
-
+import {GLTFLoader} from 'three/examples/jsm/Addons.js';
+import {AmbientLight, DirectionalLight, HemisphereLight} from 'three';
 //architecture style inspired by simondev (youtube)
 //https://github.com/simondevyoutube/Quick_3D_RPG
 
@@ -46,31 +47,16 @@ class DemoThreeJS {
         this._scene.background = new THREE.Color(0xFFFFFF);
         this._scene.fog = new THREE.FogExp2(0xeb8000, 0.001);
 
-        let light = new THREE.DirectionalLight(0xFFFFFF, 1.0);
-        light.position.set(-10, 500, 10);
-        light.target.position.set(0, 0, 0);
-        light.castShadow = true;
-        light.shadow.bias = -0.001;
-        light.shadow.mapSize.width = 4096;
-        light.shadow.mapSize.height = 4096;
-        light.shadow.camera.near = 0.1;
-        light.shadow.camera.far = 1000.0;
-        light.shadow.camera.left = 100;
-        light.shadow.camera.right = -100;
-        light.shadow.camera.top = 100;
-        light.shadow.camera.bottom = -100;
-        this._scene.add(light);
+        const ambientLight = new AmbientLight('white', 0.5);
+        const directlighting = new DirectionalLight("orange", 2);
+        directlighting.position.set(5, 10, 7);
 
-        const geometry = new THREE.BoxGeometry( 5, 5, 5 );
-        const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-        const cube = new THREE.Mesh( geometry, material );
-        this._scene.add( cube );
+        this._scene.add(ambientLight, directlighting);
 
-        const geometry2 = new THREE.BoxGeometry( 5, 5, 5 );
-        const material2 = new THREE.MeshBasicMaterial( { color: 0xff0000} );
-        const cube2 = new THREE.Mesh( geometry2, material2 );
-        cube2.position.x += 50;
-        this._scene.add( cube2 );
+        const loader = new GLTFLoader();
+        loader.load("resources/assets/provMap.glb", (glb) =>{
+        this._scene.add(glb.scene)});
+
 
         this._controls = new OrbitControls(this._camera, this._threejs.domElement);
         this._controls.minPolarAngle = Math.PI / 4;
@@ -84,9 +70,6 @@ class DemoThreeJS {
         const cameraEntity = new camera_entity.Camera(this._camera, this._controls);
         this._entityManager = new entity_manager.EntityManager();
         this._entityManager.AddEntity(cameraEntity);
-
-        cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(cube2));
-        cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.StopFocus());
 
         this._previousRAF = null;
         this._RAF();
