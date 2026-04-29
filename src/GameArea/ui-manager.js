@@ -61,9 +61,13 @@ export const ui_manager = (() => {
         }
 
         PlayerInfo(player) {
-            document.getElementById("player-name").innerHTML = player.playerName.toUpperCase();
-            document.getElementById("player-school").innerHTML = player.witcherSchool.name;
-            document.getElementById("player-combat-lvl").innerHTML = player.FindComponent("PlayerSkills").combat.level;
+            let name = player.playerName.toUpperCase();
+            let school = player.witcherSchool.name;
+            let combat_lvl = player.FindComponent("PlayerSkills").combat.level;
+
+            document.getElementById("player-name").innerHTML = this.ReplaceUmlaute(name);
+            document.getElementById("player-school").innerHTML = this.ReplaceUmlaute(school);
+            document.getElementById("player-combat-lvl").innerHTML = combat_lvl;
         }
 
         PlayerPic(player) {
