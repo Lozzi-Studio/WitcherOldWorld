@@ -113,19 +113,10 @@ export const ui_manager = (() => {
         }
 
         SetPlayerStats(player) {
-            let combatLevel = player.FindComponent("PlayerSkills").combat.level;
-            let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
-            let alchemyLevel = player.FindComponent("PlayerSkills").alchemy.level;
-            let specialLevel = player.FindComponent("PlayerSkills").special.level;
-            let skills = new Map();
-            skills.set("combat", combatLevel);
-            skills.set("defense", defenseLevel);
-            skills.set("alchemy", alchemyLevel);
-            skills.set("special", specialLevel);
-            let skillNames = skills.keys();
-            for (const skill of skillNames) {
-                for (let i = 0; i < skills.get(skill); i++) {
-                    let id = `${skill}-stat-box-${i}`;
+            for (const skill of [player.FindComponent("PlayerSkills").combat, player.FindComponent("PlayerSkills").defense, player.FindComponent("PlayerSkills").alchemy, player.FindComponent("PlayerSkills").special]) {
+                for (let i = 0; i < skill.level; i++) {
+                    let skillName = skill.toIdentifier().toLowerCase();
+                    let id = `${skillName}-stat-box-${i}`;
                     document.getElementById(id).className = "stat-box-fill";
                 }
             }
