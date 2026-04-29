@@ -45,8 +45,19 @@ export const ui_manager = (() => {
         SelectArdModron() {
             this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
         }
+        ReplaceUmlaute(string) {
+            if (string.includes("ae")) {
+                string = string.replace("ae", "&auml;");
+            }
+            if (string.includes("oe")) {
+                string = string.replace("oe", "&ouml;");
+            }
+            if (string.includes("ue")) {
+                string = string.replace("ue", "&uuml;");
+            }
 
-
+            return string;
+        }
         
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
@@ -54,6 +65,7 @@ export const ui_manager = (() => {
             document.getElementById("player-school").innerHTML = player.witcherSchool.name;
             document.getElementById("player-combat-lvl").innerHTML = player.FindComponent("PlayerSkills").combat.level;
         }
+  
     }
 
     return {
