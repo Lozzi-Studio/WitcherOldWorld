@@ -153,6 +153,15 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @param {player_entity.Player} nextPlayer
+         * @returns {object}
+         */
+        static NextTurn() {
+            return {topic: 'game.nextTurn', nextPlayer: nextPlayer};
+        }
+
+        /**
+         * 
          * @returns {object}
          */
         static StartWuerfelpoker(player1, player2) {

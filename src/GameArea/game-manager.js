@@ -153,7 +153,7 @@ export const game_manager = (() => {
         next() {
             this.#number += 1;
             if (this.#number > 3) {
-                this.#number = 0;
+                this.#number = 1;
                 return true;
             }
             return false;
