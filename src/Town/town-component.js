@@ -8,22 +8,22 @@ export const town_component = (() => {
 
     class Town extends component.Component{
         #id
-        #name;
+        #town_name;
         #ability;
         #position;
         #region
 
         /**
          * @param {int} id
-         * @param {string} name 
+         * @param {string} town_name 
          * @param {town_options.TownAbility} ability 
          * @param {THREE.Vector3} position 
          * @param {region.Region} region
          */
-        constructor(id, name, ability, position, region) {
+        constructor(id, town_name, ability, position, region) {
             super();
             this.#id = id;
-            this.#name = name;
+            this.#town_name = town_name;
             this.#ability = ability;
             this.#position = position;
             this.#region = region;
@@ -32,6 +32,7 @@ export const town_component = (() => {
 
         InitComponent() {
             this._RegisterHandler('town.action', (msg) => {this.#executeAbility(msg)});
+            this.#createHitbox();
         }
 
         /**
@@ -46,6 +47,15 @@ export const town_component = (() => {
             }
         }
 
+        #createHitbox(){
+            const geometry = new THREE.BoxGeometry( 5, 5, 5 );
+            const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+            const cube = new THREE.Mesh( geometry, material );
+            cube.name = this.#name;
+            //cube.visible = false; -- add if test works
+            this._parent.scene.add( cube );
+        }
+
         /**
          * 
          * @param {Array<card.Card>} cards 
@@ -53,7 +63,7 @@ export const town_component = (() => {
          */
         canEnter(cards) {
             for (let card of cards) {
-                if (card.region.toIdentifier() == this.#region.toIdentifier()){
+                if (card.region.toIdentifier() == this.#region.toIdentifier() || this.#region.toIdentifier() == "Joker"){
                     return {condition: true, card: card};
                 }
             }
@@ -64,8 +74,8 @@ export const town_component = (() => {
             return this.#id;
         }
 
-        get name() {
-            return this.#name;
+        get town_name() {
+            return this.#town_name;
         }
 
         get position() {

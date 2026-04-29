@@ -21,9 +21,10 @@ export const town_options = (() => {
          * @param {player_skills.Skill} skill 
          * @returns {TownAbility}
          */
-        static increaseSkillForMoney(skill) {return new TownAbility("Erhoehe Attribut", 
+        static increaseSkillForMoney() {return new TownAbility("Erhoehe Attribut", 
             "Du kannst einen Skill um eine Stufe erhöhen. Zahle Gold entsprechender der neuen Stufe. Die Spezialitaet laesst sich nur in deiner Heimatstadt erhoehen.",
-            broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase", true)
+            //TODO
+            broadcasts.BroadcastTemplateSkills.ChangeSkillLevel("Increase", true)
         );}
 
         /**
@@ -44,9 +45,9 @@ export const town_options = (() => {
             );
         }
 
-        static getGeruechte(region) {
+        static getGeruechte() {
             return new TownAbility("Bekomme ein Geruecht", "Erhalte 1 Gold und erhalte danach ein Geruecht. Beim Einsammeln dieses erhaelts du noch ein Gold.",
-                broadcasts.BroadcastTemplateGame.GetGeruecht(region)
+                broadcasts.BroadcastTemplateGame.GetGeruecht()
             );
         }
 

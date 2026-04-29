@@ -91,7 +91,7 @@ export const game_manager = (() => {
             const player = this.FindEntity(this.#GetPlayer(this.#currentPlayer));
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
-                    if (this.#selection.length > 0 && player?.town.name != msg.town.name) {
+                    if (this.#selection.length > 0 && player?.town.town_name != msg.town.town_name) {
 
                         const selectedCards = [];
                         for (let card of this.#selection) {
@@ -104,7 +104,7 @@ export const game_manager = (() => {
                             this.#selection = []
                         }
                     } else {
-                        if (player.town.name == msg.town.name) {
+                        if (player.town.town_name == msg.town.town_name) {
                             this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(player.town.id));
                         }
                     }
