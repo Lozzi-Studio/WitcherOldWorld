@@ -11,7 +11,8 @@ export const town_component = (() => {
         #town_name;
         #ability;
         #position;
-        #region
+        #region;
+        #hitbox;
 
         /**
          * @param {int} id
@@ -27,6 +28,7 @@ export const town_component = (() => {
             this.#ability = ability;
             this.#position = position;
             this.#region = region;
+            this.#hitbox = undefined;
 
         }
 
@@ -48,12 +50,15 @@ export const town_component = (() => {
         }
 
         #createHitbox(){
-            const geometry = new THREE.BoxGeometry( 5, 5, 5 );
+            const geometry = new THREE.BoxGeometry( 2.7, 2.7, 2.7 );
             const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
             const cube = new THREE.Mesh( geometry, material );
-            cube.name = this.#name;
-            //cube.visible = false; -- add if test works
+            cube.name = "Town_" + this.#id;
+            cube.visible = false;
+            cube.position.copy(this.#position);
+            cube.position.y = (2.7 / 2 );
             this._parent.scene.add( cube );
+            this.#hitbox = cube;
         }
 
         /**
@@ -80,6 +85,10 @@ export const town_component = (() => {
 
         get position() {
             return this.#position;
+        }
+
+        get hitbox() {
+            return this.#hitbox;
         }
     }
 
