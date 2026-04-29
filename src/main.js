@@ -45,7 +45,7 @@ class DemoThreeJS {
 
         this._scene = new THREE.Scene();
         this._scene.background = new THREE.Color(0xFFFFFF);
-        this._scene.fog = new THREE.FogExp2(0xeb8000, 0.001);
+        this._scene.fog = new THREE.FogExp2(0xeb8000, 1);
 
         const ambientLight = new AmbientLight('white', 0.5);
         const directlighting = new DirectionalLight("orange", 2);
@@ -55,6 +55,11 @@ class DemoThreeJS {
 
         const loader = new GLTFLoader();
         loader.load("resources/assets/provMap.glb", (glb) =>{
+            glb.scene.traverse((child) =>{
+                if (child.isMesh){
+                child.material.fog = false;
+                }
+            });
         this._scene.add(glb.scene)});
 
 
