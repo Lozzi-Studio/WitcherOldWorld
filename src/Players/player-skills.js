@@ -115,6 +115,7 @@ export const player_skills = (() => {
         }
 
         increaseLevel() {
+            console.log("test")
             if (this.#level < this.#maxLevel) {
                 this.#level += 1;
             }

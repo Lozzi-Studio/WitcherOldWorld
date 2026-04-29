@@ -45,7 +45,13 @@ export const ui_manager = (() => {
         selectArdModron() {
             this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
         }
-  
+        
+        Update(timeElapsed) {
+            const player = this._parent.FindComponent("GameManager").currentPlayer;
+            document.getElementById("player-name").innerHTML = player.playerName;
+            document.getElementById("player-school").innerHTML = player.witcherSchool.name;
+            document.getElementById("player-combat-lvl").innerHTML = player.FindComponent("PlayerSkills").combat.level;
+        }
     }
 
     return {

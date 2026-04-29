@@ -89,6 +89,18 @@ class DemoThreeJS {
         cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(cube2));
         cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.StopFocus());
 
+
+
+        const testPlayer = new player_entity.Player("Hansi", player_options.WitcherSchool.Bear());
+        this._entityManager.AddEntity(testPlayer, "Player_1");
+        const testGameArea = new game_area_entity.GameArea();
+        this._entityManager.AddEntity(testGameArea, "Game_Area");
+
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
+
+
+
         this._previousRAF = null;
         this._RAF();
     }
@@ -166,19 +178,17 @@ class DemoFrontend {
     #Initialized() {
         const testEntityManager = new entity_manager.EntityManager();
         const testPlayer = new player_entity.Player("Hansi", player_options.WitcherSchool.Bear());
-        testEntityManager.AddEntity(testPlayer, "test_player");
+        testEntityManager.AddEntity(testPlayer, "Player_1");
+        const testGameArea = new game_area_entity.GameArea();
 
-        const myEntity = testEntityManager.FindEntity("test_player")
-
-        document.getElementById("player-name").innerHTML = testEntityManager.FindEntity("test_player").playerName;
-        document.getElementById("player-school").innerHTML = myEntity.witcherSchool.name;
+        testEntityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
     }
 }
 
 let _APP = null;
 
 window.addEventListener('DOMContentLoaded', () => {
-  _APP = new DemoFrontend();
+  _APP = new DemoThreeJS();
 });
 
 
