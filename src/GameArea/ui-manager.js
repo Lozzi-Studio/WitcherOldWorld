@@ -9,42 +9,44 @@ export const ui_manager = (() => {
             super();
         }
 
-        cardSlot0() {
+        CardSlot0() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
         }
 
-        cardSlot1() {
+        CardSlot1() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(1));
         }
 
-        cardSlot2() {
+        CardSlot2() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(2));
         }
 
-        cardSlot3() {
+        CardSlot3() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(3));
         }
 
-        cardSlot4() {
+        CardSlot4() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(4));
         }
 
-        cardSlot5() {
+        CardSlot5() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(5));
         }
 
-        cardSlot6() {
+        CardSlot6() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(6));
         }
 
-        endPhase() {
+        EndPhase() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.PlayerNextPhase());
         }
 
         //TODO remove when raycasting on towns is working - ONLY TEST PURPOSE
-        selectArdModron() {
+        SelectArdModron() {
             this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
         }
+
+
         
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;

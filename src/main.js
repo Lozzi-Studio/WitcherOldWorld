@@ -163,9 +163,9 @@ class DemoBackend {
         player1.Broadcast(broadcasts.BroadcastTemplateCards
             .AddCard(cards.CardTemplates
                 .getVerchnichtenderSchlag(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)],[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])), "Hand"));
-        gameArea.FindComponent("UIManager").selectArdModron();
+        gameArea.FindComponent("UIManager").SelectArdModron();
         console.log(player1.FindComponent("PlayerSkills").combat);
-        gameArea.FindComponent("UIManager").selectArdModron();
+        gameArea.FindComponent("UIManager").SelectArdModron();
         console.log(player1.FindComponent("PlayerSkills").combat);
     }
 }
