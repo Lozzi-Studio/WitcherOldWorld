@@ -56,6 +56,10 @@ export const player_entity = (() => {
         get town() {
             return this.FindComponent('PlayerPosition').currentTown;
         }
+
+        get witcherSchool() {
+            return this.#witcherSchool
+        }
     }
 
     return {

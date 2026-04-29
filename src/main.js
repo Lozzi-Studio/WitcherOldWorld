@@ -8,6 +8,7 @@ import { broadcasts } from './Interfaces/broadcasts.js';
 import { cards } from './Cards/card-templates.js';
 import { card_options } from './Cards/card-options.js';
 import { camera_entity } from './Camera/camera_entity.js';
+import { test } from 'vitest';
 
 //architecture style inspired by simondev (youtube)
 //https://github.com/simondevyoutube/Quick_3D_RPG
@@ -157,10 +158,27 @@ class DemoBackend {
     }
 }
 
+class DemoFrontend {
+    constructor() {
+        this.#Initialized()
+    }
+
+    #Initialized() {
+        const testEntityManager = new entity_manager.EntityManager();
+        const testPlayer = new player_entity.Player("Hansi", player_options.WitcherSchool.Bear());
+        testEntityManager.AddEntity(testPlayer, "test_player");
+
+        const myEntity = testEntityManager.FindEntity("test_player")
+
+        document.getElementById("player-name").innerHTML = testEntityManager.FindEntity("test_player").playerName;
+        document.getElementById("player-school").innerHTML = myEntity.witcherSchool.name;
+    }
+}
+
 let _APP = null;
 
 window.addEventListener('DOMContentLoaded', () => {
-  _APP = new DemoThreeJS();
+  _APP = new DemoFrontend();
 });
 
 
