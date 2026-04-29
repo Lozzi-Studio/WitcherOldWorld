@@ -47,8 +47,8 @@ export const ui_manager = (() => {
         }
         
         Update(timeElapsed) {
-            const player = this._parent.FindComponent("GameManager").currentPlayer;
-            document.getElementById("player-name").innerHTML = player.playerName;
+            const player = this.FindComponent("GameManager").currentPlayer;
+            document.getElementById("player-name").innerHTML = player.playerName.toUpperCase();
             document.getElementById("player-school").innerHTML = player.witcherSchool.name;
             document.getElementById("player-combat-lvl").innerHTML = player.FindComponent("PlayerSkills").combat.level;
         }

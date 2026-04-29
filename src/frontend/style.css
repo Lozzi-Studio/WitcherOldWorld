@@ -18,8 +18,14 @@
 
 p {
     color: #D0C9B1;
+    font-family: "PT Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 #player-name {
     font-size: 16pt;
+    font-family: "mason-serif", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
