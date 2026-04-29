@@ -64,11 +64,14 @@ class DemoThreeJS {
         const geometry = new THREE.BoxGeometry( 5, 5, 5 );
         const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
         const cube = new THREE.Mesh( geometry, material );
+        cube.name = "cube1";
+        //cube.visible = false;
         this._scene.add( cube );
 
         const geometry2 = new THREE.BoxGeometry( 5, 5, 5 );
         const material2 = new THREE.MeshBasicMaterial( { color: 0xff0000} );
         const cube2 = new THREE.Mesh( geometry2, material2 );
+        cube2.name = "cube2";
         cube2.position.x += 50;
         this._scene.add( cube2 );
 
@@ -83,7 +86,8 @@ class DemoThreeJS {
 
         const cameraEntity = new camera_entity.Camera(this._camera, this._controls);
         this._entityManager = new entity_manager.EntityManager();
-        this._entityManager.AddEntity(cameraEntity);
+        this._entityManager.AddEntity(cameraEntity, "Camera");
+        this._entityManager.AddEntity(new game_area_entity.GameArea(this._threejs, this._scene));
 
         cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(cube2));
         cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.StopFocus());
