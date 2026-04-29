@@ -26,7 +26,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    align-items: baseline;
+    align-items: center;
     align-content: stretch;
     gap: 8px;
 
@@ -43,8 +43,7 @@
     text-align: center;
     vertical-align: middle;
 
-    background-color: #422E0E;
-    opacity: 0.9;
+    background-color: rgba(66, 46, 14, 0.7);
     border-color: #AA8D5E;
 }
 
@@ -66,6 +65,43 @@
   align-items: baseline;
   align-content: stretch;
   gap: 8px;
+}
+
+.stat-icon {
+    height: 36px;
+}
+
+.stat-icon-container {
+    height: 36px;
+    width: 36px;
+}
+
+.level-container {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
+    align-content: stretch;
+    gap: 8px;
+}
+
+.stat-box-empty {
+    background-color: #D0C9B1;
+    border-radius: 4px;
+
+    opacity: 0.4;
+
+    width: 18px;
+    height: 18px;
+}
+
+.stat-box-fill {
+    background-color: #D0C9B1;
+    border-radius: 4px;
+
+    width: 18px;
+    height: 18px;
 }
 
 

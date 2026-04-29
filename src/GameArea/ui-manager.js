@@ -7,6 +7,7 @@ export const ui_manager = (() => {
 
         constructor() {
             super();
+            this.InitPlayerStats();
         }
 
         CardSlot0() {
@@ -60,17 +61,17 @@ export const ui_manager = (() => {
             return string;
         }
 
-        PlayerInfo(player) {
+        SetPlayerInfo(player) {
             let name = player.playerName.toUpperCase();
             let school = player.witcherSchool.name;
             let combat_lvl = player.FindComponent("PlayerSkills").combat.level;
 
             document.getElementById("player-name").innerHTML = this.ReplaceUmlaute(name);
-            document.getElementById("player-school").innerHTML = this.ReplaceUmlaute(school);
-            document.getElementById("player-combat-lvl").innerHTML = combat_lvl;
+            //document.getElementById("player-school").innerHTML = this.ReplaceUmlaute(school);
+            //document.getElementById("player-combat-lvl").innerHTML = combat_lvl;
         }
 
-        PlayerPic(player) {
+        SetPlayerPic(player) {
             let path = ""
             switch(player.witcherSchool.name){
                 case "Baerenschule":
@@ -91,11 +92,51 @@ export const ui_manager = (() => {
             }
             document.getElementById("player-pic").src = path;
         }
+
+        CreateStatBoxes(skillName) {
+            let containerName = `${skillName}-lvl`
+            const container = document.getElementById(containerName);
+
+            for (let i = 0; i < 5; i++) {
+                const box = document.createElement("div");
+                box.className = "stat-box-empty";
+                box.id = `${skillName}-stat-box-${i}`;
+                container.appendChild(box);
+            }
+        }
+
+        InitPlayerStats() {
+            let skills = ["combat", "defense", "alchemy", "special"];
+            for (const skill of skills) {
+                this.CreateStatBoxes(skill);
+            }
+        }
+
+        SetPlayerStats(player) {
+            let combatLevel = player.FindComponent("PlayerSkills").combat.level;
+            let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
+            let alchemyLevel = player.FindComponent("PlayerSkills").alchemy.level;
+            let specialLevel = player.FindComponent("PlayerSkills").special.level;
+            let skills = new Map();
+            skills.set("combat", combatLevel);
+            skills.set("defense", defenseLevel);
+            skills.set("alchemy", alchemyLevel);
+            skills.set("special", specialLevel);
+            let skillNames = skills.keys();
+            for (const skill of skillNames) {
+                for (let i = 0; i < skills.get(skill); i++) {
+                    let id = `${skill}-stat-box-${i}`;
+                    document.getElementById(id).className = "stat-box-fill";
+                }
+            }
+            
+        }
         
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
-            this.PlayerInfo(player);
-            this.PlayerPic(player);
+            this.SetPlayerInfo(player);
+            this.SetPlayerPic(player);
+            this.SetPlayerStats(player);
         }
   
     }

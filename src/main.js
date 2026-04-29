@@ -45,7 +45,7 @@ class DemoThreeJS {
         this._camera.position.set(25, 10, 25);
 
         this._scene = new THREE.Scene();
-        this._scene.background = new THREE.Color(0xFFFFFF);
+        this._scene.background = new THREE.Color(0x3D342C);
         this._scene.fog = new THREE.FogExp2(0xeb8000, 1);
 
         const ambientLight = new AmbientLight('white', 0.5);
@@ -84,8 +84,19 @@ class DemoThreeJS {
         const testGameArea = new game_area_entity.GameArea();
         this._entityManager.AddEntity(testGameArea, "Game_Area");
 
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
+
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").defense.increaseLevel();
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").defense.increaseLevel();
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").defense.increaseLevel();
+
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").alchemy.increaseLevel();
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").alchemy.increaseLevel();
+
+        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").special.increaseLevel();
 
 
 
