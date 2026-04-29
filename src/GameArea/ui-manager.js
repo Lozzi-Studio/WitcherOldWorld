@@ -10,6 +10,10 @@ export const ui_manager = (() => {
             this.InitPlayerStats();
         }
 
+        InitComponent() {
+            this._RegisterHandler("game.nextTurn", (msg) => (this.#updatePlayerUI(msg)));
+        }
+
         CardSlot0() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
         }
@@ -123,10 +127,13 @@ export const ui_manager = (() => {
             
         }
         
+        #updatePlayerUI(msg) {
+            this.SetPlayerInfo(msg.nextPlayer);
+            this.SetPlayerPic(msg.nextPlayer);
+        }
+
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
-            this.SetPlayerInfo(player);
-            this.SetPlayerPic(player);
             this.SetPlayerStats(player);
         }
   

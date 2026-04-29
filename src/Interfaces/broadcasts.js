@@ -156,7 +156,7 @@ export const broadcasts = (() => {
          * @param {player_entity.Player} nextPlayer
          * @returns {object}
          */
-        static NextTurn() {
+        static NextTurn(nextPlayer) {
             return {topic: 'game.nextTurn', nextPlayer: nextPlayer};
         }
 
