@@ -155,25 +155,10 @@ class DemoBackend {
         player1.Broadcast(broadcasts.BroadcastTemplateCards
             .AddCard(cards.CardTemplates
                 .getVerchnichtenderSchlag(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)],[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])), "Hand"));
-        gameArea.FindComponent("UIManager").SelectArdModron();
+        gameArea.FindComponent("UIManager").selectArdModron();
         console.log(player1.FindComponent("PlayerSkills").combat);
-        gameArea.FindComponent("UIManager").SelectArdModron();
+        gameArea.FindComponent("UIManager").selectArdModron();
         console.log(player1.FindComponent("PlayerSkills").combat);
-    }
-}
-
-class DemoFrontend {
-    constructor() {
-        this.#Initialized()
-    }
-
-    #Initialized() {
-        const testEntityManager = new entity_manager.EntityManager();
-        const testPlayer = new player_entity.Player("Hansi", player_options.WitcherSchool.Bear());
-        testEntityManager.AddEntity(testPlayer, "Player_1");
-        const testGameArea = new game_area_entity.GameArea();
-
-        testEntityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel()
     }
 }
 
