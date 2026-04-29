@@ -28,7 +28,7 @@
     justify-content: flex-start;
     align-items: center;
     align-content: stretch;
-    gap: 8px;
+    gap: 16px;
 
     position: fixed;
     left: 8px;
@@ -52,9 +52,33 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  align-items: baseline;
+  align-items: center;
   align-content: stretch;
   gap: 8px;
+  margin-left: 8px;
+}
+
+.player-avatar {
+    display: inline-flex;
+
+    width: 110px;
+    height: 110px;
+    box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.40) inset;
+    border-radius: 9999px;
+    border: 3px #D0C9B1 solid;
+
+    background-image: url("../resources/school-icons/geralt2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+#player-pic {
+    object-fit: cover;
+    object-position: 50% 0%;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
 }
 
 #player-stats {
@@ -65,6 +89,7 @@
   align-items: baseline;
   align-content: stretch;
   gap: 8px;
+  margin-right: 8px;;
 }
 
 .stat-icon {
@@ -81,7 +106,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    align-items: baseline;
+    align-items: center;
     align-content: stretch;
     gap: 8px;
 }

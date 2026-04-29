@@ -75,7 +75,7 @@ export const ui_manager = (() => {
             let path = ""
             switch(player.witcherSchool.name){
                 case "Baerenschule":
-                    path = "./resources/assets/school-icons/bear.png";
+                    path = "./resources/assets/school-icons/geralt2.jpg";
                     break;
                 case "Katzenschule":
                     path = "./resources/assets/school-icons/cat.png";
