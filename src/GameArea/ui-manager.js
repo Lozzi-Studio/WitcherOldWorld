@@ -45,6 +45,7 @@ export const ui_manager = (() => {
         SelectArdModron() {
             this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
         }
+
         ReplaceUmlaute(string) {
             if (string.includes("ae")) {
                 string = string.replace("ae", "&auml;");
@@ -58,12 +59,39 @@ export const ui_manager = (() => {
 
             return string;
         }
-        
-        Update(timeElapsed) {
-            const player = this.FindComponent("GameManager").currentPlayer;
+
+        PlayerInfo(player) {
             document.getElementById("player-name").innerHTML = player.playerName.toUpperCase();
             document.getElementById("player-school").innerHTML = player.witcherSchool.name;
             document.getElementById("player-combat-lvl").innerHTML = player.FindComponent("PlayerSkills").combat.level;
+        }
+
+        PlayerPic(player) {
+            let path = ""
+            switch(player.witcherSchool.name){
+                case "Baerenschule":
+                    path = "./resources/assets/school-icons/bear.png";
+                    break;
+                case "Katzenschule":
+                    path = "./resources/assets/school-icons/cat.png";
+                    break;
+                case "Greifenschule":
+                    path = "./resources/assets/school-icons/griffin.png";
+                    break;
+                case "Vipernschule":
+                    path = "./resources/assets/school-icons/viper.png";
+                    break;
+                case "Wolfschule":
+                    path = "./resources/assets/school-icons/wolf.png";
+                    break;
+            }
+            document.getElementById("player-pic").src = path;
+        }
+        
+        Update(timeElapsed) {
+            const player = this.FindComponent("GameManager").currentPlayer;
+            this.PlayerInfo(player);
+            this.PlayerPic(player);
         }
   
     }
