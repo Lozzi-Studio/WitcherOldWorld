@@ -77,9 +77,11 @@ class DemoThreeJS {
         this._entityManager = new entity_manager.EntityManager();
         this._entityManager.AddEntity(cameraEntity);
 
+        console.log(this._entityManager.Filter(x => x.name.includes("Player")));
 
 
-        const testPlayer = new player_entity.Player("Tim", player_options.WitcherSchool.Wolf());
+
+        const testPlayer = new player_entity.Player("Player 1", player_options.WitcherSchool.Bear());
         this._entityManager.AddEntity(testPlayer, "Player_1");
         const testGameArea = new game_area_entity.GameArea();
         this._entityManager.AddEntity(testGameArea, "Game_Area");
