@@ -27,4 +27,4 @@ export const player_controller = (() => {
     return {
         PlayerController: PlayerController
     }
-})
+})();

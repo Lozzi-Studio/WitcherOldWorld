@@ -78,10 +78,6 @@ class DemoThreeJS {
         this._entityManager = new entity_manager.EntityManager();
         this._entityManager.AddEntity(cameraEntity);
 
-        cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(cube2));
-        cameraEntity.Broadcast(broadcasts.BroadcastTemplateCamera.StopFocus());
-
-
 
         const testPlayer = new player_entity.Player("Geralt", player_options.WitcherSchool.Bear());
         this._entityManager.AddEntity(testPlayer, "Player_1");
