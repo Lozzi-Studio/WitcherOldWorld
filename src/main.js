@@ -79,7 +79,7 @@ class DemoThreeJS {
 
 
 
-        const testPlayer = new player_entity.Player("Geralt", player_options.WitcherSchool.Bear());
+        const testPlayer = new player_entity.Player("Tim", player_options.WitcherSchool.Wolf());
         this._entityManager.AddEntity(testPlayer, "Player_1");
         const testGameArea = new game_area_entity.GameArea();
         this._entityManager.AddEntity(testGameArea, "Game_Area");

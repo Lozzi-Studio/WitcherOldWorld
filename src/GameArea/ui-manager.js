@@ -79,19 +79,19 @@ export const ui_manager = (() => {
             let path = ""
             switch(player.witcherSchool.name){
                 case "Baerenschule":
-                    path = "./resources/assets/school-icons/geralt2.jpg";
+                    path = "./resources/assets/avatars/bear.webp";
                     break;
                 case "Katzenschule":
-                    path = "./resources/assets/school-icons/cat.png";
+                    path = "./resources/assets/avatars/cat.webp";
                     break;
                 case "Greifenschule":
-                    path = "./resources/assets/school-icons/griffin.png";
+                    path = "./resources/assets/avatars/griffin.webp";
                     break;
                 case "Vipernschule":
-                    path = "./resources/assets/school-icons/viper.png";
+                    path = "./resources/assets/avatars/viper.webp";
                     break;
-                case "Wolfschule":
-                    path = "./resources/assets/school-icons/wolf.png";
+                case "Wolfsschule":
+                    path = "./resources/assets/avatars/wolf.webp";
                     break;
             }
             document.getElementById("player-pic").src = path;
