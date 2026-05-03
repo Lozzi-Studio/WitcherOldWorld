@@ -1,5 +1,6 @@
 import { carddeck_component } from "../Cards/carddeck";
 import { entity } from "../Interfaces/entity";
+import { player_money } from "./player-money";
 import { player_options } from "./player-options";
 import { player_position } from "./player-position";
 import { player_skills } from "./player-skills";
@@ -30,6 +31,7 @@ export const player_entity = (() => {
             this.AddComponent(new player_position.PlayerPosition(this.#currentTown, this.#currentTown.position));
             this.AddComponent(new player_skills.PlayerSkills());
             this.AddComponent(new player_skills.Shield());
+            this.AddComponent(new player_money.MoneyStorage());
         }
 
         /**

@@ -32,9 +32,14 @@ export const town_properties = (() => {
          */
         #executeAbility(msg) {
             if (msg.town.id == this._parent.id){
-
-                let player = this._parent.FindComponent("GameManager").currentPlayer;
-                player.Broadcast(this.#ability.trigger);
+                switch(this.#ability.target.toIdentifier()) {
+                    case "Game":
+                        this._parent.FindComponent("GameManager").Broadcast(this.#ability.trigger);
+                        break;
+                    case "Player":
+                        this._parent.FindComponent("GameManager").currentPlayer.Broadcast(this.#ability.trigger);;
+                        break;
+                }
             }
         }
 

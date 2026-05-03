@@ -51,6 +51,10 @@ export const town_entity = (() => {
         get position() {
             return this.#position;
         }
+        
+        get region() {
+            return this.#region;
+        }
 
 
     }

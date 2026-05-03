@@ -1,3 +1,4 @@
+import { component } from "../Interfaces/component";
 
 export const region = (() => {
 

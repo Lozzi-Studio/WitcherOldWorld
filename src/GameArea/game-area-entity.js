@@ -1,6 +1,6 @@
 import { entity } from "../Interfaces/entity";
 import { game_manager } from "./game-manager";
-import { ui_manager } from "./ui-manager";
+import { ui_manager } from "./UI/ui-manager";
 import { town_entity } from "../Town/town-entity";
 import { town_options } from "../Town/town-options";
 import { Vector3 } from "three";
@@ -40,7 +40,7 @@ export const game_area_entity = (() => {
             this._parent.AddEntity(new town_entity.TownEntity(6, "Novigrad", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-9.1,0,-12.1), region.Region.Forest(), new Vector3(2.7,2.7,2.7)), "Town_6");
             this._parent.AddEntity(new town_entity.TownEntity(7, "Wyzima", town_options.TownAbility.removeShopCards(), new Vector3(-0.8,0,-10.6), region.Region.Forest(), new Vector3(2.7,2.7,2.7)), "Town_7");
             this._parent.AddEntity(new town_entity.TownEntity(8, "Vengerberg", town_options.TownAbility.swapoutCard(), new Vector3(15.7,0,-7.5), region.Region.Forest(), new Vector3(2.7,2.7,2.7)), "Town_8");
-            this._parent.AddEntity(new town_entity.TownEntity(9, "Cintra", town_options.TownAbility.getPotion, new Vector3(-11.4,0,-0.4), region.Region.Mountain(), new Vector3(2.7,2.7,2.7)), "Town_9");
+            this._parent.AddEntity(new town_entity.TownEntity(9, "Cintra", town_options.TownAbility.getPotion(), new Vector3(-11.4,0,-0.4), region.Region.Mountain(), new Vector3(2.7,2.7,2.7)), "Town_9");
             this._parent.AddEntity(new town_entity.TownEntity(10, "Haern Caduch", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-1.3,0,3.4), region.Region.Forest(), new Vector3(2.7,2.7,2.7)), "Town_10");
             this._parent.AddEntity(new town_entity.TownEntity(11, "Beauclair", town_options.TownAbility.getPotion(), new Vector3(14.4,0,4.6), region.Region.Mountain(), new Vector3(2.7,2.7,2.7)), "Town_11");
             this._parent.AddEntity(new town_entity.TownEntity(12, "Glenmore", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-13.3,0,9.8), region.Region.River(), new Vector3(2.7,2.7,2.7)), "Town_12");

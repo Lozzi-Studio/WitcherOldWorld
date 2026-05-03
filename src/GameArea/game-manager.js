@@ -23,6 +23,7 @@ export const game_manager = (() => {
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
             this._RegisterHandler('town.ability', (msg) => {this.#OnTownAbility(msg);});
             this._RegisterHandler('game.nextPhase', (msg) => {this.#NextTurnPhase(msg);});
+            this._RegisterHandler('game.startPoker', (msg) => {this.#StartWuerfelpoker(msg);});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
 
         }
@@ -110,6 +111,19 @@ export const game_manager = (() => {
                     }
                     break;
                 default:
+                    break;
+            }
+        }
+
+        #StartWuerfelpoker(msg) {
+            //TODO Implement Wuerfelpoker
+            console.log("Wuerfelpoker");
+            switch (Math.floor(Math.random() * 2)) {
+                case 0:
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(-1));
+                    break;
+                case 1:
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(3));
                     break;
             }
         }
