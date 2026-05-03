@@ -129,7 +129,6 @@ export const ui_manager = (() => {
                     else {
                         document.getElementById(id).classList.add("level-box--empty");
                     }
-                    
                 }
             }
             

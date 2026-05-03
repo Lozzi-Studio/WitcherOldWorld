@@ -17,8 +17,8 @@ p, div {
     gap: 8px;
     padding: 4px;
 
-    /* text-align: center;
-    vertical-align: middle; */
+    text-align: center;
+    vertical-align: middle;
 }
 
 .container--no-padding {
@@ -198,12 +198,8 @@ p, div {
     display: inline-flex;
     /*width: 200px;*/
     width: fit-content;
-    max-width: 100%;
+    max-width: 200px;
 }
-
-/* #phase-window > * {
-    width: 100%;
-} */
 
 #avatars-container {
     width: max-content;
