@@ -69,12 +69,13 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #OnTownSelection(msg){
-            const player = this.FindEntity(this.#GetPlayer(this.#currentPlayer));
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
                     if (this.#selection.length > 0) {
+                        console.log("Move");
                         //TODO Show Town Tooltip with Button Move here if possible
                     } else {
+                        console.log("Action");
                         //TODO Show Town Tooltip with Button use Town Action
                     }
                     break;
@@ -88,24 +89,23 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #OnTownAbility(msg) {
-            const player = this.FindEntity(this.#GetPlayer(this.#currentPlayer));
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
-                    if (this.#selection.length > 0 && player?.town.town_name != msg.town.town_name) {
+                    if (this.#selection.length > 0 && this.#currentPlayer?.town.town_name != msg.town.town_name) {
 
                         const selectedCards = [];
                         for (let card of this.#selection) {
-                            selectedCards.push(player.getHandCard(card));
+                            selectedCards.push(this.#currentPlayer.getHandCard(card));
                         }
                         const enterObject = msg.town.canEnter(selectedCards);
                         if (enterObject.condition) {;
                             this.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(enterObject.card, "Discard"))
-                            player.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(msg.town, msg.town.position))
+                            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(msg.town, msg.town.position))
                             this.#selection = []
                         }
                     } else {
                         if (player.town.town_name == msg.town.town_name) {
-                            this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(player.town.id));
+                            this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this.#currentPlayer.town.id));
                         }
                     }
                     break;

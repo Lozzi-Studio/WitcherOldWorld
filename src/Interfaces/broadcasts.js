@@ -1,5 +1,5 @@
 import { card } from "../Cards/card";
-import { town_component } from "../Town/town-component";
+import { town_properties } from "../Town/town-properties";
 import * as THREE from 'three';
 import { region } from "../GameArea/region";
 

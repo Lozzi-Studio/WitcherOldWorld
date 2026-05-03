@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { component } from '../Interfaces/component'
+import { broadcasts } from '../Interfaces/broadcasts';
 
 export const controls_component = (() => {
 
@@ -22,11 +23,14 @@ export const controls_component = (() => {
 
             const raycaster = new THREE.Raycaster();
             raycaster.setFromCamera(coords, this.FindEntity("Camera").camera);
-
+            
             const intersections = raycaster.intersectObjects(this._parent.scene.children, true);
             if (intersections.length > 0) {
                 const selectedObject = intersections[0].object;
-                console.log(`${selectedObject.name} was clicked!`);
+                if (selectedObject.name.includes("Town")) {
+                    console.log(this.FindEntity(selectedObject.name))
+                    this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)))   
+                }
             }
         }
     }
