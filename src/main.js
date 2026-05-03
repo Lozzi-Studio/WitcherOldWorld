@@ -85,8 +85,7 @@ class DemoThreeJS {
         const testGameArea = new game_area_entity.GameArea();
         this._entityManager.AddEntity(testGameArea, "Game_Area");
         testGameArea.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(testPlayer));
-        const testGameManager = new game_manager.GameManager();
-        console.log(this._entityManager.FindEntity("Game_Area").FindComponent("Game_Manager"));
+        console.log(this._entityManager.FindEntity("Game_Area").FindComponent("Game_Manager")); //???? wie auf game manager und phase zugreifen??
 
         console.log(this._entityManager.Filter(x => x.name.includes("Player")));
 
