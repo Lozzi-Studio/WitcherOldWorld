@@ -75,9 +75,7 @@ class DemoThreeJS {
 
         const cameraEntity = new camera_entity.Camera(this._camera, this._controls);
         this._entityManager = new entity_manager.EntityManager();
-        this._entityManager.AddEntity(cameraEntity);
-
-        console.log(this._entityManager.Filter(x => x.name.includes("Player")));
+        this._entityManager.AddEntity(cameraEntity);    
 
 
 
@@ -86,6 +84,8 @@ class DemoThreeJS {
         const testGameArea = new game_area_entity.GameArea();
         this._entityManager.AddEntity(testGameArea, "Game_Area");
         testGameArea.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(testPlayer));
+
+        console.log(this._entityManager.Filter(x => x.name.includes("Player")));
 
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();

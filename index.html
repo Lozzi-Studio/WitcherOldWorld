@@ -16,36 +16,50 @@
 <body style="margin-top: 0; margin-left: 0;">
     <script type="module" src="./src/main.js"></script>
 
-    <div id="player-container">
-        <div id="player-avatar-name">
-            <div class="player-avatar"><img id="player-pic" src=""></div>
-            <div id="player-box"><p id="player-name">NAME</p></div>
+    <div class="container container--row container--neutral borders--top-right" id="player-window">
+        <div class="container container--col">
+            <div class="avatar-container avatar-container--big avatar-container--neutral">
+                <img class="avatar avatar--big" id="player-avatar" src="">
+            </div>
+            <div class="textbox textbox--fill-neutral">
+                <p class="textbox__text--fill-neutral textbox__text--fancy-font" id="player-name">NAME</p>
+            </div>
         </div>
-        <div id ="player-stats">
-            <div class="level-container" id="combat-lvl">
+        <div class="container container--col inner-borders inner-borders--neutral" id ="player-stats">
+            <div class="container container--row container--no-padding" id="combat-lvl">
                 <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/combat.png"></div>
             </div>
-            <div class="level-container" id="defense-lvl">
+            <div class="container container--row container--no-padding" id="defense-lvl">
                 <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/defense.png"></div>
             </div>
-            <div class="level-container" id="alchemy-lvl">
+            <div class="container container--row container--no-padding" id="alchemy-lvl">
                 <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/alchemy.png"></div>
             </div>
-            <div class="level-container" id="special-lvl">
+            <div class="container container--row container--no-padding" id="special-lvl">
                 <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/speed.png"></div>
             </div>
         </div>
     </div>
 
-    <div id="phase-container">
-        <div id="avatars-container">
-            <div class="phase-avatar-container-active" id="avatar-1"><img  class="phase-avatar" src="./resources/assets/avatars/bear.webp"></div>
-            <div class="phase-avatar-container" id="avatar-2"><img class="phase-avatar" src="./resources/assets/avatars/wolf.webp"></div>
-            <div class="phase-avatar-container" id="avatar-3"><img class="phase-avatar" src="./resources/assets/avatars/cat.webp"></div>
+    <div class="container container--col container--neutral borders--bottom-left" id="phase-window">
+        <div class="container container--row" id="avatars-container">
+            <div class="avatar-container avatar-container--small avatar-container--neutral" id="avatar-1">
+                <img  class="avatar avatar--small" src="./resources/assets/avatars/bear.webp">
+            </div>
+            <div class="avatar-container avatar-container--small avatar-container--neutral avatar-container--inactive" id="avatar-2">
+                <img class="avatar avatar--small" src="./resources/assets/avatars/wolf.webp">
+            </div>
+            <div class="avatar-container avatar-container--small avatar-container--neutral avatar-container--inactive" id="avatar-3">
+                <img class="avatar avatar--small" src="./resources/assets/avatars/cat.webp">
+            </div>
         </div>
-        <div id="phase-text-container"><p id="phase-text">Phase 1/3</p></div>
-        <div id="phase-options-container">
-            <div class="phase-options-box">Bewege deine Figur zu einem Feld</div>
+        <div>
+            <div class="container container--row"><p id="phase-text">Phase 1/3</p></div>
+        </div>
+        <div class="container container--col" id="phase-options-container">
+            <div class="textbox textbox--fill-neutral">
+                <p class="textbox__text--fill-neutral">Bewege deine Figur zu einem Feld</p>
+            </div>
         </div>
     </div>
 

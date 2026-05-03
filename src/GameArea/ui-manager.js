@@ -3,6 +3,8 @@ import { broadcasts } from "../Interfaces/broadcasts";
 
 export const ui_manager = (() => {
 
+    const MAX_SKILL_LEVEL = 5;
+
     class UIManager extends component.Component {
 
         constructor() {
@@ -75,7 +77,7 @@ export const ui_manager = (() => {
             //document.getElementById("player-combat-lvl").innerHTML = combat_lvl;
         }
 
-        SetPlayerPic(player) {
+        SetPlayerAvatar(player) {
             let path = ""
             switch(player.witcherSchool.name){
                 case "Baerenschule":
@@ -94,17 +96,17 @@ export const ui_manager = (() => {
                     path = "./resources/assets/avatars/wolf.webp";
                     break;
             }
-            document.getElementById("player-pic").src = path;
+            document.getElementById("player-avatar").src = path;
         }
 
         CreateStatBoxes(skillName) {
             let containerName = `${skillName}-lvl`
             const container = document.getElementById(containerName);
 
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < MAX_SKILL_LEVEL; i++) {
                 const box = document.createElement("div");
-                box.className = "stat-box-empty";
-                box.id = `${skillName}-stat-box-${i}`;
+                box.classList.add("level-box", "level-box--neutral", "level-box--empty");
+                box.id = `${skillName}-level-box-${i}`;
                 container.appendChild(box);
             }
         }
@@ -118,10 +120,16 @@ export const ui_manager = (() => {
 
         SetPlayerStats(player) {
             for (const skill of [player.FindComponent("PlayerSkills").combat, player.FindComponent("PlayerSkills").defense, player.FindComponent("PlayerSkills").alchemy, player.FindComponent("PlayerSkills").special]) {
-                for (let i = 0; i < skill.level; i++) {
+                for (let i = 0; i < MAX_SKILL_LEVEL; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
-                    let id = `${skillName}-stat-box-${i}`;
-                    document.getElementById(id).className = "stat-box-fill";
+                    let id = `${skillName}-level-box-${i}`;
+                    if (i < skill.level) {
+                        document.getElementById(id).classList.remove("level-box--empty");
+                    }
+                    else {
+                        document.getElementById(id).classList.add("level-box--empty");
+                    }
+                    
                 }
             }
             
@@ -129,7 +137,7 @@ export const ui_manager = (() => {
         
         #updatePlayerUI(msg) {
             this.SetPlayerInfo(msg.nextPlayer);
-            this.SetPlayerPic(msg.nextPlayer);
+            this.SetPlayerAvatar(msg.nextPlayer);
         }
 
         Update(timeElapsed) {
