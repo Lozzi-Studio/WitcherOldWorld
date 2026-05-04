@@ -146,13 +146,7 @@ export const ui_manager = (() => {
          * @param {int} playerId 
          * @param {array} playerList 
          */
-        InitPlayerAvatars(playerId, playerList) {
-            /* document.getElementById(`avatar-container-1`).classList.add("avatar-container--inactive");
-            document.getElementById(`avatar-container-2`).classList.add("avatar-container--inactive");
-            document.getElementById(`avatar-container-3`).classList.add("avatar-container--inactive");
-            document.getElementById(`avatar-container-${playerId}`).classList.remove("avatar-container--inactive"); */
-
-            let numberOfPlayers = playerList.length;
+        InitPlayerAvatars(playerList) {
             for (const [i, player] of playerList.entries()) {
                 var avatarContainer = this.CreateAvatarContainer(i+1);
                 avatarContainer.classList.add(`theme--player${i+1}`)
@@ -165,13 +159,26 @@ export const ui_manager = (() => {
             }
         }
 
+        SetPlayerAvatarsStatus(playerList, currentPlayerId) {
+            for (const [i, player] of playerList.entries()) {
+                let playerId = i+1;
+                if (playerId == currentPlayerId) {
+                    document.getElementById(`avatar-container-${playerId}`).classList.remove("avatar-container--inactive");
+                }
+                else {
+                    document.getElementById(`avatar-container-${playerId}`).classList.add("avatar-container--inactive");
+                }
+            }
+        }
+
         #updatePlayerUI(msg) {
             this.SetPlayerInfo(msg.nextPlayer);
             document.getElementById("player-avatar").src = this.GetAvatarPathFromPlayer(msg.nextPlayer);
             
-            const playerId = this.FindComponent("GameManager").currentPlayerId;
             const playerList = this.parent.parent.Filter(x => x.name.includes("Player"));
-            this.InitPlayerAvatars(playerId, playerList);
+            const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
+            this.InitPlayerAvatars(playerList);
+            this.SetPlayerAvatarsStatus(playerList, currentPlayerId);
         }
 
         Update(timeElapsed) {
