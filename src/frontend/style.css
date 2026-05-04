@@ -1,9 +1,31 @@
 
 :root {
-  --neutral-bg: rgba(66, 46, 14, 0.70);
-  --neutral-border: rgba(170, 141, 94, 1.00);
-  --neutral-primary: rgba(208, 201, 177, 1.00);
-  --neutral-secondary: rgba(61, 47, 22, 1.00);
+  --orange-bg: rgba(66, 46, 14, 0.70);
+  --orange-border: rgba(170, 141, 94, 1.00);
+  --orange-primary: rgba(240, 210, 164, 1.00);
+  --orange-secondary: rgba(61, 47, 22, 1.00);
+  --orange-primary-inactive: rgba(208, 201, 177, 0.40);
+
+  --green-primary: rgba(193, 227, 195, 1.00);
+  --green-border: rgba(43, 164, 52, 1.00);
+  --green-bg: rgba(18, 54, 21, 0.70);
+  --green-secondary: rgba(19, 54, 21, 1.00);
+
+  --enemy-border: rgba(170, 94, 94, 1.00);
+  --enemy-bg: rgba(66, 14, 14, 0.70);
+  --enemy-primary: rgba(208, 177, 177, 1.00);
+  --enemy-secondary: rgba(65, 34, 32, 1.00);
+
+  
+  --blue-border: rgba(122, 207, 233, 1.00);
+  --blue-bg: rgba(16, 52, 63, 0.70);
+  --blue-secondary: rgba(29, 62, 70, 1.00);
+  --blue-primary: rgba(205, 235, 244, 1.00);
+
+  --neutral-border: rgba(233, 225, 213, 1.00);
+  --neutral-primary: rgba(219, 218, 213, 1.00);
+  --neutral-secondary: rgba(61, 59, 55, 1.00);
+  --neutral-bg: rgba(59, 55, 49, 0.70);
 }
 
 p, div {
@@ -91,7 +113,7 @@ p, div {
 }
 
 .avatar-container--inactive {
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 .avatar-container--neutral {
