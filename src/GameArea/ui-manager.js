@@ -201,10 +201,10 @@ export const ui_manager = (() => {
                     break;
             }
             for (let i = 0; i < numberOfOptions; i++) {
-                var phaseOptionText = document.createElement("div");
-                phaseOptionText.classList.add("textbox", "textbox--fill");
-                phaseOptionText.innerHTML = phaseOptionTexts[i];
-                document.getElementById("phase-options-container").appendChild(phaseOptionText);
+                var phaseOptionTextbox = document.createElement("div");
+                phaseOptionTextbox.classList.add("textbox", "textbox--fill");
+                phaseOptionTextbox.innerHTML = phaseOptionTexts[i];
+                document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
             }
         }
 

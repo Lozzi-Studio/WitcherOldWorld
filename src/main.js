@@ -80,7 +80,7 @@ class DemoThreeJS {
 
 
 
-        const player1 = new player_entity.Player("Geralt", player_options.WitcherSchool.Bear());
+        const player1 = new player_entity.Player("Gernot", player_options.WitcherSchool.Bear());
         const player2 = new player_entity.Player("Vesemir", player_options.WitcherSchool.Cat());
         const player3 = new player_entity.Player("Lambert", player_options.WitcherSchool.Griffin());
         this._entityManager.AddEntity(player1, "Player_1");
