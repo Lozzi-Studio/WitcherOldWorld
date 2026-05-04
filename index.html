@@ -20,15 +20,20 @@
         <div class="container container--col">
             <div class="avatar-container avatar-container--big">
                 <img class="avatar avatar--big" id="player-avatar" src="">
+                <div class="textbox-circle textbox--fill" id="player-level">5</div>
             </div>
-            <div class="textbox textbox--fill-neutral textbox--fancy-font">
+            <div class="textbox textbox--fill textbox--fancy-font">
                 <p id="player-name">NAME</p>
             </div>
-            <div class="container container--row container--no-padding" id="player-inventory-container">
-                <div class="material-symbols-outlined">toll</div>
-                <div id="money-amount">-</div>
-                <div class="material-symbols-outlined">trophy</div>
-                <div id="trophy-amount">-</div>
+            <div class="container container--row container--no-padding container--justify" id="player-inventory-container">
+                <div class="container container--row container--no-padding">
+                    <div class="material-symbols-outlined">toll</div>
+                    <div id="money-amount">-</div>
+                </div>
+                <div class="container container--row container--no-padding">
+                    <div class="material-symbols-outlined">trophy</div>
+                    <div id="trophy-amount">-</div>
+                </div>
             </div>
         </div>
         <div class="container container--col container--justify inner-borders inner-borders--neutral" id="player-shield-container"></div>

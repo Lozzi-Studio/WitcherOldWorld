@@ -9,7 +9,7 @@ export const ui_manager = (() => {
 
         constructor() {
             super();
-            this.InitPlayerStats();
+            this.#InitPlayerStats();
         }
 
         InitComponent() {
@@ -53,7 +53,7 @@ export const ui_manager = (() => {
             this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
         }
 
-        ReplaceUmlaute(string) {
+        #ReplaceUmlaute(string) {
             if (string.includes("ae")) {
                 string = string.replace("ae", "&auml;");
             }
@@ -67,17 +67,17 @@ export const ui_manager = (() => {
             return string;
         }
 
-        SetPlayerInfo(player) {
+        #SetPlayerInfo(player) {
             let name = player.playerName.toUpperCase();
             let school = player.witcherSchool.name;
             let combat_lvl = player.FindComponent("PlayerSkills").combat.level;
 
-            document.getElementById("player-name").innerHTML = this.ReplaceUmlaute(name);
+            document.getElementById("player-name").innerHTML = this.#ReplaceUmlaute(name);
             //document.getElementById("player-school").innerHTML = this.ReplaceUmlaute(school);
             //document.getElementById("player-combat-lvl").innerHTML = combat_lvl;
         }
 
-        GetAvatarPathFromPlayer(player) {
+        #GetAvatarPathFromPlayer(player) {
             let path = ""
             switch(player.witcherSchool.name){
                 case "Baerenschule":
@@ -99,7 +99,7 @@ export const ui_manager = (() => {
             return path;
         }
 
-        CreateStatBoxes(skillName) {
+        #CreateStatBoxes(skillName) {
             let containerName = `${skillName}-lvl`
             const container = document.getElementById(containerName);
 
@@ -111,14 +111,14 @@ export const ui_manager = (() => {
             }
         }
 
-        InitPlayerStats() {
+        #InitPlayerStats() {
             let skills = ["combat", "defense", "alchemy", "special"];
             for (const skill of skills) {
-                this.CreateStatBoxes(skill);
+                this.#CreateStatBoxes(skill);
             }
         }
 
-        SetPlayerStats(player) {
+        #SetPlayerStats(player) {
             for (const skill of [player.FindComponent("PlayerSkills").combat, player.FindComponent("PlayerSkills").defense, player.FindComponent("PlayerSkills").alchemy, player.FindComponent("PlayerSkills").special]) {
                 for (let i = 0; i < MAX_SKILL_LEVEL; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
@@ -134,7 +134,7 @@ export const ui_manager = (() => {
             
         }
         
-        CreateAvatarContainer(id) {
+        #CreateAvatarContainer(id) {
             var avatarContainer = document.createElement("div");
             avatarContainer.id = `avatar-container-${id}`;
             avatarContainer.classList.add("avatar-container", "avatar-container--small");
@@ -146,20 +146,20 @@ export const ui_manager = (() => {
          * @param {int} playerId 
          * @param {array} playerList 
          */
-        InitPlayerAvatars(playerList) {
+        #InitPlayerAvatars(playerList) {
             for (const [i, player] of playerList.entries()) {
-                var avatarContainer = this.CreateAvatarContainer(i+1);
+                var avatarContainer = this.#CreateAvatarContainer(i+1);
                 avatarContainer.classList.add(`theme--player${i+1}`)
                 document.getElementById("avatars-container").appendChild(avatarContainer);
 
                 var avatar = document.createElement("img");
                 avatar.classList.add("avatar", "avatar--small");
-                avatar.src = this.GetAvatarPathFromPlayer(player);
+                avatar.src = this.#GetAvatarPathFromPlayer(player);
                 document.getElementById(`avatar-container-${i+1}`).appendChild(avatar);
             }
         }
 
-        SetPlayerAvatarsStatus(playerList, currentPlayerId) {
+        #SetPlayerAvatarsStatus(playerList, currentPlayerId) {
             for (const [i, player] of playerList.entries()) {
                 let playerId = i+1;
                 if (playerId == currentPlayerId) {
@@ -171,7 +171,7 @@ export const ui_manager = (() => {
             }
         }
 
-        InitPhaseOptions(phase) {
+        #InitPhaseOptions(phase) {
             let numberOfOptions;
             let phaseOptionTexts = [];
             switch (phase) {
@@ -202,13 +202,13 @@ export const ui_manager = (() => {
             }
             for (let i = 0; i < numberOfOptions; i++) {
                 var phaseOptionText = document.createElement("div");
-                phaseOptionText.classList.add("textbox", "textbox--fill-neutral");
+                phaseOptionText.classList.add("textbox", "textbox--fill");
                 phaseOptionText.innerHTML = phaseOptionTexts[i];
                 document.getElementById("phase-options-container").appendChild(phaseOptionText);
             }
         }
 
-        InitPlayerShield() {
+        #InitPlayerShield() {
             let maxShield = 5;
             for (let i = 0; i < maxShield; i++) {
                 var emptyShield = document.createElement("span");
@@ -219,7 +219,7 @@ export const ui_manager = (() => {
             }
         }
 
-        SetPlayerShieldStatus(player) {
+        #SetPlayerShieldStatus(player) {
             // let shieldLevelArray = [0, 0, 0, 0, 0];
             let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
             let shieldPoints = player.FindComponent("Shield").amount;
@@ -234,36 +234,50 @@ export const ui_manager = (() => {
             }
         }
 
+        #SetPlayerMoney(player) {
+            let playerMoney = 3; // noch nicht implementiert, weil Geld noch nicht existiert
+            console.log("UI: Geld noch nicht implementiert");
+            document.getElementById("money-amount").innerHTML = playerMoney;
+        }
+
+        #SetPlayerTrophies(player) {
+            let playerTrophies = 1; // noch nicht implementiert, weil Trophäen noch nicht existieren
+            console.log("UI: Trophäen noch nicht implementiert");
+            document.getElementById("trophy-amount").innerHTML = playerTrophies;
+        }
+
         /**
          * 
          * @param {int} phase 
          */
-        SetPhaseText(phase) {
+        #SetPhaseText(phase) {
             document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
 
         #updatePlayerUI(msg) {
-            this.SetPlayerInfo(msg.nextPlayer);
-            this.InitPlayerShield();
-            document.getElementById("player-avatar").src = this.GetAvatarPathFromPlayer(msg.nextPlayer);
+            this.#SetPlayerInfo(msg.nextPlayer);
+            this.#InitPlayerShield();
+            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.nextPlayer);
+            this.#SetPlayerMoney(msg.nextPlayer);
+            this.#SetPlayerTrophies(msg.nextPlayer);
             
             const playerList = this.parent.parent.Filter(x => x.name.includes("Player"));
-            this.InitPlayerAvatars(playerList);
+            this.#InitPlayerAvatars(playerList);
 
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
-            this.SetPlayerAvatarsStatus(playerList, currentPlayerId);
+            this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
 
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
-            this.InitPhaseOptions(phase);
+            this.#InitPhaseOptions(phase);
         }
 
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
-            this.SetPlayerStats(player);
-            this.SetPlayerShieldStatus(player);
+            this.#SetPlayerStats(player);
+            this.#SetPlayerShieldStatus(player);
 
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
-            this.SetPhaseText(phase);
+            this.#SetPhaseText(phase);
         }
   
     }

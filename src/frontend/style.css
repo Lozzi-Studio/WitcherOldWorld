@@ -146,6 +146,8 @@ p, div {
     box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.40) inset;
     border-radius: 9999px;
     border: 3px var(--color-primary) solid;
+
+    position: relative;
 }
 
 .avatar-container--big {
@@ -197,15 +199,21 @@ p, div {
     min-width: 0;
     max-width: 100%;
     overflow-wrap: break-word;
-}
 
-.textbox--neutral {
     border-color: var(--color-primary);
-
     color: var(--color-primary);
 }
 
-.textbox--fill-neutral {
+.textbox-circle {
+    width: 28px;
+    height: 28px;
+    clip-path: circle(50%);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.textbox--fill {
     background: var(--color-primary);
     border-width: 0px;
     word-break: break-word;
@@ -213,11 +221,11 @@ p, div {
     color: var(--color-secondary);
 }
 
-.textbox--neutral > p {
+.textbox > p {
     color: var(--color-primary);
 }
 
-.textbox--fill-neutral > p {
+.textbox--fill > p {
     color: var(--color-secondary);
 }
 
@@ -229,6 +237,13 @@ p, div {
 
 #player-name {
     font-size: 16pt;
+}
+
+#player-level {
+    position:absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #player-stats {
