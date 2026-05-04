@@ -138,6 +138,13 @@ export const game_manager = (() => {
         get currentPlayerId() {
             return this.#currentPlayerId;
         }
+
+        /**
+         * @returns {Phase}
+         */
+        get phase() {
+            return this.#currentRound;
+        }
     };
 
     class Phase {
@@ -145,7 +152,7 @@ export const game_manager = (() => {
         static Two = new Phase(2);
         static Three =  new Phase(3);
 
-        static Start = new Phase(0);
+        static Start = new Phase(1);
         static End = new Phase(-1);
         #number;
 

@@ -171,6 +171,14 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {int} phase 
+         */
+        SetPhaseText(phase) {
+            document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
+        }
+
         #updatePlayerUI(msg) {
             this.SetPlayerInfo(msg.nextPlayer);
             document.getElementById("player-avatar").src = this.GetAvatarPathFromPlayer(msg.nextPlayer);
@@ -184,6 +192,9 @@ export const ui_manager = (() => {
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
             this.SetPlayerStats(player);
+
+            const phase = this.FindComponent("GameManager").phase.toIdentifier();
+            this.SetPhaseText(phase);
         }
   
     }

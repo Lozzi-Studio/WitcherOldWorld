@@ -250,7 +250,7 @@ p, div {
     font-family: "mason-serif", sans-serif;
     font-weight: 700;
     font-style: normal;
-    color: #D0C9B1;
+    color: var(--color-primary);
 }
 
 #phase-options-container {
