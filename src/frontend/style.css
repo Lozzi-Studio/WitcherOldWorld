@@ -82,6 +82,13 @@ p, div {
     padding: 0px;
 }
 
+.container--justify {
+    gap: 0px;
+    justify-content: space-around;
+    flex-basis: 100%;
+    align-self: stretch; 
+}
+
 .container--row {
     flex-direction: row;
 }
@@ -121,14 +128,8 @@ p, div {
     position: fixed;
     left: 0px;
     bottom: 0px;
-}
 
-#player-shield-container {
-    /* fill container (wie in figma) */
-    flex-basis: 100%;
-    align-self: stretch; 
-
-    gap: 12px;
+    gap: 4px;
 }
 
 .icon--active {
@@ -273,6 +274,8 @@ p, div {
     /*width: 200px;*/
     width: fit-content;
     max-width: 200px;
+
+    gap: 4px;
 }
 
 #avatars-container {

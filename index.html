@@ -24,10 +24,15 @@
             <div class="textbox textbox--fill-neutral textbox--fancy-font">
                 <p id="player-name">NAME</p>
             </div>
-            <div class="container container--row"></div>
+            <div class="container container--row container--no-padding" id="player-inventory-container">
+                <div class="material-symbols-outlined">toll</div>
+                <div id="money-amount">-</div>
+                <div class="material-symbols-outlined">trophy</div>
+                <div id="trophy-amount">-</div>
+            </div>
         </div>
-        <div class="container container--col inner-borders inner-borders--neutral" id="player-shield-container"></div>
-        <div class="container container--col inner-borders inner-borders--neutral" id ="player-stats">
+        <div class="container container--col container--justify inner-borders inner-borders--neutral" id="player-shield-container"></div>
+        <div class="container container--col container--justify inner-borders inner-borders--neutral" id ="player-stats">
             <div class="container container--row container--no-padding" id="combat-lvl">
                 <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/combat.png"></div>
             </div>
@@ -44,7 +49,7 @@
     </div>
 
     <div class="container container--col container--neutral borders--bottom-left" id="phase-window">
-        <div class="container container--row" id="avatars-container"></div>
+        <div class="container container--row container--no-padding" id="avatars-container"></div>
         <div>
             <div class="container container--row"><p id="phase-text">PHASE ID</p></div>
         </div>
