@@ -94,7 +94,7 @@ p, div {
 }
 
 .inner-borders {
-    border-width: 1px;
+    border-width: 2px;
     border-radius: 6px;
     border-style: solid;
 }
@@ -114,6 +114,7 @@ p, div {
 
     box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.40) inset;
     border-radius: 9999px;
+    border: 3px var(--color-primary) solid;
 }
 
 .avatar-container--big {
@@ -128,10 +129,6 @@ p, div {
 
 .avatar-container--inactive {
     opacity: 0.6;
-}
-
-.avatar-container--neutral {
-    border: 3px var(--color-primary) solid;
 }
 
 .avatar {

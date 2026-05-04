@@ -77,7 +77,7 @@ export const ui_manager = (() => {
             //document.getElementById("player-combat-lvl").innerHTML = combat_lvl;
         }
 
-        SetPlayerAvatar(player) {
+        GetAvatarPathFromPlayer(player) {
             let path = ""
             switch(player.witcherSchool.name){
                 case "Baerenschule":
@@ -96,7 +96,7 @@ export const ui_manager = (() => {
                     path = "./resources/assets/avatars/wolf.webp";
                     break;
             }
-            document.getElementById("player-avatar").src = path;
+            return path;
         }
 
         CreateStatBoxes(skillName) {
@@ -134,23 +134,49 @@ export const ui_manager = (() => {
             
         }
         
-        SetCurrentPlayerAvatar(playerId) {
-            document.getElementById(`avatar-container-1`).classList.add("avatar-container--inactive");
+        CreateAvatarContainer(id) {
+            var avatarContainer = document.createElement("div");
+            avatarContainer.id = `avatar-container-${id}`;
+            avatarContainer.classList.add("avatar-container", "avatar-container--small");
+            return avatarContainer
+        }
+
+        /**
+         * 
+         * @param {int} playerId 
+         * @param {array} playerList 
+         */
+        InitPlayerAvatars(playerId, playerList) {
+            /* document.getElementById(`avatar-container-1`).classList.add("avatar-container--inactive");
             document.getElementById(`avatar-container-2`).classList.add("avatar-container--inactive");
             document.getElementById(`avatar-container-3`).classList.add("avatar-container--inactive");
-            document.getElementById(`avatar-container-${playerId}`).classList.remove("avatar-container--inactive");
+            document.getElementById(`avatar-container-${playerId}`).classList.remove("avatar-container--inactive"); */
+
+            let numberOfPlayers = playerList.length;
+            for (const [i, player] of playerList.entries()) {
+                var avatarContainer = this.CreateAvatarContainer(i+1);
+                avatarContainer.classList.add(`theme--player${i+1}`)
+                document.getElementById("avatars-container").appendChild(avatarContainer);
+
+                var avatar = document.createElement("img");
+                avatar.classList.add("avatar", "avatar--small");
+                avatar.src = this.GetAvatarPathFromPlayer(player);
+                document.getElementById(`avatar-container-${i+1}`).appendChild(avatar);
+            }
         }
 
         #updatePlayerUI(msg) {
             this.SetPlayerInfo(msg.nextPlayer);
-            this.SetPlayerAvatar(msg.nextPlayer);
+            document.getElementById("player-avatar").src = this.GetAvatarPathFromPlayer(msg.nextPlayer);
+            
+            const playerId = this.FindComponent("GameManager").currentPlayerId;
+            const playerList = this.parent.parent.Filter(x => x.name.includes("Player"));
+            this.InitPlayerAvatars(playerId, playerList);
         }
 
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
-            const playerId = this.FindComponent("GameManager").currentPlayerId;
             this.SetPlayerStats(player);
-            this.SetCurrentPlayerAvatar(playerId);
         }
   
     }

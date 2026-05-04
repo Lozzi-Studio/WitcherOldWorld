@@ -80,14 +80,18 @@ class DemoThreeJS {
 
 
 
-        const testPlayer = new player_entity.Player("Player 1", player_options.WitcherSchool.Bear());
-        this._entityManager.AddEntity(testPlayer, "Player_1");
+        const player1 = new player_entity.Player("Geralt", player_options.WitcherSchool.Bear());
+        const player2 = new player_entity.Player("Vesemir", player_options.WitcherSchool.Cat());
+        const player3 = new player_entity.Player("Lambert", player_options.WitcherSchool.Griffin());
+        this._entityManager.AddEntity(player1, "Player_1");
+        this._entityManager.AddEntity(player2, "Player_2");
+        this._entityManager.AddEntity(player3, "Player_3");
         const testGameArea = new game_area_entity.GameArea();
         this._entityManager.AddEntity(testGameArea, "Game_Area");
-        testGameArea.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(testPlayer));
-        console.log(this._entityManager.FindEntity("Game_Area").FindComponent("GameManager").currentPlayerId);
+        testGameArea.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(player1));
+        //console.log(this._entityManager.FindEntity("Game_Area").FindComponent("GameManager").currentPlayerId);
 
-        // console.log(this._entityManager.Filter(x => x.name.includes("Player")));
+        console.log(this._entityManager.Filter(x => x.name.includes("Player")));
 
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();

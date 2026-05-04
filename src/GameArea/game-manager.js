@@ -132,6 +132,9 @@ export const game_manager = (() => {
             return this.#currentPlayer;
         }
 
+        /**
+         * @returns {int}
+         */
         get currentPlayerId() {
             return this.#currentPlayerId;
         }

@@ -60,6 +60,10 @@ export const component = (() => {
         set parent(parent){
             this._parent = parent;
         }
+
+        get parent() {
+            return this._parent;
+        }
     };
         return {
         Component: Component,
