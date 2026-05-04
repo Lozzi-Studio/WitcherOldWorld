@@ -215,8 +215,6 @@ p, div {
 }
 
 .textbox-circle {
-    width: 28px;
-    height: 28px;
     clip-path: circle(50%);
     align-items: center;
     justify-content: center;
@@ -252,11 +250,21 @@ p, div {
     min-width: 84%;
 }
 
-#player-level {
+#witcher-level {
     position:absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: -3px;
+    right: -3px;
+
+    width: 34px;
+    height: 34px;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.text-single-number {
+    font-size: 18px;
+    font-weight: 700;
 }
 
 #player-stats {

@@ -60,10 +60,6 @@ export const player_entity = (() => {
         get witcherSchool() {
             return this.#witcherSchool
         }
-
-        /* get skills() {
-            return this.FindComponent("PlayerSkills").combat;
-        } */
     }
 
     return {

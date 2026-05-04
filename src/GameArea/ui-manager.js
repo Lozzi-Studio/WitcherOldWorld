@@ -9,11 +9,14 @@ export const ui_manager = (() => {
 
         constructor() {
             super();
-            this.#InitPlayerStats();
+            this.#InitPlayerSkills();
         }
 
         InitComponent() {
-            this._RegisterHandler("game.nextTurn", (msg) => (this.#updatePlayerUI(msg)));
+            this._RegisterHandler("game.nextTurn", (msg) => (this.#UpdateCurrentPlayerUI(msg)));
+            this._RegisterHandler('skill.change_shield', (msg) => {this.#UpdatePlayerStats(msg)});
+            this._RegisterHandler('skill.change_currentshield', (msg) => {this.#UpdatePlayerStats(msg)});
+            this._RegisterHandler('skill.change_level', (msg) => {this.#UpdatePlayerStats(msg)});
         }
 
         CardSlot0() {
@@ -99,7 +102,7 @@ export const ui_manager = (() => {
             return path;
         }
 
-        #CreateStatBoxes(skillName) {
+        #CreateSkillBoxes(skillName) {
             let containerName = `${skillName}-lvl`
             const container = document.getElementById(containerName);
 
@@ -111,14 +114,14 @@ export const ui_manager = (() => {
             }
         }
 
-        #InitPlayerStats() {
+        #InitPlayerSkills() {
             let skills = ["combat", "defense", "alchemy", "special"];
             for (const skill of skills) {
-                this.#CreateStatBoxes(skill);
+                this.#CreateSkillBoxes(skill);
             }
         }
 
-        #SetPlayerStats(player) {
+        #SetPlayerSkills(player) {
             for (const skill of [player.FindComponent("PlayerSkills").combat, player.FindComponent("PlayerSkills").defense, player.FindComponent("PlayerSkills").alchemy, player.FindComponent("PlayerSkills").special]) {
                 for (let i = 0; i < MAX_SKILL_LEVEL; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
@@ -132,6 +135,10 @@ export const ui_manager = (() => {
                 }
             }
             
+        }
+
+        #SetWitcherLevel(player) {
+            document.getElementById("witcher-level").innerHTML = player.FindComponent("PlayerSkills").witcher.level;
         }
         
         #CreateAvatarContainer(id) {
@@ -254,7 +261,7 @@ export const ui_manager = (() => {
             document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
 
-        #updatePlayerUI(msg) {
+        #UpdateCurrentPlayerUI(msg) {
             this.#SetPlayerInfo(msg.nextPlayer);
             this.#InitPlayerShield();
             document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.nextPlayer);
@@ -269,15 +276,21 @@ export const ui_manager = (() => {
 
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
             this.#InitPhaseOptions(phase);
+            this.#SetPhaseText(phase); // sollte später mal öfter gecalled werden
+        }
+
+        #UpdatePlayerStats(msg) {
+            const player = this.FindComponent("GameManager").currentPlayer;
+            this.#SetPlayerSkills(player);
+            this.#SetPlayerShieldStatus(player);
+            this.#SetWitcherLevel(player);
         }
 
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
-            this.#SetPlayerStats(player);
-            this.#SetPlayerShieldStatus(player);
-
-            const phase = this.FindComponent("GameManager").phase.toIdentifier();
-            this.#SetPhaseText(phase);
+            this.#SetPlayerSkills(player); // ist hier noch nötig weil ichs nicht anders hinkrieg
+            this.#SetPlayerShieldStatus(player); // ist hier noch nötig weil ichs nicht anders hinkrieg
+            this.#SetWitcherLevel(player); // ist hier noch nötig weil ichs nicht anders hinkrieg
         }
   
     }
