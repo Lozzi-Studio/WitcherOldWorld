@@ -41,7 +41,8 @@ class DemoThreeJS {
         const near = 1.0;
         const far = 10000.0;
         this._camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        this._camera.position.set(25, 10, 25);
+        this._camera.position.set(25, 10, 50);
+        this._camera.rotation.x = -Math.PI / 4;
 
         this._scene = new THREE.Scene();
         this._scene.background = new THREE.Color(0xFFFFFF);
@@ -49,7 +50,7 @@ class DemoThreeJS {
 
         const ambientLight = new AmbientLight('white', 0.5);
         const directlighting = new DirectionalLight("orange", 2);
-        directlighting.position.set(5, 10, 7);
+        directlighting.position.set(10, 10, 7);
 
         this._scene.add(ambientLight, directlighting);
 
@@ -67,8 +68,8 @@ class DemoThreeJS {
         this._controls.minPolarAngle = Math.PI / 4;
         this._controls.maxPolarAngle = Math.PI * 0.44;
         this._controls.minDistance = 10;
-        this._controls.maxDistance = 55;
-        this._camera.position.set( 0, 20, 50 );
+        this._controls.maxDistance = 48;
+        this._camera.position.set( 0, 50, 50 );
         const axesHelper = new THREE.AxesHelper( 100000 );
         this._scene.add( axesHelper );
 

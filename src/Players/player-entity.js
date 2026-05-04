@@ -3,6 +3,7 @@ import { entity } from "../Interfaces/entity";
 import { player_options } from "./player-options";
 import { player_position } from "./player-position";
 import { player_skills } from "./player-skills";
+import { player_figure } from "./player-figure";
 
 export const player_entity = (() => {
 
@@ -26,6 +27,7 @@ export const player_entity = (() => {
         }
 
         InitComponents() {
+            this.AddComponent(new player_figure.PlayerFigure(this.#witcherSchool.color));
             this.AddComponent(new carddeck_component.Carddeck(7));
             this.AddComponent(new player_position.PlayerPosition(this.#currentTown, this.#currentTown.position));
             this.AddComponent(new player_skills.PlayerSkills());
