@@ -45,7 +45,6 @@ export const entity = (() => {
          * @param {string} name 
          */
         AddComponent(component, name) {
-            console.log(component);
             if(name == undefined) {
                 name = component.constructor.name;
             }

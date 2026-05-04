@@ -19,18 +19,15 @@ export const player_figure = (() =>{
         }
         
         InitComponent(){
-            console.log("i bims einz berliner");
             const loader = new GLTFLoader();
             loader.load("resources/assets/PlayerBaseModel.glb", (glb) =>{
                 glb.scene.traverse((child) =>{
                     if (child.isMesh) {
-                        console.log(child);
                         child.material = child.material.clone();
                         child.material.color.set(this.#color);
     }
                 });
                 this.FindEntity("GameArea").scene.add(glb.scene);
-                console.log(glb.scene);
             });
         
         }
