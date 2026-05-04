@@ -1,3 +1,17 @@
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings:
+    'FILL' 1;
+}
+
 .theme--color {
   --color-bg: rgba(59, 55, 49, 0.70);
   --color-border: rgba(233, 225, 213, 1.00);
@@ -109,10 +123,20 @@ p, div {
     bottom: 0px;
 }
 
-#player-shield {
-    /* height: 100%;*/
+#player-shield-container {
+    /* fill container (wie in figma) */
     flex-basis: 100%;
-    align-self: stretch;
+    align-self: stretch; 
+
+    gap: 12px;
+}
+
+.icon--active {
+    color: var(--color-primary);
+}
+
+.icon--inactive {
+    color: var(--color-primary-inactive);
 }
 
 .avatar-container {

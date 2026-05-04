@@ -208,6 +208,32 @@ export const ui_manager = (() => {
             }
         }
 
+        InitPlayerShield() {
+            let maxShield = 5;
+            for (let i = 0; i < maxShield; i++) {
+                var emptyShield = document.createElement("span");
+                emptyShield.classList.add("material-symbols-outlined", "icon--inactive");
+                emptyShield.id = `shield-${maxShield-i}`
+                emptyShield.innerHTML = "shield";
+                document.getElementById("player-shield-container").appendChild(emptyShield);
+            }
+        }
+
+        SetPlayerShieldStatus(player) {
+            // let shieldLevelArray = [0, 0, 0, 0, 0];
+            let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
+            let shieldPoints = player.FindComponent("Shield").amount;
+            for (let i = 0; i < defenseLevel; i++) {
+                document.getElementById(`shield-${i+1}`).classList.remove("icon--inactive");
+                document.getElementById(`shield-${i+1}`).classList.add("icon--active");
+            }
+            for (let i = 0; i < shieldPoints; i++) {
+                document.getElementById(`shield-${i+1}`).classList.remove("icon--inactive");
+                document.getElementById(`shield-${i+1}`).classList.add("icon--active");
+                document.getElementById(`shield-${i+1}`).classList.add("filled");
+            }
+        }
+
         /**
          * 
          * @param {int} phase 
@@ -218,6 +244,7 @@ export const ui_manager = (() => {
 
         #updatePlayerUI(msg) {
             this.SetPlayerInfo(msg.nextPlayer);
+            this.InitPlayerShield();
             document.getElementById("player-avatar").src = this.GetAvatarPathFromPlayer(msg.nextPlayer);
             
             const playerList = this.parent.parent.Filter(x => x.name.includes("Player"));
@@ -233,6 +260,7 @@ export const ui_manager = (() => {
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
             this.SetPlayerStats(player);
+            this.SetPlayerShieldStatus(player);
 
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
             this.SetPhaseText(phase);

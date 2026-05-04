@@ -8,16 +8,15 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://use.typekit.net/xno6vtf.css">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> <!-- PT Sans Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL,wght,GRAD,opsz@0..1,100..700,-50..200,20..48" rel="stylesheet"> <!-- Google Material Icons -->
+    <link rel="stylesheet" href="https://use.typekit.net/xno6vtf.css"> <!-- Morpheus Font -->
 
 </head>
 <body style="margin-top: 0; margin-left: 0;">
     <script type="module" src="./src/main.js"></script>
 
     <div class="container container--row container--neutral borders--top-right" id="player-window">
-        <div class="container container--col inner-borders inner-borders--neutral" id="player-shield"></div>
         <div class="container container--col">
             <div class="avatar-container avatar-container--big">
                 <img class="avatar avatar--big" id="player-avatar" src="">
@@ -27,6 +26,7 @@
             </div>
             <div class="container container--row"></div>
         </div>
+        <div class="container container--col inner-borders inner-borders--neutral" id="player-shield-container"></div>
         <div class="container container--col inner-borders inner-borders--neutral" id ="player-stats">
             <div class="container container--row container--no-padding" id="combat-lvl">
                 <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/combat.png"></div>
