@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import { entity } from '../Interfaces/entity';
+import { component } from "../Interfaces/component";
+
 
 export const player_figure = (() =>{
-    class PlayerFigure extends entity.Component {
+    class PlayerFigure extends component.Component {
         #mesh;
         #color;
 
@@ -16,18 +17,20 @@ export const player_figure = (() =>{
             this.#color = color;
             this.#mesh = null;
         }
-
-        initComponent(){
+        
+        InitComponent(){
+            console.log("i bims einz berliner");
             const loader = new GLTFLoader();
             loader.load("resources/assets/PlayerBaseModel.glb", (glb) =>{
-                this.#mesh = glb.scene.clone();
-                this.#mesh.traverse((child) =>{
+                glb.scene.traverse((child) =>{
                     if (child.isMesh) {
+                        console.log(child);
                         child.material = child.material.clone();
-                        child.material.color.set(this.#color)
-                    }
+                        child.material.color.set(this.#color);
+    }
                 });
-                this.Parent.Scene.add(this.#mesh);
+                this.FindEntity("GameArea").scene.add(glb.scene);
+                console.log(glb.scene);
             });
         
         }

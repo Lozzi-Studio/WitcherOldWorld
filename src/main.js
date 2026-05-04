@@ -77,6 +77,11 @@ class DemoThreeJS {
         this._entityManager = new entity_manager.EntityManager();
         this._entityManager.AddEntity(cameraEntity);
 
+        this._entityManager.AddEntity(new game_area_entity.GameArea(this._scene), "GameArea");
+        const player1 = new player_entity.Player("Janik", player_options.WitcherSchool.Cat());
+        this._entityManager.AddEntity(player1, "Player_1");
+
+
         this._previousRAF = null;
         this._RAF();
     }
