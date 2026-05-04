@@ -1,6 +1,13 @@
 
+:root {
+  --neutral-bg: rgba(66, 46, 14, 0.70);
+  --neutral-border: rgba(170, 141, 94, 1.00);
+  --neutral-primary: rgba(208, 201, 177, 1.00);
+  --neutral-secondary: rgba(61, 47, 22, 1.00);
+}
+
 p, div {
-    color: #D0C9B1;
+    color: var(--neutral-primary);
     font-family: "PT Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -36,8 +43,8 @@ p, div {
 .container--neutral {
     border-style: solid;
 
-    background-color: rgba(66, 46, 14, 0.7);
-    border-color: #AA8D5E;
+    background-color: var(--neutral-bg);
+    border-color: var(--neutral-border);
 }
 
 .borders--bottom-left {
@@ -57,7 +64,7 @@ p, div {
 }
 
 .inner-borders--neutral {
-    border-color: #D0C9B1;
+    border-color: var(--neutral-primary);
 }
 
 #player-window {
@@ -88,7 +95,7 @@ p, div {
 }
 
 .avatar-container--neutral {
-    border: 3px #D0C9B1 solid;
+    border: 3px var(--neutral-primary) solid;
 }
 
 .avatar {
@@ -129,21 +136,21 @@ p, div {
 }
 
 .textbox--neutral {
-    border-color: #D0C9B1;
+    border-color: var(--neutral-primary);
 }
 
 .textbox--fill-neutral {
-    background: #D0C9B1;
+    background: var(--neutral-primary);
     border-width: 0px;
     word-break: break-word;
 }
 
 .textbox__text--neutral {
-    color: #D0C9B1;
+    color: var(--neutral-primary);
 }
 
 .textbox__text--fill-neutral {
-    color: #3D2F16;
+    color: var(--neutral-secondary);
 }
 
 .textbox__text--fancy-font {
@@ -176,7 +183,7 @@ p, div {
 }
 
 .level-box--neutral {
-    background-color: #D0C9B1;
+    background-color: var(--neutral-primary);
 }
 
 .level-box--empty {
