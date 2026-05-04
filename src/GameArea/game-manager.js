@@ -23,12 +23,24 @@ export const game_manager = (() => {
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
             this._RegisterHandler('game.nextPhase', (msg) => {this.#NextTurnPhase(msg);});
             this._RegisterHandler('game.startPoker', (msg) => {this.#StartWuerfelpoker(msg);});
+            this._RegisterHandler('game.removeShop', (msg) => {this.#RemoveShopCard(msg);});
+            this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
 
         }
 
         Update() {
 
+        }
+
+        #RemoveShopCard(msg){
+            console.log("Remove Shop Card");
+            //TODO
+        }
+
+        #SwapoutCard(msg){
+            console.log("Swapout Card");
+            //TODO
         }
 
         /**
@@ -67,7 +79,6 @@ export const game_manager = (() => {
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
                     console.log("Town UI");
-                    msg.town.Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
                     break;
                 default:
                     break;

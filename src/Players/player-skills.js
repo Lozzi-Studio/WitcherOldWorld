@@ -45,9 +45,8 @@ export const player_skills = (() => {
             }
             switch(msg.mode) {
                 case "Increase":
-                    console.log(this.#special.level);
                     if (msg.payMoney && skill?.maxAmount != skill?.level) {
-                        this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.PayMoney(skill.level + 1))
+                        this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(- (skill.level + 1)));
                     }
                     skill?.increaseLevel();
                     if (this.#combat.level > this.#witcher.level && this.#defense.level > this.#witcher.level && this.#alchemy.level > this.#witcher.level && this.#special.level > this.#witcher.level) {
@@ -62,7 +61,6 @@ export const player_skills = (() => {
                     } else if (skill.toIdentifier() == "Defense") {
                         this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#defense.level, 1))
                     }
-                    console.log(this.#special.level);
                     break;
                 case "Decrease":
                     skill?.decreaseLevel();

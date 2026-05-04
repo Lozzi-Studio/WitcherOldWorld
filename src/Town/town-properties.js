@@ -36,7 +36,6 @@ export const town_properties = (() => {
                     this.FindEntity('GameArea').FindComponent('GameManager').Broadcast(this.#ability.trigger);
                     break;
                 case "Player":
-                    console.log(this.#ability.trigger);
                     this.FindEntity('GameArea').FindComponent('GameManager').currentPlayer.Broadcast(this.#ability.trigger);
                     break;
             }
