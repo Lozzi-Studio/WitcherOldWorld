@@ -12,7 +12,7 @@ export const game_manager = (() => {
 
         constructor() {
             super();
-            this.#currentRound = Phase.Start;
+            this.#currentRound = Phase.One;
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
@@ -21,7 +21,6 @@ export const game_manager = (() => {
         InitComponent() {
             this._RegisterHandler('card.select', (msg) => {this.#OnCardSelect(msg);});
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
-            this._RegisterHandler('town.ability', (msg) => {this.#OnTownAbility(msg);});
             this._RegisterHandler('game.nextPhase', (msg) => {this.#NextTurnPhase(msg);});
             this._RegisterHandler('game.startPoker', (msg) => {this.#StartWuerfelpoker(msg);});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
@@ -53,15 +52,10 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #OnCardSelect(msg){
-            switch(this.#currentRound.toIdentifier()){
-                case 1:
-                    this.#selection.push(msg.card_slot);
-
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
+            if (this.#selection.includes(msg.card_slot)){
+                this.#selection.splice(this.#selection.findIndex(msg.card_slot),1)
+            } else {
+                this.#selection.push(msg.card_slot);
             }
         }
 
@@ -72,48 +66,14 @@ export const game_manager = (() => {
         #OnTownSelection(msg){
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
-                    if (this.#selection.length > 0) {
-                        console.log("Move");
-                        //TODO Show Town Tooltip with Button Move here if possible
-                    } else {
-                        console.log("Action");
-                        //TODO Show Town Tooltip with Button use Town Action
-                    }
+                    console.log("Town UI");
+                    msg.town.Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
                     break;
                 default:
                     break;
             }
         }
 
-        /**
-         * 
-         * @param {object} msg 
-         */
-        #OnTownAbility(msg) {
-            switch(this.#currentRound.toIdentifier()) {
-                case 1:
-                    if (this.#selection.length > 0 && this.#currentPlayer?.town.town_name != msg.town.town_name) {
-
-                        const selectedCards = [];
-                        for (let card of this.#selection) {
-                            selectedCards.push(this.#currentPlayer.getHandCard(card));
-                        }
-                        const enterObject = msg.town.canEnter(selectedCards);
-                        if (enterObject.condition) {;
-                            this.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(enterObject.card, "Discard"))
-                            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(msg.town, msg.town.position))
-                            this.#selection = []
-                        }
-                    } else {
-                        if (player.town.town_name == msg.town.town_name) {
-                            this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this.#currentPlayer.town.id));
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
 
         #StartWuerfelpoker(msg) {
             //TODO Implement Wuerfelpoker

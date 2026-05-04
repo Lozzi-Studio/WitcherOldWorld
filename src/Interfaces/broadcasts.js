@@ -85,8 +85,8 @@ export const broadcasts = (() => {
         }
 
         /**
-         * @param {int} amount 
          * @param {string} mode - Options: "Deck", "Discard", "Potion"
+         * @param {int} amount 
          * @returns {object}
          */
         static DrawCard(mode, amount) {
@@ -154,11 +154,10 @@ export const broadcasts = (() => {
         }
 
         /**
-         * @param {town_entity.TownEntity} town
          * @returns {object}
          */
-        static TownAction(town) {
-            return {topic: 'town.action', town: town}
+        static TownAction() {
+            return {topic: 'town.action'}
         }
     }
 

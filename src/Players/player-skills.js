@@ -45,6 +45,7 @@ export const player_skills = (() => {
             }
             switch(msg.mode) {
                 case "Increase":
+                    console.log(this.#special.level);
                     if (msg.payMoney && skill?.maxAmount != skill?.level) {
                         this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.PayMoney(skill.level + 1))
                     }
@@ -61,6 +62,7 @@ export const player_skills = (() => {
                     } else if (skill.toIdentifier() == "Defense") {
                         this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#defense.level, 1))
                     }
+                    console.log(this.#special.level);
                     break;
                 case "Decrease":
                     skill?.decreaseLevel();

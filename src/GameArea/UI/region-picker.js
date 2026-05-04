@@ -1,10 +1,13 @@
 import { component } from "../../Interfaces/component";
+import { region } from "../region";
+import { rewards } from "../../GameObjects/rewards";
 
 export const region_picker = (() => {
 
     class RegionPicker extends component.Component{
-        #resolver
-        #pickedRegion
+        #resolver;
+        #mode;
+        #pickedRegion;
 
         constructor() {
             super();
@@ -18,15 +21,22 @@ export const region_picker = (() => {
 
         #init(msg) {
             this.#resolver = msg.resolver;
+            this.#mode = msg.mode;
+            this.#pickedRegion = region.Region.Forest();
+            this.#resolve();
         }
 
         #resolve(){
-            switch (mode) {
+            switch (this.#mode) {
                 case "Rumor":
-                    broadcast = this.#resolver.bind(this.#pickedRegion, this.FindComponent('TownManager').GetRandomTownFromRegionPool(this.#pickedRegion));
-                    this.FindComponent('GameArea').getCurrentPlayer.Broadcast(broadcast())
+                    let broadcast = this.#resolver.bind('player.rumor' ,rewards.Reward.GetOneGold(), this.FindComponent('TownManager').GetRandomTownFromRegionPool(this.#pickedRegion),  this.#pickedRegion);
+                    this.FindComponent('GameManager').currentPlayer.Broadcast(broadcast())
                     break;
             }
         }
+    }
+
+    return {
+        RegionPicker : RegionPicker
     }
 }) ();

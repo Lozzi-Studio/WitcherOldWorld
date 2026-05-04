@@ -4,7 +4,7 @@ import { component } from "../Interfaces/component";
 export const town_manager = (() =>{
     
     class TownManager extends component.Component{
-        #waterTowns;
+        #riverTowns;
         #forestTowns;
         #mountainTowns;
         
@@ -13,7 +13,8 @@ export const town_manager = (() =>{
          * @param {Array} townList 
          */
         constructor(townList) {
-            this.#waterTowns = [];
+            super();
+            this.#riverTowns = [];
             this.#forestTowns = [];
             this.#mountainTowns = [];
 
@@ -27,23 +28,39 @@ export const town_manager = (() =>{
          * @param {region.Region} region 
          */
         GetRandomTownFromRegionPool(region) {
-            switch(town.region.toIdentifier()) {
-                    case "Forest":
-                        let randomIndex = Math.floor(Math.random * this.#forestTowns.length);
-                        let town = this.#forestTowns[randomIndex];
-                        this.#forestTowns.splice(randomIndex, 1);
-                        return town;
-                    case "Mountain":
-                        let randomIndex = Math.floor(Math.random * this.#mountainTowns.length);
-                        let town = this.#mountainTowns[randomIndex];
-                        this.#mountainTowns.splice(randomIndex, 1);
-                        return town;
-                    case "River":
-                        let randomIndex = Math.floor(Math.random * this.#riverTowns.length);
-                        let town = this.#riverTowns[randomIndex];
-                        this.#riverTowns.splice(randomIndex, 1);
-                        return town;
+            let randomIndex = 0;
+            let town = null;
+            switch(region.toIdentifier()) {
+                case "Forest":
+                    randomIndex = Math.floor(Math.random() * this.#forestTowns.length);
+                    town = this.#forestTowns[randomIndex];
+                    break;
+                case "Mountain":
+                    randomIndex = Math.floor(Math.random() * this.#mountainTowns.length);
+                    town = this.#mountainTowns[randomIndex];
+                    break;
+                case "River":
+                    randomIndex = Math.floor(Math.random() * this.#riverTowns.length);
+                    town = this.#riverTowns[randomIndex];
+                    break;
             }
+
+            if (town == this.FindComponent('GameManager').currentPlayer.town) {
+                town = this.GetRandomTownFromRegionPool(region);
+            } else {
+                 switch(region.toIdentifier()) {
+                    case "Forest":
+                        this.#forestTowns.splice(randomIndex, 1);
+                        break;
+                    case "Mountain":
+                        this.#mountainTowns.splice(randomIndex, 1);
+                        break;
+                    case "River":
+                        this.#riverTowns.splice(randomIndex, 1);
+                        break;
+                }
+            }
+            return town;
         }
 
         /**

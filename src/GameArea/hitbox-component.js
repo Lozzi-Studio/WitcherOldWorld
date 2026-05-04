@@ -35,7 +35,7 @@ export const hitbox_component = (() => {
 
             cube.position.copy(this.#position);
             cube.position.y = (this.#size.y / 2 );
-            this.FindEntity("GameArea").scene.add( cube );
+            this._parent._parent.scene.add( cube );
             this.#hitbox = cube;
         }
 

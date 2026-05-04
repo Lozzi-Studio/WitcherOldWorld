@@ -22,4 +22,8 @@ export const player_destination_tracker = (() => {
             this.#rumors.push(new rumor.Rumor(msg.region, msg.reward, msg.destination));
         }
     }
+
+    return {
+        PlayerTracker : PlayerTracker
+    }
 }) ();

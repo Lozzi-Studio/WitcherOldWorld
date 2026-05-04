@@ -33,7 +33,7 @@ export const town_options = (() => {
          */
         static getPotion() {
             return new TownAbility("Bekomme einen Trank", "Du bekommst einen Trank, wenn dein Tranklimit das zulässt.",
-                broadcasts.BroadcastTemplateCards.DrawCard(1, "Potion"),
+                broadcasts.BroadcastTemplateCards.DrawCard( "Potion", 1),
                 town_options.TownAbilityTarget.Player()
             );
         }
@@ -53,8 +53,8 @@ export const town_options = (() => {
         */
         static getGeruechte() {
             return new TownAbility("Bekomme ein Geruecht", "Erhalte 1 Gold und erhalte danach ein Geruecht. Beim Einsammeln dieses erhaelts du noch ein Gold.",
-                broadcasts.BroadcastTemplateGame.ChooseRegion("Rumor", broadcasts.BroadcastTemplatePlayer.GetRumor(rewards.Reward.GetOneGold())),
-                town_options.TownAbilityTarget.Player(rewards.Reward.GetOneGold())
+                broadcasts.BroadcastTemplateGame.ChooseRegion("Rumor", broadcasts.BroadcastTemplatePlayer.GetRumor),
+                town_options.TownAbilityTarget.Game()
             );
         }
         

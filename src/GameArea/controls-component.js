@@ -17,14 +17,14 @@ export const controls_component = (() => {
 
         #onMouseDown(event) {
             const coords = new THREE.Vector2(
-                (event.clientX / this._parent.renderer.domElement.clientWidth) * 2 - 1,
-                -((event.clientY / this._parent.renderer.domElement.clientHeight) * 2 - 1),
+                (event.clientX / this._parent._parent.renderer.domElement.clientWidth) * 2 - 1,
+                -((event.clientY / this._parent._parent.renderer.domElement.clientHeight) * 2 - 1),
             );
 
             const raycaster = new THREE.Raycaster();
             raycaster.setFromCamera(coords, this.FindEntity("Camera").camera);
             
-            const intersections = raycaster.intersectObjects(this._parent.scene.children, true);
+            const intersections = raycaster.intersectObjects(this._parent._parent.scene.children, true);
             if (intersections.length > 0) {
                 const selectedObject = intersections[0].object;
                 if (selectedObject.name.includes("Town")) {
