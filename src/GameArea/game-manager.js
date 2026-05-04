@@ -12,7 +12,7 @@ export const game_manager = (() => {
 
         constructor() {
             super();
-            this.#currentRound = Phase.Start;
+            this.#currentRound = Phase.One;
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
@@ -21,14 +21,26 @@ export const game_manager = (() => {
         InitComponent() {
             this._RegisterHandler('card.select', (msg) => {this.#OnCardSelect(msg);});
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
-            this._RegisterHandler('town.ability', (msg) => {this.#OnTownAbility(msg);});
             this._RegisterHandler('game.nextPhase', (msg) => {this.#NextTurnPhase(msg);});
+            this._RegisterHandler('game.startPoker', (msg) => {this.#StartWuerfelpoker(msg);});
+            this._RegisterHandler('game.removeShop', (msg) => {this.#RemoveShopCard(msg);});
+            this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
 
         }
 
         Update() {
 
+        }
+
+        #RemoveShopCard(msg){
+            console.log("Remove Shop Card");
+            //TODO
+        }
+
+        #SwapoutCard(msg){
+            console.log("Swapout Card");
+            //TODO
         }
 
         /**
@@ -52,15 +64,10 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #OnCardSelect(msg){
-            switch(this.#currentRound.toIdentifier()){
-                case 1:
-                    this.#selection.push(msg.card_slot);
-
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
+            if (this.#selection.includes(msg.card_slot)){
+                this.#selection.splice(this.#selection.findIndex(msg.card_slot),1)
+            } else {
+                this.#selection.push(msg.card_slot);
             }
         }
 
@@ -69,47 +76,25 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #OnTownSelection(msg){
-            const player = this.FindEntity(this.#GetPlayer(this.#currentPlayer));
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
-                    if (this.#selection.length > 0) {
-                        //TODO Show Town Tooltip with Button Move here if possible
-                    } else {
-                        //TODO Show Town Tooltip with Button use Town Action
-                    }
+                    console.log("Town UI");
                     break;
                 default:
                     break;
             }
         }
 
-        /**
-         * 
-         * @param {object} msg 
-         */
-        #OnTownAbility(msg) {
-            const player = this.FindEntity(this.#GetPlayer(this.#currentPlayer));
-            switch(this.#currentRound.toIdentifier()) {
-                case 1:
-                    if (this.#selection.length > 0 && player?.town.name != msg.town.name) {
 
-                        const selectedCards = [];
-                        for (let card of this.#selection) {
-                            selectedCards.push(player.getHandCard(card));
-                        }
-                        const enterObject = msg.town.canEnter(selectedCards);
-                        if (enterObject.condition) {;
-                            this.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(enterObject.card, "Discard"))
-                            player.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(msg.town, msg.town.position))
-                            this.#selection = []
-                        }
-                    } else {
-                        if (player.town.name == msg.town.name) {
-                            this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(player.town.id));
-                        }
-                    }
+        #StartWuerfelpoker(msg) {
+            //TODO Implement Wuerfelpoker
+            console.log("Wuerfelpoker");
+            switch (Math.floor(Math.random() * 2)) {
+                case 0:
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(-1));
                     break;
-                default:
+                case 1:
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(3));
                     break;
             }
         }
