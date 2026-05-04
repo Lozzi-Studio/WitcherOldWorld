@@ -134,6 +134,13 @@ export const ui_manager = (() => {
             
         }
         
+        SetCurrentPlayerAvatar(playerId) {
+            document.getElementById(`avatar-container-1`).classList.add("avatar-container--inactive");
+            document.getElementById(`avatar-container-2`).classList.add("avatar-container--inactive");
+            document.getElementById(`avatar-container-3`).classList.add("avatar-container--inactive");
+            document.getElementById(`avatar-container-${playerId}`).classList.remove("avatar-container--inactive");
+        }
+
         #updatePlayerUI(msg) {
             this.SetPlayerInfo(msg.nextPlayer);
             this.SetPlayerAvatar(msg.nextPlayer);
@@ -141,7 +148,9 @@ export const ui_manager = (() => {
 
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
+            const playerId = this.FindComponent("GameManager").currentPlayerId;
             this.SetPlayerStats(player);
+            this.SetCurrentPlayerAvatar(playerId);
         }
   
     }

@@ -131,6 +131,10 @@ export const game_manager = (() => {
         get currentPlayer() {
             return this.#currentPlayer;
         }
+
+        get currentPlayerId() {
+            return this.#currentPlayerId;
+        }
     };
 
     class Phase {
