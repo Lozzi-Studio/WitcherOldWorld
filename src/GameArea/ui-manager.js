@@ -171,6 +171,43 @@ export const ui_manager = (() => {
             }
         }
 
+        InitPhaseOptions(phase) {
+            let numberOfOptions;
+            let phaseOptionTexts = [];
+            switch (phase) {
+                case 1:
+                    numberOfOptions = 3;
+                    phaseOptionTexts = [
+                        "Bewege deine Figur zu einem Feld",
+                        "Führe die Ortsaktion aus (optional)",
+                        "Spiele Würfelpoker gegen einen anderen Hexer (optional)"
+                    ];
+                    break;
+                case 2:
+                    numberOfOptions = 3;
+                    phaseOptionTexts = [
+                        "Kämpfe gegen ein Monster oder einen Hexer",
+                        "Meditiere",
+                        "Erkunde die Stadt oder die Wildnis"
+                    ];
+                    break;
+                case 3:
+                    numberOfOptions = 3;
+                    phaseOptionTexts = [
+                        "Lege Karten ab (optional)",
+                        "Ziehe Karten, bis du wieder drei Handkarten hast",
+                        "Erwerbe eine Karte im Karten-Shop"
+                    ];
+                    break;
+            }
+            for (let i = 0; i < numberOfOptions; i++) {
+                var phaseOptionText = document.createElement("div");
+                phaseOptionText.classList.add("textbox", "textbox--fill-neutral");
+                phaseOptionText.innerHTML = phaseOptionTexts[i];
+                document.getElementById("phase-options-container").appendChild(phaseOptionText);
+            }
+        }
+
         /**
          * 
          * @param {int} phase 
@@ -184,9 +221,13 @@ export const ui_manager = (() => {
             document.getElementById("player-avatar").src = this.GetAvatarPathFromPlayer(msg.nextPlayer);
             
             const playerList = this.parent.parent.Filter(x => x.name.includes("Player"));
-            const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.InitPlayerAvatars(playerList);
+
+            const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.SetPlayerAvatarsStatus(playerList, currentPlayerId);
+
+            const phase = this.FindComponent("GameManager").phase.toIdentifier();
+            this.InitPhaseOptions(phase);
         }
 
         Update(timeElapsed) {

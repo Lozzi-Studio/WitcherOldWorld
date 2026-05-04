@@ -17,13 +17,15 @@
     <script type="module" src="./src/main.js"></script>
 
     <div class="container container--row container--neutral borders--top-right" id="player-window">
+        <div class="container container--col inner-borders inner-borders--neutral" id="player-shield"></div>
         <div class="container container--col">
             <div class="avatar-container avatar-container--big">
                 <img class="avatar avatar--big" id="player-avatar" src="">
             </div>
-            <div class="textbox textbox--fill-neutral">
-                <p class="textbox__text--fill-neutral textbox__text--fancy-font" id="player-name">NAME</p>
+            <div class="textbox textbox--fill-neutral textbox--fancy-font">
+                <p id="player-name">NAME</p>
             </div>
+            <div class="container container--row"></div>
         </div>
         <div class="container container--col inner-borders inner-borders--neutral" id ="player-stats">
             <div class="container container--row container--no-padding" id="combat-lvl">
@@ -42,25 +44,11 @@
     </div>
 
     <div class="container container--col container--neutral borders--bottom-left" id="phase-window">
-        <div class="container container--row" id="avatars-container">
-            <!-- <div class="avatar-container avatar-container--small avatar-container--neutral" id="avatar-container-1">
-                <img  class="avatar avatar--small" id="avatar-1" src="./resources/assets/avatars/bear.webp">
-            </div>
-            <div class="avatar-container avatar-container--small avatar-container--neutral avatar-container" id="avatar-container-2">
-                <img class="avatar avatar--small" id="avatar-2" src="./resources/assets/avatars/wolf.webp">
-            </div>
-            <div class="avatar-container avatar-container--small avatar-container--neutral avatar-container" id="avatar-container-3">
-                <img class="avatar avatar--small" id="avatar-3" src="./resources/assets/avatars/cat.webp">
-            </div> -->
-        </div>
+        <div class="container container--row" id="avatars-container"></div>
         <div>
-            <div class="container container--row"><p id="phase-text">Phase _/3</p></div>
+            <div class="container container--row"><p id="phase-text">PHASE ID</p></div>
         </div>
-        <div class="container container--col container--no-padding" id="phase-options-container">
-            <div class="textbox textbox--fill-neutral">
-                <p class="textbox__text--fill-neutral">Bewege deine Figur zu einem Feld</p>
-            </div>
-        </div>
+        <div class="container container--col container--no-padding" id="phase-options-container"></div>
     </div>
 
 </body>

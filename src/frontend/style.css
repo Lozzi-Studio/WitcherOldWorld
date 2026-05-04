@@ -109,6 +109,12 @@ p, div {
     bottom: 0px;
 }
 
+#player-shield {
+    /* height: 100%;*/
+    flex-basis: 100%;
+    align-self: stretch;
+}
+
 .avatar-container {
     display: inline-flex;
 
@@ -170,23 +176,27 @@ p, div {
 
 .textbox--neutral {
     border-color: var(--color-primary);
+
+    color: var(--color-primary);
 }
 
 .textbox--fill-neutral {
     background: var(--color-primary);
     border-width: 0px;
     word-break: break-word;
-}
-
-.textbox__text--neutral {
-    color: var(--color-primary);
-}
-
-.textbox__text--fill-neutral {
+    
     color: var(--color-secondary);
 }
 
-.textbox__text--fancy-font {
+.textbox--neutral > p {
+    color: var(--color-primary);
+}
+
+.textbox--fill-neutral > p {
+    color: var(--color-secondary);
+}
+
+.textbox--fancy-font > p {
     font-family: "mason-serif", sans-serif;
     font-weight: 700;
     font-style: normal;
@@ -256,6 +266,8 @@ p, div {
 #phase-options-container {
     max-width: 100%;
     min-width: 0;
+
+    gap: 4px;
 }
 
 #avatar-container-1 {

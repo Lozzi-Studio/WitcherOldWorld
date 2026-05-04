@@ -89,9 +89,6 @@ class DemoThreeJS {
         const testGameArea = new game_area_entity.GameArea();
         this._entityManager.AddEntity(testGameArea, "Game_Area");
         testGameArea.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(player1));
-        //console.log(this._entityManager.FindEntity("Game_Area").FindComponent("GameManager").currentPlayerId);
-
-        console.log(this._entityManager.Filter(x => x.name.includes("Player")));
 
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
