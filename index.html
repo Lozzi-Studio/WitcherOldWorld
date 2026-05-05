@@ -4,10 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TestProject</title>
+    <link rel="stylesheet" type="text/css" href="src/frontend/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> <!-- PT Sans Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL,wght,GRAD,opsz@0..1,100..700,-50..200,20..48" rel="stylesheet"> <!-- Google Material Icons -->
+    <link rel="stylesheet" href="https://use.typekit.net/xno6vtf.css"> <!-- Morpheus Font -->
 
 </head>
-<body>
-        <script type="module" src="./src/main.js"></script>
+<body style="margin-top: 0; margin-left: 0;">
+    <script type="module" src="./src/main.js"></script>
+
+    <div class="container container--row container--neutral borders--top-right" id="player-window">
+        <div class="container container--col">
+            <div class="avatar-container avatar-container--big">
+                <img class="avatar avatar--big" id="player-avatar" src="">
+                <div class="textbox-circle textbox--fill" id="witcher-level">-</div>
+            </div>
+            <div class="textbox textbox--fill textbox--fancy-font">
+                <p id="player-name">NAME</p>
+            </div>
+            <div class="container container--row container--no-padding container--justify" id="player-inventory-container">
+                <div class="container container--row container--no-padding">
+                    <div class="material-symbols-outlined">toll</div>
+                    <div class="text-single-number" id="money-amount">-</div>
+                </div>
+                <div class="container container--row container--no-padding">
+                    <div class="material-symbols-outlined">trophy</div>
+                    <div class="text-single-number" id="trophy-amount">-</div>
+                </div>
+            </div>
+        </div>
+        <div class="container container--col container--justify inner-borders inner-borders--neutral" id="player-shield-container"></div>
+        <div class="container container--col container--justify inner-borders inner-borders--neutral" id ="player-stats">
+            <div class="container container--row container--no-padding" id="combat-lvl">
+                <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/combat.png"></div>
+            </div>
+            <div class="container container--row container--no-padding" id="defense-lvl">
+                <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/defense.png"></div>
+            </div>
+            <div class="container container--row container--no-padding" id="alchemy-lvl">
+                <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/alchemy.png"></div>
+            </div>
+            <div class="container container--row container--no-padding" id="special-lvl">
+                <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/speed.png"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container--col container--neutral borders--bottom-left" id="phase-window">
+        <div class="container container--row container--no-padding" id="avatars-container"></div>
+        <div>
+            <div class="container container--row"><p id="phase-text">PHASE ID</p></div>
+        </div>
+        <div class="container container--col container--no-padding" id="phase-options-container"></div>
+    </div>
+
 </body>
 </html>
 

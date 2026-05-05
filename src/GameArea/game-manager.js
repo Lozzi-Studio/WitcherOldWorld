@@ -52,6 +52,7 @@ export const game_manager = (() => {
             if (nextPlayer) {
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
+                this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
                 if (this.#currentPlayer == undefined) {
                     this.#currentPlayerId = 1;
                     this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
@@ -115,6 +116,20 @@ export const game_manager = (() => {
         get currentPlayer() {
             return this.#currentPlayer;
         }
+
+        /**
+         * @returns {int}
+         */
+        get currentPlayerId() {
+            return this.#currentPlayerId;
+        }
+
+        /**
+         * @returns {Phase}
+         */
+        get phase() {
+            return this.#currentRound;
+        }
     };
 
     class Phase {
@@ -122,7 +137,7 @@ export const game_manager = (() => {
         static Two = new Phase(2);
         static Three =  new Phase(3);
 
-        static Start = new Phase(0);
+        static Start = new Phase(1);
         static End = new Phase(-1);
         #number;
 
@@ -138,7 +153,7 @@ export const game_manager = (() => {
         next() {
             this.#number += 1;
             if (this.#number > 3) {
-                this.#number = 0;
+                this.#number = 1;
                 return true;
             }
             return false;
