@@ -45,6 +45,14 @@ export const broadcasts = (() => {
         static GetRumor(reward, destination, region) {
             return {topic: 'player.rumor',  reward: reward, destination: destination, region: region};
         }
+
+        /**
+         * @param {int} amount 
+         * @returns {object}
+         */
+        static AddTrophy() {
+            return {topic: 'player.add_trophy'}
+        }
     }
 
     class BroadcastTemplateCards {

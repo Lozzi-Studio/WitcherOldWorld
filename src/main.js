@@ -107,6 +107,10 @@ class DemoThreeJS {
         const player1 = new player_entity.Player("Janik", player_options.WitcherSchool.Cat());
         this._entityManager.AddEntity(player1, "Player_1");
         this._entityManager.AddEntity(new game_area_entity.GameArea(this._threejs, this._scene), "GameArea");
+        console.log(player1.FindComponent("TrophyStorage").amount);
+        player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+        console.log(player1.FindComponent("TrophyStorage").amount);
+        
 
 
         this._previousRAF = null;
