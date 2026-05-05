@@ -18,6 +18,7 @@ export const ui_manager = (() => {
             this._RegisterHandler('skill.change_shield', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('skill.change_currentshield', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('skill.change_level', (msg) => {this.#UpdatePlayerStats(msg)});
+            this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
         }
 
         CardSlot0() {
@@ -255,6 +256,10 @@ export const ui_manager = (() => {
          */
         #SetPhaseText(phase) {
             document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
+        }
+
+        #ShowTownInfo(msg) {
+            console.log(`Broadcast empfangen: ${msg.town.town_name}`);
         }
 
         #UpdateCurrentPlayerUI(msg) {
