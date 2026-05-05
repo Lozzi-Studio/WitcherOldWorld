@@ -260,12 +260,25 @@ export const ui_manager = (() => {
         }
 
         #ShowTownInfo(msg) {
-            document.getElementById("town-info").style.opacity = 1;
-            document.getElementById("town-info").innerHTML = `${msg.town.town_name}`;
+            document.getElementById("town-window").style.opacity = 1;
+            document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
+            console.log(msg.town.region.toIdentifier());
+            switch (msg.town.region.toIdentifier()) {
+                case "River":
+                    document.getElementById("town-symbol").innerHTML = "water";
+                    break;
+                case "Mountain":
+                    document.getElementById("town-symbol").innerHTML = "landscape";
+                    break;
+                case "Forest":
+                    document.getElementById("town-symbol").innerHTML = "forest";
+                    break;
+            }
+            
         }
 
         #HideTownInfo(msg) {
-            document.getElementById("town-info").style.opacity = 0;
+            document.getElementById("town-window").style.opacity = 0;
         }
 
         #UpdateCurrentPlayerUI(msg) {

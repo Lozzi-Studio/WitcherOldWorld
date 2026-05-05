@@ -232,6 +232,11 @@ p, div {
     font-family: Gwent;
 }
 
+.--fancy-font {
+    font-family: Gwent;
+    margin-bottom: -3px;
+}
+
 #player-name {
     font-size: 14pt;
     margin-bottom: -3px;  /* needed for gwent font */
@@ -336,10 +341,14 @@ p, div {
 
 
 
-#town-info {
+#town-window {
     position: fixed;
     right: 0;
     bottom: 0;
 
     opacity: 0;
+}
+
+#town-name {
+    font-size: 16pt;;
 }
