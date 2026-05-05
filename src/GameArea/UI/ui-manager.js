@@ -3,12 +3,12 @@ import { broadcasts } from "../../Interfaces/broadcasts";
 
 export const ui_manager = (() => {
 
-    const MAX_SKILL_LEVEL = 5;
-
     class UIManager extends component.Component {
+        #maxSkillLevel;
 
         constructor() {
             super();
+            this.#maxSkillLevel = 5;
             this.#InitPlayerSkills();
         }
 
@@ -77,8 +77,6 @@ export const ui_manager = (() => {
             let combat_lvl = player.FindComponent("PlayerSkills").combat.level;
 
             document.getElementById("player-name").innerHTML = this.#ReplaceUmlaute(name);
-            //document.getElementById("player-school").innerHTML = this.ReplaceUmlaute(school);
-            //document.getElementById("player-combat-lvl").innerHTML = combat_lvl;
         }
 
         #GetAvatarPathFromPlayer(player) {
@@ -107,7 +105,7 @@ export const ui_manager = (() => {
             let containerName = `${skillName}-lvl`
             const container = document.getElementById(containerName);
 
-            for (let i = 0; i < MAX_SKILL_LEVEL; i++) {
+            for (let i = 0; i < this.#maxSkillLevel; i++) {
                 const box = document.createElement("div");
                 box.classList.add("level-box", "level-box--neutral", "level-box--empty");
                 box.id = `${skillName}-level-box-${i}`;
@@ -124,7 +122,7 @@ export const ui_manager = (() => {
 
         #SetPlayerSkills(player) {
             for (const skill of [player.FindComponent("PlayerSkills").combat, player.FindComponent("PlayerSkills").defense, player.FindComponent("PlayerSkills").alchemy, player.FindComponent("PlayerSkills").special]) {
-                for (let i = 0; i < MAX_SKILL_LEVEL; i++) {
+                for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
                     let id = `${skillName}-level-box-${i}`;
                     if (i < skill.level) {
@@ -228,7 +226,6 @@ export const ui_manager = (() => {
         }
 
         #SetPlayerShieldStatus(player) {
-            // let shieldLevelArray = [0, 0, 0, 0, 0];
             let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
             let shieldPoints = player.FindComponent("Shield").amount;
             for (let i = 0; i < defenseLevel; i++) {
@@ -243,7 +240,7 @@ export const ui_manager = (() => {
         }
 
         #SetPlayerMoney(player) {
-            let playerMoney = 3; // noch nicht implementiert, weil Geld noch nicht existiert
+            let playerMoney = 3; //player.FindComponent("MoneyStorage").amount;
             console.log("UI: Geld noch nicht implementiert");
             document.getElementById("money-amount").innerHTML = playerMoney;
         }

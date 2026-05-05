@@ -104,7 +104,7 @@ class DemoThreeJS {
 
 
         const cameraEntity = new camera_entity.Camera(this._camera, this._controls);
-        this._entityManager.AddEntity(cameraEntity);
+        this._entityManager.AddEntity(cameraEntity, "Camera");
 
         const player1 = new player_entity.Player("Gernot", player_options.WitcherSchool.Bear());
         const player2 = new player_entity.Player("Vesemir", player_options.WitcherSchool.Cat());
@@ -113,7 +113,7 @@ class DemoThreeJS {
         this._entityManager.AddEntity(player2, "Player_2");
         this._entityManager.AddEntity(player3, "Player_3");
         const testGameArea = new game_area_entity.GameArea();
-        this._entityManager.AddEntity(testGameArea, "Game_Area");
+        this._entityManager.AddEntity(testGameArea, "GameArea");
         testGameArea.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(player1));
 
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
