@@ -70,13 +70,13 @@ export const ui_manager = (() => {
                 string = string.replace("ue", "&uuml;");
             }
             if (string.includes("Ae")) {
-                string = string.replace("ae", "&Auml;");
+                string = string.replace("Ae", "&Auml;");
             }
             if (string.includes("Oe")) {
-                string = string.replace("oe", "&Ouml;");
+                string = string.replace("Oe", "&Ouml;");
             }
             if (string.includes("Ue")) {
-                string = string.replace("ue", "&Uuml;");
+                string = string.replace("Ue", "&Uuml;");
             }
 
             return string;
@@ -269,7 +269,7 @@ export const ui_manager = (() => {
         }
 
         #ShowTownInfo(msg) {
-            document.getElementById("town-window").style.opacity = 1;
+            document.getElementById("town-window").style.visibility = "visible";
             document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
             switch (msg.town.region.toIdentifier()) {
                 case "River":
@@ -296,7 +296,7 @@ export const ui_manager = (() => {
         }
 
         #HideTownInfo(msg) {
-            document.getElementById("town-window").style.opacity = 0;
+            document.getElementById("town-window").style.visibility = "hidden";
         }
 
         #UpdateCurrentPlayerUI(msg) {

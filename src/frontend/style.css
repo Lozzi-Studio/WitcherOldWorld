@@ -357,7 +357,7 @@ p, div {
     min-width: 150px;
     max-width: 250px;
 
-    opacity: 0;
+    visibility: hidden;
 }
 
 #town-name {
@@ -370,4 +370,34 @@ p, div {
 
 #town-tooltip {
     text-align: center;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted var(--color-primary);
+    cursor: url("../../resources/assets/cursor/pointer-48.png"), pointer;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 105%;
+    z-index: 1;
+
+    background-color: black;
+    color: var(--color-primary);
+
+    font-size: 10pt;
+
+    display: inline-block;
+    width: max-content;
+    max-width: 200px;
+}
+
+.tooltip:hover + .tooltip-text {
+    visibility: visible;
 }
