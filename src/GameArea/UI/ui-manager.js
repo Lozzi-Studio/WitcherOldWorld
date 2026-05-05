@@ -13,12 +13,13 @@ export const ui_manager = (() => {
         }
 
         InitComponent() {
-            this._RegisterHandler("game.nextTurn", (msg) => (this.#UpdateCurrentPlayerUI(msg)));
+            this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateCurrentPlayerUI(msg)});
             this._RegisterHandler("skill.choose_skill", (msg) => {this.#LoadSkillDecider(msg)});
             this._RegisterHandler('skill.change_shield', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('skill.change_currentshield', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('skill.change_level', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
+            this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
         }
 
         CardSlot0() {
@@ -261,6 +262,10 @@ export const ui_manager = (() => {
         #ShowTownInfo(msg) {
             document.getElementById("town-info").style.opacity = 1;
             document.getElementById("town-info").innerHTML = `${msg.town.town_name}`;
+        }
+
+        #HideTownInfo(msg) {
+            document.getElementById("town-info").style.opacity = 0;
         }
 
         #UpdateCurrentPlayerUI(msg) {

@@ -167,6 +167,14 @@ export const broadcasts = (() => {
         static TownAction() {
             return {topic: 'town.action'}
         }
+
+        /**
+         * 
+         * @returns {object} 
+         */
+        static DeselectTown() {
+            return {topic: 'town.deselection'}
+        }
     }
 
 
