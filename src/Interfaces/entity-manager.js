@@ -3,10 +3,15 @@ import { entity } from "./entity";
 export const entity_manager = (() => {
 
     class EntityManager {
-        constructor() {
+        #scene;
+        #renderer;
+
+        constructor(scene, renderer) {
             this._ids = 0;
             this._entitiesMap = {};
             this._entities = [];
+            this.#scene = scene;
+            this.#renderer = renderer;
         }
 
         /**
@@ -89,6 +94,14 @@ export const entity_manager = (() => {
                     e.Broadcast(msg);
                 }
             }
+        }
+
+        get renderer() {
+            return this.#renderer;
+        }
+
+        get scene() {
+            return this.#scene;
         }
     }
 

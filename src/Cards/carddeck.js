@@ -60,6 +60,7 @@ export const carddeck_component = (() => {
          * @param {object} msg 
          */
         #DrawCard(msg){
+            console.log(msg.amount)
             for (let i = 0; i < msg.amount; i++) {
                 switch (msg.mode) {
                     case "Deck":
@@ -76,6 +77,7 @@ export const carddeck_component = (() => {
                     case "Potion":
                         if (this.#cardPotion.length < this.#cardPotionLimit) {
                             //TODO Draw Potion
+                            console.log("Draw Potion");
                         }
                 }
             }

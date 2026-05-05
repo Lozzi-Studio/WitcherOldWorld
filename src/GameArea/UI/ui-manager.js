@@ -1,5 +1,5 @@
-import { component } from "../Interfaces/component";
-import { broadcasts } from "../Interfaces/broadcasts";
+import { component } from "../../Interfaces/component";
+import { broadcasts } from "../../Interfaces/broadcasts";
 
 export const ui_manager = (() => {
 
@@ -14,6 +14,7 @@ export const ui_manager = (() => {
 
         InitComponent() {
             this._RegisterHandler("game.nextTurn", (msg) => (this.#UpdateCurrentPlayerUI(msg)));
+            this._RegisterHandler("skill.choose_skill", (msg) => {this.#LoadSkillDecider(msg)});
             this._RegisterHandler('skill.change_shield', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('skill.change_currentshield', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('skill.change_level', (msg) => {this.#UpdatePlayerStats(msg)});
@@ -291,6 +292,11 @@ export const ui_manager = (() => {
             this.#SetPlayerSkills(player); // sollte später weniger oft gecalled werden
             this.#SetPlayerShieldStatus(player); // sollte später weniger oft gecalled werden
             this.#SetWitcherLevel(player); // sollte später weniger oft gecalled werden
+        }
+
+        #LoadSkillDecider(msg) {
+            //TODO
+            console.log("Choose A Skill!")
         }
   
     }
