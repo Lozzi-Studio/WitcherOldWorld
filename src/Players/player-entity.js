@@ -5,6 +5,7 @@ import { player_money } from "./player-money";
 import { player_options } from "./player-options";
 import { player_position } from "./player-position";
 import { player_skills } from "./player-skills";
+import { player_trophies } from "./player-trophies";
 
 export const player_entity = (() => {
 
@@ -13,18 +14,21 @@ export const player_entity = (() => {
         #witcherSchool;
         #homeTownPosition;
         #currentTown;
+        #initialMoney;
         
         /**
          * 
          * @param {string} player_name 
          * @param {player_options.WitcherSchool} witcherSchool 
+         * @param {int} initialMoney
          */
-        constructor(player_name, witcherSchool) {
+        constructor(player_name, witcherSchool, initialMoney) {
             super();
             this.#player_name = player_name;
             this.#witcherSchool = witcherSchool;
             this.#homeTownPosition = witcherSchool.homeTown;
             this.#currentTown = witcherSchool.homeTown;
+            this.#initialMoney = initialMoney;
             
         }
 
@@ -55,8 +59,9 @@ export const player_entity = (() => {
             this.AddComponent(new player_position.PlayerPosition(this.#currentTown, this.#currentTown.position));
             this.AddComponent(new player_skills.PlayerSkills());
             this.AddComponent(new player_skills.Shield());
-            this.AddComponent(new player_money.MoneyStorage());
+            this.AddComponent(new player_money.MoneyStorage(this.#initialMoney));
             this.AddComponent(new player_destination_tracker.PlayerTracker());
+            this.AddComponent(new player_trophies.TrophyStorage());
         }
 
         /**
@@ -82,6 +87,10 @@ export const player_entity = (() => {
         
         get town() {
             return this.FindComponent('PlayerPosition').currentTown;
+        }
+
+        get witcherSchool() {
+            return this.#witcherSchool
         }
     }
 

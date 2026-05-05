@@ -45,6 +45,14 @@ export const broadcasts = (() => {
         static GetRumor(reward, destination, region) {
             return {topic: 'player.rumor',  reward: reward, destination: destination, region: region};
         }
+
+        /**
+         * @param {int} amount 
+         * @returns {object}
+         */
+        static AddTrophy() {
+            return {topic: 'player.add_trophy'}
+        }
     }
 
     class BroadcastTemplateCards {
@@ -169,6 +177,15 @@ export const broadcasts = (() => {
          */
         static NextPhase() {
             return {topic: 'game.nextPhase'};
+        }
+
+        /**
+         * 
+         * @param {player_entity.Player} nextPlayer
+         * @returns {object}
+         */
+        static NextTurn(nextPlayer) {
+            return {topic: 'game.nextTurn', nextPlayer: nextPlayer};
         }
 
         /**
