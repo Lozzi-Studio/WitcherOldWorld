@@ -262,7 +262,6 @@ export const ui_manager = (() => {
         #ShowTownInfo(msg) {
             document.getElementById("town-window").style.opacity = 1;
             document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
-            console.log(msg.town.region.toIdentifier());
             switch (msg.town.region.toIdentifier()) {
                 case "River":
                     document.getElementById("town-symbol").innerHTML = "water";
@@ -274,6 +273,15 @@ export const ui_manager = (() => {
                     document.getElementById("town-symbol").innerHTML = "forest";
                     break;
             }
+
+            console.log(msg.town.ability);
+            let abilityName = msg.town.ability.name;
+            let abilityTooltip = msg.town.ability.tooltip;
+            let abilitySkill = msg.town.ability.trigger.skill?.toIdentifier();
+            let abilitySkillMode = msg.town.ability.trigger.mode;
+
+            // document.getElementById("town-ability").innerHTML = abilitySkillMode + " " + abilitySkill;
+            document.getElementById("town-ability").innerHTML = abilityName;
             
         }
 

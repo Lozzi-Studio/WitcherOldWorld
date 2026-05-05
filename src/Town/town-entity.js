@@ -56,6 +56,10 @@ export const town_entity = (() => {
             return this.#region;
         }
 
+        get ability() {
+            return this.#ability;
+        }
+
 
     }
 
