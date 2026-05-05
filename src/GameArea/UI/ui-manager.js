@@ -245,8 +245,7 @@ export const ui_manager = (() => {
         }
 
         #SetPlayerTrophies(player) {
-            let playerTrophies = 0; //player.FindComponent("")
-            console.log("UI: Trophäen noch nicht implementiert");
+            let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
 
@@ -262,8 +261,6 @@ export const ui_manager = (() => {
             this.#SetPlayerInfo(msg.nextPlayer);
             this.#InitPlayerShield();
             document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.nextPlayer);
-            this.#SetPlayerMoney(msg.nextPlayer);
-            this.#SetPlayerTrophies(msg.nextPlayer);
             
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
@@ -285,9 +282,12 @@ export const ui_manager = (() => {
 
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
-            this.#SetPlayerSkills(player); // sollte später weniger oft gecalled werden
-            this.#SetPlayerShieldStatus(player); // sollte später weniger oft gecalled werden
-            this.#SetWitcherLevel(player); // sollte später weniger oft gecalled werden
+             // diese funktionen sollten später weniger oft gecalled werden
+            this.#SetPlayerSkills(player);
+            this.#SetPlayerShieldStatus(player);
+            this.#SetWitcherLevel(player);
+            this.#SetPlayerMoney(player);
+            this.#SetPlayerTrophies(player);
         }
 
         #LoadSkillDecider(msg) {
