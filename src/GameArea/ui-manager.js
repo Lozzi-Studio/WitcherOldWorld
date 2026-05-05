@@ -288,9 +288,9 @@ export const ui_manager = (() => {
 
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
-            this.#SetPlayerSkills(player); // ist hier noch nötig weil ichs nicht anders hinkrieg
-            this.#SetPlayerShieldStatus(player); // ist hier noch nötig weil ichs nicht anders hinkrieg
-            this.#SetWitcherLevel(player); // ist hier noch nötig weil ichs nicht anders hinkrieg
+            this.#SetPlayerSkills(player); // sollte später weniger oft gecalled werden
+            this.#SetPlayerShieldStatus(player); // sollte später weniger oft gecalled werden
+            this.#SetWitcherLevel(player); // sollte später weniger oft gecalled werden
         }
   
     }
