@@ -1,3 +1,7 @@
+@font-face {
+  font-family: Gwent; /* set name */
+  src: url(../../resources/fonts/GWENT-ExtraBold.ttf); /* url of the font */
+}
 
 .material-symbols-outlined {
   font-variation-settings:
@@ -59,8 +63,8 @@
 p, div {
     color: var(--color-primary);
     font-family: "PT Sans", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+    /* font-weight: 400;
+    font-style: normal; */
 
     margin:0px;
 }
@@ -74,8 +78,8 @@ p, div {
     gap: 8px;
     padding: 4px;
 
-    text-align: center;
-    vertical-align: middle;
+    /* text-align: center; */
+    /* vertical-align: middle; */
 }
 
 .container--no-padding {
@@ -185,26 +189,6 @@ p, div {
     height: 48px;
 }
 
-/* .textbox {
-    align-self: stretch;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    display: flex;
-
-    border-width: 1px;
-    border-radius: 6px;
-    border-style: solid;
-
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-} */
-
 .textbox {
     padding-left: 8px;
     padding-right: 8px;
@@ -217,6 +201,8 @@ p, div {
 
     border-color: var(--color-primary);
     color: var(--color-primary);
+
+    text-align: center;
 }
 
 .textbox-circle {
@@ -243,13 +229,12 @@ p, div {
 }
 
 .textbox--fancy-font > p {
-    font-family: "mason-serif", sans-serif;
-    font-weight: 700;
-    font-style: normal;
+    font-family: Gwent;
 }
 
 #player-name {
     font-size: 14pt;
+    margin-bottom: -3px;  /* needed for gwent font */
 
     white-space: nowrap;
     min-width: 84%;
@@ -325,9 +310,8 @@ p, div {
 
 #phase-text {
     font-size: 24pt;
-    font-family: "mason-serif", sans-serif;
-    font-weight: 700;
-    font-style: normal;
+    font-family: Gwent;
+    margin-bottom: -3px; /* needed for gwent font */
     color: var(--color-primary);
 }
 
