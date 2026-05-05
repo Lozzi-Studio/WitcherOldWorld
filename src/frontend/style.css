@@ -3,6 +3,10 @@
   src: url(../../resources/fonts/GWENT-ExtraBold.ttf); /* url of the font */
 }
 
+body {
+    cursor: url("../../resources/assets/cursor/sword-48.png"), auto;
+}
+
 .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
@@ -121,6 +125,11 @@ p, div {
 .borders--top-right {
     border-width: 3px 3px 0px 0px;
     border-radius: 0px 12px 0px 0px;
+}
+
+.borders--bottom-right {
+    border-width: 0px 3px 3px 0px;
+    border-radius: 0px 0px 12px 0px;
 }
 
 .inner-borders {
@@ -343,12 +352,22 @@ p, div {
 
 #town-window {
     position: fixed;
-    right: 0;
-    bottom: 0;
+    left: 0;
+    top: 0;
+    min-width: 150px;
+    max-width: 250px;
 
     opacity: 0;
 }
 
 #town-name {
-    font-size: 16pt;;
+    font-size: 16pt;
+}
+
+#town-ability {
+    font-weight: 700;
+}
+
+#town-tooltip {
+    text-align: center;
 }

@@ -69,6 +69,15 @@ export const ui_manager = (() => {
             if (string.includes("ue")) {
                 string = string.replace("ue", "&uuml;");
             }
+            if (string.includes("Ae")) {
+                string = string.replace("ae", "&Auml;");
+            }
+            if (string.includes("Oe")) {
+                string = string.replace("oe", "&Ouml;");
+            }
+            if (string.includes("Ue")) {
+                string = string.replace("ue", "&Uuml;");
+            }
 
             return string;
         }
@@ -275,13 +284,14 @@ export const ui_manager = (() => {
             }
 
             console.log(msg.town.ability);
-            let abilityName = msg.town.ability.name;
-            let abilityTooltip = msg.town.ability.tooltip;
+            let abilityName = this.#ReplaceUmlaute(msg.town.ability.name);
+            let abilityTooltip = this.#ReplaceUmlaute(msg.town.ability.tooltip);
             let abilitySkill = msg.town.ability.trigger.skill?.toIdentifier();
             let abilitySkillMode = msg.town.ability.trigger.mode;
 
             // document.getElementById("town-ability").innerHTML = abilitySkillMode + " " + abilitySkill;
             document.getElementById("town-ability").innerHTML = abilityName;
+            document.getElementById("town-tooltip").innerHTML = abilityTooltip;
             
         }
 
