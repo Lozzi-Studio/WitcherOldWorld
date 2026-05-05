@@ -130,6 +130,10 @@ class DemoThreeJS {
 
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").special.increaseLevel();
 
+        console.log(player1.FindComponent("TrophyStorage").amount);
+        player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+        console.log(player1.FindComponent("TrophyStorage").amount);
+        
 
 
         this._previousRAF = null;
