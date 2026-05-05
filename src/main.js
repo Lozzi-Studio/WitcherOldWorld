@@ -110,6 +110,10 @@ class DemoThreeJS {
         const player2 = new player_entity.Player("Vesemir", player_options.WitcherSchool.Cat(), 3);
         const player3 = new player_entity.Player("Lambert", player_options.WitcherSchool.Griffin(), 4);
         this._entityManager.AddEntity(player1, "Player_1");
+        this._entityManager.AddEntity(new game_area_entity.GameArea(this._threejs, this._scene), "GameArea");
+        console.log(player1.FindComponent("TrophyStorage").amount);
+        player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+        console.log(player1.FindComponent("TrophyStorage").amount);
         this._entityManager.AddEntity(player2, "Player_2");
         this._entityManager.AddEntity(player3, "Player_3");
         const testGameArea = new game_area_entity.GameArea();

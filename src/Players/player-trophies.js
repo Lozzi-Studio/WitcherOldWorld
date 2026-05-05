@@ -16,11 +16,7 @@ export const player_trophies = (() => {
 
 
         #AddTrophy() {
-            this.Add(1);
-        }
-
-        Add(amount) {
-            this.#amount += amount;
+            this.#amount += 1;
         }
 
         get amount(){

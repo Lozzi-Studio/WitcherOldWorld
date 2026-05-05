@@ -47,7 +47,6 @@ export const broadcasts = (() => {
         }
 
         /**
-         * @param {int} amount 
          * @returns {object}
          */
         static AddTrophy() {
