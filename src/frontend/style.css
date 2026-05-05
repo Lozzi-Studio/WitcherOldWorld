@@ -104,6 +104,11 @@ p, div {
     border-color: var(--color-border);
 }
 
+.borders--all {
+    border-width: 3px;
+    border-radius: 12px;
+}
+
 .borders--bottom-left {
     border-width: 0px 0px 3px 3px;
     border-radius: 0px 0px 0px 12px;
@@ -343,4 +348,14 @@ p, div {
 
 #avatar-container-3 {
     border-color: var(--green-primary);
+}
+
+
+
+#town-info {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+
+    opacity: 0;
 }

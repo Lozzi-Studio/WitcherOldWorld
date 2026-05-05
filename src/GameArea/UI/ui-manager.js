@@ -259,7 +259,8 @@ export const ui_manager = (() => {
         }
 
         #ShowTownInfo(msg) {
-            console.log(`Broadcast empfangen: ${msg.town.town_name}`);
+            document.getElementById("town-info").style.opacity = 1;
+            document.getElementById("town-info").innerHTML = `${msg.town.town_name}`;
         }
 
         #UpdateCurrentPlayerUI(msg) {
