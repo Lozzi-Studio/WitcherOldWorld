@@ -385,7 +385,7 @@ p, div {
     border-radius: 6px;
     position: absolute;
     top: 50%;
-    left: 105%;
+    left: 100%;
     z-index: 1;
 
     background-color: black;
