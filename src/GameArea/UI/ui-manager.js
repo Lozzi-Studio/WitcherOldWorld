@@ -240,13 +240,12 @@ export const ui_manager = (() => {
         }
 
         #SetPlayerMoney(player) {
-            let playerMoney = 3; //player.FindComponent("MoneyStorage").amount;
-            console.log("UI: Geld noch nicht implementiert");
+            let playerMoney = player.FindComponent("MoneyStorage").amount;
             document.getElementById("money-amount").innerHTML = playerMoney;
         }
 
         #SetPlayerTrophies(player) {
-            let playerTrophies = 1; // noch nicht implementiert, weil Trophäen noch nicht existieren
+            let playerTrophies = 0; //player.FindComponent("")
             console.log("UI: Trophäen noch nicht implementiert");
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }

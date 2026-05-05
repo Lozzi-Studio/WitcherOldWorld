@@ -106,9 +106,9 @@ class DemoThreeJS {
         const cameraEntity = new camera_entity.Camera(this._camera, this._controls);
         this._entityManager.AddEntity(cameraEntity, "Camera");
 
-        const player1 = new player_entity.Player("Gernot", player_options.WitcherSchool.Bear());
-        const player2 = new player_entity.Player("Vesemir", player_options.WitcherSchool.Cat());
-        const player3 = new player_entity.Player("Lambert", player_options.WitcherSchool.Griffin());
+        const player1 = new player_entity.Player("Gernot", player_options.WitcherSchool.Bear(), 2);
+        const player2 = new player_entity.Player("Vesemir", player_options.WitcherSchool.Cat(), 3);
+        const player3 = new player_entity.Player("Lambert", player_options.WitcherSchool.Griffin(), 4);
         this._entityManager.AddEntity(player1, "Player_1");
         this._entityManager.AddEntity(player2, "Player_2");
         this._entityManager.AddEntity(player3, "Player_3");

@@ -13,18 +13,21 @@ export const player_entity = (() => {
         #witcherSchool;
         #homeTownPosition;
         #currentTown;
+        #initialMoney;
         
         /**
          * 
          * @param {string} player_name 
          * @param {player_options.WitcherSchool} witcherSchool 
+         * @param {int} initialMoney
          */
-        constructor(player_name, witcherSchool) {
+        constructor(player_name, witcherSchool, initialMoney) {
             super();
             this.#player_name = player_name;
             this.#witcherSchool = witcherSchool;
             this.#homeTownPosition = witcherSchool.homeTown;
             this.#currentTown = witcherSchool.homeTown;
+            this.#initialMoney = initialMoney;
             
         }
 
@@ -55,7 +58,7 @@ export const player_entity = (() => {
             this.AddComponent(new player_position.PlayerPosition(this.#currentTown, this.#currentTown.position));
             this.AddComponent(new player_skills.PlayerSkills());
             this.AddComponent(new player_skills.Shield());
-            this.AddComponent(new player_money.MoneyStorage());
+            this.AddComponent(new player_money.MoneyStorage(this.#initialMoney));
             this.AddComponent(new player_destination_tracker.PlayerTracker());
         }
 
