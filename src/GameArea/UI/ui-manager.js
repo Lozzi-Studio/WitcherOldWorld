@@ -269,7 +269,7 @@ export const ui_manager = (() => {
             this.#SetPlayerMoney(msg.nextPlayer);
             this.#SetPlayerTrophies(msg.nextPlayer);
             
-            const playerList = this.parent.parent.Filter(x => x.name.includes("Player"));
+            const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
 
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
