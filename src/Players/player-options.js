@@ -6,6 +6,7 @@ export const player_options = (() => {
         #name;
         #ability;
         #homeTown;
+        #color;
         static Cat() {return new WitcherSchool("Katzenschule");}
         static Viper() {return new WitcherSchool("Vipernschule");}
         static Bear() {return new WitcherSchool("Baerenschule");}
@@ -20,6 +21,7 @@ export const player_options = (() => {
             this.#name = name
             this.#ability = WitcherSchool.getAbilityFromName(name);
             this.#homeTown = WitcherSchool.getHomeTownFromName(name);
+            this.#color = WitcherSchool.getColorFromName(name);
         }
 
         get name() {
@@ -32,6 +34,10 @@ export const player_options = (() => {
 
         get homeTown() {
             return this.#homeTown;
+        }
+
+        get color() {
+            return this.#color;
         }
 
         /**
@@ -73,6 +79,21 @@ export const player_options = (() => {
                 case "Greifenschule":
                     return "Kaer Seren";
                 }
+        }
+
+        static getColorFromName(name){
+            switch(name) {
+                case "VipernSchule":
+                    return 0x7ED321;
+                case "Katzenschule":
+                    return 0xF5A623;
+                case "Wolfenschule":
+                    return 0x9B9B9B;
+                case "Baerenschule":
+                    return 0xF5A623;
+                case "Greifenschule":
+                    return 0xD0021B;
+            }
         }
     }
 
