@@ -1,3 +1,5 @@
+import { component } from "../Interfaces/component";
+
 export const region = (() => {
 
     /**
@@ -8,6 +10,7 @@ export const region = (() => {
         static River() {return new Region("River");}
         static Forest() {return new Region("Forest");}
         static Mountain() {return new Region("Mountain");}
+        static Joker() {return new Region("Joker");}
 
         /**
          * Use static function constructor instead of default constructor!

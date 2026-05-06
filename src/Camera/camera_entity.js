@@ -1,5 +1,5 @@
 import { entity } from "../Interfaces/entity";
-import { camera_component } from "./camera_component";
+import { camera_position } from "./camera_position";
 import * as THREE from 'three';
 
 export const camera_entity = (() => {
@@ -17,10 +17,20 @@ export const camera_entity = (() => {
             super();
             this.#camera = camera;
             this.#controls = controls;
+
+            this.#controls.enablePan = false;
         }
 
         InitComponents() {
-            this.AddComponent(new camera_component.CameraPosition(this.#camera, this.#controls));
+            this.AddComponent(new camera_position.CameraPosition());
+        }
+
+        get camera() {
+            return this.#camera;
+        }
+
+        get controls() {
+            return this.#controls;
         }
     }
 

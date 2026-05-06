@@ -1,5 +1,5 @@
 import { card } from "../Cards/card";
-import { town_component } from "../Town/town-component";
+import { town_properties } from "../Town/town-properties";
 import * as THREE from 'three';
 import { region } from "../GameArea/region";
 
@@ -12,8 +12,8 @@ export const broadcasts = (() => {
          * @param {int} amount 
          * @returns {object}
          */
-        static PayMoney(amount) {
-            return {topic: 'player.pay', amount: amount}
+        static ChangeMoney(amount) {
+            return {topic: 'player.change_money', amount: amount}
         }
 
         /**
@@ -22,16 +22,35 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeShield(mode, amount) {
-            return {topic: 'player.pay', mode: mode, amount: amount}
+            return {topic: 'player.change_shield', mode: mode, amount: amount}
         }
 
         /**
-         * @param {town_component.town} town 
+         * @param {town_entity.TownEntity} town 
          * @param {THREE.Vector3} position 
          * @returns {object}
          */
         static PlayerMove(town, position) {
             return {topic: 'player.move', town: town, position: position}
+        }
+
+        
+        /**
+         * @param {rewards.Reward} reward 
+         * @param {town_entity.TownEntity} destination
+         * @param {region.Region} region 
+         * 
+         * @returns {object}
+         */
+        static GetRumor(reward, destination, region) {
+            return {topic: 'player.rumor',  reward: reward, destination: destination, region: region};
+        }
+
+        /**
+         * @returns {object}
+         */
+        static AddTrophy() {
+            return {topic: 'player.add_trophy'}
         }
     }
 
@@ -73,8 +92,8 @@ export const broadcasts = (() => {
         }
 
         /**
-         * @param {int} amount 
          * @param {string} mode - Options: "Deck", "Discard", "Potion"
+         * @param {int} amount 
          * @returns {object}
          */
         static DrawCard(mode, amount) {
@@ -103,6 +122,15 @@ export const broadcasts = (() => {
         }
 
         /**
+         * 
+         * @param {bool} payMoney 
+         * @returns 
+         */
+        static ChooseSkillToIncrease(payMoney) {
+            return {topic: 'skill.choose_skill', payMoney: payMoney}
+        }
+
+        /**
          * @param {string} mode - Options: "Increase", "Decrease" 
          * @param {int} level 
          * @param {int} amount 
@@ -125,7 +153,7 @@ export const broadcasts = (() => {
     class BroadcastTemplateTown {
         /**
          * 
-         * @param {town_component.Town} town 
+         * @param {town_entity.TownEntity} town 
          * @returns {object} 
          */
         static SelectTown(town) {
@@ -133,11 +161,10 @@ export const broadcasts = (() => {
         }
 
         /**
-         * @param {town_component.Town} town
          * @returns {object}
          */
-        static TownAction(town) {
-            return {topic: 'town.action', town: town}
+        static TownAction() {
+            return {topic: 'town.action'}
         }
     }
 
@@ -153,6 +180,15 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @param {player_entity.Player} nextPlayer
+         * @returns {object}
+         */
+        static NextTurn(nextPlayer) {
+            return {topic: 'game.nextTurn', nextPlayer: nextPlayer};
+        }
+
+        /**
+         * 
          * @returns {object}
          */
         static StartWuerfelpoker(player1, player2) {
@@ -160,13 +196,14 @@ export const broadcasts = (() => {
         }
 
         /**
-         * 
-         * @param {region.Region} region 
+         * @param {string} - Options: "Rumor"
+         * @param {CallableFunction} resolver
          * @returns {object}
          */
-        static GetGeruecht(region) {
-            return {topic: 'game.geruecht', region: region};
+        static ChooseRegion(mode, resolver) {
+            return {topic: 'game.chooseRegion', mode: mode,resolver : resolver};
         }
+
 
         /**
          * 
@@ -183,10 +220,21 @@ export const broadcasts = (() => {
 
     class BroadcastTemplateCamera {
 
+        /**
+         * 
+         * @param {THREE.Vector3} position 
+         * @param {THREE.Object3D} target 
+         * @returns 
+         */
         static MoveTo(position, target) {
             return {topic: 'camera.moveTo', position: position, target: target}
         }
 
+        /**
+         * 
+         * @param {THREE.Object3D} target 
+         * @returns 
+         */
         static FocusOn(target) {
             return {topic: 'camera.focusOn', target: target}
         }

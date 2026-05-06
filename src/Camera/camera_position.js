@@ -1,28 +1,17 @@
 import { component } from "../Interfaces/component";
 import * as THREE from 'three';
 
-export const camera_component = (() => {
+export const camera_position = (() => {
 
     class CameraPosition extends component.Component{
-        #camera;
         #currentPosition;
         #currentLookat;
         #target;
-        #controls;
         #controlable;
         #direction;
 
-        /**
-         * 
-         * @param {THREE.camera} camera 
-         * @param {THREE.controls} controls
-         */
-        constructor(camera, controls) {
+        constructor() {
             super();
-            this.#camera = camera;
-            this.#controls = controls;
-            this.#controls.enablePan = false;
-
             this.#currentPosition = new THREE.Vector3();
             this.#currentLookat = new THREE.Vector3();
             this.#target = undefined;
@@ -41,20 +30,20 @@ export const camera_component = (() => {
 
         #MoveTo(msg) {
            //TODO
-           this.#controls.enabled = false;
-           this.#controls.enabled = true;
+           this._parent.controls.enabled = false;
+           this._parent.controls.enabled = true;
         }
 
         #FocusOn(msg) {
-            this.#controls.enableDamping = false;
+            this._parent.controls.enableDamping = false;
             this.#target = msg.target;
-            this.#controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
+            this._parent.controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
         }
 
         #StopFocus(msg) {
-            this.#controls.enableDamping = true;
+            this._parent.controls.enableDamping = true;
             this.#target = undefined;
-            this.#controls.target.set(0,0,0);
+            this._parent.controls.target.set(0,0,0);
         }
 
         #onKeyDown(event) {
@@ -84,19 +73,19 @@ export const camera_component = (() => {
             const t = 1.0 - Math.pow(0.01, timeElapsed);
             switch (this.#direction.getIdentifier()) {
                 case "up":
-                    this.#controls.target.z -= 1 * t;
+                    this._parent.controls.target.z -= 1 * t;
                     break;
                 case "down":
-                    this.#controls.target.z += 1 * t;
+                    this._parent.controls.target.z += 1 * t;
                     break;
                 case "right":
-                    this.#controls.target.x += 1 * t;
+                    this._parent.controls.target.x += 1 * t;
                     break;
                 case "left":
-                    this.#controls.target.x += -1 * t;
+                    this._parent.controls.target.x += -1 * t;
                     break;
                 case "none":
-                    this.#controls.target.set(this.#target?.position.x ?? 0, this.#target?.position.y ?? 0, this.#target?.position.z ?? 0);
+                    this._parent.controls.target.set(this.#target?.position.x ?? 0, this.#target?.position.y ?? 0, this.#target?.position.z ?? 0);
                     break;
             }  
         }

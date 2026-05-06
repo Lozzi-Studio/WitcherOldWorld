@@ -23,17 +23,15 @@ export const player_controller = (() => {
             if (hasValidCard) {
                 // TODO Button zum reisen aktivieren
             } else {
-                // TODO Button zum hinbewegen disablen
+                // TODO Button zum reisen disablen
             }
         }
 
         #OnTravelButtonClicked(targetTown) {
             // Stadt abspeichert -> Spieler wird erst hinbewegt wenn er eine Karte discarded hat
             this.#pendingMoveTown = targetTown;
-
-            this._Parent.Broadcast({
-                // TODO automatically open the deck? 
-            });
+            
+            // TODO automatically open the deck
         }
 
         #OnCardSelected(cardSlot) {
