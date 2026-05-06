@@ -11,7 +11,7 @@ export const player_trophies = (() => {
         }
 
         InitComponent() {
-            this._RegisterHandler('player.add_trophy', (msg) => {this.#AddTrophy(msg)});
+            this._RegisterHandler('player.addTrophy', (msg) => {this.#AddTrophy(msg)});
         }
 
 

@@ -13,7 +13,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeMoney(amount) {
-            return {topic: 'player.change_money', amount: amount}
+            return {topic: 'player.changeMoney', amount: amount}
         }
 
         /**
@@ -41,7 +41,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static AddTrophy() {
-            return {topic: 'player.add_trophy'}
+            return {topic: 'player.addTrophy'}
         }
     }
 
@@ -109,7 +109,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeSkillLevel(skill, mode, payMoney) {
-            return {topic: 'skill.change_level', skill: skill, mode: mode, payMoney: payMoney}
+            return {topic: 'skill.changeLevel', skill: skill, mode: mode, payMoney: payMoney}
         }
 
         /**
@@ -118,7 +118,7 @@ export const broadcasts = (() => {
          * @returns 
          */
         static ChooseSkillToIncrease(payMoney) {
-            return {topic: 'skill.choose_skill', payMoney: payMoney}
+            return {topic: 'skill.chooseSkill', payMoney: payMoney}
         }
 
         /**
@@ -128,7 +128,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeShield(mode, level, amount) {
-            return {topic: 'skill.change_shield', mode: mode, level: level, amount: amount}
+            return {topic: 'skill.changeShield', mode: mode, level: level, amount: amount}
         }
 
         /**
@@ -137,11 +137,11 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeCurrentShield(mode, amount) {
-            return {topic: 'skill.change_currentshield', mode: mode, amount: amount}
+            return {topic: 'skill.changeCurrentShield', mode: mode, amount: amount}
         }
 
         static UpdateUI() {
-            return {topic: 'skill.update_ui'};
+            return {topic: 'skill.updateUI'};
         }
     }
 
@@ -275,7 +275,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static PlayBattleMonsterTheme() {
-            return {topic: 'music.battle_monster'}
+            return {topic: 'music.battleMonster'}
         }
     }
 

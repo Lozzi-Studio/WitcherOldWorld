@@ -20,7 +20,7 @@ export const player_skills = (() => {
         }
 
         InitComponent() {
-            this._RegisterHandler('skill.change_level', (msg) => {this.#ChangeLevel(msg)});
+            this._RegisterHandler('skill.changeLevel', (msg) => {this.#ChangeLevel(msg)});
         }
 
         /**
@@ -147,8 +147,8 @@ export const player_skills = (() => {
         }
 
         InitComponent() {
-            this._RegisterHandler('skill.change_shield', (msg) => {this.#ChangeShield(msg)});
-            this._RegisterHandler('skill.change_currentshield', (msg) => {this.#ChangeShield(msg)});
+            this._RegisterHandler('skill.changeShield', (msg) => {this.#ChangeShield(msg)});
+            this._RegisterHandler('skill.changeCurrentShield', (msg) => {this.#ChangeShield(msg)});
         }
 
         #ChangeShield(msg) {

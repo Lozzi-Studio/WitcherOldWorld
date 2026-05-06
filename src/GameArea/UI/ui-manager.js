@@ -18,9 +18,9 @@ export const ui_manager = (() => {
             this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateCurrentPlayerUI(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#SetPhaseOptions(msg)});
 
-            this._RegisterHandler("skill.choose_skill", (msg) => {this.#LoadSkillDecider(msg)});
+            this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
 
-            this._RegisterHandler('skill.update_ui', (msg) => {this.#UpdatePlayerStats(msg)});
+            this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
         }
 
         CardSlot0() {

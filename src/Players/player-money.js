@@ -11,7 +11,7 @@ export const player_money = (() => {
         }
 
         InitComponent() {
-            this._RegisterHandler('player.change_money', (msg) => {this.#ChangeMoney(msg)});
+            this._RegisterHandler('player.changeMoney', (msg) => {this.#ChangeMoney(msg)});
         }
 
 
