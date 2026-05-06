@@ -23,7 +23,7 @@ export const music_component = (() => {
             this.#maxVolume = 0.05;
             this.#currentVolumeTrack1 = this.#maxVolume;
             this.#currentVolumeTrack2 = 0;
-            this.#fadeDuration = 8;
+            this.#fadeDuration = 4;
         }
 
         InitComponent() {

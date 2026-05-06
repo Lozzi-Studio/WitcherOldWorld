@@ -116,10 +116,7 @@ class DemoThreeJS {
         console.log(player1.FindComponent("TrophyStorage").amount);
         this._entityManager.AddEntity(player2, "Player_2");
         this._entityManager.AddEntity(player3, "Player_3");
-        const testGameArea = new game_area_entity.GameArea();
-        this._entityManager.AddEntity(testGameArea, "GameArea");
-        testGameArea.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(player1));
-
+        this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(player1));
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
