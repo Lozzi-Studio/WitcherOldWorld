@@ -46,7 +46,7 @@ export const player_skills = (() => {
             switch(msg.mode) {
                 case "Increase":
                     if (msg.payMoney && skill?.maxAmount != skill?.level) {
-                        this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.PayMoney(skill.level + 1))
+                        this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(- (skill.level + 1)));
                     }
                     skill?.increaseLevel();
                     if (this.#combat.level > this.#witcher.level && this.#defense.level > this.#witcher.level && this.#alchemy.level > this.#witcher.level && this.#special.level > this.#witcher.level) {

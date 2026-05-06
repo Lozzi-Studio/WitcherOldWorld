@@ -53,7 +53,7 @@ export const player_options = (() => {
                     return "Schnelligkeit";
                 case "Baerenschule":
                     return "Ruestung";
-                case "Wolfschule":
+                case "Wolfsschule":
                     return "Schwertkunst";
                 case "Greifenschule":
                     return "Magie";
@@ -74,7 +74,7 @@ export const player_options = (() => {
                     return "Stygga";
                 case "Baerenschule":
                     return "Haern Caduch";
-                case "Wolfschule":
+                case "Wolfsschule":
                     return "Kaer Morhen";
                 case "Greifenschule":
                     return "Kaer Seren";
