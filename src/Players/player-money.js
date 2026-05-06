@@ -35,7 +35,6 @@ export const player_money = (() => {
             } else {
                 this.#amount = 0;
             }
-            console.log("Money was subtracted");
         }
 
         CanPay(costs) {

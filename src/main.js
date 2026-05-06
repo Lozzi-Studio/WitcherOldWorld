@@ -137,7 +137,6 @@ class DemoThreeJS {
         this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(-3));
         this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
         this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
-        console.log(this._entityManager.FindEntity("Player_2").FindComponent("MoneyStorage"));
 
 
         cameraEntity.Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());

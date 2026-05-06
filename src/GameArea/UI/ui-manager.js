@@ -255,14 +255,12 @@ export const ui_manager = (() => {
         }
 
         #SetPlayerMoney(msg) {
-            console.log("Money updated");
             const player = this.FindComponent("GameManager").currentPlayer;
             let playerMoney = player.FindComponent("MoneyStorage").amount;
             document.getElementById("money-amount").innerHTML = playerMoney;
         }
 
         #SetPlayerTrophies(msg) {
-            console.log("Trophies updated");
             const player = this.FindComponent("GameManager").currentPlayer;
             let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;

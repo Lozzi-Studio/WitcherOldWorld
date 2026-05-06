@@ -76,7 +76,6 @@ export const carddeck_component = (() => {
                     case "Potion":
                         if (this.#cardPotion.length < this.#cardPotionLimit) {
                             //TODO Draw Potion
-                            console.log("Draw Potion");
                         }
                 }
             }
