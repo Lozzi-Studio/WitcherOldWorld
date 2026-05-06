@@ -29,7 +29,7 @@ export const controls_component = (() => {
                 const selectedObject = intersections[0].object;
                 if (selectedObject.name.includes("Town")) {
                     console.log(this.FindEntity(selectedObject.name))
-                    this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)))   
+                    this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)));   
                 }
             }
         }
