@@ -72,9 +72,11 @@ export const game_manager = (() => {
             } else {
                 this.#selection.push(msg.card_slot);
                 if (this.#ValidateMove(this.#selectedTown)){
+                    // Schaut, ob der Spieler sich dort hinbewegen darf
                     const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
                     console.log(selectedCard);
                     if(selectedCard.region.equals(this.#selectedTown.region)){
+                        // Schaut, ob die ausgewählte Karte die richtige Region hat
                         console.log("Same Region yipee");
                         // TODO Player Moven
                         // TODO Karte discarden
@@ -90,8 +92,9 @@ export const game_manager = (() => {
             if(!town){
                 return false
             }
-            return town != this.#currentPlayer.town;
-            // TODO ist die selected town in den neighboring towns von der current town??
+
+            // Ist die selected town in den neighboring towns von der current town & ist der Spieler noch nicht auf dem Town?
+            return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town;
         }
 
         /**

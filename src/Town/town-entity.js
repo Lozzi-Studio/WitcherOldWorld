@@ -59,6 +59,10 @@ export const town_entity = (() => {
             return this.#region;
         }
 
+        get neighboringTowns(){
+            return this.#neighboringTowns;
+        }
+
 
     }
 

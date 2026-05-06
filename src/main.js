@@ -137,7 +137,7 @@ class DemoThreeJS {
 
         player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
         player1.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVertaerktesIgni(),"Hand"));
-        testGameArea.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this._entityManager.FindEntity("Town_1")));
+        testGameArea.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this._entityManager.FindEntity("Town_7")));
         testGameArea.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
 
 
