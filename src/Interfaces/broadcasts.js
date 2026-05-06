@@ -224,7 +224,7 @@ export const broadcasts = (() => {
          * 
          * @param {THREE.Vector3} position 
          * @param {THREE.Object3D} target 
-         * @returns 
+         * @returns {object}
          */
         static MoveTo(position, target) {
             return {topic: 'camera.moveTo', position: position, target: target}
@@ -233,14 +233,45 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {THREE.Object3D} target 
-         * @returns 
+         * @returns {object}
          */
         static FocusOn(target) {
             return {topic: 'camera.focusOn', target: target}
         }
 
+        /**
+         * 
+         * @returns {object}
+         */
         static StopFocus() {
             return {topic: 'camera.stopFocus'}
+        }
+    }
+
+    class BroadcastTemplateMusic {
+        
+        /**
+         * 
+         * @returns {object}
+         */
+        static PlayMainTheme() {
+            return {topic: 'music.main'}
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static PlayChaseTheme() {
+            return {topic: 'music.chase'}
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static PlayBattleMonsterTheme() {
+            return {topic: 'music.battle_monster'}
         }
     }
 
@@ -251,5 +282,6 @@ export const broadcasts = (() => {
         BroadcastTemplateGame : BroadcastTemplateGame,
         BroadcastTemplateTown : BroadcastTemplateTown,
         BroadcastTemplateCamera : BroadcastTemplateCamera,
+        BroadcastTemplateMusic: BroadcastTemplateMusic,
     }
 })();
