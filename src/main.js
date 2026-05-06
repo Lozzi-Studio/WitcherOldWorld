@@ -113,27 +113,32 @@ class DemoThreeJS {
         const player3 = new player_entity.Player("Lambert", player_options.WitcherSchool.Griffin(), 4);
         this._entityManager.AddEntity(player1, "Player_1");
         this._entityManager.AddEntity(new game_area_entity.GameArea(this._threejs, this._scene), "GameArea");
-        console.log(player1.FindComponent("TrophyStorage").amount);
-        player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
-        console.log(player1.FindComponent("TrophyStorage").amount);
         this._entityManager.AddEntity(player2, "Player_2");
         this._entityManager.AddEntity(player3, "Player_3");
+        
+        this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
         this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(player1));
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").combat.increaseLevel();
+        for (let i = 0; i < 4; i++) {
+            this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+        }
 
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").defense.increaseLevel();
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").defense.increaseLevel();
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").defense.increaseLevel();
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Combat(), "Increase", false));
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Combat(), "Increase", false));
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Combat(), "Increase", false));
 
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").alchemy.increaseLevel();
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").alchemy.increaseLevel();
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Defense(), "Increase", false));
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Defense(), "Increase", false));
 
-        this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").special.increaseLevel();
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Alchemy(), "Increase", false));
 
-        player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Special(), "Increase", false));
+
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 1));
+
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(-3));
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+        this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
 
 
         cameraEntity.Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());

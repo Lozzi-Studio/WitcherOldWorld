@@ -28,7 +28,7 @@ export const music_component = (() => {
 
         InitComponent() {
             this._RegisterHandler('music.main', (msg) => {this.#PlayMainTheme(msg);});
-            this._RegisterHandler('music.battle_monster', (msg) => {this.#PlayBattleMonsterTheme(msg);})
+            this._RegisterHandler('music.battleMonster', (msg) => {this.#PlayBattleMonsterTheme(msg);})
             this._RegisterHandler('music.chase', (msg) => {this.#PlayChaseTheme(msg);})
         }
 

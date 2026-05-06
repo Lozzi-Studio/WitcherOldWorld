@@ -1,4 +1,5 @@
 import { component } from "../Interfaces/component";
+import { broadcasts } from "../Interfaces/broadcasts";
 
 export const player_money = (() => {
     
@@ -11,17 +12,17 @@ export const player_money = (() => {
         }
 
         InitComponent() {
-            this._RegisterHandler('player.change_money', (msg) => {this.#ChangeMoney(msg)});
+            this._RegisterHandler('player.changeMoney', (msg) => {this.#ChangeMoney(msg)});
         }
 
 
         #ChangeMoney(msg) {
-            console.log("Amount: " + msg.amount);
             if (msg.amount > 0) {
                 this.Add(msg.amount);
             } else {
-                this.Subtract(msg.amount);
+                this.Subtract(Math.abs(msg.amount));
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateUI());
         }
 
         Add(amount) {

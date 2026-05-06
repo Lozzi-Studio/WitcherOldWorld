@@ -1,4 +1,5 @@
 import { component } from "../Interfaces/component";
+import { broadcasts } from "../Interfaces/broadcasts";
 
 export const player_trophies = (() => {
     
@@ -11,12 +12,13 @@ export const player_trophies = (() => {
         }
 
         InitComponent() {
-            this._RegisterHandler('player.add_trophy', (msg) => {this.#AddTrophy(msg)});
+            this._RegisterHandler('player.addTrophy', (msg) => {this.#AddTrophy(msg)});
         }
 
 
         #AddTrophy() {
             this.#amount += 1;
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateUI());
         }
 
         get amount(){
