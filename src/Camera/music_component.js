@@ -73,6 +73,7 @@ export const music_component = (() => {
                     this.#musicQueue[1].setVolume( this.#currentVolumeTrack2 );
                 }
                 if (this.#currentVolumeTrack1 < 0 && this.#currentVolumeTrack2 > this.#maxVolume) {
+                    this.#musicQueue[0].stop();
                     this.#musicQueue.splice(0,1);
                     this.#currentVolumeTrack1 = this.#maxVolume;
                     this.#currentVolumeTrack2 = 0;
