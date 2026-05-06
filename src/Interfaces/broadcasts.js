@@ -147,6 +147,10 @@ export const broadcasts = (() => {
             return {topic: 'skill.changeCurrentShield', mode: mode, amount: amount}
         }
 
+        /**
+         * 
+         * @returns {object}
+         */
         static UpdateUI() {
             return {topic: 'skill.updateUI'};
         }
@@ -224,6 +228,10 @@ export const broadcasts = (() => {
             return {topic: 'game.removeShop'}
         }
 
+        /**
+         * 
+         * @returns {object}
+         */
         static SwapoutCard() {
             return {topic: 'game.swapoutCard'}
         }
