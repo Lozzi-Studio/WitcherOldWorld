@@ -19,9 +19,8 @@ export const ui_manager = (() => {
             this._RegisterHandler("game.nextPhase", (msg) => {this.#SetPhaseOptions(msg)});
 
             this._RegisterHandler("skill.choose_skill", (msg) => {this.#LoadSkillDecider(msg)});
-            this._RegisterHandler('skill.change_shield', (msg) => {this.#UpdatePlayerStats(msg)});
-            this._RegisterHandler('skill.change_currentshield', (msg) => {this.#UpdatePlayerStats(msg)});
-            this._RegisterHandler('skill.change_level', (msg) => {this.#UpdatePlayerStats(msg)});
+
+            this._RegisterHandler('skill.update_ui', (msg) => {this.#UpdatePlayerStats(msg)});
         }
 
         CardSlot0() {
@@ -194,6 +193,7 @@ export const ui_manager = (() => {
                 phaseOptionTextbox.innerHTML = `PHASE-OPTION-${i}`;
                 document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
             }
+            this.#SetPhaseOptions(msg);
         }
 
         #SetPhaseOptions(msg) {
@@ -292,10 +292,6 @@ export const ui_manager = (() => {
 
         Update(timeElapsed) {
             const player = this.FindComponent("GameManager").currentPlayer;
-             // diese funktionen sollten später weniger oft gecalled werden
-            this.#SetPlayerSkills(player);
-            this.#SetPlayerShieldStatus(player);
-            this.#SetWitcherLevel(player);
             this.#SetPlayerMoney(player);
             this.#SetPlayerTrophies(player);
         }

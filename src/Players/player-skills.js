@@ -69,6 +69,7 @@ export const player_skills = (() => {
                     }
                     break;
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
         }
 
         get combat() {
@@ -181,6 +182,7 @@ export const player_skills = (() => {
                     }
                     break;
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
         }
 
         get amount() {
