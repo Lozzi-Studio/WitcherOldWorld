@@ -17,15 +17,6 @@ export const broadcasts = (() => {
         }
 
         /**
-         * @param {string} mode - Options: "Increase", "Decrease"
-         * @param {int} amount 
-         * @returns {object}
-         */
-        static ChangeShield(mode, amount) {
-            return {topic: 'player.change_shield', mode: mode, amount: amount}
-        }
-
-        /**
          * @param {town_entity.TownEntity} town 
          * @param {THREE.Vector3} position 
          * @returns {object}
