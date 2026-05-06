@@ -1,4 +1,5 @@
 import { entity } from "../Interfaces/entity";
+import { music_component } from "./music_component";
 import { camera_position } from "./camera_position";
 import * as THREE from 'three';
 
@@ -23,6 +24,7 @@ export const camera_entity = (() => {
 
         InitComponents() {
             this.AddComponent(new camera_position.CameraPosition());
+            this.AddComponent(new music_component.MusicComponent(this.#camera));
         }
 
         get camera() {

@@ -179,7 +179,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getWuchtschlag(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Wutchschlag",
                 card_options.Color.Red(),
                 comboOptions,
@@ -195,7 +195,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getVerstaerktesAxii(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Axii",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -212,7 +212,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getVerstaerktesYrden(comboOptions, region) {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Yrden",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -228,7 +228,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getMagiefalle(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Magiefalle",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -245,7 +245,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getVerstaerktesQwen(comboOptions, region) {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Qwen",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -262,7 +262,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getExplosiverSchild(comboOptions, region) {
-            return card.Card(
+            return new card.Card(
                 "Explosiver Schild",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -278,7 +278,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getVerstaerktesAard(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Aard",
                 card_options.Color.Purple(),
                 comboOptions,
@@ -293,7 +293,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getVertaerktesIgni() {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Igni",
                 card_options.Color.Purple(),
                 new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],
@@ -312,7 +312,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getRuestungSchmelzen(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Rüstung Schmelzen",
                 card_options.Color.Purple(),
                 comboOptions,
@@ -328,7 +328,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getSchockwelle(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Schockwelle",
                 card_options.Color.Purple(),
                 comboOptions,
@@ -344,7 +344,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getFeuerstrahl(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Feuerstrahl",
                 card_options.Color.Purple(),
                 comboOptions,
