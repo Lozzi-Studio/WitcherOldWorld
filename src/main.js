@@ -139,9 +139,11 @@ class DemoThreeJS {
         //cameraEntity.Broadcast(broadcasts.BroadcastTemplateMusic.PlayChaseTheme());
         //cameraEntity.Broadcast(broadcasts.BroadcastTemplateMusic.PlayBattleMonsterTheme());
         
-        player1.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVertaerktesIgni(),"Hand"));
-        testGameArea.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this._entityManager.FindEntity("Town_7")));
-        testGameArea.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
+
+        //Luca's testing area :3
+        player1.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesQwen({},region.Region.Forest()),"Hand"));
+        this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this._entityManager.FindEntity("Town_7")));
+        this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
 
 
         this._previousRAF = null;
