@@ -5,15 +5,19 @@ export const ui_manager = (() => {
 
     class UIManager extends component.Component {
         #maxSkillLevel;
+        #numberOfPhaseOptions;
 
         constructor() {
             super();
             this.#maxSkillLevel = 5;
-            this.#InitPlayerSkills();
+            this.#numberOfPhaseOptions = 3;
         }
 
         InitComponent() {
-            this._RegisterHandler("game.nextTurn", (msg) => (this.#UpdateCurrentPlayerUI(msg)));
+            this._RegisterHandler('game.start', (msg) => {this.#InitUI(msg)});
+            this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateCurrentPlayerUI(msg)});
+            this._RegisterHandler("game.nextPhase", (msg) => {this.#SetPhaseOptions(msg)});
+
             this._RegisterHandler("skill.choose_skill", (msg) => {this.#LoadSkillDecider(msg)});
             this._RegisterHandler('skill.change_shield', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('skill.change_currentshield', (msg) => {this.#UpdatePlayerStats(msg)});
@@ -101,6 +105,10 @@ export const ui_manager = (() => {
             return path;
         }
 
+        #SetPlayerAvatar(player) {
+            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(player);
+        }
+
         #CreateSkillBoxes(skillName) {
             let containerName = `${skillName}-lvl`
             const container = document.getElementById(containerName);
@@ -166,6 +174,7 @@ export const ui_manager = (() => {
         }
 
         #SetPlayerAvatarsStatus(playerList, currentPlayerId) {
+            console.log(currentPlayerId);
             for (const [i, player] of playerList.entries()) {
                 let playerId = i+1;
                 if (playerId == currentPlayerId) {
@@ -177,12 +186,21 @@ export const ui_manager = (() => {
             }
         }
 
-        #InitPhaseOptions(phase) {
-            let numberOfOptions;
+        #InitPhaseOptions(msg) {
+            for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
+                var phaseOptionTextbox = document.createElement("div");
+                phaseOptionTextbox.classList.add("textbox", "textbox--fill");
+                phaseOptionTextbox.id = `phase-option-text-${i}`;
+                phaseOptionTextbox.innerHTML = `PHASE-OPTION-${i}`;
+                document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
+            }
+        }
+
+        #SetPhaseOptions(msg) {
+            const phase = this.FindComponent("GameManager").phase.toIdentifier();
             let phaseOptionTexts = [];
             switch (phase) {
                 case 1:
-                    numberOfOptions = 3;
                     phaseOptionTexts = [
                         "Bewege deine Figur zu einem Feld",
                         "Führe die Ortsaktion aus (optional)",
@@ -190,7 +208,6 @@ export const ui_manager = (() => {
                     ];
                     break;
                 case 2:
-                    numberOfOptions = 3;
                     phaseOptionTexts = [
                         "Kämpfe gegen ein Monster oder einen Hexer",
                         "Meditiere",
@@ -198,7 +215,6 @@ export const ui_manager = (() => {
                     ];
                     break;
                 case 3:
-                    numberOfOptions = 3;
                     phaseOptionTexts = [
                         "Lege Karten ab (optional)",
                         "Ziehe Karten, bis du wieder drei Handkarten hast",
@@ -206,12 +222,11 @@ export const ui_manager = (() => {
                     ];
                     break;
             }
-            for (let i = 0; i < numberOfOptions; i++) {
-                var phaseOptionTextbox = document.createElement("div");
-                phaseOptionTextbox.classList.add("textbox", "textbox--fill");
-                phaseOptionTextbox.innerHTML = phaseOptionTexts[i];
-                document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
+            for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
+                document.getElementById(`phase-option-text-${i}`).innerHTML = phaseOptionTexts[i];
             }
+
+            document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
 
         #InitPlayerShield() {
@@ -249,28 +264,23 @@ export const ui_manager = (() => {
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
 
-        /**
-         * 
-         * @param {int} phase 
-         */
-        #SetPhaseText(phase) {
-            document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
+        #InitUI(msg) {
+            this.#InitPlayerShield();
+            this.#InitPlayerSkills();
+            this.#InitPhaseOptions();
+
+            const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
+            this.#InitPlayerAvatars(playerList);
         }
 
         #UpdateCurrentPlayerUI(msg) {
             this.#SetPlayerInfo(msg.nextPlayer);
-            this.#InitPlayerShield();
-            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.nextPlayer);
-            
+            this.#SetPlayerAvatar(msg.nextPlayer);
+            this.#UpdatePlayerStats(msg.nextPlayer);
+        
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
-            this.#InitPlayerAvatars(playerList);
-
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
-
-            const phase = this.FindComponent("GameManager").phase.toIdentifier();
-            this.#InitPhaseOptions(phase);
-            this.#SetPhaseText(phase); // sollte später mal öfter gecalled werden
         }
 
         #UpdatePlayerStats(msg) {

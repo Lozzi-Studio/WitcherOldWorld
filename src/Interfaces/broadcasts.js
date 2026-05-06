@@ -170,6 +170,15 @@ export const broadcasts = (() => {
 
 
     class BroadcastTemplateGame {
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static StartGame() {
+            return {topic: 'game.start'};
+        }
+
         /**
          * 
          * @returns {object}
