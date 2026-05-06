@@ -10,15 +10,17 @@ export const town_properties = (() => {
 
         #ability;
         #region;
+        #neighboringTowns;
 
         /**
          * @param {town_options.TownAbility} ability  
          * @param {region.Region} region
          */
-        constructor(ability, region) {
+        constructor(ability, region, neighboringTowns) {
             super();
             this.#ability = ability;
             this.#region = region;
+            this.#neighboringTowns = neighboringTowns;
 
         }
 

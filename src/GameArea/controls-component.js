@@ -5,7 +5,7 @@ import { broadcasts } from '../Interfaces/broadcasts';
 export const controls_component = (() => {
 
     class Controls extends component.Component {
-
+        
         constructor() {
             super();
         }

@@ -6,7 +6,6 @@ import { player_options } from "./player-options";
 import { player_position } from "./player-position";
 import { player_skills } from "./player-skills";
 import { player_trophies } from "./player-trophies";
-import { player_controller } from "./player-controller";
 
 export const player_entity = (() => {
 
@@ -63,7 +62,6 @@ export const player_entity = (() => {
             this.AddComponent(new player_money.MoneyStorage(this.#initialMoney));
             this.AddComponent(new player_destination_tracker.PlayerTracker());
             this.AddComponent(new player_trophies.TrophyStorage());
-            this.AddComponent(new player_controller.PlayerController());
         }
 
         /**

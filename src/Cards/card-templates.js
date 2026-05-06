@@ -293,7 +293,7 @@ export const cards = (() => {
          * @returns {object}
          */
         static getVertaerktesIgni() {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Igni",
                 card_options.Color.Purple(),
                 new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],

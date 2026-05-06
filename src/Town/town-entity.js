@@ -15,6 +15,7 @@ export const town_entity = (() => {
         #position;
         #region;
         #size;
+        #neighboringTowns;
 
         /**
          * 
@@ -24,8 +25,9 @@ export const town_entity = (() => {
          * @param {THREE.Vector3} position 
          * @param {region.Region} region 
          * @param {THREE.Vector3} size 
+         * @param {Array<int>} neighboringTowns
          */
-        constructor(id, town_name, ability, position, region, size) {
+        constructor(id, town_name, ability, position, region, size, neighboringTowns) {
             super();
             this.#id = id;
             this.#town_name = town_name;
@@ -33,10 +35,11 @@ export const town_entity = (() => {
             this.#position = position;
             this.#region = region;
             this.#size = size;
+            this.#neighboringTowns = neighboringTowns;
         }
 
         InitComponents() {
-            this.AddComponent(new town_properties.TownProperties(this.#ability, this.#region));
+            this.AddComponent(new town_properties.TownProperties(this.#ability, this.#region,this.#neighboringTowns));
             this.AddComponent(new hitbox_component.CubicHitbox(this.#position, "Town_" + this.#id, this.#size));
         }
 

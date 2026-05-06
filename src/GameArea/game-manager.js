@@ -8,6 +8,7 @@ export const game_manager = (() => {
         #currentPlayerId;
         #currentPlayer;
         #selection;
+        #selectedTown;
         
 
         constructor() {
@@ -16,6 +17,7 @@ export const game_manager = (() => {
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
+            this.#selectedTown = null;
         }
 
         InitComponent() {
@@ -69,7 +71,27 @@ export const game_manager = (() => {
                 this.#selection.splice(this.#selection.findIndex(msg.card_slot),1)
             } else {
                 this.#selection.push(msg.card_slot);
+                if (this.#ValidateMove(this.#selectedTown)){
+                    const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
+                    console.log(selectedCard);
+                    if(selectedCard.region.equals(this.#selectedTown.region)){
+                        console.log("Same Region yipee");
+                        // TODO Player Moven
+                        // TODO Karte discarden
+                        // Ganz am Ende alles resetten
+                        this.#selection = [];
+                        this.#selectedTown = null;
+                    }
+                }
             }
+        }
+
+        #ValidateMove(town){
+            if(!town){
+                return false
+            }
+            return town != this.#currentPlayer.town;
+            // TODO ist die selected town in den neighboring towns von der current town??
         }
 
         /**
@@ -80,6 +102,7 @@ export const game_manager = (() => {
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
                     console.log("Town UI");
+                    this.#selectedTown = msg.town;
                     break;
                 default:
                     break;
