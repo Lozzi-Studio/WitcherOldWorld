@@ -18,6 +18,8 @@ export const game_area_entity = (() => {
 
         constructor() {
             super();
+            
+
         }
 
         InitComponents() {
