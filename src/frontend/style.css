@@ -20,19 +20,19 @@ body {
     'FILL' 1;
 }
 
-.theme--color {
-  --color-bg: rgba(59, 55, 49, 0.70);
-  --color-border: rgba(233, 225, 213, 1.00);
-  --color-primary: rgba(219, 218, 213, 1.00);
-  --color-secondary: rgba(61, 59, 55, 1.00);
-}
+/* .theme--color {
+    --color-bg: rgba(59, 55, 49, 0.70);
+    --color-border: rgba(233, 225, 213, 1.00);
+    --color-primary: rgba(219, 218, 213, 1.00);
+    --color-secondary: rgba(61, 59, 55, 1.00);
+    --color-primary-inactive: rgba(219, 218, 213, 0.40);
+} */
 
 .theme--player1 {
   --color-bg: rgba(66, 46, 14, 0.70);
   --color-border: rgba(170, 141, 94, 1.00);
   --color-primary: rgba(240, 210, 164, 1.00);
   --color-secondary: rgba(61, 47, 22, 1.00);
-  --color-primary-inactive: rgba(208, 201, 177, 0.40);
 }
 
 .theme--player2 {
@@ -59,9 +59,11 @@ body {
 :root {
   --color-bg: rgba(59, 55, 49, 0.70);
   --color-border: rgba(233, 225, 213, 1.00);
-  --color-primary: rgba(219, 218, 213, 1.00);
+  --color-primary: rgb(215, 213, 206);
   --color-secondary: rgba(61, 59, 55, 1.00);
-  --color-primary-inactive: rgba(219, 218, 213, 0.4);
+  --color-primary-inactive: rgba(219, 218, 213, 0.5);
+  --color-button-border: rgba(132, 126, 116, 1.00);
+  --color-hover: #ffffff;
 }
 
 p, div {
@@ -244,6 +246,18 @@ p, div {
 .--fancy-font {
     font-family: Gwent;
     margin-bottom: -3px;
+}
+
+.button {
+    border-width: 0px 0px 3px 0px;
+    border-color: var(--color-button-border);
+    border-style: solid;
+    font-weight: 700;
+}
+
+.button:hover {
+    cursor: url("../../resources/assets/cursor/pointer-48.png"), pointer;
+    background-color: var(--color-hover);
 }
 
 #player-name {

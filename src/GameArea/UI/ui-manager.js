@@ -330,6 +330,8 @@ export const ui_manager = (() => {
             this.#SetWitcherLevel(player);
             this.#SetPlayerMoney(player);
             this.#SetPlayerTrophies(player);
+
+            document.getElementById("button-move").onclick = function(){console.log("Move-Button geklickt")};
         }
 
         #LoadSkillDecider(msg) {
