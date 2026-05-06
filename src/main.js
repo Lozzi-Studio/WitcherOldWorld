@@ -17,6 +17,7 @@ import { town_options } from './Town/town-options.js';
 import { Vector3 } from 'three';
 import { region } from './GameArea/region.js';
 import { player_skills } from './Players/player-skills.js';
+import { player_figure } from './Players/player-figure.js';
 
 //architecture style inspired by simondev (youtube)
 //https://github.com/simondevyoutube/Quick_3D_RPG

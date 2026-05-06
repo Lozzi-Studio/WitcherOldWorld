@@ -34,7 +34,6 @@ export const player_entity = (() => {
         }
 
         InitComponents() {
-            this.AddComponent(new player_figure.PlayerFigure(this.#witcherSchool.color));
             let homeTown = null;
             switch (this.#homeTownPosition) {
                 case "Gorthur Guaed":
@@ -64,6 +63,7 @@ export const player_entity = (() => {
             this.AddComponent(new player_money.MoneyStorage(this.#initialMoney));
             this.AddComponent(new player_destination_tracker.PlayerTracker());
             this.AddComponent(new player_trophies.TrophyStorage());
+            this.AddComponent(new player_figure.PlayerFigure(this.#witcherSchool.color, this.#homeTownPosition.position));
         }
 
         /**

@@ -7,15 +7,18 @@ export const player_figure = (() =>{
     class PlayerFigure extends component.Component {
         #mesh;
         #color;
+        #startPosition;
 
         /**
          * 
-         * @param {*} color 
+         * @param {*} color
+         * @param {*} startPosition startposition des Spielers 
          */
-        constructor(color) {
+        constructor(color, startPosition) {
             super();
             this.#color = color;
             this.#mesh = null;
+            this.#startPosition = startPosition;
         }
         
         InitComponent(){
@@ -26,17 +29,20 @@ export const player_figure = (() =>{
                     if (child.isMesh) {
                         child.material = child.material.clone();
                         child.material.color.set(this.#color);
+                        this.#mesh = child;
                     }
                 });
                 this.#mesh = glb.scene;
+                this.#mesh.position.copy(this.#startPosition);
                 this._parent._parent.scene.add(this.#mesh);
             });
-        
         }
+
         #OnPlayerMove(msg) {
             if (!this.#mesh) return;
             this.#mesh.position.copy(msg.position);
         }
+
 
         get mesh() {
             return this.#mesh;
