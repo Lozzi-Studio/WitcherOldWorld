@@ -43,6 +43,13 @@ export const broadcasts = (() => {
         static AddTrophy() {
             return {topic: 'player.addTrophy'}
         }
+
+        /**
+         * @returns {object}
+         */
+        static UpdateUI() {
+            return {topic: 'player.updateUI'};
+        }
     }
 
     class BroadcastTemplateCards {

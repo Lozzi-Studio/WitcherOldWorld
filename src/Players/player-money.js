@@ -1,4 +1,5 @@
 import { component } from "../Interfaces/component";
+import { broadcasts } from "../Interfaces/broadcasts";
 
 export const player_money = (() => {
     
@@ -16,12 +17,12 @@ export const player_money = (() => {
 
 
         #ChangeMoney(msg) {
-            console.log("Amount: " + msg.amount);
             if (msg.amount > 0) {
                 this.Add(msg.amount);
             } else {
                 this.Subtract(msg.amount);
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateUI());
         }
 
         Add(amount) {
@@ -34,6 +35,7 @@ export const player_money = (() => {
             } else {
                 this.#amount = 0;
             }
+            console.log("Money was subtracted");
         }
 
         CanPay(costs) {

@@ -60,7 +60,6 @@ export const carddeck_component = (() => {
          * @param {object} msg 
          */
         #DrawCard(msg){
-            console.log(msg.amount)
             for (let i = 0; i < msg.amount; i++) {
                 switch (msg.mode) {
                     case "Deck":

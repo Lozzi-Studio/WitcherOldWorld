@@ -15,12 +15,13 @@ export const ui_manager = (() => {
 
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => {this.#InitUI(msg)});
-            this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateCurrentPlayerUI(msg)});
+            this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateUIAfterPlayerSwitch(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#SetPhaseOptions(msg)});
 
-            this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
-
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
+            this._RegisterHandler('player.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
+            
+            this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
         }
 
         CardSlot0() {
@@ -173,7 +174,6 @@ export const ui_manager = (() => {
         }
 
         #SetPlayerAvatarsStatus(playerList, currentPlayerId) {
-            console.log(currentPlayerId);
             for (const [i, player] of playerList.entries()) {
                 let playerId = i+1;
                 if (playerId == currentPlayerId) {
@@ -254,12 +254,16 @@ export const ui_manager = (() => {
             }
         }
 
-        #SetPlayerMoney(player) {
+        #SetPlayerMoney(msg) {
+            console.log("Money updated");
+            const player = this.FindComponent("GameManager").currentPlayer;
             let playerMoney = player.FindComponent("MoneyStorage").amount;
             document.getElementById("money-amount").innerHTML = playerMoney;
         }
 
-        #SetPlayerTrophies(player) {
+        #SetPlayerTrophies(msg) {
+            console.log("Trophies updated");
+            const player = this.FindComponent("GameManager").currentPlayer;
             let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
@@ -273,7 +277,7 @@ export const ui_manager = (() => {
             this.#InitPlayerAvatars(playerList);
         }
 
-        #UpdateCurrentPlayerUI(msg) {
+        #UpdateUIAfterPlayerSwitch(msg) {
             this.#SetPlayerInfo(msg.nextPlayer);
             this.#SetPlayerAvatar(msg.nextPlayer);
             this.#UpdatePlayerStats(msg.nextPlayer);
@@ -288,12 +292,12 @@ export const ui_manager = (() => {
             this.#SetPlayerSkills(player);
             this.#SetPlayerShieldStatus(player);
             this.#SetWitcherLevel(player);
+            this.#SetPlayerMoney(player);
+            this.#SetPlayerTrophies(player);
         }
 
         Update(timeElapsed) {
-            const player = this.FindComponent("GameManager").currentPlayer;
-            this.#SetPlayerMoney(player);
-            this.#SetPlayerTrophies(player);
+
         }
 
         #LoadSkillDecider(msg) {
