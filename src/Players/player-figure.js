@@ -29,7 +29,7 @@ export const player_figure = (() =>{
                     }
                 });
                 this.#mesh = glb.scene;
-                this.FindEntity("GameArea").scene.add(glb.scene);
+                this._parent._parent.scene.add(this.#mesh);
             });
         
         }

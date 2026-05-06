@@ -136,13 +136,6 @@ class DemoThreeJS {
         this._entityManager.FindEntity("Player_1").FindComponent("PlayerSkills").special.increaseLevel();
 
         player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
-        
-
-
-        this._entityManager.AddEntity(new game_area_entity.GameArea(this._scene), "GameArea");
-        const player1 = new player_entity.Player("Janik", player_options.WitcherSchool.Cat());
-        this._entityManager.AddEntity(player1, "Player_1");
-
 
         this._previousRAF = null;
         this._RAF();
