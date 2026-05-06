@@ -148,6 +148,10 @@ export const broadcasts = (() => {
         static ChangeCurrentShield(mode, amount) {
             return {topic: 'skill.change_currentshield', mode: mode, amount: amount}
         }
+
+        static UpdateUI() {
+            return {topic: 'skill.update_ui'};
+        }
     }
 
     class BroadcastTemplateTown {
