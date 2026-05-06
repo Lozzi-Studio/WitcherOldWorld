@@ -61,6 +61,11 @@ export const ui_manager = (() => {
             this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
         }
 
+        /**
+         * 
+         * @param {string} string 
+         * @returns {string}
+         */
         #ReplaceUmlaute(string) {
             if (string.includes("ae")) {
                 string = string.replace("ae", "&auml;");
@@ -75,6 +80,10 @@ export const ui_manager = (() => {
             return string;
         }
 
+        /**
+         * 
+         * @param {player_entity.Player} player 
+         */
         #SetPlayerInfo(player) {
             let name = player.playerName.toUpperCase();
             let school = player.witcherSchool.name;
@@ -83,6 +92,10 @@ export const ui_manager = (() => {
             document.getElementById("player-name").innerHTML = this.#ReplaceUmlaute(name);
         }
 
+        /**
+         * 
+         * @param {player_entity.Player} player 
+         */
         #GetAvatarPathFromPlayer(player) {
             let path = ""
             switch(player.witcherSchool.name){
@@ -105,10 +118,18 @@ export const ui_manager = (() => {
             return path;
         }
 
+        /**
+         * 
+         * @param {player_entity.Player} player 
+         */
         #SetPlayerAvatar(player) {
             document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(player);
         }
 
+        /**
+         * 
+         * @param {string} skillName 
+         */
         #CreateSkillBoxes(skillName) {
             let containerName = `${skillName}-lvl`
             const container = document.getElementById(containerName);
@@ -121,6 +142,9 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * 
+         */
         #InitPlayerSkills() {
             let skills = ["combat", "defense", "alchemy", "special"];
             for (const skill of skills) {
@@ -128,6 +152,10 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {player_entity.Player} player 
+         */
         #SetPlayerSkills(player) {
             for (const skill of [player.FindComponent("PlayerSkills").combat, player.FindComponent("PlayerSkills").defense, player.FindComponent("PlayerSkills").alchemy, player.FindComponent("PlayerSkills").special]) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
@@ -144,10 +172,19 @@ export const ui_manager = (() => {
             
         }
 
+        /**
+         * 
+         * @param {player_entity.Player} player 
+         */
         #SetWitcherLevel(player) {
             document.getElementById("witcher-level").innerHTML = player.FindComponent("PlayerSkills").witcher.level;
         }
         
+        /**
+         * 
+         * @param {int} id 
+         * @returns 
+         */
         #CreateAvatarContainer(id) {
             var avatarContainer = document.createElement("div");
             avatarContainer.id = `avatar-container-${id}`;
@@ -173,6 +210,11 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {array} playerList 
+         * @param {int} currentPlayerId 
+         */
         #SetPlayerAvatarsStatus(playerList, currentPlayerId) {
             for (const [i, player] of playerList.entries()) {
                 let playerId = i+1;
@@ -185,6 +227,10 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #InitPhaseOptions(msg) {
             for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
                 var phaseOptionTextbox = document.createElement("div");
@@ -196,6 +242,10 @@ export const ui_manager = (() => {
             this.#SetPhaseOptions(msg);
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #SetPhaseOptions(msg) {
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
             let phaseOptionTexts = [];
@@ -229,6 +279,9 @@ export const ui_manager = (() => {
             document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
 
+        /**
+         * 
+         */
         #InitPlayerShield() {
             let maxShield = 5;
             for (let i = 0; i < maxShield; i++) {
@@ -240,6 +293,10 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {player_entity.Player} player 
+         */
         #SetPlayerShieldStatus(player) {
             let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
             let shieldPoints = player.FindComponent("Shield").amount;
@@ -254,18 +311,30 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #SetPlayerMoney(msg) {
             const player = this.FindComponent("GameManager").currentPlayer;
             let playerMoney = player.FindComponent("MoneyStorage").amount;
             document.getElementById("money-amount").innerHTML = playerMoney;
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #SetPlayerTrophies(msg) {
             const player = this.FindComponent("GameManager").currentPlayer;
             let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #InitUI(msg) {
             this.#InitPlayerShield();
             this.#InitPlayerSkills();
@@ -275,6 +344,10 @@ export const ui_manager = (() => {
             this.#InitPlayerAvatars(playerList);
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #UpdateUIAfterPlayerSwitch(msg) {
             this.#SetPlayerInfo(msg.nextPlayer);
             this.#SetPlayerAvatar(msg.nextPlayer);
@@ -285,6 +358,10 @@ export const ui_manager = (() => {
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #UpdatePlayerStats(msg) {
             const player = this.FindComponent("GameManager").currentPlayer;
             this.#SetPlayerSkills(player);
@@ -298,6 +375,10 @@ export const ui_manager = (() => {
 
         }
 
+        /**
+         * 
+         * @param {object} msg 
+         */
         #LoadSkillDecider(msg) {
             //TODO
             console.log("Choose A Skill!")
