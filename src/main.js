@@ -141,7 +141,7 @@ class DemoThreeJS {
         this._entityManager.FindEntity("Player_2").Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
 
 
-        cameraEntity.Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
+        //cameraEntity.Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
         //cameraEntity.Broadcast(broadcasts.BroadcastTemplateMusic.PlayChaseTheme());
         //cameraEntity.Broadcast(broadcasts.BroadcastTemplateMusic.PlayBattleMonsterTheme());
         
