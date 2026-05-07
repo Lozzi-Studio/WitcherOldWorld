@@ -18,6 +18,8 @@ import { Vector3 } from 'three';
 import { region } from './GameArea/region.js';
 import { player_skills } from './Players/player-skills.js';
 import { player_figure } from './Players/player-figure.js';
+import { scene_manager } from './Interfaces/scene-manager.js';
+import { game } from './Scenes/game.js';
 
 //architecture style inspired by simondev (youtube)
 //https://github.com/simondevyoutube/Quick_3D_RPG
@@ -181,46 +183,25 @@ class DemoThreeJS {
 }
 
 
-class DemoBackend {
+class DemoGame{
+    #sceneManager;
+
     constructor() {
         this.#Initialized()
     }
 
     #Initialized(){
 
-        this._threejs = new THREE.WebGLRenderer({
-            antialias: true,
-        });
-        this._threejs.setPixelRatio(window.devicePixelRatio);
-        this._threejs.setSize(window.innerWidth, window.innerHeight);
-        this._threejs.domElement.id = 'threejs';
-
-        document.body.appendChild(this._threejs.domElement);
-
-        const entityManager = new entity_manager.EntityManager();
-        const player1 = new player_entity.Player("Janik", player_options.WitcherSchool.Cat());
-        entityManager.AddEntity(player1, "Player_1");
-        const gameArea = new game_area_entity.GameArea();
-        entityManager.AddEntity(gameArea, "GameArea");
-        gameArea.Broadcast(broadcasts.BroadcastTemplateGame.nextPhase());
-        gameArea.FindComponent("UIManager").cardSlot1();
-        player1.Broadcast(broadcasts.BroadcastTemplateCards
-            .AddCard(cards.CardTemplates
-                .getDrehungMountain(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])), "Hand"));
-        player1.Broadcast(broadcasts.BroadcastTemplateCards
-            .AddCard(cards.CardTemplates
-                .getVerchnichtenderSchlag(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)],[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])), "Hand"));
-        gameArea.FindComponent("UIManager").selectArdModron();
-        console.log(player1.FindComponent("PlayerSkills").combat);
-        gameArea.FindComponent("UIManager").selectArdModron();
-        console.log(player1.FindComponent("PlayerSkills").combat);
+        this.#sceneManager = new scene_manager.SceneManager();
+        this.#sceneManager.AddScene(new game.GameScene);
+        this.#sceneManager.SwitchScene("GameScene");
     }
 }
 
 let _APP = null;
 
 window.addEventListener('DOMContentLoaded', () => {
-  _APP = new DemoThreeJS();
+  _APP = new DemoGame();
 });
 
 

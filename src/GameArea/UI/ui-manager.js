@@ -56,10 +56,6 @@ export const ui_manager = (() => {
             this.Broadcast(broadcasts.BroadcastTemplateCards.PlayerNextPhase());
         }
 
-        //TODO remove when raycasting on towns is working - ONLY TEST PURPOSE
-        SelectArdModron() {
-            this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
-        }
 
         /**
          * 
@@ -342,6 +338,7 @@ export const ui_manager = (() => {
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
+            this.#UpdateUIAfterPlayerSwitch(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
         }
 
         /**

@@ -7,20 +7,10 @@ export const entity_manager = (() => {
         #renderer;
 
         constructor(scene, renderer) {
-            this._ids = 0;
             this._entitiesMap = {};
             this._entities = [];
             this.#scene = scene;
             this.#renderer = renderer;
-        }
-
-        /**
-         * 
-         * @returns {string}
-         */
-        _GenerateName() {
-            this._ids += 1;
-            return '__name__' + this._ids;
         }
 
         /**
@@ -43,7 +33,7 @@ export const entity_manager = (() => {
          */
         AddEntity(entity,name) {
             if (!name) {
-                name = this._GenerateName();
+                name = entity.constructor.name;
             }
 
             this._entitiesMap[name] = entity;
@@ -96,12 +86,28 @@ export const entity_manager = (() => {
             }
         }
 
+        SwapScene(name){
+            this.#scene.SwapScene(name);
+        }
+
         get renderer() {
             return this.#renderer;
         }
 
         get scene() {
-            return this.#scene;
+            return this.#scene.scene;
+        }
+
+        getEntities() {
+            return {list: this._entities, map: this._entitiesMap}
+        }
+
+        setEntities(newEntities) {
+            this._entities = newEntities.list;
+            this._entitiesMap = newEntities.map;
+            for (let e in this._entitiesMap){
+                e.parent = this;
+            }
         }
     }
 

@@ -1,21 +1,17 @@
 import * as THREE from 'three'
-import { component } from './component';
+import { entity_manager } from './entity-manager';
 
 export const scene = (() => {
 
-    class Scene extends component.Component{
-        #scene;
-        #renderer;
-        #entityManager;
-        #parent;
-        #controls;
+    class Scene {
 
-        constructor(renderer){
-            this.#scene = new THREE.Scene();
-            this.#renderer = renderer;
-            this.#entityManager = new entity_manager.EntityManager(this.#scene, renderer);
-            this.#parent = null;
-            this.InitControls();
+        constructor(){
+            this._scene = new THREE.Scene();
+
+            this._renderer = null;
+            this._parent = null;
+            this._camera = null;   
+            this._controls = null;
         }
 
         InitControls() {}
@@ -23,28 +19,41 @@ export const scene = (() => {
         InitSceneEntities(){}
 
         Update(timeElapsed) {
-            this.#entityManager.Update(timeElapsed);
-            this.#controls.update();
+            this._entityManager.Update(timeElapsed);
+            this._controls.update();
         }
 
         SwitchScene(name){
-            this.parent?.SwitchScene(name);
+            this._parent?.SwitchScene(name);
         }
 
         get scene(){
-            return this.#scene;
+            return this._scene;
         }
 
         get parent() {
-            return this.#parent;
+            return this._parent;
         }
 
         set parent(newParent) {
-            this.#parent = newParent;
+            this._parent = newParent;
         }
 
         set renderer(newRenderer) {
-            this.#renderer = newRenderer;
+            this._renderer = newRenderer;
+            const oldManager = this._entityManager;
+            this._entityManager = new entity_manager.EntityManager(this, newRenderer);
+            if (oldManager){
+                this._entityManager.setEntities(oldManager.getEntities());
+            }
+        }
+
+        set camera(newCamera) {
+            this._camera = newCamera;
+        }
+
+        set controls(newControls) {
+            this._controls = newControls;
         }
     }
 

@@ -1,32 +1,28 @@
 import * as THREE from 'three'
-import { entity } from './entity';
+import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 export const scene_manager = (() => {
 
-    class SceneManager extends entity.Entity {
+    class SceneManager{
         #scenes;
-        #renderer;
-        #currentScene;
-        #currentCamera;
-
-        #previousRAF;
+        #controls;
 
         constructor() {
             this.#scenes = new Map();
-            this.#renderer = null;
-            this.#currentScene = null;
-            this.#currentCamera = null;
+            this._threejs = null;
+            this._currentScene = null;
+            this._currentCamera = null;
+            this.#controls = null;
 
-            this.#previousRAF = null;
-        }
-
-        InitComponents() {
+            this._previousRAF = null;
             this.#InitThreeJS();
             this.#InitCamera();
+            this.#RAF();
         }
 
+
         #InitThreeJS() {
-            this.#renderer = new THREE.WebGLRenderer({
+            this._threejs = new THREE.WebGLRenderer({
                 antialias: true,
             });
             this._threejs.outputEncoding = THREE.sRGBEncoding;
@@ -37,11 +33,14 @@ export const scene_manager = (() => {
             this._threejs.setSize(window.innerWidth, window.innerHeight);
             this._threejs.domElement.id = 'threejs';
 
+            
             document.body.appendChild(this._threejs.domElement);
+
 
             window.addEventListener('resize', () => {
                 this.#OnWindowResize();
             }, false);
+
         }
 
         #InitCamera() {
@@ -49,15 +48,16 @@ export const scene_manager = (() => {
             const aspect = 1920 / 1080;
             const near = 1.0;
             const far = 10000.0;
-            this.#currentCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-            this.#currentCamera.position.set(25, 10, 50);
-            this.#currentCamera.rotation.x = -Math.PI / 4;
+            this._currentCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+            this._currentCamera.position.set(0,50,50);
+            this._currentCamera.rotation.x = -Math.PI / 4;
+            this.#controls = new OrbitControls(this._currentCamera, this._threejs.domElement);
         }
 
         #OnWindowResize() {
-            this.#currentCamera.aspect = window.innerWidth / window.innerHeight;
-            this.#currentCamera.updateProjectionMatrix();
-            this.#renderer.setSize(window.innerWidth, window.innerHeight);
+            this._currentCamera.aspect = window.innerWidth / window.innerHeight;
+            this._currentCamera.updateProjectionMatrix();
+            this._threejs.setSize(window.innerWidth, window.innerHeight);
         }
 
         #RAF() {
@@ -68,16 +68,19 @@ export const scene_manager = (() => {
 
                 this.#RAF();
 
-                this.#renderer.render(this.#currentScene, this.#currentCamera);
-                this.#Step(t - this.#previousRAF);
-                this.#previousRAF = t;
+                if (this._currentScene != null && this._currentCamera != null) {
+                    this._threejs.render(this._currentScene.scene, this._currentCamera);
+       
+                    this.#Step(t - this._previousRAF);
+                }
+                this._previousRAF = t;
             });
         }
 
         #Step(timeElapsed) {
             const timeElapsedS = Math.min(1.0 / 30.0, timeElapsed * 0.001);
 
-            this.#currentScene.Update(timeElapsedS);
+            this._currentScene.Update(timeElapsedS);
         }
 
         AddScene(scene, name) {
@@ -86,13 +89,16 @@ export const scene_manager = (() => {
             }
             this.#scenes.set(name, scene);
             scene.parent = this;
-            scene.renderer = this.#renderer;
-            scene.InitSceneEntities();
+            scene.renderer = this._threejs;
+            scene.camera = this._currentCamera;
+            scene.controls = this.#controls;
         }
 
         SwitchScene(name) {
             if (this.#scenes.has(name)) {
-                this.#currentScene = this.#scenes.get(name);
+                this._currentScene = this.#scenes.get(name);
+                this._currentScene.InitControls();
+                this._currentScene.InitSceneEntities();
             }
         }
     }

@@ -52,10 +52,10 @@ export const game_manager = (() => {
             if (nextPlayer) {
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
-                this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
                 if (this.#currentPlayer == undefined) {
                     this.#currentPlayerId = 1;
                     this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
                 }
             }
         }
