@@ -30,6 +30,9 @@ export const controls_component = (() => {
                 if (selectedObject.name.includes("Town")) {
                     console.log(this.FindEntity(selectedObject.name))
                     this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)));   
+                } else if (selectedObject.name.includes("Button")) {
+                    console.log(selectedObject.name);
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
                 }
             }
         }

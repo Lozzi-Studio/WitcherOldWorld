@@ -12,6 +12,7 @@ export const music_component = (() => {
         #currentVolumeTrack1;
         #currentVolumeTrack2;
         #fadeDuration;
+        #skipTo
 
         constructor(camera) {
             super();
@@ -24,30 +25,40 @@ export const music_component = (() => {
             this.#currentVolumeTrack1 = this.#maxVolume;
             this.#currentVolumeTrack2 = 0;
             this.#fadeDuration = 4;
+            this.#skipTo = -1;
         }
 
         InitComponent() {
             this._RegisterHandler('music.main', (msg) => {this.#PlayMainTheme(msg);});
             this._RegisterHandler('music.battleMonster', (msg) => {this.#PlayBattleMonsterTheme(msg);})
             this._RegisterHandler('music.chase', (msg) => {this.#PlayChaseTheme(msg);})
+            this._RegisterHandler('music.menu', (msg) => {this.#PlayMainMenuTheme(msg);})
         }
 
+        #PlayMainMenuTheme(msg) {
+            this.#loader.load( 'resources/sounds/MainMenuTheme.mp3',(buffer) => {
+                this.#maxVolume = 0.1;
+                this.#loadTrack(buffer);
+            });
+        }
 
         #PlayMainTheme(msg) {
-
             this.#loader.load( 'resources/sounds/MainTheme.mp3',(buffer) => {
+                this.#maxVolume = 0.05;
                 this.#loadTrack(buffer);
             });
         }
 
         #PlayBattleMonsterTheme(msg){
             this.#loader.load( 'resources/sounds/Battle_Monster.mp3',(buffer) => {
+                this.#maxVolume = 0.05;
                 this.#loadTrack(buffer);
             });
         }
 
         #PlayChaseTheme(msg) {
             this.#loader.load( 'resources/sounds/ChaseTheme.mp3',(buffer) => {
+                this.#maxVolume = 0.08;
                 this.#loadTrack(buffer);
             });
         }
@@ -62,6 +73,7 @@ export const music_component = (() => {
         }
 
         Update(timeElapsed) {
+ 
             if (this.#musicQueue.length > 1 && timeElapsed > 0) {
 
                 if (this.#currentVolumeTrack1 > 0){
@@ -78,6 +90,12 @@ export const music_component = (() => {
                     this.#currentVolumeTrack1 = this.#maxVolume;
                     this.#currentVolumeTrack2 = 0;
                 }
+            }
+        }
+
+        Stop(){
+            for (let audio of this.#musicQueue){
+                audio.stop();
             }
         }
     }

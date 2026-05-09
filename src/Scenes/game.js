@@ -26,6 +26,7 @@ export const game = (() => {
         }
 
         InitControls() {
+            this.#InitCamera();
             this._controls.enabled = true;
             this._controls.minPolarAngle = Math.PI / 4;
             this._controls.maxPolarAngle = Math.PI * 0.44;
@@ -38,8 +39,8 @@ export const game = (() => {
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitMap();
 
-            const cameraEntity = new camera_entity.Camera(this._camera, this._controls);
-            this._entityManager.AddEntity(cameraEntity);
+            this._entityManager.AddEntity(this._parent._currentCamera);
+            this._entityManager.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
             
             //Keep Order!
             this.#InitTowns();
@@ -51,6 +52,17 @@ export const game = (() => {
 
         }
 
+        #InitCamera() {
+            const fov = 60;
+            const aspect = 1920 / 1080;
+            const near = 1.0;
+            const far = 10000.0;
+            let newCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+            newCamera.position.set(0,50,50);
+            newCamera.rotation.x = -Math.PI / 4;
+            this._parent.SetCamera(new camera_entity.Camera(newCamera, this._controls));
+        }
+
         #InitPlayers() {
             let count = 1;
             for (let player of this.#players) {
@@ -58,7 +70,7 @@ export const game = (() => {
                 this._entityManager.AddEntity(playerEntity, "Player_" + count);
                 count += 1;
             }
-            //const player1 = new player_entity.Player("Gernot", player_options.WitcherSchool.Bear(), 2);
+
         }
 
 
@@ -86,8 +98,8 @@ export const game = (() => {
 
         #InitMap() {
 
-            const ambientLight = new THREE.AmbientLight('white', 0.5);
-            const directlighting = new THREE.DirectionalLight("orange", 2);
+            const ambientLight = new THREE.AmbientLight('white', 2.5);
+            const directlighting = new THREE.DirectionalLight("orange", 3.5);
             directlighting.position.set(10, 10, 7);
 
             this._scene.add(ambientLight, directlighting);

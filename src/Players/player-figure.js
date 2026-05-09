@@ -24,7 +24,6 @@ export const player_figure = (() =>{
         InitComponent(){
             this._RegisterHandler('player.move', (msg) => this.#OnPlayerMove(msg));
             const loader = new GLTFLoader();
-            console.log(this.#color.toString(16));
             loader.load("resources/assets/PlayerBaseModel.glb", (glb) =>{
                 glb.scene.traverse((child) =>{
                     if (child.isMesh) {

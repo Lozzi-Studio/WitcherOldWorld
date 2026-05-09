@@ -18,13 +18,16 @@ export const camera_entity = (() => {
             super();
             this.#camera = camera;
             this.#controls = controls;
-
-            this.#controls.enablePan = false;
+            
         }
 
         InitComponents() {
             this.AddComponent(new camera_position.CameraPosition());
             this.AddComponent(new music_component.MusicComponent(this.#camera));
+        }
+
+        StopMusic() {
+            this.FindComponent('MusicComponent').Stop();
         }
 
         get camera() {
@@ -33,6 +36,10 @@ export const camera_entity = (() => {
 
         get controls() {
             return this.#controls;
+        }
+
+        set controls(newControls) {
+            this.#controls = newControls;
         }
     }
 

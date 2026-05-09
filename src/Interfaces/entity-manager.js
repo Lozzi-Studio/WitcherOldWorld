@@ -3,13 +3,12 @@ import { entity } from "./entity";
 export const entity_manager = (() => {
 
     class EntityManager {
-        #scene;
         #renderer;
 
         constructor(scene, renderer) {
             this._entitiesMap = {};
             this._entities = [];
-            this.#scene = scene;
+            this._scene = scene;
             this.#renderer = renderer;
         }
 
@@ -86,8 +85,9 @@ export const entity_manager = (() => {
             }
         }
 
-        SwapScene(name){
-            this.#scene.SwapScene(name);
+        SwitchScene(name){
+
+            this._scene.SwitchScene(name);
         }
 
         get renderer() {
@@ -95,7 +95,7 @@ export const entity_manager = (() => {
         }
 
         get scene() {
-            return this.#scene.scene;
+            return this._scene.scene;
         }
 
         getEntities() {
