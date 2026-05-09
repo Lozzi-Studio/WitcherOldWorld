@@ -83,16 +83,16 @@ export const player_options = (() => {
 
         static getColorFromName(name){
             switch(name) {
-                case "VipernSchule":
+                case "Vipernschule":
                     return 0x7ED321;
                 case "Katzenschule":
-                    return 0xF5A623;
-                case "Wolfenschule":
-                    return 0x9B9B9B;
+                    return 0x1e1fa7;
+                case "Wolfsschule":
+                    return 0x583b06;
                 case "Baerenschule":
-                    return 0xF5A623;
+                    return 0xc73510;
                 case "Greifenschule":
-                    return 0xD0021B;
+                    return 0xd2c415;
             }
         }
     }

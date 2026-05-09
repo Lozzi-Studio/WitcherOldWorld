@@ -22,10 +22,11 @@ export const game = (() => {
 
         constructor() {
             super();
-            this.#players = [{name: "Gernot", witcherschool: player_options.WitcherSchool.Bear(), money: 2}];
+            this.#players = [{name: "Gernot", witcherschool: player_options.WitcherSchool.Wolf(), money: 2}];
         }
 
         InitControls() {
+            this._controls.enabled = true;
             this._controls.minPolarAngle = Math.PI / 4;
             this._controls.maxPolarAngle = Math.PI * 0.44;
             this._controls.minDistance = 10;
@@ -35,7 +36,6 @@ export const game = (() => {
         InitSceneEntities() {
 
             this._scene.background = new THREE.Color(0x3D342C);
-            this._scene.fog = new THREE.FogExp2(0xeb8000, 1);
             this.#InitMap();
 
             const cameraEntity = new camera_entity.Camera(this._camera, this._controls);
@@ -45,6 +45,8 @@ export const game = (() => {
             this.#InitTowns();
             this.#InitPlayers();
             this._entityManager.AddEntity(new game_area_entity.GameArea());
+
+            document.getElementById('game-ui').style.display = 'block';
             this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
 
         }
@@ -94,7 +96,7 @@ export const game = (() => {
             loader.load("resources/assets/provMap.glb", (glb) =>{
                 glb.scene.traverse((child) =>{
                     if (child.isMesh){
-                    child.material.fog = false;
+                        child.material.fog = false;
                     }
                 });
             this._scene.add(glb.scene)});
