@@ -23,6 +23,7 @@ export const scene_manager = (() => {
         #InitThreeJS() {
             this._threejs = new THREE.WebGLRenderer({
                 antialias: true,
+                alpha: true 
             });
             this._threejs.outputColorSpace = THREE.LinearSRGBColorSpace;
             this._threejs.gammaFactor = 2.2;

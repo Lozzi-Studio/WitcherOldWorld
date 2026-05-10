@@ -97,14 +97,34 @@ export const game = (() => {
         }
 
         #InitMap() {
+            const texture = new THREE.TextureLoader().load("resources/assets/textures/wood.jpg");
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(5,3);
+            const material = new THREE.MeshBasicMaterial( { map:  texture} )
+            const table = new THREE.Mesh(new THREE.PlaneGeometry(200,100), material);
+            table.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2, 0, 0));
+            table.position.set(0,-0.3,0);
+            this._scene.add(table);
+            
+            const cubeEast = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 51 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
+            cubeEast.position.set(25.2,-0.3,0);
+            this._scene.add( cubeEast );
+
+            const cubeNorth = new THREE.Mesh( new THREE.BoxGeometry( 51, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
+            cubeNorth.position.set(0,-0.3,25.2);
+            this._scene.add( cubeNorth );
+
+            const cubeWest = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 51 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
+            cubeWest.position.set(-25.2,-0.3,0);
+            this._scene.add( cubeWest );
+
+            const cubeSouth = new THREE.Mesh( new THREE.BoxGeometry( 51, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
+            cubeSouth.position.set(0,-0.3,-25.2);
+            this._scene.add( cubeSouth );
 
             const loader = new GLTFLoader();
             loader.load("resources/assets/provMap.glb", (glb) =>{
-                glb.scene.traverse((child) =>{
-                    if (child.isMesh){
-                        child.material.fog = false;
-                    }
-                });
             this._scene.add(glb.scene)});
         }
 
