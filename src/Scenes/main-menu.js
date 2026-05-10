@@ -8,10 +8,16 @@ export const main_menu = (() => {
 
     class MainMenu extends scene.Scene{
 
+        /**
+         * Scene for Main Menu
+         */
         constructor() {
             super();
         }
 
+        /**
+         * Used to intialize and add controls
+         */
         InitControls() {
             let newCamera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 4 )
             newCamera.position.set(0,0,2);
@@ -20,6 +26,9 @@ export const main_menu = (() => {
         }   
 
 
+        /**
+         * Used to intialize and add any default entities
+         */
         InitSceneEntities() {
        
             this._entityManager.AddEntity(this._parent._currentCamera);
@@ -30,6 +39,9 @@ export const main_menu = (() => {
             this.#InitMenu();
         }
 
+        /**
+         * Initialize main menu overlay
+         */
         #InitMenu() {
             this._entityManager.AddEntity(new main_menu_overlay.MainMenuOverlay());
         }

@@ -9,6 +9,9 @@ export const menu_animation = (() => {
         #zoom;
         #plane
 
+        /**
+         * An animation component to create an exit effect
+         */
         constructor() {
             super();
 
@@ -16,10 +19,17 @@ export const menu_animation = (() => {
             this.#zoom = 1;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this.#plane = this.FindComponent("BackgroundMainMenu").background;
         }
 
+        /**
+         * Initialize animation
+         * @param {THREE.Vector3} newDestination 
+         */
         startAnimation(newDestination) {
             this.#destination = newDestination;
             this._parent.RemoveComponent('Button_Start');
@@ -27,6 +37,10 @@ export const menu_animation = (() => {
             this._parent._parent.scene.remove(this._parent._parent.scene.getObjectByName('Button_Start'));
         }
         
+        /**
+         * Triggers after specific time intervall
+         * @param {float} timeElapsed 
+         */
         Update(timeElapsed) {
             //https://stackoverflow.com/questions/47733935/threejs-move-object-from-point-a-to-point-b
             if (this.#destination != null) {
@@ -45,6 +59,13 @@ export const menu_animation = (() => {
             
         }
 
+        /**
+         * Interpoaltes between 2 values with a time value
+         * @param {float} a 
+         * @param {float} b 
+         * @param {flaot} t 
+         * @returns 
+         */
         #lerp(a, b, t) {
             return a + (b - a) * t
         }

@@ -10,9 +10,9 @@ export const player_figure = (() =>{
         #startPosition;
 
         /**
-         * 
-         * @param {*} color
-         * @param {*} startPosition startposition des Spielers 
+         * A loader for the player figure
+         * @param {string} color
+         * @param {THREE.Vector3} startPosition
          */
         constructor(color, startPosition) {
             super();
@@ -21,6 +21,9 @@ export const player_figure = (() =>{
             this.#startPosition = startPosition;
         }
         
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent(){
             this._RegisterHandler('player.move', (msg) => this.#OnPlayerMove(msg));
             const loader = new GLTFLoader();
@@ -38,11 +41,15 @@ export const player_figure = (() =>{
             });
         }
 
+        /**
+         * Change position of modell on player move
+         * @param {object} msg 
+         * @returns 
+         */
         #OnPlayerMove(msg) {
             if (!this.#mesh) return;
             this.#mesh.position.copy(msg.position);
         }
-
 
         get mesh() {
             return this.#mesh;

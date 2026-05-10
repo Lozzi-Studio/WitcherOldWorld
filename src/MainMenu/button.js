@@ -13,6 +13,15 @@ export const button = (() => {
         #width;
         #height;
 
+        /**
+         * A component with resembles a button with custom texture
+         * @param {string} name 
+         * @param {float} width 
+         * @param {float} height 
+         * @param {*} texture 
+         * @param {string} buttonText 
+         * @param {*} resolver 
+         */
         constructor(name, width, height, texture, buttonText, resolver) {
             super();
             this.#name = name;
@@ -24,6 +33,9 @@ export const button = (() => {
             this.#height = height;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('game.buttonPress', (msg) => {this.#Resolve(msg)});
 
@@ -41,6 +53,9 @@ export const button = (() => {
             this._parent._parent.scene.add(this.#mesh);
         }
 
+        /**
+         * Triggers resolver
+         */
         #Resolve() {
             this.#resolver();
         }

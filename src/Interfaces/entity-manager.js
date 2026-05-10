@@ -5,6 +5,9 @@ export const entity_manager = (() => {
     class EntityManager {
         #renderer;
 
+         /**
+         * A manager for entities.
+         */
         constructor(scene, renderer) {
             this._entitiesMap = {};
             this._entities = [];
@@ -13,7 +16,7 @@ export const entity_manager = (() => {
         }
 
         /**
-         * 
+         * Returns the entity for the given name.
          * @param {string} entity_name 
          * @returns {entity}
          */
@@ -21,12 +24,17 @@ export const entity_manager = (() => {
             return this._entitiesMap[entity_name];
         }
 
+        /**
+         * Get a filtered collection of all entities
+         * @param {*} condition 
+         * @returns 
+         */
         Filter(condition) {
             return this._entities.filter(condition);
         }
 
         /**
-         * 
+         * Add an entity to this manager
          * @param {entity.Entity} entity 
          * @param {string} name 
          */
@@ -43,7 +51,7 @@ export const entity_manager = (() => {
         }
 
         /**
-         * 
+         * Set state of entity and their components on acitive or disabled
          * @param {entity.Entity} entity 
          * @param {bool} bool 
          */
@@ -63,7 +71,7 @@ export const entity_manager = (() => {
         }
 
         /**
-         * 
+         * Triggers after specific time intervall
          * @param {float} timeElapsed 
          */
         Update(timeElapsed) {
@@ -73,7 +81,7 @@ export const entity_manager = (() => {
         }
 
         /**
-         * 
+         * Brodcast an object message to all components from all entities. Use templates in ./broadcasts.js
          * @param {object} msg 
          * @param {entity.Entity} entityToIgnore 
          */
@@ -85,8 +93,12 @@ export const entity_manager = (() => {
             }
         }
 
+        /**
+         * Switches the current scene
+         * @param {string} name 
+         * @param {bool} stopAudio - Default: true
+         */
         SwitchScene(name,stopAudio = true){
-
             this._scene.SwitchScene(name, stopAudio);
         }
 

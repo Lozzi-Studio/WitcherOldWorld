@@ -14,6 +14,10 @@ export const music_component = (() => {
         #fadeDuration;
         #skipTo
 
+        /**
+         * A component to add audio tracks to a camera
+         * @param {THREE.camera} camera 
+         */
         constructor(camera) {
             super();
             this.#camera = camera;
@@ -28,6 +32,9 @@ export const music_component = (() => {
             this.#skipTo = -1;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('music.main', (msg) => {this.#PlayMainTheme(msg);});
             this._RegisterHandler('music.battleMonster', (msg) => {this.#PlayBattleMonsterTheme(msg);})
@@ -35,6 +42,10 @@ export const music_component = (() => {
             this._RegisterHandler('music.menu', (msg) => {this.#PlayMainMenuTheme(msg);})
         }
 
+        /**
+         * Plays main menu theme
+         * @param {object} msg 
+         */
         #PlayMainMenuTheme(msg) {
             this.#loader.load( 'resources/sounds/MainMenuTheme.mp3',(buffer) => {
                 this.#maxVolume = 0.1;
@@ -42,6 +53,10 @@ export const music_component = (() => {
             });
         }
 
+        /**
+         * Plays main theme
+         * @param {object} msg 
+         */
         #PlayMainTheme(msg) {
             this.#loader.load( 'resources/sounds/MainTheme.mp3',(buffer) => {
                 this.#maxVolume = 0.05;
@@ -49,6 +64,10 @@ export const music_component = (() => {
             });
         }
 
+        /**
+         * Plays battle against monster theme
+         * @param {object} msg 
+         */
         #PlayBattleMonsterTheme(msg){
             this.#loader.load( 'resources/sounds/Battle_Monster.mp3',(buffer) => {
                 this.#maxVolume = 0.05;
@@ -56,6 +75,10 @@ export const music_component = (() => {
             });
         }
 
+        /**
+         * Plays chase theme
+         * @param {object} msg 
+         */
         #PlayChaseTheme(msg) {
             this.#loader.load( 'resources/sounds/ChaseTheme.mp3',(buffer) => {
                 this.#maxVolume = 0.08;
@@ -63,6 +86,10 @@ export const music_component = (() => {
             });
         }
 
+        /**
+         * Converts a buffer containing an audio track to a three.Audio object and put it into the queue
+         * @param {object} buffer 
+         */
         #loadTrack(buffer) {
             const newMusic = new THREE.Audio( this.#listener );
             newMusic.setBuffer( buffer );
@@ -72,6 +99,10 @@ export const music_component = (() => {
             this.#musicQueue.push(newMusic);
         }
 
+        /**
+         * Triggers after specific time intervall
+         * @param {float} timeElapsed 
+         */
         Update(timeElapsed) {
  
             if (this.#musicQueue.length > 1 && timeElapsed > 0) {
@@ -93,6 +124,9 @@ export const music_component = (() => {
             }
         }
 
+        /**
+         * Stops all audio tracks in queue
+         */
         Stop(){
             for (let audio of this.#musicQueue){
                 audio.stop();

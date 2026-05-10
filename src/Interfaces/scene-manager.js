@@ -7,6 +7,9 @@ export const scene_manager = (() => {
         #scenes;
         #controls;
 
+        /**
+         * A manager for the different scenes
+         */
         constructor() {
             this.#scenes = new Map();
             this._threejs = null;
@@ -19,7 +22,9 @@ export const scene_manager = (() => {
             this.#RAF();
         }
 
-
+        /**
+         * Initialize the renderer
+         */
         #InitThreeJS() {
             this._threejs = new THREE.WebGLRenderer({
                 antialias: true,
@@ -44,12 +49,18 @@ export const scene_manager = (() => {
 
         }
 
+        /**
+         * Resize scene to window size
+         */
         #OnWindowResize() {
             this._currentCamera.camera.aspect = window.innerWidth / window.innerHeight;
             this._currentCamera.camera.updateProjectionMatrix();
             this._threejs.setSize(window.innerWidth, window.innerHeight);
         }
 
+        /**
+         * Request next animation frame and retrigger this function
+         */
         #RAF() {
             requestAnimationFrame((t) => {
                 if (this._previousRAF === null) {
@@ -67,6 +78,10 @@ export const scene_manager = (() => {
             });
         }
 
+        /**
+         * Triggers update on entity manager
+         * @param {float} timeElapsed 
+         */
         #Step(timeElapsed) {
             const timeElapsedS = Math.min(1.0 / 30.0, timeElapsed * 0.001);
 
@@ -74,6 +89,11 @@ export const scene_manager = (() => {
         }
 
 
+        /**
+         * Add a scene to this manager
+         * @param {scene.Scene} scene 
+         * @param {string} name 
+         */
         AddScene(scene, name) {
             if (name == undefined) {
                 name = scene.constructor.name; 
@@ -84,6 +104,11 @@ export const scene_manager = (() => {
             scene.controls = this.#controls;
         }
 
+        /**
+         * Switches the current scene
+         * @param {string} name 
+         * @param {bool} stopAudio - Deafult: true
+         */
         SwitchScene(name, stopAudio = true) {
             if (this.#scenes.has(name)) {
                 document.getElementById('main-menu').style.display = 'hidden';
@@ -95,6 +120,10 @@ export const scene_manager = (() => {
             }
         }
 
+        /**
+         * Set the current camera and changes cameras of scenes
+         * @param {camera_entity.Camera} newCamera 
+         */
         SetCamera(newCamera) {
             this._currentCamera = newCamera;
             this.#controls = new OrbitControls(this._currentCamera.camera, this._threejs.domElement);
@@ -104,6 +133,10 @@ export const scene_manager = (() => {
             }
         }
 
+        /**
+         * Clean up the current scene from any objects
+         * @param {bool} stopAudio 
+         */
         #CleanUpScene(stopAudio) {
             if (stopAudio) {
                 this._currentCamera?.StopMusic();

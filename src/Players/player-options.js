@@ -14,6 +14,7 @@ export const player_options = (() => {
         static Griffin() {return new WitcherSchool("Greifenschule");}
 
         /**
+         * An enum class to determin Witcherschool
          * Use static function constructor instead of default constructor!
          * @param {string} name 
          */
@@ -41,7 +42,7 @@ export const player_options = (() => {
         }
 
         /**
-         * 
+         * Get ability string from witcher school
          * @param {string} name 
          * @returns {string}
          */
@@ -61,12 +62,11 @@ export const player_options = (() => {
         }
 
         /**
-         * 
+         * Get town string from witcher school
          * @param {string} name 
-         * @returns {town_components.Town}
+         * @returns {string}
          */
         static getHomeTownFromName(name) {
-            //implement as town_components
             switch(name) {
                 case "Vipernschule":
                     return "Gorthur Guaed";
@@ -81,6 +81,11 @@ export const player_options = (() => {
                 }
         }
 
+        /**
+         * Get color string from witcher school
+         * @param {string} name 
+         * @returns {string}
+         */
         static getColorFromName(name){
             switch(name) {
                 case "Vipernschule":

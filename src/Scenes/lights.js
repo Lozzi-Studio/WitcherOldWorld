@@ -6,10 +6,16 @@ export const lights = (() => {
 
     class LightMainMenu extends component.Component{
 
+        /**
+         * Initializes Lights for MainMenuScene
+         */
         constructor() {
             super();
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             const ambientLight = new THREE.AmbientLight('orange',10);
             this._parent._parent.scene.add(ambientLight);
@@ -18,10 +24,16 @@ export const lights = (() => {
 
     class LightGameScene extends component.Component{
 
+        /**
+         * Initializes lights for GameScene
+         */
         constructor() {
             super();
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             
             const ambientLight = new THREE.AmbientLight('white', 3.5);

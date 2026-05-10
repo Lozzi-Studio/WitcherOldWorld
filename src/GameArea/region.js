@@ -21,7 +21,7 @@ export const region = (() => {
         }
 
         /**
-         * 
+         * Checks equality
          * @param {Region} region 
          * @returns {bool}
          */
@@ -30,7 +30,7 @@ export const region = (() => {
         }
 
         /**
-         * 
+         * Get identifier of enum
          * @returns {string}
          */
         toIdentifier(){

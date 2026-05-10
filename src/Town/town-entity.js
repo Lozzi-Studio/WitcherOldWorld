@@ -17,7 +17,7 @@ export const town_entity = (() => {
         #size;
 
         /**
-         * 
+         * A wrapper for towns
          * @param {int} id 
          * @param {string} town_name 
          * @param {town_options.TownAbility} ability 
@@ -35,6 +35,9 @@ export const town_entity = (() => {
             this.#size = size;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
             this.AddComponent(new town_properties.TownProperties(this.#ability, this.#region));
             this.AddComponent(new hitbox_component.CubicHitbox(this.#position, "Town_" + this.#id, this.#size));

@@ -10,7 +10,7 @@ export const camera_entity = (() => {
         #controls;
 
         /**
-         * 
+         * A Wrapper for Three.camera
          * @param {THREE.camera} camera 
          * @param {THREE.controls} controls
          */
@@ -21,11 +21,17 @@ export const camera_entity = (() => {
             
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
             this.AddComponent(new camera_position.CameraPosition());
             this.AddComponent(new music_component.MusicComponent(this.#camera));
         }
 
+        /**
+         * Stops Music on Camera
+         */
         StopMusic() {
             this.FindComponent('MusicComponent').Stop();
         }

@@ -11,7 +11,7 @@ export const carddeck_component = (() => {
         #handLimit;
 
         /**
-         * 
+         * A component to track player cards
          * @param {int} handLimit
          */
         constructor(handLimit = 7) {
@@ -24,6 +24,9 @@ export const carddeck_component = (() => {
             this.#handLimit = handLimit;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('card.loadDeck', (msg) => this.#LoadStartdeck(msg));
             this._RegisterHandler('card.addCard', (msg) => this.#AddCard(msg));
@@ -33,16 +36,16 @@ export const carddeck_component = (() => {
         }
 
         /**
-         * 
+         * Returns the handcard in the given slot
          * @param {int} cardslot 
-         * @returns 
+         * @returns {card.Card}
          */
         getHandCard(cardslot) {
             return this.#cardHand[this.#cardHand.length - 1 - cardslot];
         }
 
         /**
-         * 
+         * Fill the deck with a default configuration of cards
          * @param {object} msg 
          */
         #LoadStartdeck(msg){
@@ -56,7 +59,7 @@ export const carddeck_component = (() => {
         }
 
         /**
-         * 
+         * Rotate a card from deck to hand, from hand to discard  
          * @param {object} msg 
          */
         #DrawCard(msg){
@@ -82,7 +85,7 @@ export const carddeck_component = (() => {
         }
 
         /**
-         * 
+         * Add a new card to a destination
          * @param {object} msg 
          */
         #AddCard(msg){
@@ -103,7 +106,7 @@ export const carddeck_component = (() => {
         }
 
         /**
-         * 
+         * Discard a card from hand to discard or delete from carddeck
          * @param {object} msg 
          */
         #DiscardCard(msg){
@@ -128,7 +131,7 @@ export const carddeck_component = (() => {
         }
 
         /**
-         * 
+         * Shuffle up your deck (Optional: Includes discard)
          * @param {object} msg 
          */
         #Shuffle(msg) {

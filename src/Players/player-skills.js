@@ -10,6 +10,9 @@ export const player_skills = (() => {
         #special;
         #witcher;
 
+        /**
+         * A component to track skills from player
+         */
         constructor() {
             super();
             this.#combat = Skill.Combat();
@@ -19,12 +22,15 @@ export const player_skills = (() => {
             this.#witcher = Skill.Witcher();
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('skill.changeLevel', (msg) => {this.#ChangeLevel(msg)});
         }
 
         /**
-         * 
+         * Increase or decrease skill level by 1
          * @param {object} msg 
          */
         #ChangeLevel(msg) {
@@ -106,6 +112,8 @@ export const player_skills = (() => {
         static Witcher() {return new Skill("Witcher")};
 
         /**
+         * An enum class to determin skill
+         * Use static function constructor instead of default constructor! 
          * @param {string} name 
          */
         constructor(name) {
@@ -115,12 +123,18 @@ export const player_skills = (() => {
             this.#level = this.#minLevel;
         }
 
+        /**
+         * Increase level of skill by 1
+         */
         increaseLevel() {
             if (this.#level < this.#maxLevel) {
                 this.#level += 1;
             }
         }
 
+        /**
+         * Decreases level of skill by 1
+         */
         decreaseLevel() {
             if (this.#level > this.#minLevel) {
                 this.#level -= 1;
@@ -131,6 +145,10 @@ export const player_skills = (() => {
             return this.#level;
         }
 
+         /**
+         * Get identifier of enum
+         * @returns {string}
+         */
         toIdentifier() {
             return this.#name;
         }
@@ -140,17 +158,27 @@ export const player_skills = (() => {
         #amount;
         #maxAmount;
 
+        /**
+         * A tracker for player shields
+         */
         constructor() {
             super();
             this.#amount = 0;
             this.#maxAmount = 1;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('skill.changeShield', (msg) => {this.#ChangeShield(msg)});
             this._RegisterHandler('skill.changeCurrentShield', (msg) => {this.#ChangeShield(msg)});
         }
 
+        /**
+         * Increases or decreases shield by 1
+         * @param {object} msg 
+         */
         #ChangeShield(msg) {
             switch(msg.mode) {
                 case "Increase":

@@ -31,10 +31,16 @@ import { placeholder } from './Scenes/placeholder.js';
 class DemoGame{
     #sceneManager;
 
+    /**
+     * Game Demo
+     */
     constructor() {
         this.#Initialized()
     }
 
+    /**
+     * Initialize all Scenes and start first scene
+     */
     #Initialized(){
  
         this.#sceneManager = new scene_manager.SceneManager();

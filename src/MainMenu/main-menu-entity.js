@@ -11,11 +11,16 @@ export const main_menu_overlay = (() => {
 
     class MainMenuOverlay extends entity.Entity{
 
+        /**
+         * A wrapper for the main menu
+         */
         constructor() {
             super();
         }
 
-
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
             this.AddComponent(new controls_component.Controls());
             this.AddComponent(new backgrounds.BackgroundMainMenu());

@@ -5,6 +5,9 @@ export const placeholder_entity = (() => {
 
     class PlaceholderEntity extends entity.Entity{
 
+        /**
+         * A wrapper for placeholder screen
+         */
         constructor() {
             super();
         }

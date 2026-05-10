@@ -7,7 +7,7 @@ export const quest = (() => {
         #destination
         
         /**
-         * 
+         * A quest object
          * @param {rewards.Reward} withGoldReward 
          * @param {town_entity.TownEntity} destination
          */

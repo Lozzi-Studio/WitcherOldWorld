@@ -17,12 +17,16 @@ export const game_area_entity = (() => {
 
     class GameArea extends entity.Entity {
 
+        /**
+         * A wrapper for the playmat
+         */
         constructor() {
             super();
-            
-
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
             this.AddComponent(new lights.LightGameScene());
             this.AddComponent(new game_manager.GameManager());

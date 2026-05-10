@@ -7,11 +7,17 @@ export const backgrounds = (() => {
     class BackgroundMainMenu extends component.Component{
         #background;
 
+        /**
+         * Backgrounds for Main Menu
+         */
         constructor() {
             super();
             
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
 
             const video = document.getElementById( 'background_video' );
@@ -51,10 +57,16 @@ export const backgrounds = (() => {
 
     class BackgroundPlaceholder extends component.Component{
 
+        /**
+         * Backgrounds for Placeholder
+         */
         constructor(){
             super();
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             var texture = new THREE.MeshBasicMaterial({
                 color: "black"
@@ -82,10 +94,16 @@ export const backgrounds = (() => {
 
     class BackgroundPlayerselection extends component.Component{
 
+        /**
+         * Background for player selection
+         */
         constructor(){
             super();
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             var texture = new THREE.MeshBasicMaterial({
                 map : new THREE.TextureLoader().load("resources/assets/background/player_selection.png")

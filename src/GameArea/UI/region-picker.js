@@ -9,23 +9,36 @@ export const region_picker = (() => {
         #mode;
         #pickedRegion;
 
+        /**
+         * A UI component to determine region choices
+         */
         constructor() {
             super();
             this.#resolver = null;
             this.#pickedRegion = null;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */        
         InitComponent() {
             this._RegisterHandler('game.chooseRegion', (msg) => {this.#init(msg)});
         }
 
+        /**
+         * Start the picker
+         * @param {object} msg 
+         */
         #init(msg) {
             this.#resolver = msg.resolver;
             this.#mode = msg.mode;
             this.#pickedRegion = region.Region.Forest();
-            this.#resolve();
+            //this.#resolve();
         }
 
+        /**
+         * Resolve the aftermatch of the choice
+         */
         #resolve(){
             switch (this.#mode) {
                 case "Rumor":

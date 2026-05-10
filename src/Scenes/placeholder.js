@@ -12,10 +12,16 @@ export const placeholder = (() => {
 
     class Placeholder extends scene.Scene{
 
+        /**
+         * Scene for placeholder
+         */
         constructor() {
             super();
         }
 
+        /**
+         * Used to intialize and add controls
+         */
         InitControls() {
             let newCamera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 4 )
             newCamera.position.set(0,0,2);
@@ -23,6 +29,9 @@ export const placeholder = (() => {
             this._controls.enabled = false;
         }   
 
+        /**
+         * Used to intialize and add any default entities
+         */
         InitSceneEntities() {
             this._entityManager.AddEntity(this._parent._currentCamera);
             this._entityManager.AddEntity(new placeholder_entity.PlaceholderEntity());
@@ -30,6 +39,10 @@ export const placeholder = (() => {
             document.addEventListener('mousedown', (event) => {this.#onMouseDown(event)}, {once: true});
         }
 
+        /**
+         * Triggers on mouse click and switches to MainMenu scene
+         * @param {object} event 
+         */
         #onMouseDown(event) {
             document.getElementById('placeholder').style.display = 'none';
             this.SwitchScene("MainMenu")

@@ -20,11 +20,17 @@ export const game = (() => {
     class GameScene extends scene.Scene{
         #players;
 
+        /**
+         * Main Scene for Game
+         */
         constructor() {
             super();
             this.#players = [{name: "Gernot", witcherschool: player_options.WitcherSchool.Wolf(), money: 2}];
         }
 
+        /**
+         * Used to intialize controls
+         */
         InitControls() {
             this.#InitCamera();
             this._controls.enabled = true;
@@ -34,6 +40,9 @@ export const game = (() => {
             this._controls.maxDistance = 48;
         }   
 
+        /**
+         * Used to intialize and add any default Entities
+         */
         InitSceneEntities() {
 
             this._scene.background = new THREE.Color(0x3D342C);
@@ -52,6 +61,9 @@ export const game = (() => {
 
         }
 
+        /**
+         * Initialize camera entity
+         */
         #InitCamera() {
             const fov = 60;
             const aspect = 1920 / 1080;
@@ -63,6 +75,9 @@ export const game = (() => {
             this._parent.SetCamera(new camera_entity.Camera(newCamera, this._controls));
         }
 
+        /**
+         * Initialize player entities
+         */
         #InitPlayers() {
             let count = 1;
             for (let player of this.#players) {
@@ -73,7 +88,9 @@ export const game = (() => {
 
         }
 
-
+        /**
+         * Initialize town entities
+         */
         #InitTowns() {
             this._entityManager.AddEntity(new town_entity.TownEntity(0, "Behelt Nar", town_options.TownAbility.increaseSkillForMoney(), new Vector3(23.6,0,-2.5), region.Region.Joker(), new Vector3(2.7,2.7,2.7)), "Town_0");
             this._entityManager.AddEntity(new town_entity.TownEntity(1, "Kaer Seren", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-12,0,-19.3), region.Region.River(), new Vector3(2.7,2.7,2.7)), "Town_1");
@@ -96,6 +113,9 @@ export const game = (() => {
             this._entityManager.AddEntity(new town_entity.TownEntity(18, "Ard Modron", town_options.TownAbility.increaseSkill(player_skills.Skill.Combat()), new Vector3(18.6,0,22.4), region.Region.Mountain(), new Vector3(2.7,2.7,2.7)), "Town_18");
         }
 
+        /**
+         * Initialize Map and surrounding objects
+         */
         #InitMap() {
             const texture = new THREE.TextureLoader().load("resources/assets/textures/wood.jpg");
             texture.wrapS = THREE.RepeatWrapping;

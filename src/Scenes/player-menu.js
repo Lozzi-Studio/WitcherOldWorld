@@ -6,10 +6,16 @@ export const player_menu = (() => {
 
     class PlayerMenu extends scene.Scene{
 
+        /**
+         * Scene for player selection menu
+         */
         constructor() {
             super();
         }
 
+        /**
+         * Used to intialize and add any default entities
+         */
         InitSceneEntities() {
                
             this._entityManager.AddEntity(this._parent._currentCamera);
@@ -19,6 +25,9 @@ export const player_menu = (() => {
             this.#InitMenu();
         }
 
+        /**
+         * Initialize player selection menu overlay
+         */
         #InitMenu() {
             this._entityManager.AddEntity(new player_menu_overlay.PlayerMenuOverlay());
         }

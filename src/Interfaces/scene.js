@@ -5,6 +5,9 @@ export const scene = (() => {
 
     class Scene {
 
+        /**
+         * A scene object
+         */
         constructor(){
             this._scene = new THREE.Scene();
 
@@ -14,15 +17,30 @@ export const scene = (() => {
             this._controls = null;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitControls() {}
 
+        /**
+         * Used to intialize and add any default entities to scene
+         */
         InitSceneEntities(){}
 
+        /**
+         * Triggers after specific time intervall
+         * @param {float} timeElapsed 
+         */
         Update(timeElapsed) {
             this._entityManager.Update(timeElapsed);
             this._controls.update();
         }
 
+        /**
+         * Switches the current scene
+         * @param {string} name 
+         * @param {bool} stopAudio - Default: true
+         */
         SwitchScene(name, stopAudio = true){
             console.log(stopAudio);
             this._parent?.SwitchScene(name, stopAudio);

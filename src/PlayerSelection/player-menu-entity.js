@@ -9,10 +9,16 @@ export const player_menu_overlay = (() => {
 
     class PlayerMenuOverlay extends entity.Entity{
 
+        /**
+         * A wrapper for the player selection menu
+         */
         constructor() {
             super();
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
             this.AddComponent(new controls_component.Controls());
             this.AddComponent(new backgrounds.BackgroundPlayerselection());

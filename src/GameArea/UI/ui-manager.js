@@ -7,12 +7,19 @@ export const ui_manager = (() => {
         #maxSkillLevel;
         #numberOfPhaseOptions;
 
+        /**
+         * Manages API between UI and Backend
+         */
         constructor() {
             super();
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
         }
 
+
+        /**
+         * Used to intialize and add any default components/events
+         */        
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => {this.#InitUI(msg)});
             this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateUIAfterPlayerSwitch(msg)});
@@ -24,41 +31,65 @@ export const ui_manager = (() => {
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot0() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot1() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(1));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot2() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(2));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot3() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(3));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot4() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(4));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot5() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(5));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot6() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(6));
         }
 
+        /**
+         * End current turn phase
+         */
         EndPhase() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.PlayerNextPhase());
         }
 
 
         /**
-         * 
+         * Replace with german specific vowel
          * @param {string} string 
          * @returns {string}
          */
@@ -77,7 +108,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Set UI Info of player
          * @param {player_entity.Player} player 
          */
         #SetPlayerInfo(player) {
@@ -89,8 +120,9 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Get avatar path as string for specific player
          * @param {player_entity.Player} player 
+         * @returns {string}
          */
         #GetAvatarPathFromPlayer(player) {
             let path = ""
@@ -115,7 +147,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Change avatar picture for player
          * @param {player_entity.Player} player 
          */
         #SetPlayerAvatar(player) {
@@ -123,7 +155,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Create UI Boxes for skill points
          * @param {string} skillName 
          */
         #CreateSkillBoxes(skillName) {
@@ -139,7 +171,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Initialize skillboxes in UI
          */
         #InitPlayerSkills() {
             let skills = ["combat", "defense", "alchemy", "special"];
@@ -149,7 +181,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Get skill level from player and set values in UI
          * @param {player_entity.Player} player 
          */
         #SetPlayerSkills(player) {
@@ -169,7 +201,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Set witcher level in UI
          * @param {player_entity.Player} player 
          */
         #SetWitcherLevel(player) {
@@ -177,7 +209,7 @@ export const ui_manager = (() => {
         }
         
         /**
-         * 
+         * Create container for player avatar
          * @param {int} id 
          * @returns 
          */
@@ -189,7 +221,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Initialize player avatar
          * @param {int} playerId 
          * @param {array} playerList 
          */
@@ -207,7 +239,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Set status of player avatar
          * @param {array} playerList 
          * @param {int} currentPlayerId 
          */
@@ -224,7 +256,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Init phase options in UI
          * @param {object} msg 
          */
         #InitPhaseOptions(msg) {
@@ -239,7 +271,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Set phase options based on current phase
          * @param {object} msg 
          */
         #SetPhaseOptions(msg) {
@@ -276,7 +308,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Init player shield in UI
          */
         #InitPlayerShield() {
             let maxShield = 5;
@@ -290,7 +322,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Set UI shield value for player
          * @param {player_entity.Player} player 
          */
         #SetPlayerShieldStatus(player) {
@@ -308,7 +340,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Set player money in UI
          * @param {object} msg 
          */
         #SetPlayerMoney(msg) {
@@ -318,7 +350,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Set player trophies in UI
          * @param {object} msg 
          */
         #SetPlayerTrophies(msg) {
@@ -328,7 +360,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Initilaizes UI components
          * @param {object} msg 
          */
         #InitUI(msg) {
@@ -342,7 +374,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Update UI on player switch
          * @param {object} msg 
          */
         #UpdateUIAfterPlayerSwitch(msg) {
@@ -356,7 +388,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Update skill points, level, money and trophies of player
          * @param {object} msg 
          */
         #UpdatePlayerStats(msg) {
@@ -368,16 +400,13 @@ export const ui_manager = (() => {
             this.#SetPlayerTrophies(player);
         }
 
-        Update(timeElapsed) {
-
-        }
 
         /**
          * 
          * @param {object} msg 
          */
         #LoadSkillDecider(msg) {
-            //TODO
+            //TODO as seperate component
             console.log("Choose A Skill!")
         }
   

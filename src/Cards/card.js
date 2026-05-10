@@ -14,7 +14,7 @@ export const card = (() => {
         #cost;
 
         /**
-         * 
+         * A wrapper for action cards
          * @param {string} name
          * @param {card_options.Color} color
          * @param {Map<card_colors.Color,card_options.CardEffect>} combo 
@@ -34,6 +34,7 @@ export const card = (() => {
         }
 
         /**
+         * Returns a bool, if there is a combo ooption for given color
          * @param {card_options.Color} colorNextCard
          * @returns {bool}
          */
@@ -47,18 +48,18 @@ export const card = (() => {
         }
 
         /**
-         * 
+         * Add a card to the current combo
          * @param {card.Card} card
          */
         addNextComboCard(card) {
-            if (this.canCombo(card)) {
+            if (this.canCombo(card.color)) {
                 this.#nextCardCombo = card;
                 this.#nextCardCombo.addBonusComboEffect(this.#combo.get(this.#nextCardCombo.color));
             }
         }
 
         /**
-         * 
+         * Add a bonus effect for the current combo
          * @param {card_options.CardEffect} effect
          */
         addBonusComboEffect(effect) {
@@ -66,7 +67,7 @@ export const card = (() => {
         }
 
         /**
-         * 
+         * Wraps up all effects from the current combo into a resolver object
          * @param {object} resolver - first call from outside with empty object {}
          * @returns {object} - Resolve object which contains the card, any effects and any bonus effect on combo
          */
