@@ -1,9 +1,11 @@
 export const component = (() => {
 
     class Component {
+        #name
 
         constructor() {
             this._parent = null;
+            this.#name = null;
         }
 
         InitComponent() {}
@@ -63,6 +65,14 @@ export const component = (() => {
 
         get parent() {
             return this._parent;
+        }
+
+        get name(){
+            return this.#name;
+        }
+
+        set name(newName) {
+            this.#name = newName;
         }
     };
         return {

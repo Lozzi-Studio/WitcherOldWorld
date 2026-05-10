@@ -5,7 +5,7 @@ export const entity = (() => {
     class Entity {
         constructor() {
             this._name = null;
-            this._components = {};
+            this._components = new Map();
 
             this._position = new THREE.Vector3();
             this._rotation = new THREE.Quaternion();
@@ -49,7 +49,8 @@ export const entity = (() => {
                 name = component.constructor.name;
             }
             component.parent = this;
-            this._components[name] = component;
+            this._components.set(name,component)
+            component.name = name;
             component.InitComponent();
         }
 
@@ -59,7 +60,15 @@ export const entity = (() => {
          * @returns {component.Component}
          */
         FindComponent(component_name) {
-            return this._components[component_name];
+            return this._components.get(component_name);
+        }
+
+        /**
+         * 
+         * @param {string} component 
+         */
+        RemoveComponent(component_name) {
+            this._components.delete(component_name);
         }
 
         /**
@@ -96,8 +105,8 @@ export const entity = (() => {
          * @param {float} timeElapsed 
          */
         Update(timeElapsed) {
-            for (let component in this._components) {
-                this._components[component].Update(timeElapsed);
+            for (let component of this._components.keys()) {
+                this._components.get(component).Update(timeElapsed);
             }
         }
 

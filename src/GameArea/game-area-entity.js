@@ -11,6 +11,7 @@ import { controls_component } from "./controls-component";
 import { broadcasts } from "../Interfaces/broadcasts";
 import { region_picker } from "./UI/region-picker";
 import { town_manager } from "./town_manager";
+import { lights } from "../Scenes/lights";
 
 export const game_area_entity = (() => {
 
@@ -23,6 +24,7 @@ export const game_area_entity = (() => {
         }
 
         InitComponents() {
+            this.AddComponent(new lights.LightGameScene());
             this.AddComponent(new game_manager.GameManager());
             this.AddComponent(new ui_manager.UIManager());
             this.AddComponent(new region_picker.RegionPicker());

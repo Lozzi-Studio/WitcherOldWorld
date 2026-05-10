@@ -98,12 +98,6 @@ export const game = (() => {
 
         #InitMap() {
 
-            const ambientLight = new THREE.AmbientLight('white', 2.5);
-            const directlighting = new THREE.DirectionalLight("orange", 3.5);
-            directlighting.position.set(10, 10, 7);
-
-            this._scene.add(ambientLight, directlighting);
-
             const loader = new GLTFLoader();
             loader.load("resources/assets/provMap.glb", (glb) =>{
                 glb.scene.traverse((child) =>{

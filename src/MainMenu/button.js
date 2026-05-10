@@ -10,14 +10,18 @@ export const button = (() => {
         #mesh;
         #name;
         #texture;
+        #width;
+        #height;
 
-        constructor(name, texture, buttonText, resolver) {
+        constructor(name, width, height, texture, buttonText, resolver) {
             super();
             this.#name = name;
             this.#resolver = resolver;
             this.#buttonText = buttonText;
             this.#texture = texture;
             this.#mesh = null;
+            this.#width = width;
+            this.#height = height;
         }
 
         InitComponent() {
@@ -30,7 +34,7 @@ export const button = (() => {
             material.fog = false;
             material.color.setHex(0xFFFFFF);
             this.#mesh = new THREE.Mesh(
-                new THREE.PlaneGeometry(0.4,0.2),
+                new THREE.PlaneGeometry(this.#width,this.#height),
                 material
             );
             this.#mesh.name = this.#name;

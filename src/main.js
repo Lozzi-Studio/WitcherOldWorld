@@ -21,6 +21,8 @@ import { player_figure } from './Players/player-figure.js';
 import { scene_manager } from './Interfaces/scene-manager.js';
 import { game } from './Scenes/game.js';
 import { main_menu } from './Scenes/main-menu.js';
+import { player_menu } from './Scenes/player-menu.js';
+import { placeholder } from './Scenes/placeholder.js';
 
 //architecture style inspired by simondev (youtube)
 //https://github.com/simondevyoutube/Quick_3D_RPG
@@ -36,9 +38,11 @@ class DemoGame{
     #Initialized(){
  
         this.#sceneManager = new scene_manager.SceneManager();
+        this.#sceneManager.AddScene(new placeholder.Placeholder());
         this.#sceneManager.AddScene(new game.GameScene());
         this.#sceneManager.AddScene(new main_menu.MainMenu());
-        this.#sceneManager.SwitchScene("MainMenu");
+        this.#sceneManager.AddScene(new player_menu.PlayerMenu());
+        this.#sceneManager.SwitchScene("Placeholder");
         //this.#sceneManager.SwitchScene("GameScene");
     }
 }

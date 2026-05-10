@@ -34,6 +34,7 @@ export const scene_manager = (() => {
 
             
             document.body.appendChild(this._threejs.domElement);
+            document.getElementById('main-menu').click();
 
 
             window.addEventListener('resize', () => {

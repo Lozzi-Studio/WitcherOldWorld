@@ -5,13 +5,15 @@ import { broadcasts } from '../Interfaces/broadcasts';
 export const controls_component = (() => {
 
     class Controls extends component.Component {
+        #used;
 
         constructor() {
             super();
+            this.#used = false;
         }
 
         InitComponent() {
-            document.addEventListener('mousedown', (event) => {this.#onMouseDown(event)});
+            document.addEventListener('mousedown', (event) => {this.#onMouseDown(event), {once: true}});
 
         }
 
@@ -34,6 +36,14 @@ export const controls_component = (() => {
                     console.log(selectedObject.name);
                     this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
                 }
+            }
+            this.#used = true;
+        }
+
+        Update(timeElapsed) {
+            if (this.#used) {
+                document.addEventListener('mousedown', (event) => {this.#onMouseDown(event), {once: true}});
+                this.#used = false;
             }
         }
     }
