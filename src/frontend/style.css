@@ -393,6 +393,11 @@ p, div {
     cursor: url("../../resources/assets/cursor/pointer-48.png"), pointer;
 }
 
+.tooltip:hover {
+    color: var(--color-hover);
+    border-color: var(--color-hover);
+}
+
 .tooltip-text {
     visibility: hidden;
     padding: 5px 0;
