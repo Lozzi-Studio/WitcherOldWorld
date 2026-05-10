@@ -23,8 +23,9 @@ export const scene = (() => {
             this._controls.update();
         }
 
-        SwitchScene(name){
-            this._parent?.SwitchScene(name);
+        SwitchScene(name, stopAudio = true){
+            console.log(stopAudio);
+            this._parent?.SwitchScene(name, stopAudio);
         }
 
         get scene(){

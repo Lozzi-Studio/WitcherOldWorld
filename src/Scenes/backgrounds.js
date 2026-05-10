@@ -24,6 +24,7 @@ export const backgrounds = (() => {
 
             const screen = new THREE.PlaneGeometry(2, 2);
             const videoScreen = new THREE.Mesh(screen, material);
+            videoScreen.name = "BG_Video"
             this._parent._parent.scene.add(videoScreen);
             this.#background = videoScreen;
 
@@ -69,20 +70,42 @@ export const backgrounds = (() => {
 
             var text = document.createElement('div');
             text.style.position = 'absolute';
-            //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
             text.style.width = 100;
             text.style.height = 100;
             text.style.setProperty = "white";
             text.innerHTML = "click anywhere to start!";
-            text.style.top = window.innerHeight / 2 - 100 + 'px';
-            text.style.left = window.innerWidth / 2 - 100 + 'px';
+            text.style.top = window.innerHeight / 2 - 50 + 'px';
+            text.style.left = window.innerWidth / 2 - 80 + 'px';
             document.getElementById('placeholder').appendChild(text);
         }
     }
 
+    class BackgroundPlayerselection extends component.Component{
+
+        constructor(){
+            super();
+        }
+
+        InitComponent() {
+            var texture = new THREE.MeshBasicMaterial({
+                map : new THREE.TextureLoader().load("resources/assets/background/player_selection.png")
+            });
+            texture.fog = false;
+            var bg = new THREE.Mesh(
+                new THREE.PlaneGeometry(2,2),
+                texture
+            );
+            bg.name = 'Background'
+
+            this._parent._parent.scene.add(bg);
+        }
+    }
+
+
     return {
         BackgroundMainMenu : BackgroundMainMenu,
-        BackgroundPlaceholder : BackgroundPlaceholder
+        BackgroundPlaceholder : BackgroundPlaceholder,
+        BackgroundPlayerselection : BackgroundPlayerselection
     }
 
 

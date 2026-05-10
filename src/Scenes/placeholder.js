@@ -31,7 +31,6 @@ export const placeholder = (() => {
         }
 
         #onMouseDown(event) {
-            console.log("test");
             document.getElementById('placeholder').style.display = 'none';
             this.SwitchScene("MainMenu")
         }

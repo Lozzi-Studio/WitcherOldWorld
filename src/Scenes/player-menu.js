@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene } from '../Interfaces/scene';
-import { player_menu_overlay } from '../MainMenu/player-menu-entity';
+import { player_menu_overlay } from '../PlayerSelection/player-menu-entity';
 
 export const player_menu = (() => {
 
@@ -14,7 +14,7 @@ export const player_menu = (() => {
                
             this._entityManager.AddEntity(this._parent._currentCamera);
 
-            document.getElementById('main-menu').style.display = 'block';
+            document.getElementById('player-selector').style.display = 'block';
 
             this.#InitMenu();
         }

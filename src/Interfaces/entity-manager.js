@@ -85,9 +85,9 @@ export const entity_manager = (() => {
             }
         }
 
-        SwitchScene(name){
+        SwitchScene(name,stopAudio = true){
 
-            this._scene.SwitchScene(name);
+            this._scene.SwitchScene(name, stopAudio);
         }
 
         get renderer() {

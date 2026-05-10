@@ -83,11 +83,11 @@ export const scene_manager = (() => {
             scene.controls = this.#controls;
         }
 
-        SwitchScene(name) {
+        SwitchScene(name, stopAudio = true) {
             if (this.#scenes.has(name)) {
                 document.getElementById('main-menu').style.display = 'hidden';
                 document.getElementById('game-ui').style.display = 'hidden';
-                this.#CleanUpScene();
+                this.#CleanUpScene(stopAudio);
                 this._currentScene = this.#scenes.get(name);
                 this._currentScene.InitControls();
                 this._currentScene.InitSceneEntities();
@@ -103,8 +103,10 @@ export const scene_manager = (() => {
             }
         }
 
-        #CleanUpScene() {
-            this._currentCamera?.StopMusic();
+        #CleanUpScene(stopAudio) {
+            if (stopAudio) {
+                this._currentCamera?.StopMusic();
+            }
             
             //https://discourse.threejs.org/t/when-to-dispose-how-to-completely-clean-up-a-three-js-scene/1549/11
             

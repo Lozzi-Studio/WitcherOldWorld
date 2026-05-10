@@ -23,6 +23,7 @@ export const menu_animation = (() => {
         startAnimation(newDestination) {
             this.#destination = newDestination;
             this._parent.RemoveComponent('Button_Start');
+            this._parent._parent.scene.remove(this._parent._parent.scene.getObjectByName('Logo'));
             this._parent._parent.scene.remove(this._parent._parent.scene.getObjectByName('Button_Start'));
         }
         
@@ -37,7 +38,8 @@ export const menu_animation = (() => {
                     var newZ = this.#lerp(this.#plane.position.z, this.#destination.z * this.#zoom, 0.01);
                     this.#plane.position.set(newX, newY, newZ);
                 } else {
-                    this._parent._parent.SwitchScene('PlayerMenu');
+                    document.getElementById('main-menu').style.display = 'none';
+                    this._parent._parent.SwitchScene('PlayerMenu', false);
                 }
             }
             
