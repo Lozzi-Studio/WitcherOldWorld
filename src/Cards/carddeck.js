@@ -112,22 +112,22 @@ export const carddeck_component = (() => {
         #DiscardCard(msg){
             switch (msg.mode) {
                 case "Discard":
-                    if (msg.card in this.#cardHand) {
+                    if (this.#cardHand.includes(msg.card)) {
                         const cardIndex = this.#cardHand.indexOf(msg.card);
                         this.#cardDiscard.push(msg.card);
                         this.#cardHand.splice(cardIndex,1);
                     }
                     break;
-                case "Delete":
-                    if (msg.card in this.#cardHand) {
-                        this.#cardHand.splice(this.#cardHand.indexOf(msg.card),1);
-                    } else if (msg.card in this.#cardDeck) {
-                        this.#cardDeck.splice(this.#cardDeck.indexOf(msg.card),1);
-                    }  else if (msg.card in this.#cardDiscard) {
-                        this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
-                    }
+                    case "Delete":
+                        if (this.#cardHand.includes(msg.card)) {
+                            this.#cardHand.splice(this.#cardHand.indexOf(msg.card),1);
+                        } else if (this.#cardDeck.includes(msg.card)) {
+                            this.#cardDeck.splice(this.#cardDeck.indexOf(msg.card),1);
+                        }  else if (this.#cardDiscard.includes(msg.card)) {
+                            this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
+                        }
                     break;
-            }
+                }
         }
 
         /**
