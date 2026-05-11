@@ -9,7 +9,7 @@ export const town_manager = (() =>{
         #mountainTowns;
         
         /**
-         * 
+         * A manager to get town ids for regions and blocks not returned ids
          * @param {Array} townList 
          */
         constructor(townList) {
@@ -24,7 +24,7 @@ export const town_manager = (() =>{
         } 
 
         /**
-         * 
+         * Get a random not blocked town from a region
          * @param {region.Region} region 
          */
         GetRandomTownFromRegionPool(region) {
@@ -64,7 +64,7 @@ export const town_manager = (() =>{
         }
 
         /**
-         * 
+         * Return town to pool
          * @param {town_entity.TownEntity} town 
          */
         ReturnToPool(town) {

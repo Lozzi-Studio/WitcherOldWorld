@@ -5,7 +5,7 @@ export const rewards = (()=> {
         #amount;
 
         /**
-         * 
+         * Reward for one gold
          * @returns {Reward}
          */
         static GetOneGold() {
@@ -23,7 +23,7 @@ export const rewards = (()=> {
         }
 
         /**
-         * 
+         * Get identifier of enum
          * @returns {string}
          */
         getIdentifier() {

@@ -18,7 +18,7 @@ export const player_entity = (() => {
         #initialMoney;
         
         /**
-         * 
+         * a wrapper for a player
          * @param {string} player_name 
          * @param {player_options.WitcherSchool} witcherSchool 
          * @param {int} initialMoney
@@ -33,6 +33,9 @@ export const player_entity = (() => {
             
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
             let homeTown = null;
             switch (this.#homeTownPosition) {
@@ -67,7 +70,7 @@ export const player_entity = (() => {
         }
 
         /**
-         * 
+         * Get the card object to the given cardslot
          * @param {int} cardslot 
          * @returns {card.Card}
          */

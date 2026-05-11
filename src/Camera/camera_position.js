@@ -10,6 +10,9 @@ export const camera_position = (() => {
         #controlable;
         #direction;
 
+        /**
+         * Manager for position of camera
+         */
         constructor() {
             super();
             this.#currentPosition = new THREE.Vector3();
@@ -19,6 +22,9 @@ export const camera_position = (() => {
             this.#direction = Direction.None();
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler("camera.moveTo", (msg) => {this.#MoveTo(msg)});
             this._RegisterHandler("camera.focusOn", (msg) => {this.#FocusOn(msg)});
@@ -28,24 +34,40 @@ export const camera_position = (() => {
             window.addEventListener("keyup", (event) => {this.#onKeyUp(event)});
         }
 
+        /**
+         * Moves camera to target position
+         * @param {object} msg 
+         */
         #MoveTo(msg) {
            //TODO
            this._parent.controls.enabled = false;
            this._parent.controls.enabled = true;
         }
 
+        /**
+         * Focus camera on new target
+         * @param {object} msg 
+         */
         #FocusOn(msg) {
             this._parent.controls.enableDamping = false;
             this.#target = msg.target;
             this._parent.controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
         }
 
+        /**
+         * Stops focus on specific target and returns focus to origin
+         * @param {object} msg 
+         */
         #StopFocus(msg) {
             this._parent.controls.enableDamping = true;
             this.#target = undefined;
             this._parent.controls.target.set(0,0,0);
         }
 
+        /**
+         * Manages key input
+         * @param {object} event 
+         */
         #onKeyDown(event) {
             switch (event.keyCode) {
                 case 87: // W
@@ -63,12 +85,20 @@ export const camera_position = (() => {
             }
         }
 
+        /**
+         * Manages stop of key input
+         * @param {object} event 
+         */
         #onKeyUp(event) {
             if (event.keyCode == 87 || event.keyCode == 83 || event.keyCode == 65 || event.keyCode == 68) {
                 this.#direction = Direction.None();
             }
         }
 
+        /**
+         * Triggers after specific time intervall
+         * @param {float} timeElapsed 
+         */
         Update(timeElapsed) {   
             const t = 1.0 - Math.pow(0.01, timeElapsed);
             switch (this.#direction.getIdentifier()) {
@@ -102,6 +132,7 @@ export const camera_position = (() => {
         static None() {return new Direction("none");}
 
         /**
+         * An enum class to determine directions
          * Use static function constructor instead of default constructor!
          * @param {string} direction 
          */
@@ -109,6 +140,10 @@ export const camera_position = (() => {
             this.#direction = direction;
         }
 
+        /**
+         * Get identifier of enum
+         * @returns {string}
+         */
         getIdentifier() {
             return this.#direction;
         }

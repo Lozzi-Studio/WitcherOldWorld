@@ -235,6 +235,14 @@ export const broadcasts = (() => {
         static SwapoutCard() {
             return {topic: 'game.swapoutCard'}
         }
+        
+        /**
+         * 
+         * @returns {object}
+         */
+        static ButtonPress() {
+            return {topic: 'game.buttonPress'}
+        }
     }
 
     class BroadcastTemplateCamera {
@@ -268,7 +276,14 @@ export const broadcasts = (() => {
     }
 
     class BroadcastTemplateMusic {
-        
+
+        /**
+         * @returns {object}
+         */
+        static PlayMainMenuTheme() {
+            return {topic: 'music.menu'}
+        }
+
         /**
          * 
          * @returns {object}

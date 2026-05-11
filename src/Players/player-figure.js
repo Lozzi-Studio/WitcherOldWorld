@@ -10,9 +10,9 @@ export const player_figure = (() =>{
         #startPosition;
 
         /**
-         * 
-         * @param {*} color
-         * @param {*} startPosition startposition des Spielers 
+         * A loader for the player figure
+         * @param {string} color
+         * @param {THREE.Vector3} startPosition
          */
         constructor(color, startPosition) {
             super();
@@ -21,14 +21,17 @@ export const player_figure = (() =>{
             this.#startPosition = startPosition;
         }
         
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent(){
             this._RegisterHandler('player.move', (msg) => this.#OnPlayerMove(msg));
             const loader = new GLTFLoader();
             loader.load("resources/assets/PlayerBaseModel.glb", (glb) =>{
                 glb.scene.traverse((child) =>{
                     if (child.isMesh) {
-                        child.material = child.material.clone();
-                        child.material.color.set(this.#color);
+                        child.material.fog = false;
+                        child.material.color.setHex('0x' + this.#color.toString(16));
                         this.#mesh = child;
                     }
                 });
@@ -38,11 +41,15 @@ export const player_figure = (() =>{
             });
         }
 
+        /**
+         * Change position of model on player move
+         * @param {object} msg 
+         * @returns 
+         */
         #OnPlayerMove(msg) {
             if (!this.#mesh) return;
             this.#mesh.position.copy(msg.position);
         }
-
 
         get mesh() {
             return this.#mesh;
