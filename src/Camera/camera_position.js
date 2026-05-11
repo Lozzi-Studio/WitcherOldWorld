@@ -132,7 +132,7 @@ export const camera_position = (() => {
         static None() {return new Direction("none");}
 
         /**
-         * An enum class to determin directions
+         * An enum class to determine directions
          * Use static function constructor instead of default constructor!
          * @param {string} direction 
          */

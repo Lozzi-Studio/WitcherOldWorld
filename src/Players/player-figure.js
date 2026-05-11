@@ -42,7 +42,7 @@ export const player_figure = (() =>{
         }
 
         /**
-         * Change position of modell on player move
+         * Change position of model on player move
          * @param {object} msg 
          * @returns 
          */

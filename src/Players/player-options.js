@@ -14,7 +14,7 @@ export const player_options = (() => {
         static Griffin() {return new WitcherSchool("Greifenschule");}
 
         /**
-         * An enum class to determin Witcherschool
+         * An enum class to determine Witcherschool
          * Use static function constructor instead of default constructor!
          * @param {string} name 
          */

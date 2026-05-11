@@ -112,7 +112,7 @@ export const player_skills = (() => {
         static Witcher() {return new Skill("Witcher")};
 
         /**
-         * An enum class to determin skill
+         * An enum class to determine skill
          * Use static function constructor instead of default constructor! 
          * @param {string} name 
          */

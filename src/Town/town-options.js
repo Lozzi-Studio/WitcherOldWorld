@@ -80,7 +80,7 @@ export const town_options = (() => {
 
 
         /**
-         * An enum class to determin town abilities
+         * An enum class to determine town abilities
          * Use static function constructor instead of default constructor!
          * @param {string} name 
          * @param {string} tooltip 
@@ -119,7 +119,7 @@ export const town_options = (() => {
         static Player() {return new TownAbilityTarget("Player");}
 
         /**
-         * An enum class to determin town abilities target
+         * An enum class to determine town abilities target
          * Use static function constructor instead of default constructor!
          * @param {string} target
          */

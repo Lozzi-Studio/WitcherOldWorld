@@ -34,7 +34,7 @@ export const card = (() => {
         }
 
         /**
-         * Returns a bool, if there is a combo ooption for given color
+         * Returns a bool, if there is a combo option for given color
          * @param {card_options.Color} colorNextCard
          * @returns {bool}
          */

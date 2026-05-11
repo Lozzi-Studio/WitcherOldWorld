@@ -23,7 +23,7 @@ export const controls_component = (() => {
         }
 
         /**
-         * Determines behaviour on mouse click and braodcasts events
+         * Determines behaviour on mouse click and broadcasts events
          * @param {object} event 
          */
         #onMouseDown(event) {

@@ -155,7 +155,7 @@ export const game_manager = (() => {
         #number;
 
         /**
-         * An enum class to determen phase
+         * An enum class to determine phase
          * Use static function constructor instead of default constructor!
          * @param {int} number 
          */
