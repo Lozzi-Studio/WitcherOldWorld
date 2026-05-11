@@ -49,7 +49,7 @@ export const player_money = (() => {
          */
         Subtract(amount) {
             if (this.CanPay(amount)) {
-                this.#amount -= amount;
+                this.#amount -= Math.abs(amount);
             } else {
                 this.#amount = 0;
             }
