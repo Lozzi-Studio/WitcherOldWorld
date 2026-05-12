@@ -370,31 +370,35 @@ export const ui_manager = (() => {
             cardDIV.classList.add("container", "container--col", "card");   
             
             let iconName = "";
-            if (card.region.toIdentifier() == "River") {
-                iconName = "water";
-            }
-            else if (card.region.toIdentifier() == "Mountain") {
-                iconName = "landscape";
-            }
-            else if (card.region.toIdentifier() == "Forest") {
-                iconName = "forest";
+            switch (card.region.toIdentifier()) {
+                case "River":
+                    iconName = "water";
+                    break;
+                case "Mountain":
+                    iconName = "landscape";
+                    break;
+                case "Forest":
+                    iconName = "forest";
+                    break;
             }
 
             let cardColor = "";
-            if (card.color.toIdentifier() == "Blue") {
-                cardColor = "#8F97FF";
-            }
-            else if (card.color.toIdentifier() == "Red") {
-                cardColor = "#FF7D7D";
-            }
-            else if (card.color.toIdentifier() == "Green") {
-                cardColor = "#97FF8F";
-            }
-            else if (card.color.toIdentifier() == "Purple") {
-                cardColor = "#DA8FFF";
-            }
-            else if (card.color.toIdentifier() == "Yellow") {
-                cardColor = "#FFF98F";
+            switch (card.color.toIdentifier()) {
+                case "Blue":
+                    cardColor = "#8F97FF";
+                    break;
+                case "Red":
+                    cardColor = "#FF7D7D";
+                    break;
+                case "Green":
+                    cardColor = "#97FF8F";
+                    break;
+                case "Purple":
+                    cardColor = "#DA8FFF";
+                    break;
+                case "Yellow":
+                    cardColor = "#FFF98F";
+                    break;
             }
 
             cardDIV.innerHTML = `
