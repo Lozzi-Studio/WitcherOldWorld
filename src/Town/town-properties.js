@@ -10,24 +10,30 @@ export const town_properties = (() => {
 
         #ability;
         #region;
+        #neighboringTowns;
 
         /**
+         * A tracker for town properties
          * @param {town_options.TownAbility} ability  
          * @param {region.Region} region
          */
-        constructor(ability, region) {
+        constructor(ability, region, neighboringTowns) {
             super();
             this.#ability = ability;
             this.#region = region;
+            this.#neighboringTowns = neighboringTowns;
 
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('town.action', (msg) => {this.#executeAbility(msg)});
         }
 
         /**
-         * 
+         * Triggers town ability
          * @param {object} msg 
          */
         #executeAbility(msg) {
@@ -42,17 +48,12 @@ export const town_properties = (() => {
         }
 
         /**
-         * 
-         * @param {Array<card.Card>} cards 
-         * @returns 
+         * Returns a bool if the card allows to enter this town
+         * @param {card.Card} card
+         * @returns {bool} 
          */
-        canEnter(cards) {
-            for (let card of cards) {
-                if (card.region.toIdentifier() == this.#region.toIdentifier() || this.#region.toIdentifier() == "Joker"){
-                    return {condition: true, card: card};
-                }
-            }
-            return {condition: false}
+        canEnter(card) {
+            return (card.region.equals(this.#region) || this.#region.toIdentifier() == "Joker");
         }
 
     }

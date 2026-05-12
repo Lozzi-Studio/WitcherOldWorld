@@ -6,6 +6,7 @@ import { player_options } from "./player-options";
 import { player_position } from "./player-position";
 import { player_skills } from "./player-skills";
 import { player_trophies } from "./player-trophies";
+import { player_figure } from "./player-figure";
 
 export const player_entity = (() => {
 
@@ -17,7 +18,7 @@ export const player_entity = (() => {
         #initialMoney;
         
         /**
-         * 
+         * a wrapper for a player
          * @param {string} player_name 
          * @param {player_options.WitcherSchool} witcherSchool 
          * @param {int} initialMoney
@@ -32,6 +33,9 @@ export const player_entity = (() => {
             
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
             let homeTown = null;
             switch (this.#homeTownPosition) {
@@ -62,10 +66,11 @@ export const player_entity = (() => {
             this.AddComponent(new player_money.MoneyStorage(this.#initialMoney));
             this.AddComponent(new player_destination_tracker.PlayerTracker());
             this.AddComponent(new player_trophies.TrophyStorage());
+            this.AddComponent(new player_figure.PlayerFigure(this.#witcherSchool.color, this.#homeTownPosition.position));
         }
 
         /**
-         * 
+         * Get the card object to the given cardslot
          * @param {int} cardslot 
          * @returns {card.Card}
          */

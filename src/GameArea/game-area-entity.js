@@ -11,16 +11,24 @@ import { controls_component } from "./controls-component";
 import { broadcasts } from "../Interfaces/broadcasts";
 import { region_picker } from "./UI/region-picker";
 import { town_manager } from "./town_manager";
+import { lights } from "../Scenes/lights";
 
 export const game_area_entity = (() => {
 
     class GameArea extends entity.Entity {
 
+        /**
+         * A wrapper for the playmat
+         */
         constructor() {
             super();
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
+            this.AddComponent(new lights.LightGameScene());
             this.AddComponent(new game_manager.GameManager());
             this.AddComponent(new ui_manager.UIManager());
             this.AddComponent(new region_picker.RegionPicker());

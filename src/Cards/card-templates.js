@@ -8,7 +8,7 @@ export const cards = (() => {
 
 
         /**
-         * 
+         * Get card template for card Riposte
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
@@ -25,7 +25,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Deckung
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
@@ -42,7 +42,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Abwehr
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
@@ -59,7 +59,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card BlitzschnelleReflexe
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
@@ -75,7 +75,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card PraeziserSchnitt
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
@@ -92,7 +92,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Drehung with Region Forest
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
@@ -108,7 +108,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Drehung with Region Mountain
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
@@ -124,7 +124,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Vernichtender Schlag
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
@@ -140,7 +140,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Schmetterschlag
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
@@ -157,7 +157,7 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Praeziser Schlag
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
@@ -174,12 +174,12 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Wuchtschlag
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
         static getWuchtschlag(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Wutchschlag",
                 card_options.Color.Red(),
                 comboOptions,
@@ -190,12 +190,12 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Verstaerktes Axii
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
         static getVerstaerktesAxii(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Axii",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -206,13 +206,13 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Verstaerktes Yrden
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
          */
         static getVerstaerktesYrden(comboOptions, region) {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Yrden",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -223,12 +223,12 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Magiefalle
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
         static getMagiefalle(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Magiefalle",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -239,13 +239,13 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Verstaerktes Qwen
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
          */
         static getVerstaerktesQwen(comboOptions, region) {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Qwen",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -256,13 +256,13 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Explosiver Schild
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @param {region.Region} region 
          * @returns {object}
          */
         static getExplosiverSchild(comboOptions, region) {
-            return card.Card(
+            return new card.Card(
                 "Explosiver Schild",
                 card_options.Color.Yellow(),
                 comboOptions,
@@ -273,12 +273,12 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Verstaerktes Aard
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
         static getVerstaerktesAard(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Aard",
                 card_options.Color.Purple(),
                 comboOptions,
@@ -289,11 +289,11 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Verstaerktes Igni
          * @returns {object}
          */
         static getVertaerktesIgni() {
-            return card.Card(
+            return new card.Card(
                 "Verstaerktes Igni",
                 card_options.Color.Purple(),
                 new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)],
@@ -307,12 +307,12 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Ruestung Schmelzen
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
         static getRuestungSchmelzen(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Rüstung Schmelzen",
                 card_options.Color.Purple(),
                 comboOptions,
@@ -323,12 +323,12 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Schockwelle
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
         static getSchockwelle(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Schockwelle",
                 card_options.Color.Purple(),
                 comboOptions,
@@ -339,12 +339,12 @@ export const cards = (() => {
         }
 
         /**
-         * 
+         * Get card template for card Feuerstrahl
          * @param {Map<card_options.Color, card_options.CardEffect>} comboOptions 
          * @returns {object}
          */
         static getFeuerstrahl(comboOptions) {
-            return card.Card(
+            return new card.Card(
                 "Feuerstrahl",
                 card_options.Color.Purple(),
                 comboOptions,

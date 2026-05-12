@@ -1,4 +1,5 @@
 import { component } from "../Interfaces/component";
+import { card } from "./card";
 
 export const carddeck_component = (() => {
 
@@ -11,7 +12,7 @@ export const carddeck_component = (() => {
         #handLimit;
 
         /**
-         * 
+         * A component to track player cards
          * @param {int} handLimit
          */
         constructor(handLimit = 7) {
@@ -24,25 +25,28 @@ export const carddeck_component = (() => {
             this.#handLimit = handLimit;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('card.loadDeck', (msg) => this.#LoadStartdeck(msg));
             this._RegisterHandler('card.addCard', (msg) => this.#AddCard(msg));
             this._RegisterHandler('card.drawCard', (msg) => this.#DrawCard(msg));
-            this._RegisterHandler('card.discardDraw', (msg) => this.#DiscardCard(msg));
+            this._RegisterHandler('card.discardCard', (msg) => this.#DiscardCard(msg));
             this._RegisterHandler('card.shuffle', (msg) => this.#Shuffle(msg));
         }
 
         /**
-         * 
+         * Returns the handcard in the given slot
          * @param {int} cardslot 
-         * @returns 
+         * @returns {card.Card}
          */
         getHandCard(cardslot) {
             return this.#cardHand[this.#cardHand.length - 1 - cardslot];
         }
 
         /**
-         * 
+         * Fill the deck with a default configuration of cards
          * @param {object} msg 
          */
         #LoadStartdeck(msg){
@@ -56,7 +60,7 @@ export const carddeck_component = (() => {
         }
 
         /**
-         * 
+         * Rotate a card from deck to hand, from hand to discard  
          * @param {object} msg 
          */
         #DrawCard(msg){
@@ -82,7 +86,7 @@ export const carddeck_component = (() => {
         }
 
         /**
-         * 
+         * Add a new card to a destination
          * @param {object} msg 
          */
         #AddCard(msg){
@@ -103,32 +107,32 @@ export const carddeck_component = (() => {
         }
 
         /**
-         * 
+         * Discard a card from hand to discard or delete from carddeck
          * @param {object} msg 
          */
         #DiscardCard(msg){
             switch (msg.mode) {
                 case "Discard":
-                    if (msg.card in this.#cardHand) {
+                    if (this.#cardHand.includes(msg.card)) {
                         const cardIndex = this.#cardHand.indexOf(msg.card);
                         this.#cardDiscard.push(msg.card);
                         this.#cardHand.splice(cardIndex,1);
                     }
                     break;
-                case "Delete":
-                    if (msg.card in this.#cardHand) {
-                        this.#cardHand.splice(this.#cardHand.indexOf(msg.card),1);
-                    } else if (msg.card in this.#cardDeck) {
-                        this.#cardDeck.splice(this.#cardDeck.indexOf(msg.card),1);
-                    }  else if (msg.card in this.#cardDiscard) {
-                        this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
-                    }
+                    case "Delete":
+                        if (this.#cardHand.includes(msg.card)) {
+                            this.#cardHand.splice(this.#cardHand.indexOf(msg.card),1);
+                        } else if (this.#cardDeck.includes(msg.card)) {
+                            this.#cardDeck.splice(this.#cardDeck.indexOf(msg.card),1);
+                        }  else if (this.#cardDiscard.includes(msg.card)) {
+                            this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
+                        }
                     break;
-            }
+                }
         }
 
         /**
-         * 
+         * Shuffle up your deck (Optional: Includes discard)
          * @param {object} msg 
          */
         #Shuffle(msg) {

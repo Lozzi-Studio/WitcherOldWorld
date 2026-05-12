@@ -5,60 +5,97 @@ export const ui_manager = (() => {
 
     class UIManager extends component.Component {
         #maxSkillLevel;
+        #numberOfPhaseOptions;
 
+        /**
+         * Manages API between UI and Backend
+         */
         constructor() {
             super();
             this.#maxSkillLevel = 5;
-            this.#InitPlayerSkills();
+            this.#numberOfPhaseOptions = 3;
         }
 
+
+        /**
+         * Used to intialize and add any default components/events
+         */        
         InitComponent() {
-            this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateCurrentPlayerUI(msg)});
-            this._RegisterHandler("skill.choose_skill", (msg) => {this.#LoadSkillDecider(msg)});
-            this._RegisterHandler('skill.change_shield', (msg) => {this.#UpdatePlayerStats(msg)});
-            this._RegisterHandler('skill.change_currentshield', (msg) => {this.#UpdatePlayerStats(msg)});
-            this._RegisterHandler('skill.change_level', (msg) => {this.#UpdatePlayerStats(msg)});
+            this._RegisterHandler('game.start', (msg) => {this.#InitUI(msg)});
+            this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateUIAfterPlayerSwitch(msg)});
+            this._RegisterHandler("game.nextPhase", (msg) => {this.#SetPhaseOptions(msg)});
+
+            this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
+            this._RegisterHandler('player.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
+            
+            this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
+
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot0() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot1() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(1));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot2() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(2));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot3() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(3));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot4() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(4));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot5() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(5));
         }
 
+        /**
+         * Triggers Cardslot Selection
+         */
         CardSlot6() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(6));
         }
 
+        /**
+         * End current turn phase
+         */
         EndPhase() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.PlayerNextPhase());
         }
 
-        //TODO remove when raycasting on towns is working - ONLY TEST PURPOSE
-        SelectArdModron() {
-            this.Broadcast(broadcasts.BroadcastTemplateTown.TownAction(this._parent.FindComponent("Town_18")));
-        }
 
+        /**
+         * Replace with german specific vowel
+         * @param {string} string 
+         * @returns {string}
+         */
         #ReplaceUmlaute(string) {
             if (string.includes("ae")) {
                 string = string.replace("ae", "&auml;");
@@ -82,6 +119,10 @@ export const ui_manager = (() => {
             return string;
         }
 
+        /**
+         * Set UI Info of player
+         * @param {player_entity.Player} player 
+         */
         #SetPlayerInfo(player) {
             let name = player.playerName.toUpperCase();
             let school = player.witcherSchool.name;
@@ -90,6 +131,11 @@ export const ui_manager = (() => {
             document.getElementById("player-name").innerHTML = this.#ReplaceUmlaute(name);
         }
 
+        /**
+         * Get avatar path as string for specific player
+         * @param {player_entity.Player} player 
+         * @returns {string}
+         */
         #GetAvatarPathFromPlayer(player) {
             let path = ""
             switch(player.witcherSchool.name){
@@ -112,6 +158,18 @@ export const ui_manager = (() => {
             return path;
         }
 
+        /**
+         * Change avatar picture for player
+         * @param {player_entity.Player} player 
+         */
+        #SetPlayerAvatar(player) {
+            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(player);
+        }
+
+        /**
+         * Create UI Boxes for skill points
+         * @param {string} skillName 
+         */
         #CreateSkillBoxes(skillName) {
             let containerName = `${skillName}-lvl`
             const container = document.getElementById(containerName);
@@ -124,6 +182,9 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * Initialize skillboxes in UI
+         */
         #InitPlayerSkills() {
             let skills = ["combat", "defense", "alchemy", "special"];
             for (const skill of skills) {
@@ -131,6 +192,10 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * Get skill level from player and set values in UI
+         * @param {player_entity.Player} player 
+         */
         #SetPlayerSkills(player) {
             for (const skill of [player.FindComponent("PlayerSkills").combat, player.FindComponent("PlayerSkills").defense, player.FindComponent("PlayerSkills").alchemy, player.FindComponent("PlayerSkills").special]) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
@@ -147,10 +212,19 @@ export const ui_manager = (() => {
             
         }
 
+        /**
+         * Set witcher level in UI
+         * @param {player_entity.Player} player 
+         */
         #SetWitcherLevel(player) {
             document.getElementById("witcher-level").innerHTML = player.FindComponent("PlayerSkills").witcher.level;
         }
         
+        /**
+         * Create container for player avatar
+         * @param {int} id 
+         * @returns 
+         */
         #CreateAvatarContainer(id) {
             var avatarContainer = document.createElement("div");
             avatarContainer.id = `avatar-container-${id}`;
@@ -159,7 +233,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * 
+         * Initialize player avatar
          * @param {int} playerId 
          * @param {array} playerList 
          */
@@ -176,6 +250,11 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * Set status of player avatar
+         * @param {array} playerList 
+         * @param {int} currentPlayerId 
+         */
         #SetPlayerAvatarsStatus(playerList, currentPlayerId) {
             for (const [i, player] of playerList.entries()) {
                 let playerId = i+1;
@@ -188,12 +267,30 @@ export const ui_manager = (() => {
             }
         }
 
-        #InitPhaseOptions(phase) {
-            let numberOfOptions;
+        /**
+         * Init phase options in UI
+         * @param {object} msg 
+         */
+        #InitPhaseOptions(msg) {
+            for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
+                var phaseOptionTextbox = document.createElement("div");
+                phaseOptionTextbox.classList.add("textbox", "textbox--fill");
+                phaseOptionTextbox.id = `phase-option-text-${i}`;
+                phaseOptionTextbox.innerHTML = `PHASE-OPTION-${i}`;
+                document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
+            }
+            this.#SetPhaseOptions(msg);
+        }
+
+        /**
+         * Set phase options based on current phase
+         * @param {object} msg 
+         */
+        #SetPhaseOptions(msg) {
+            const phase = this.FindComponent("GameManager").phase.toIdentifier();
             let phaseOptionTexts = [];
             switch (phase) {
                 case 1:
-                    numberOfOptions = 3;
                     phaseOptionTexts = [
                         "Bewege deine Figur zu einem Feld",
                         "Führe die Ortsaktion aus (optional)",
@@ -201,7 +298,6 @@ export const ui_manager = (() => {
                     ];
                     break;
                 case 2:
-                    numberOfOptions = 3;
                     phaseOptionTexts = [
                         "Kämpfe gegen ein Monster oder einen Hexer",
                         "Meditiere",
@@ -209,7 +305,6 @@ export const ui_manager = (() => {
                     ];
                     break;
                 case 3:
-                    numberOfOptions = 3;
                     phaseOptionTexts = [
                         "Lege Karten ab (optional)",
                         "Ziehe Karten, bis du wieder drei Handkarten hast",
@@ -217,14 +312,16 @@ export const ui_manager = (() => {
                     ];
                     break;
             }
-            for (let i = 0; i < numberOfOptions; i++) {
-                var phaseOptionTextbox = document.createElement("div");
-                phaseOptionTextbox.classList.add("textbox", "textbox--fill");
-                phaseOptionTextbox.innerHTML = phaseOptionTexts[i];
-                document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
+            for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
+                document.getElementById(`phase-option-text-${i}`).innerHTML = phaseOptionTexts[i];
             }
+
+            document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
 
+        /**
+         * Init player shield in UI
+         */
         #InitPlayerShield() {
             let maxShield = 5;
             for (let i = 0; i < maxShield; i++) {
@@ -236,6 +333,10 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * Set UI shield value for player
+         * @param {player_entity.Player} player 
+         */
         #SetPlayerShieldStatus(player) {
             let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
             let shieldPoints = player.FindComponent("Shield").amount;
@@ -250,22 +351,24 @@ export const ui_manager = (() => {
             }
         }
 
-        #SetPlayerMoney(player) {
+        /**
+         * Set player money in UI
+         * @param {object} msg 
+         */
+        #SetPlayerMoney(msg) {
+            const player = this.FindComponent("GameManager").currentPlayer;
             let playerMoney = player.FindComponent("MoneyStorage").amount;
             document.getElementById("money-amount").innerHTML = playerMoney;
         }
 
-        #SetPlayerTrophies(player) {
+        /**
+         * Set player trophies in UI
+         * @param {object} msg 
+         */
+        #SetPlayerTrophies(msg) {
+            const player = this.FindComponent("GameManager").currentPlayer;
             let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
-        }
-
-        /**
-         * 
-         * @param {int} phase 
-         */
-        #SetPhaseText(phase) {
-            document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
 
         #ShowTownInfo(msg) {
@@ -299,32 +402,40 @@ export const ui_manager = (() => {
             document.getElementById("town-window").style.visibility = "hidden";
         }
 
-        #UpdateCurrentPlayerUI(msg) {
-            this.#SetPlayerInfo(msg.nextPlayer);
+        /**
+         * Initilaizes UI components
+         * @param {object} msg 
+         */
+        #InitUI(msg) {
             this.#InitPlayerShield();
-            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.nextPlayer);
-            
+            this.#InitPlayerSkills();
+            this.#InitPhaseOptions();
+
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
+            this.#UpdateUIAfterPlayerSwitch(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
+        }
 
+        /**
+         * Update UI on player switch
+         * @param {object} msg 
+         */
+        #UpdateUIAfterPlayerSwitch(msg) {
+            this.#SetPlayerInfo(msg.nextPlayer);
+            this.#SetPlayerAvatar(msg.nextPlayer);
+            this.#UpdatePlayerStats(msg.nextPlayer);
+        
+            const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
-
-            const phase = this.FindComponent("GameManager").phase.toIdentifier();
-            this.#InitPhaseOptions(phase);
-            this.#SetPhaseText(phase); // sollte später mal öfter gecalled werden
         }
 
+        /**
+         * Update skill points, level, money and trophies of player
+         * @param {object} msg 
+         */
         #UpdatePlayerStats(msg) {
             const player = this.FindComponent("GameManager").currentPlayer;
-            this.#SetPlayerSkills(player);
-            this.#SetPlayerShieldStatus(player);
-            this.#SetWitcherLevel(player);
-        }
-
-        Update(timeElapsed) {
-            const player = this.FindComponent("GameManager").currentPlayer;
-             // diese funktionen sollten später weniger oft gecalled werden
             this.#SetPlayerSkills(player);
             this.#SetPlayerShieldStatus(player);
             this.#SetWitcherLevel(player);
@@ -334,8 +445,13 @@ export const ui_manager = (() => {
             document.getElementById("button-move").onclick = function(){console.log("Move-Button geklickt")};
         }
 
+
+        /**
+         * 
+         * @param {object} msg 
+         */
         #LoadSkillDecider(msg) {
-            //TODO
+            //TODO as seperate component
             console.log("Choose A Skill!")
         }
   

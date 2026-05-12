@@ -11,7 +11,7 @@ export const hitbox_component = (() => {
         #size
 
         /**
-         * 
+         * A component which generates a hitbox for raycasting
          * @param {THREE.Vector3} position 
          * @param {string} id 
          * @param {THREE.Vector3} size 
@@ -24,6 +24,9 @@ export const hitbox_component = (() => {
             this.#size = size;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             const geometry = new THREE.BoxGeometry( this.#size.x, this.#size.y, this.#size.z);
             const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );

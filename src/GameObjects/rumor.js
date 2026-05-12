@@ -10,7 +10,7 @@ export const rumor = (() => {
         #destination
 
         /**
-         * 
+         * A rumor object
          * @param {region.Region} region 
          * @param {rewards.Reward} reward
          * @param {town_entity.TownEntity} destination
