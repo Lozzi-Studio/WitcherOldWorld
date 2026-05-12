@@ -37,8 +37,9 @@ export const entity_manager = (() => {
          * Add an entity to this manager
          * @param {entity.Entity} entity 
          * @param {string} name 
+         * @param {bool} init
          */
-        AddEntity(entity,name) {
+        AddEntity(entity,name, init = true) {
             if (!name) {
                 name = entity.constructor.name;
             }
@@ -47,7 +48,9 @@ export const entity_manager = (() => {
             this._entities.push(entity);
             entity.parent = this;
             entity.name = name;
-            entity.InitComponents();
+            if (init) {
+                entity.InitComponents();
+            }
         }
 
         /**

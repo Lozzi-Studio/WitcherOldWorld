@@ -17,8 +17,7 @@ export const player_menu = (() => {
          * Used to intialize and add any default entities
          */
         InitSceneEntities() {
-               
-            this._entityManager.AddEntity(this._parent._currentCamera);
+            this._entityManager.AddEntity(this._parent._currentCamera, undefined, false);
 
             document.getElementById('player-selector').style.display = 'block';
 
