@@ -1,5 +1,6 @@
 import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
+import { cards } from "../Cards/card-templates";
 
 export const game_manager = (() => { 
 
@@ -33,6 +34,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.removeShop', (msg) => {this.#RemoveShopCard(msg);});
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
+            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVertaerktesIgni(), "Hand"));
 
         }
 
@@ -77,36 +79,33 @@ export const game_manager = (() => {
          */
         #OnCardSelect(msg){
             if (this.#selection.includes(msg.card_slot)){
-                this.#selection.splice(this.#selection.findIndex(msg.card_slot),1)
+                this.#selection.splice(this.#selection.indexOf(msg.card_slot),1)
             } else {
                 this.#selection.push(msg.card_slot);
+                this.#DiscardCardToMove(msg);
             }
         }
 
         #DiscardCardToMove(msg){
-            if (this.#ValidateMove(this.#selectedTown)){
-                // Schaut, ob der Spieler sich dort hinbewegen darf
-                const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
-                if(selectedCard.region.equals(this.#selectedTown.region)){
-                    // Schaut, ob die ausgewählte Karte die richtige Region hat
-                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
-                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(selectedCard, "Discard"));
-                    //// Ganz am Ende alles resetten
-                    this.#selection = []; 
-                    this.#selectedTown = null;
-                }
-                else{
-                    console.log("Selected Town different region than selected card.");
+            console.log(msg);
+            const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
+            if (selectedCard) {
+                if (this.#ValidateMove(this.#selectedTown, selectedCard)){
+                    if(selectedCard.region.equals(this.#selectedTown.region)){
+                        this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
+                        this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(selectedCard, "Discard"));
+                        this.#selection = []; 
+                        this.#selectedTown = null;
+                    }
                 }
             }
         }
 
-        #ValidateMove(town){
+        #ValidateMove(town, card){
             if(!town){
                 return false;
             }
-            // Ist die selected town in den neighboring towns von der current town & ist der Spieler noch nicht auf dem Town?
-            return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town;
+            return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card);
         }
 
         /**

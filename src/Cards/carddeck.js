@@ -32,7 +32,7 @@ export const carddeck_component = (() => {
             this._RegisterHandler('card.loadDeck', (msg) => this.#LoadStartdeck(msg));
             this._RegisterHandler('card.addCard', (msg) => this.#AddCard(msg));
             this._RegisterHandler('card.drawCard', (msg) => this.#DrawCard(msg));
-            this._RegisterHandler('card.discardDraw', (msg) => this.#DiscardCard(msg));
+            this._RegisterHandler('card.discardCard', (msg) => this.#DiscardCard(msg));
             this._RegisterHandler('card.shuffle', (msg) => this.#Shuffle(msg));
         }
 
