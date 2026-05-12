@@ -460,6 +460,7 @@ export const ui_manager = (() => {
             this.#InitPlayerShield();
             this.#InitPlayerSkills();
             this.#InitPhaseOptions();
+            this.#ExcludeUIFromRaycasting();
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
@@ -493,6 +494,17 @@ export const ui_manager = (() => {
             this.#SetPlayerTrophies(player);
         }
 
+        #ExcludeUIFromRaycasting () {
+            const UI = document.getElementById("game-ui");
+            UI.addEventListener("mouseenter", () => {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
+                console.log("raycasting disabled");
+            });
+            UI.addEventListener("mouseleave", () => {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
+                console.log("raycasting enabled");
+            });
+        }
 
         /**
          * 

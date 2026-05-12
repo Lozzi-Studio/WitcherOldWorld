@@ -263,6 +263,22 @@ export const broadcasts = (() => {
         static ButtonPress() {
             return {topic: 'game.buttonPress'}
         }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static EnableRaycasting() {
+            return {topic: 'game.enableRaycasting'}
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static DisableRaycasting() {
+            return {topic: 'game.disableRaycasting'}
+        }
     }
 
     class BroadcastTemplateCamera {
