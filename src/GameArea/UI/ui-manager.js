@@ -69,7 +69,6 @@ export const ui_manager = (() => {
 
         ClickCard(index) {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(index));
-            console.log(`card ${index} clicked`);
         }
 
         /**
@@ -414,7 +413,6 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateHandCards(msg) {
-            console.log("updating hand cards")
             let player = this.FindComponent("GameManager").currentPlayer;
             let playerHand = player.FindComponent("Carddeck").hand;
             let handWindow = document.getElementById("hand-window");
@@ -502,11 +500,10 @@ export const ui_manager = (() => {
             const UI = document.getElementById("game-ui");
             UI.addEventListener("mouseenter", () => {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
-                console.log("raycasting disabled");
             });
             UI.addEventListener("mouseleave", () => {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
-                console.log("raycasting enabled");
+
             });
         }
 
