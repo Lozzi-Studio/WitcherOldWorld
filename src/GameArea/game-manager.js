@@ -80,22 +80,19 @@ export const game_manager = (() => {
                 this.#selection.splice(this.#selection.findIndex(msg.card_slot),1)
             } else {
                 this.#selection.push(msg.card_slot);
-                this.#DiscardCardToMove(this.#selection,msg)// muss raus!!
             }
         }
 
-        #DiscardCardToMove(selection,msg){
+        #DiscardCardToMove(msg){
             if (this.#ValidateMove(this.#selectedTown)){
                 // Schaut, ob der Spieler sich dort hinbewegen darf
                 const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
-                console.log(selectedCard);
                 if(selectedCard.region.equals(this.#selectedTown.region)){
                     // Schaut, ob die ausgewählte Karte die richtige Region hat
-                    console.log("Travel worked");
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
-                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCamera.DiscardCard(selectedCard, "Discard"))
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(selectedCard, "Discard"));
                     //// Ganz am Ende alles resetten
-                    selection = []; // ?????
+                    this.#selection = []; 
                     this.#selectedTown = null;
                 }
                 else{
@@ -106,7 +103,7 @@ export const game_manager = (() => {
 
         #ValidateMove(town){
             if(!town){
-                return false
+                return false;
             }
             // Ist die selected town in den neighboring towns von der current town & ist der Spieler noch nicht auf dem Town?
             return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town;
@@ -119,6 +116,7 @@ export const game_manager = (() => {
         #OnTownSelection(msg){
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
+                    this.#selectedTown = msg.town;
                     break;
                 default:
                     break;

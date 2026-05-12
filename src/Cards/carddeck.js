@@ -1,4 +1,5 @@
 import { component } from "../Interfaces/component";
+import { card } from "./card";
 
 export const carddeck_component = (() => {
 
