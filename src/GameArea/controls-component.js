@@ -67,7 +67,7 @@ export const controls_component = (() => {
             this.#used;
         }
         
-    /**
+        /**
          * Triggers after specific time intervall
          * @param {float} timeElapsed 
          */
@@ -77,6 +77,7 @@ export const controls_component = (() => {
                 this.#used = false;
             }
         }
+    }
 
     return {
         Controls : Controls,
