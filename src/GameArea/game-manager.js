@@ -71,19 +71,26 @@ export const game_manager = (() => {
                 this.#selection.splice(this.#selection.findIndex(msg.card_slot),1)
             } else {
                 this.#selection.push(msg.card_slot);
-                if (this.#ValidateMove(this.#selectedTown)){
-                    // Schaut, ob der Spieler sich dort hinbewegen darf
-                    const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
-                    console.log(selectedCard);
-                    if(selectedCard.region.equals(this.#selectedTown.region)){
-                        // Schaut, ob die ausgewählte Karte die richtige Region hat
-                        console.log("Same Region yipee");
-                        // TODO Player Moven
-                        // TODO Karte discarden
-                        // Ganz am Ende alles resetten
-                        this.#selection = [];
-                        this.#selectedTown = null;
-                    }
+                this.#DiscardCardToMove(this.#selection,msg)// muss raus!!
+            }
+        }
+
+        #DiscardCardToMove(selection,msg){
+            if (this.#ValidateMove(this.#selectedTown)){
+                // Schaut, ob der Spieler sich dort hinbewegen darf
+                const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
+                console.log(selectedCard);
+                if(selectedCard.region.equals(this.#selectedTown.region)){
+                    // Schaut, ob die ausgewählte Karte die richtige Region hat
+                    console.log("Travel worked");
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCamera.DiscardCard(selectedCard, "Discard"))
+                    //// Ganz am Ende alles resetten
+                    selection = []; // ?????
+                    this.#selectedTown = null;
+                }
+                else{
+                    console.log("Selected Town different region than selected card.");
                 }
             }
         }
@@ -92,7 +99,6 @@ export const game_manager = (() => {
             if(!town){
                 return false
             }
-
             // Ist die selected town in den neighboring towns von der current town & ist der Spieler noch nicht auf dem Town?
             return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town;
         }
