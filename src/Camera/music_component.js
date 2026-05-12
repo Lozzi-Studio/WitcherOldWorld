@@ -29,7 +29,7 @@ export const music_component = (() => {
             this.#currentVolumeTrack1 = this.#maxVolume;
             this.#currentVolumeTrack2 = 0;
             this.#fadeDuration = 4;
-            this.#skipTo = -1;
+            this.#skipTo = -1;  
         }
 
         /**

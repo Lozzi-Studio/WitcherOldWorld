@@ -27,6 +27,8 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('player.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
+            this._RegisterHandler('player.updateHandCardsUI', (msg) => {this.#UpdateHandCards(msg)});
+            this._RegisterHandler('card.updateSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
             
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
 
@@ -37,50 +39,40 @@ export const ui_manager = (() => {
         /**
          * Triggers Cardslot Selection
          */
-        CardSlot0() {
+        SelectCardSlot0() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
         }
 
         /**
          * Triggers Cardslot Selection
          */
-        CardSlot1() {
+        SelectCardSlot1() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(1));
         }
 
-        /**
-         * Triggers Cardslot Selection
-         */
-        CardSlot2() {
+        SelectCardSlot2() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(2));
         }
 
-        /**
-         * Triggers Cardslot Selection
-         */
-        CardSlot3() {
+        SelectCardSlot3() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(3));
         }
 
-        /**
-         * Triggers Cardslot Selection
-         */
-        CardSlot4() {
+        SelectCardSlot4() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(4));
         }
 
-        /**
-         * Triggers Cardslot Selection
-         */
-        CardSlot5() {
+        SelectCardSlot5() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(5));
         }
 
-        /**
-         * Triggers Cardslot Selection
-         */
-        CardSlot6() {
+        SelectCardSlot6() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(6));
+        }
+
+        ClickCard(index) {
+            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(index));
+            console.log(`card ${index} clicked`);
         }
 
         /**
@@ -403,6 +395,102 @@ export const ui_manager = (() => {
         }
 
         /**
+         * Dynamically creates DIV elements for hand cards from card information
+         * @param {card.Card} card 
+         * @returns 
+         */
+        #CreateCardDIV(card) {
+            let cardDIV = document.createElement("div");
+            cardDIV.classList.add("container", "container--col", "card");   
+            
+            let iconName = "";
+            switch (card.region.toIdentifier()) {
+                case "River":
+                    iconName = "water";
+                    break;
+                case "Mountain":
+                    iconName = "landscape";
+                    break;
+                case "Forest":
+                    iconName = "forest";
+                    break;
+            }
+
+            let cardColor = "";
+            switch (card.color.toIdentifier()) {
+                case "Blue":
+                    cardColor = "#8F97FF";
+                    break;
+                case "Red":
+                    cardColor = "#FF7D7D";
+                    break;
+                case "Green":
+                    cardColor = "#97FF8F";
+                    break;
+                case "Purple":
+                    cardColor = "#DA8FFF";
+                    break;
+                case "Yellow":
+                    cardColor = "#FFF98F";
+                    break;
+            }
+
+            cardDIV.innerHTML = `
+            <div class="material-symbols-outlined filled" class="card__icon" style="color: ${cardColor}">${iconName}</div>
+            <div class="card__text" style="color: ${cardColor}">${card.name}</div>
+            `;
+
+            return cardDIV;
+        }
+
+        /**
+         * Loads card images for every hand card the player has and deletes the images whe a card is played
+         * @param {object} msg 
+         */
+        #UpdateHandCards(msg) {
+            console.log("updating hand cards")
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let playerHand = player.FindComponent("Carddeck").hand;
+            let handWindow = document.getElementById("hand-window");
+            for (let [i, card] of playerHand.entries()) {
+                let cardDIV = document.getElementById(`card-image-${i}`);
+                if (cardDIV) {
+                    // cardContainer.innerHTML = card.name;
+                    // cardImage.src = `${card.imagePath}`;
+                    cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
+                }
+                else {
+                    let newCardDIV = this.#CreateCardDIV(card);
+                    newCardDIV.id = `card-image-${i}`;
+                    /* let newCardImage = document.createElement("img");
+                    newCardImage.src = `${card.imagePath}`;
+                    newCardDIV.appendChild(newCardImage); */
+                    handWindow.appendChild(newCardDIV);
+                    newCardDIV.addEventListener("click", () => this.ClickCard(i));
+                }
+            }
+            for (let [i, child] of Array.from(handWindow.children).entries()) {
+                if (!playerHand[i]) {
+                    document.getElementById(`card-image-${i}`).remove();
+                }
+            }
+        }
+
+        /**
+         * Adds the card--selected class to cards that are selected by the player.
+         * @param {object} msg 
+         */
+        #UpdateHandCardSelection(msg) {
+            let cardImage = document.getElementById(`card-image-${msg.card_slot}`);
+            if (msg.mode == "Select") {
+                cardImage.classList.add("card--selected");
+            }
+            else {
+                cardImage.classList.remove("card--selected");
+            }
+        }
+
+        /**
          * Initilaizes UI components
          * @param {object} msg 
          */
@@ -410,6 +498,7 @@ export const ui_manager = (() => {
             this.#InitPlayerShield();
             this.#InitPlayerSkills();
             this.#InitPhaseOptions();
+            this.#ExcludeUIFromRaycasting();
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
@@ -445,6 +534,17 @@ export const ui_manager = (() => {
             document.getElementById("button-move").onclick = function(){console.log("Move-Button geklickt")};
         }
 
+        #ExcludeUIFromRaycasting () {
+            const UI = document.getElementById("game-ui");
+            UI.addEventListener("mouseenter", () => {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
+                console.log("raycasting disabled");
+            });
+            UI.addEventListener("mouseleave", () => {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
+                console.log("raycasting enabled");
+            });
+        }
 
         /**
          * 

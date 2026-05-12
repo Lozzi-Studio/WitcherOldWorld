@@ -86,7 +86,6 @@ export const game = (() => {
                 this._entityManager.AddEntity(playerEntity, "Player_" + count);
                 count += 1;
             }
-
         }
 
         /**

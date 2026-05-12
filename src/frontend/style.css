@@ -1,6 +1,7 @@
+
 @font-face {
   font-family: Gwent; /* set name */
-  src: url(../../resources/fonts/gwent-extrabold.ttf); /* url of the font */
+  src: url(../../resources/fonts/gwent_extrabold.ttf); /* url of the font */
 }
 
 body {
@@ -66,6 +67,7 @@ body {
   --color-primary-inactive: rgba(219, 218, 213, 0.5);
   --color-button-border: rgba(132, 126, 116, 1.00);
   --color-hover: #ffffff;
+  --color-selected: rgba(255, 225, 123, 1.00);
 }
 
 p, div {
@@ -422,4 +424,54 @@ p, div {
 
 .tooltip:hover + .tooltip-text {
     visibility: visible;
+}
+
+#hand-window {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    gap:0;
+}
+
+#hand-window > div {
+    height: 196px;
+    cursor: url("../../resources/assets/cursor/pointer-48.png"), pointer;
+    transition: margin-right 400ms;
+}
+
+#hand-window > div:not(:last-child) {
+    margin-right: -100px;
+}
+
+#hand-window > div:hover {
+    margin-right: 0;
+}
+
+#hand-window > div:not(.card--selected):hover {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+}
+
+.card {
+    background-color: #3F3F3F;
+    border: 2px solid #868686;
+    border-radius: 8px;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+
+    height: 196px;
+    width: 138px;
+}
+
+.card--selected {
+    border: 2px solid var(--color-selected);
+    border-radius: 10px;
+}
+
+.card__text {
+    writing-mode: vertical-rl;
+    rotate: 180deg;
+    margin-bottom: 4px;
 }

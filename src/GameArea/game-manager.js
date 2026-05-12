@@ -89,24 +89,18 @@ export const game_manager = (() => {
         }
 
         #DiscardCardToMove(msg){
-            console.log(msg);
             const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
-            if (selectedCard) {
+            if (selectedCard && this.#selectedTown) {
                 if (this.#ValidateMove(this.#selectedTown, selectedCard)){
-                    if(selectedCard.region.equals(this.#selectedTown.region)){
-                        this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
-                        this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(selectedCard, "Discard"));
-                        this.#selection = []; 
-                        this.#selectedTown = null;
-                    }
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(selectedCard, "Discard"));
+                    this.#selection = []; 
+                    this.#selectedTown = null;
                 }
             }
         }
 
         #ValidateMove(town, card){
-            if(!town){
-                return false;
-            }
             return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card);
         }
 

@@ -1,5 +1,8 @@
 import { component } from "../Interfaces/component";
-import { card } from "./card";
+import { broadcasts } from "../Interfaces/broadcasts";
+import { card } from "../Cards/card";
+import { cards } from "../Cards/card-templates";
+import { region } from "../GameArea/region";
 
 export const carddeck_component = (() => {
 
@@ -52,6 +55,11 @@ export const carddeck_component = (() => {
         #LoadStartdeck(msg){
             switch (msg.deck) {
                 case "Player":
+                    // hier müssen noch die richtigen Karten angegeben werden
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Mountain()), "Hand"));
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Mountain()), "Hand"));
                     break;
                 case "Shop":
                     break;
@@ -83,6 +91,7 @@ export const carddeck_component = (() => {
                         }
                 }
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
         }
 
         /**
@@ -104,6 +113,7 @@ export const carddeck_component = (() => {
                     this.#Shuffle({includeDiscard: false});
                     break;
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
         }
 
         /**
@@ -128,7 +138,8 @@ export const carddeck_component = (() => {
                             this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
                         }
                     break;
-                }
+            }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
         }
 
         /**

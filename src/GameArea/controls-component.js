@@ -6,6 +6,7 @@ export const controls_component = (() => {
 
     class Controls extends component.Component {
         #used;
+        #raycastingEnabled;
 
         /**
          * A component to track mouse clicks with raycast
@@ -13,6 +14,7 @@ export const controls_component = (() => {
         constructor() {
             super();
             this.#used = false;
+            this.#raycastingEnabled = true;
         }
 
         /**
@@ -20,6 +22,20 @@ export const controls_component = (() => {
          */
         InitComponent() {
             document.addEventListener('mousedown', (event) => {this.#onMouseDown(event)}, {once: true});
+        }
+
+        /**
+         * Enable or disable raycasting (used to exclude UI elements from raycasting)
+         */
+        #EnableRaycasting() {
+            this.#raycastingEnabled = true;
+        }
+
+        /**
+         * Enable or disable raycasting (used to exclude UI elements from raycasting)
+         */
+        #DisableRaycasting() {
+            this.#raycastingEnabled = false;
         }
 
         /**
@@ -40,11 +56,9 @@ export const controls_component = (() => {
                 const selectedObject = intersections[0].object;
                 if (selectedObject.name.includes("Town")) {
                     this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)));
-                }
-                else if (selectedObject.name.includes("Button")) {
+                } else if (selectedObject.name.includes("Button")) {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
-                }
-                else {
+                } else {
                     this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
                 }
             } else {
@@ -52,7 +66,17 @@ export const controls_component = (() => {
             }
             this.#used;
         }
-    }
+        
+    /**
+         * Triggers after specific time intervall
+         * @param {float} timeElapsed 
+         */
+        Update(timeElapsed) {
+            if (this.#used) {
+                document.addEventListener('mousedown', (event) => {this.#onMouseDown(event)}, {once: true});
+                this.#used = false;
+            }
+        }
 
     return {
         Controls : Controls,
