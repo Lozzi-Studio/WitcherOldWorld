@@ -48,8 +48,8 @@ export const controls_component = (() => {
                     this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
                 }
             } else {
-                    this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
-                }
+                this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
+            }
             this.#used;
         }
     }

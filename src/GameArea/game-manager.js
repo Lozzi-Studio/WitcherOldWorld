@@ -1,7 +1,6 @@
 import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
 import { cards } from "../Cards/card-templates";
-import { cards } from "../Cards/card-templates";
 
 export const game_manager = (() => { 
 
@@ -11,14 +10,11 @@ export const game_manager = (() => {
         #currentPlayer;
         #selection;
         #selectedTown;
-        #selectedTown;
         
         /**
          * Manages game stages and game behaviour
          */
-        /**
-         * Manages game stages and game behaviour
-         */
+
         constructor() {
             super();
             this.#currentRound = Phase.One;
@@ -26,12 +22,8 @@ export const game_manager = (() => {
             this.#currentPlayer = null;
             this.#selection = [];
             this.#selectedTown = null;
-            this.#selectedTown = null;
         }
 
-        /**
-         * Used to intialize and add any default components/events
-         */
         /**
          * Used to intialize and add any default components/events
          */
@@ -59,17 +51,12 @@ export const game_manager = (() => {
          * Trigger selection to remove card from hand to get a shopcard
          * @param {object} msg 
          */
-        /**
-         * Trigger selection to remove card from hand to get a shopcard
-         * @param {object} msg 
-         */
         #SwapoutCard(msg){
             console.log("Swapout Card");
             //TODO
         }
 
         /**
-         * Swaps to the next phase
          * Swaps to the next phase
          * @param {object} msg 
          */
@@ -82,13 +69,11 @@ export const game_manager = (() => {
                     this.#currentPlayerId = 1;
                     this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
-                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
                 }
             }
         }
 
         /**
-         * Add card to selection
          * Add card to selection
          * @param {object} msg 
          */
