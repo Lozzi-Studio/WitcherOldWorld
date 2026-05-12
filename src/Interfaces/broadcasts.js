@@ -50,6 +50,17 @@ export const broadcasts = (() => {
         static UpdateUI() {
             return {topic: 'player.updateUI'};
         }
+
+        /**
+         * 
+         * @param {string} mode - Options: "add", "discard", "draw"
+         * @param {*} card 
+         * @returns 
+         */
+        static UpdateHandCardsUI(mode, card) {
+            console.log("Broadcast UpdateHandCardsUI was sent");
+            return {topic: 'player.updateHandCardsUI', mode: mode, card: card};
+        }
     }
 
     class BroadcastTemplateCards {
@@ -105,6 +116,16 @@ export const broadcasts = (() => {
          */
         static ShuffleDeck(includeDiscard) {
             return {topic: 'card.shuffle', includeDiscard: includeDiscard}
+        }
+
+        /**
+         * 
+         * @param {int} card_slot 
+         * @param {string} mode - Options: "Select", "Deselect" 
+         * @returns 
+         */
+        static UpdateCardSelectionUI(card_slot, mode) {
+            return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode};
         }
     }
 

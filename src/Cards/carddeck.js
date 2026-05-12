@@ -1,4 +1,5 @@
 import { component } from "../Interfaces/component";
+import { broadcasts } from "../Interfaces/broadcasts";
 
 export const carddeck_component = (() => {
 
@@ -31,7 +32,7 @@ export const carddeck_component = (() => {
             this._RegisterHandler('card.loadDeck', (msg) => this.#LoadStartdeck(msg));
             this._RegisterHandler('card.addCard', (msg) => this.#AddCard(msg));
             this._RegisterHandler('card.drawCard', (msg) => this.#DrawCard(msg));
-            this._RegisterHandler('card.discardDraw', (msg) => this.#DiscardCard(msg));
+            this._RegisterHandler('card.discardCard', (msg) => this.#DiscardCard(msg));
             this._RegisterHandler('card.shuffle', (msg) => this.#Shuffle(msg));
         }
 
@@ -82,6 +83,7 @@ export const carddeck_component = (() => {
                         }
                 }
             }
+            this.Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
         }
 
         /**
@@ -103,6 +105,8 @@ export const carddeck_component = (() => {
                     this.#Shuffle({includeDiscard: false});
                     break;
             }
+            // console.log(this.parent);
+            this.parent.BroadcastOthers(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
         }
 
         /**
@@ -127,7 +131,8 @@ export const carddeck_component = (() => {
                             this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
                         }
                     break;
-                }
+            }
+            this.Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
         }
 
         /**
