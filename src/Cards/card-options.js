@@ -12,6 +12,7 @@ export const card_options = (() => {
         static Green(){ return new Color("Green");}
 
         /**
+         * An enum to deternime color options of cards
          * Use static function constructor instead of default constructor!
          * @param {string} color 
          */
@@ -20,7 +21,7 @@ export const card_options = (() => {
         }
 
         /**
-         * 
+         * Checks equality
          * @param {Color} color 
          * @returns {bool}
          */
@@ -29,7 +30,7 @@ export const card_options = (() => {
         }
 
         /**
-         * 
+         * Get identifier of enum
          * @returns {string}
          */
         toIdentifier(){
@@ -40,7 +41,7 @@ export const card_options = (() => {
 
     class CardEffect {
         /**
-         * 
+         * A function to create a CardEffect object
          * @param {int} damage 
          * @param {int} shield 
          * @param {int} drawModifier 

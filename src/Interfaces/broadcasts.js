@@ -13,16 +13,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeMoney(amount) {
-            return {topic: 'player.change_money', amount: amount}
-        }
-
-        /**
-         * @param {string} mode - Options: "Increase", "Decrease"
-         * @param {int} amount 
-         * @returns {object}
-         */
-        static ChangeShield(mode, amount) {
-            return {topic: 'player.change_shield', mode: mode, amount: amount}
+            return {topic: 'player.changeMoney', amount: amount}
         }
 
         /**
@@ -50,7 +41,14 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static AddTrophy() {
-            return {topic: 'player.add_trophy'}
+            return {topic: 'player.addTrophy'}
+        }
+
+        /**
+         * @returns {object}
+         */
+        static UpdateUI() {
+            return {topic: 'player.updateUI'};
         }
     }
 
@@ -118,7 +116,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeSkillLevel(skill, mode, payMoney) {
-            return {topic: 'skill.change_level', skill: skill, mode: mode, payMoney: payMoney}
+            return {topic: 'skill.changeLevel', skill: skill, mode: mode, payMoney: payMoney}
         }
 
         /**
@@ -127,7 +125,7 @@ export const broadcasts = (() => {
          * @returns 
          */
         static ChooseSkillToIncrease(payMoney) {
-            return {topic: 'skill.choose_skill', payMoney: payMoney}
+            return {topic: 'skill.chooseSkill', payMoney: payMoney}
         }
 
         /**
@@ -137,7 +135,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeShield(mode, level, amount) {
-            return {topic: 'skill.change_shield', mode: mode, level: level, amount: amount}
+            return {topic: 'skill.changeShield', mode: mode, level: level, amount: amount}
         }
 
         /**
@@ -146,7 +144,15 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static ChangeCurrentShield(mode, amount) {
-            return {topic: 'skill.change_currentshield', mode: mode, amount: amount}
+            return {topic: 'skill.changeCurrentShield', mode: mode, amount: amount}
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static UpdateUI() {
+            return {topic: 'skill.updateUI'};
         }
     }
 
@@ -170,6 +176,15 @@ export const broadcasts = (() => {
 
 
     class BroadcastTemplateGame {
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static StartGame() {
+            return {topic: 'game.start'};
+        }
+
         /**
          * 
          * @returns {object}
@@ -213,8 +228,20 @@ export const broadcasts = (() => {
             return {topic: 'game.removeShop'}
         }
 
+        /**
+         * 
+         * @returns {object}
+         */
         static SwapoutCard() {
             return {topic: 'game.swapoutCard'}
+        }
+        
+        /**
+         * 
+         * @returns {object}
+         */
+        static ButtonPress() {
+            return {topic: 'game.buttonPress'}
         }
     }
 
@@ -249,7 +276,14 @@ export const broadcasts = (() => {
     }
 
     class BroadcastTemplateMusic {
-        
+
+        /**
+         * @returns {object}
+         */
+        static PlayMainMenuTheme() {
+            return {topic: 'music.menu'}
+        }
+
         /**
          * 
          * @returns {object}
@@ -271,7 +305,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static PlayBattleMonsterTheme() {
-            return {topic: 'music.battle_monster'}
+            return {topic: 'music.battleMonster'}
         }
     }
 

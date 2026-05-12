@@ -10,7 +10,9 @@ export const game_manager = (() => {
         #selection;
         #selectedTown;
         
-
+        /**
+         * Manages game stages and game behaviour
+         */
         constructor() {
             super();
             this.#currentRound = Phase.One;
@@ -20,6 +22,9 @@ export const game_manager = (() => {
             this.#selectedTown = null;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('card.select', (msg) => {this.#OnCardSelect(msg);});
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
@@ -31,22 +36,26 @@ export const game_manager = (() => {
 
         }
 
-        Update() {
-
-        }
-
+        /**
+         * Trigger selection to remove cards from shop
+         * @param {object} msg 
+         */
         #RemoveShopCard(msg){
             console.log("Remove Shop Card");
             //TODO
         }
 
+        /**
+         * Trigger selection to remove card from hand to get a shopcard
+         * @param {object} msg 
+         */
         #SwapoutCard(msg){
             console.log("Swapout Card");
             //TODO
         }
 
         /**
-         * 
+         * Swaps to the next phase
          * @param {object} msg 
          */
         #NextTurnPhase(msg){
@@ -54,16 +63,16 @@ export const game_manager = (() => {
             if (nextPlayer) {
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
-                this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
                 if (this.#currentPlayer == undefined) {
                     this.#currentPlayerId = 1;
                     this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
                 }
             }
         }
 
         /**
-         * 
+         * Add card to selection
          * @param {object} msg 
          */
         #OnCardSelect(msg){
@@ -104,24 +113,24 @@ export const game_manager = (() => {
         }
 
         /**
-         * 
+         * Triggers town UI on click on town
          * @param {object} msg 
          */
         #OnTownSelection(msg){
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
-                    console.log("Town UI");
-                    this.#selectedTown = msg.town;
                     break;
                 default:
                     break;
             }
         }
 
-
+        /**
+         * Triggers start of a wuerfelpoker game
+         * @param {object} msg 
+         */
         #StartWuerfelpoker(msg) {
             //TODO Implement Wuerfelpoker
-            console.log("Wuerfelpoker");
             switch (Math.floor(Math.random() * 2)) {
                 case 0:
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(-1));
@@ -133,7 +142,7 @@ export const game_manager = (() => {
         }
 
         /**
-         * 
+         * Get string of player entity
          * @param {int} id 
          * @returns {string}
          */
@@ -141,6 +150,9 @@ export const game_manager = (() => {
             return "Player_" + id;
         }
 
+        /**
+         * @returns {array}
+         */
         get selection() {
             return this.#selection;
         }
@@ -173,13 +185,17 @@ export const game_manager = (() => {
         static End = new Phase(-1);
         #number;
 
-
+        /**
+         * An enum class to determine phase
+         * Use static function constructor instead of default constructor!
+         * @param {int} number 
+         */
         constructor(number) {
             this.#number = number;
         }
 
         /**
-         * 
+         * Set state to next phase
          * @returns {bool}
          */
         next() {
@@ -192,7 +208,7 @@ export const game_manager = (() => {
         }
 
         /**
-         * 
+         * Get identifier of enum
          * @returns {int}
          */
         toIdentifier() {

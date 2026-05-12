@@ -13,6 +13,7 @@ export const town_properties = (() => {
         #neighboringTowns;
 
         /**
+         * A tracker for town properties
          * @param {town_options.TownAbility} ability  
          * @param {region.Region} region
          */
@@ -24,12 +25,15 @@ export const town_properties = (() => {
 
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('town.action', (msg) => {this.#executeAbility(msg)});
         }
 
         /**
-         * 
+         * Triggers town ability
          * @param {object} msg 
          */
         #executeAbility(msg) {
@@ -44,9 +48,9 @@ export const town_properties = (() => {
         }
 
         /**
-         * 
+         * Returns a bool if the card allows to enter this town
          * @param {Array<card.Card>} cards 
-         * @returns 
+         * @returns {town} 
          */
         canEnter(cards) {
             for (let card of cards) {

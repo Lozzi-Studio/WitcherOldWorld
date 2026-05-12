@@ -1,3 +1,7 @@
+body {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
 
 .material-symbols-outlined {
   font-variation-settings:
@@ -331,6 +335,7 @@ p, div {
     min-width: 0;
 
     gap: 4px;
+    align-items: stretch;
 }
 
 #avatar-container-1 {

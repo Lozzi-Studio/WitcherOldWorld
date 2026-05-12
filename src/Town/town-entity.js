@@ -18,7 +18,7 @@ export const town_entity = (() => {
         #neighboringTowns;
 
         /**
-         * 
+         * A wrapper for towns
          * @param {int} id 
          * @param {string} town_name 
          * @param {town_options.TownAbility} ability 
@@ -38,6 +38,9 @@ export const town_entity = (() => {
             this.#neighboringTowns = neighboringTowns;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponents() {
             this.AddComponent(new town_properties.TownProperties(this.#ability, this.#region,this.#neighboringTowns));
             this.AddComponent(new hitbox_component.CubicHitbox(this.#position, "Town_" + this.#id, this.#size));

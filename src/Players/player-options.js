@@ -6,6 +6,7 @@ export const player_options = (() => {
         #name;
         #ability;
         #homeTown;
+        #color;
         static Cat() {return new WitcherSchool("Katzenschule");}
         static Viper() {return new WitcherSchool("Vipernschule");}
         static Bear() {return new WitcherSchool("Baerenschule");}
@@ -13,6 +14,7 @@ export const player_options = (() => {
         static Griffin() {return new WitcherSchool("Greifenschule");}
 
         /**
+         * An enum class to determine Witcherschool
          * Use static function constructor instead of default constructor!
          * @param {string} name 
          */
@@ -20,6 +22,7 @@ export const player_options = (() => {
             this.#name = name
             this.#ability = WitcherSchool.getAbilityFromName(name);
             this.#homeTown = WitcherSchool.getHomeTownFromName(name);
+            this.#color = WitcherSchool.getColorFromName(name);
         }
 
         get name() {
@@ -34,8 +37,12 @@ export const player_options = (() => {
             return this.#homeTown;
         }
 
+        get color() {
+            return this.#color;
+        }
+
         /**
-         * 
+         * Get ability string from witcher school
          * @param {string} name 
          * @returns {string}
          */
@@ -55,12 +62,11 @@ export const player_options = (() => {
         }
 
         /**
-         * 
+         * Get town string from witcher school
          * @param {string} name 
-         * @returns {town_components.Town}
+         * @returns {string}
          */
         static getHomeTownFromName(name) {
-            //implement as town_components
             switch(name) {
                 case "Vipernschule":
                     return "Gorthur Guaed";
@@ -73,6 +79,26 @@ export const player_options = (() => {
                 case "Greifenschule":
                     return "Kaer Seren";
                 }
+        }
+
+        /**
+         * Get color string from witcher school
+         * @param {string} name 
+         * @returns {string}
+         */
+        static getColorFromName(name){
+            switch(name) {
+                case "Vipernschule":
+                    return 0x7ED321;
+                case "Katzenschule":
+                    return 0x1e1fa7;
+                case "Wolfsschule":
+                    return 0x583b06;
+                case "Baerenschule":
+                    return 0xc73510;
+                case "Greifenschule":
+                    return 0xd2c415;
+            }
         }
     }
 
