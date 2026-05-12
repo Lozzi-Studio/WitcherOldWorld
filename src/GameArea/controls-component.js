@@ -56,15 +56,18 @@ export const controls_component = (() => {
                 const selectedObject = intersections[0].object;
                 if (selectedObject.name.includes("Town")) {
                     this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)));
-                } else if (selectedObject.name.includes("Button")) {
+                }
+                else if (selectedObject.name.includes("Button")) {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
-                } else {
+                }
+                else {
                     this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
                 }
-            } else {
+            }
+            else {
                 this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
             }
-            this.#used;
+            this.#used = true;
         }
         
         /**
