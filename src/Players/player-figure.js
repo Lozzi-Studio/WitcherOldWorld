@@ -25,14 +25,13 @@ export const player_figure = (() =>{
          * Used to intialize and add any default components/events
          */
         InitComponent(){
-            this._RegisterHandler('player.move', (msg) => this.#OnPlayerMove(msg));
+            this._RegisterHandler('player.move', (msg) => {this.#OnPlayerMove(msg)});
             const loader = new GLTFLoader();
             loader.load("resources/assets/PlayerBaseModel.glb", (glb) =>{
                 glb.scene.traverse((child) =>{
                     if (child.isMesh) {
                         child.material.fog = false;
                         child.material.color.setHex('0x' + this.#color.toString(16));
-                        this.#mesh = child;
                     }
                 });
                 this.#mesh = glb.scene;

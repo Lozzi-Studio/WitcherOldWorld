@@ -7,6 +7,7 @@ import { game_area_entity } from './GameArea/game-area-entity.js';
 import { broadcasts } from './Interfaces/broadcasts.js';
 import { cards } from './Cards/card-templates.js';
 import { card_options } from './Cards/card-options.js';
+import { card } from './Cards/card.js';
 import { camera_entity } from './Camera/camera_entity.js';
 import {GLTFLoader} from 'three/examples/jsm/Addons.js';
 import {AmbientLight, DirectionalLight, HemisphereLight} from 'three';import { test } from 'vitest';
