@@ -91,7 +91,7 @@ export const carddeck_component = (() => {
                         }
                 }
             }
-            this.BroadcastOthers(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
         }
 
         /**
@@ -113,7 +113,7 @@ export const carddeck_component = (() => {
                     this.#Shuffle({includeDiscard: false});
                     break;
             }
-            this.BroadcastOthers(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
         }
 
         /**
@@ -139,7 +139,7 @@ export const carddeck_component = (() => {
                         }
                     break;
             }
-            this.BroadcastOthers(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
         }
 
         /**
