@@ -58,7 +58,6 @@ export const broadcasts = (() => {
          * @returns 
          */
         static UpdateHandCardsUI(mode, card) {
-            console.log("Broadcast UpdateHandCardsUI was sent");
             return {topic: 'player.updateHandCardsUI', mode: mode, card: card};
         }
     }

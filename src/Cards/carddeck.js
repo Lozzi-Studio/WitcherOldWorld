@@ -1,5 +1,7 @@
 import { component } from "../Interfaces/component";
 import { broadcasts } from "../Interfaces/broadcasts";
+import { cards } from "../Cards/card-templates";
+import { region } from "../GameArea/region";
 
 export const carddeck_component = (() => {
 
@@ -52,6 +54,10 @@ export const carddeck_component = (() => {
         #LoadStartdeck(msg){
             switch (msg.deck) {
                 case "Player":
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Mountain()), "Hand"));
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Mountain()), "Hand"));
                     break;
                 case "Shop":
                     break;
@@ -83,7 +89,7 @@ export const carddeck_component = (() => {
                         }
                 }
             }
-            this.Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+            this.BroadcastOthers(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
         }
 
         /**
@@ -105,8 +111,7 @@ export const carddeck_component = (() => {
                     this.#Shuffle({includeDiscard: false});
                     break;
             }
-            // console.log(this.parent);
-            this.parent.BroadcastOthers(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+            this.BroadcastOthers(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
         }
 
         /**
@@ -132,7 +137,7 @@ export const carddeck_component = (() => {
                         }
                     break;
             }
-            this.Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
+            this.BroadcastOthers(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
         }
 
         /**

@@ -382,25 +382,24 @@ export const ui_manager = (() => {
 
             let cardColor = "";
             if (card.color.toIdentifier() == "Blue") {
-                cardColor = "#0f2a6b";
+                cardColor = "#8F97FF";
             }
             else if (card.color.toIdentifier() == "Red") {
-                cardColor = "#9a1717";
+                cardColor = "#FF7D7D";
             }
             else if (card.color.toIdentifier() == "Green") {
-                cardColor = "#9c8516";
+                cardColor = "#97FF8F";
             }
             else if (card.color.toIdentifier() == "Purple") {
-                cardColor = "#890082";
+                cardColor = "#DA8FFF";
             }
             else if (card.color.toIdentifier() == "Yellow") {
-                cardColor = "#9c8516";
+                cardColor = "#FFF98F";
             }
-            cardDIV.style.backgroundColor = cardColor;
 
             cardDIV.innerHTML = `
-            <div class="material-symbols-outlined filled" class="card__icon">${iconName}</div>
-            <div class="card__text">${card.name}</div>
+            <div class="material-symbols-outlined filled" class="card__icon" style="color: ${cardColor}">${iconName}</div>
+            <div class="card__text" style="color: ${cardColor}">${card.name}</div>
             `;
 
             return cardDIV;
@@ -411,7 +410,7 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateHandCards(msg) {
-            console.log("updateing hand cards")
+            console.log("updating hand cards")
             let player = this.FindComponent("GameManager").currentPlayer;
             let playerHand = player.FindComponent("Carddeck").hand;
             let handWindow = document.getElementById("hand-window");
@@ -427,7 +426,7 @@ export const ui_manager = (() => {
                     newCardDIV.id = `card-image-${i}`;
                     /* let newCardImage = document.createElement("img");
                     newCardImage.src = `${card.imagePath}`;
-                    newCardDIV.appendChild(newCardImage);b*/
+                    newCardDIV.appendChild(newCardImage); */
                     handWindow.appendChild(newCardDIV);
                     newCardDIV.addEventListener("click", () => this.ClickCard(i));
                 }
