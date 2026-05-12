@@ -1,5 +1,6 @@
 import { component } from "../Interfaces/component";
 import { broadcasts } from "../Interfaces/broadcasts";
+import { card } from "../Cards/card";
 import { cards } from "../Cards/card-templates";
 import { region } from "../GameArea/region";
 
