@@ -292,7 +292,7 @@ export const cards = (() => {
          * Get card template for card Verstaerktes Igni
          * @returns {object}
          */
-        static getVertaerktesIgni() {
+        static getVerstaerktesIgni() {
             return new card.Card(
                 "Verstaerktes Igni",
                 card_options.Color.Purple(),

@@ -33,6 +33,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.startPoker', (msg) => {this.#StartWuerfelpoker(msg);});
             this._RegisterHandler('game.removeShop', (msg) => {this.#RemoveShopCard(msg);});
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
+            this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -77,9 +78,11 @@ export const game_manager = (() => {
          */
         #OnCardSelect(msg){
             if (this.#selection.includes(msg.card_slot)){
-                this.#selection.splice(this.#selection.indexOf(msg.card_slot),1)
+                this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect"));
             } else {
                 this.#selection.push(msg.card_slot);
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
                 this.#DiscardCardToMove(msg);
             }
         }
@@ -137,6 +140,14 @@ export const game_manager = (() => {
          */
         #GetPlayer(id) {
             return "Player_" + id;
+        }
+
+        #OnGameStart() {
+            // give start deck to players
+            const players = this._parent._parent.Filter(x => x.name.includes("Player"));
+            for (let player of players) {
+                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
+            }
         }
 
         /**
