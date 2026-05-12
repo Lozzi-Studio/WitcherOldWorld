@@ -21,6 +21,8 @@ export const controls_component = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponent() {
+            this._RegisterHandler('game.enableRaycasting', (msg) => {this.#EnableRaycasting()});
+            this._RegisterHandler('game.disableRaycasting', (msg) => {this.#DisableRaycasting()});
             document.addEventListener('mousedown', (event) => {this.#onMouseDown(event)}, {once: true});
         }
 
@@ -29,6 +31,7 @@ export const controls_component = (() => {
          */
         #EnableRaycasting() {
             this.#raycastingEnabled = true;
+            this.#used = true;
         }
 
         /**
@@ -51,23 +54,25 @@ export const controls_component = (() => {
             const raycaster = new THREE.Raycaster();
             raycaster.setFromCamera(coords, this.FindEntity("Camera").camera);
             
-            const intersections = raycaster.intersectObjects(this._parent._parent.scene.children, true);
-            if (intersections.length > 0) {
-                const selectedObject = intersections[0].object;
-                if (selectedObject.name.includes("Town")) {
-                    this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)));
-                }
-                else if (selectedObject.name.includes("Button")) {
-                    this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
+            if (this.#raycastingEnabled) {
+                const intersections = raycaster.intersectObjects(this._parent._parent.scene.children, true);
+                if (intersections.length > 0) {
+                    const selectedObject = intersections[0].object;
+                    if (selectedObject.name.includes("Town")) {
+                        this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)));
+                    }
+                    else if (selectedObject.name.includes("Button")) {
+                        this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
+                    }
+                    else {
+                        this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
+                    }
                 }
                 else {
                     this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
                 }
+                this.#used = true;
             }
-            else {
-                this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
-            }
-            this.#used = true;
         }
         
         /**
