@@ -16,7 +16,6 @@ export const player_money = (() => {
 
 
         #ChangeMoney(msg) {
-            console.log("Amount: " + msg.amount);
             if (msg.amount > 0) {
                 this.Add(msg.amount);
             } else {

@@ -1,5 +1,6 @@
 import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
+import { cards } from "../Cards/card-templates";
 
 export const game_manager = (() => { 
 
@@ -8,16 +9,23 @@ export const game_manager = (() => {
         #currentPlayerId;
         #currentPlayer;
         #selection;
+        #selectedTown;
         
-
+        /**
+         * Manages game stages and game behaviour
+         */
         constructor() {
             super();
             this.#currentRound = Phase.One;
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
+            this.#selectedTown = null;
         }
 
+        /**
+         * Used to intialize and add any default components/events
+         */
         InitComponent() {
             this._RegisterHandler('card.select', (msg) => {this.#OnCardSelect(msg);});
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
@@ -25,26 +33,30 @@ export const game_manager = (() => {
             this._RegisterHandler('game.startPoker', (msg) => {this.#StartWuerfelpoker(msg);});
             this._RegisterHandler('game.removeShop', (msg) => {this.#RemoveShopCard(msg);});
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
+            this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
-
         }
 
-        Update() {
-
-        }
-
+        /**
+         * Trigger selection to remove cards from shop
+         * @param {object} msg 
+         */
         #RemoveShopCard(msg){
             console.log("Remove Shop Card");
             //TODO
         }
 
+        /**
+         * Trigger selection to remove card from hand to get a shopcard
+         * @param {object} msg 
+         */
         #SwapoutCard(msg){
             console.log("Swapout Card");
             //TODO
         }
 
         /**
-         * 
+         * Swaps to the next phase
          * @param {object} msg 
          */
         #NextTurnPhase(msg){
@@ -52,44 +64,71 @@ export const game_manager = (() => {
             if (nextPlayer) {
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
-                this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
                 if (this.#currentPlayer == undefined) {
                     this.#currentPlayerId = 1;
                     this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
                 }
             }
         }
 
         /**
-         * 
+         * Add card to selection
          * @param {object} msg 
          */
         #OnCardSelect(msg){
             if (this.#selection.includes(msg.card_slot)){
-                this.#selection.splice(this.#selection.findIndex(msg.card_slot),1)
+                this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect"));
             } else {
                 this.#selection.push(msg.card_slot);
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
+                this.#DiscardCardToMove(msg);
             }
         }
 
+        #DiscardCardToMove(msg){
+            console.log(msg);
+            const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
+            if (selectedCard) {
+                if (this.#ValidateMove(this.#selectedTown, selectedCard)){
+                    if(selectedCard.region.equals(this.#selectedTown.region)){
+                        this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
+                        this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(selectedCard, "Discard"));
+                        this.#selection = []; 
+                        this.#selectedTown = null;
+                    }
+                }
+            }
+        }
+
+        #ValidateMove(town, card){
+            if(!town){
+                return false;
+            }
+            return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card);
+        }
+
         /**
-         * 
+         * Triggers town UI on click on town
          * @param {object} msg 
          */
         #OnTownSelection(msg){
             switch(this.#currentRound.toIdentifier()) {
                 case 1:
-                    console.log("Town UI");
+                    this.#selectedTown = msg.town;
                     break;
                 default:
                     break;
             }
         }
 
-
+        /**
+         * Triggers start of a wuerfelpoker game
+         * @param {object} msg 
+         */
         #StartWuerfelpoker(msg) {
             //TODO Implement Wuerfelpoker
-            console.log("Wuerfelpoker");
             switch (Math.floor(Math.random() * 2)) {
                 case 0:
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(-1));
@@ -101,7 +140,7 @@ export const game_manager = (() => {
         }
 
         /**
-         * 
+         * Get string of player entity
          * @param {int} id 
          * @returns {string}
          */
@@ -109,6 +148,17 @@ export const game_manager = (() => {
             return "Player_" + id;
         }
 
+        #OnGameStart() {
+            // give start deck to players
+            const players = this._parent._parent.Filter(x => x.name.includes("Player"));
+            for (let player of players) {
+                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
+            }
+        }
+
+        /**
+         * @returns {array}
+         */
         get selection() {
             return this.#selection;
         }
@@ -141,13 +191,17 @@ export const game_manager = (() => {
         static End = new Phase(-1);
         #number;
 
-
+        /**
+         * An enum class to determine phase
+         * Use static function constructor instead of default constructor!
+         * @param {int} number 
+         */
         constructor(number) {
             this.#number = number;
         }
 
         /**
-         * 
+         * Set state to next phase
          * @returns {bool}
          */
         next() {
@@ -160,7 +214,7 @@ export const game_manager = (() => {
         }
 
         /**
-         * 
+         * Get identifier of enum
          * @returns {int}
          */
         toIdentifier() {
