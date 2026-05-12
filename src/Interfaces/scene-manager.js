@@ -111,8 +111,6 @@ export const scene_manager = (() => {
          */
         SwitchScene(name, stopAudio = true) {
             if (this.#scenes.has(name)) {
-                document.getElementById('main-menu').style.display = 'hidden';
-                document.getElementById('game-ui').style.display = 'hidden';
                 this.#CleanUpScene(stopAudio);
                 this._currentScene = this.#scenes.get(name);
                 this._currentScene.InitControls();
@@ -149,7 +147,6 @@ export const scene_manager = (() => {
             const cleanMaterial = material => {
                 material.dispose()
 
-                // dispose textures
                 for (const key of Object.keys(material)) {
                     const value = material[key]
                     if (value && typeof value === 'object' && 'minFilter' in value) {
@@ -166,7 +163,6 @@ export const scene_manager = (() => {
                 if (object.material.isMaterial) {
                     cleanMaterial(object.material)
                 } else {
-                    // an array of materials
                     for (const material of object.material) cleanMaterial(material)
                 }
             })

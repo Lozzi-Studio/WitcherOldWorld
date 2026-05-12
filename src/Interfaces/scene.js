@@ -42,7 +42,6 @@ export const scene = (() => {
          * @param {bool} stopAudio - Default: true
          */
         SwitchScene(name, stopAudio = true){
-            console.log("Audio: " + stopAudio);
             this._parent?.SwitchScene(name, stopAudio);
         }
 
