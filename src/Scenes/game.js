@@ -86,16 +86,6 @@ export const game = (() => {
                 this._entityManager.AddEntity(playerEntity, "Player_" + count);
                 count += 1;
             }
-            
-            // Testing Tim
-            /* this._entityManager.FindEntity("Player_1").Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
-            this._entityManager.FindEntity("Player_1").Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Mountain()), "Hand"));
-            this._entityManager.FindEntity("Player_1").Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
-            this._entityManager.FindEntity("Player_1").Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Mountain()), "Hand"));
-            let cardToDiscard = this._entityManager.FindEntity("Player_1").FindComponent("Carddeck").hand[1];
-            this._entityManager.FindEntity("Player_1").Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(cardToDiscard, "Discard"));
-            console.log(this._entityManager.FindEntity("Player_1").FindComponent("Carddeck").hand); */
-            // End of Testing Tim
         }
 
         /**

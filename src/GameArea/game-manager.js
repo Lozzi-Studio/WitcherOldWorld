@@ -123,6 +123,7 @@ export const game_manager = (() => {
         }
 
         #OnGameStart() {
+            // give start deck to players
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             for (let player of players) {
                 player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));

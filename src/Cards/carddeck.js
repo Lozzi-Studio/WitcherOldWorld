@@ -54,6 +54,7 @@ export const carddeck_component = (() => {
         #LoadStartdeck(msg){
             switch (msg.deck) {
                 case "Player":
+                    // hier müssen noch die richtigen Karten angegeben werden
                     this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
                     this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Mountain()), "Hand"));
                     this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
