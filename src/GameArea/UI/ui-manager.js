@@ -331,38 +331,11 @@ export const ui_manager = (() => {
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
         
-        /**
-         * Show town info window in UI including "Move Here" Button
-         * @param {object} msg 
-         */
-        #ShowTownInfo(msg) {
-            document.getElementById("town-window").style.visibility = "visible";
-            document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
-            switch (msg.town.region.toIdentifier()) {
-                case "River":
-                    document.getElementById("town-symbol").innerHTML = "water";
-                    break;
-                case "Mountain":
-                    document.getElementById("town-symbol").innerHTML = "landscape";
-                    break;
-                case "Forest":
-                    document.getElementById("town-symbol").innerHTML = "forest";
-                    break;
-            }
-
-            let abilityName = msg.town.ability.name;
-            let abilityTooltip = msg.town.ability.tooltip;
-            let abilitySkill = msg.town.ability.trigger.skill?.toIdentifier();
-            let abilitySkillMode = msg.town.ability.trigger.mode;
-            let abilityCostsMoney = msg.town.ability.trigger.payMoney;
-
-            document.getElementById("town-ability").innerHTML = this.#ReplaceUmlaute(abilityName);
-            document.getElementById("town-tooltip").innerHTML = this.#ReplaceUmlaute(abilityTooltip);
-            
-            if (abilityName == "Erhoehe Attribut" && abilityCostsMoney == false) {
+        #ShowTownAbilityInfoIfNeeded(ability) {
+            if (ability.name == "Erhoehe Attribut" && ability.trigger.payMoney == false) {
                 document.getElementById("town-ability-info").style.display = "inherit";
                 document.getElementById("town-ability-info").classList.add("container", "container--row");
-                switch (abilitySkill) {
+                switch (ability.trigger.skill?.toIdentifier()) {
                     case "Combat":
                         document.getElementById("town-ability-info__icon").innerHTML = "swords";
                         break;
@@ -383,7 +356,31 @@ export const ui_manager = (() => {
                 document.getElementById("town-ability-info__text").innerHTML = "";
                 document.getElementById("town-ability-info").style.display = "none";
             }
+        }
+
+        /**
+         * Show town info window in UI including "Move Here" Button
+         * @param {object} msg 
+         */
+        #ShowTownInfo(msg) {
+            document.getElementById("town-window").style.visibility = "visible";
+            document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
+            switch (msg.town.region.toIdentifier()) {
+                case "River":
+                    document.getElementById("town-symbol").innerHTML = "water";
+                    break;
+                case "Mountain":
+                    document.getElementById("town-symbol").innerHTML = "landscape";
+                    break;
+                case "Forest":
+                    document.getElementById("town-symbol").innerHTML = "forest";
+                    break;
+            }
+
+            document.getElementById("town-ability").innerHTML = this.#ReplaceUmlaute(msg.town.ability.name);
+            document.getElementById("town-tooltip").innerHTML = this.#ReplaceUmlaute(msg.town.ability.tooltip);
             
+            this.#ShowTownAbilityInfoIfNeeded(msg.town.ability);
         }
 
         #HideTownInfo(msg) {
