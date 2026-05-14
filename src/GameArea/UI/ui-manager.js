@@ -330,7 +330,11 @@ export const ui_manager = (() => {
             let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
-
+        
+        /**
+         * Show town info window in UI including "Move Here" Button
+         * @param {object} msg 
+         */
         #ShowTownInfo(msg) {
             document.getElementById("town-window").style.visibility = "visible";
             document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
@@ -346,14 +350,12 @@ export const ui_manager = (() => {
                     break;
             }
 
-            console.log(msg.town.ability);
             let abilityName = msg.town.ability.name;
             let abilityTooltip = msg.town.ability.tooltip;
             let abilitySkill = msg.town.ability.trigger.skill?.toIdentifier();
             let abilitySkillMode = msg.town.ability.trigger.mode;
             let abilityCostsMoney = msg.town.ability.trigger.payMoney;
 
-            // document.getElementById("town-ability").innerHTML = abilitySkillMode + " " + abilitySkill;
             document.getElementById("town-ability").innerHTML = this.#ReplaceUmlaute(abilityName);
             document.getElementById("town-tooltip").innerHTML = this.#ReplaceUmlaute(abilityTooltip);
             
