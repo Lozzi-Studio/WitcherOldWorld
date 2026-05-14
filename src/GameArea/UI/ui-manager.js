@@ -39,38 +39,7 @@ export const ui_manager = (() => {
         /**
          * Triggers Cardslot Selection
          */
-        SelectCardSlot0() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
-        }
-
-        /**
-         * Triggers Cardslot Selection
-         */
-        SelectCardSlot1() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(1));
-        }
-
-        SelectCardSlot2() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(2));
-        }
-
-        SelectCardSlot3() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(3));
-        }
-
-        SelectCardSlot4() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(4));
-        }
-
-        SelectCardSlot5() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(5));
-        }
-
-        SelectCardSlot6() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(6));
-        }
-
-        ClickCard(index) {
+        SelectCard(index) {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(index));
         }
 
@@ -464,7 +433,7 @@ export const ui_manager = (() => {
                     newCardImage.src = `${card.imagePath}`;
                     newCardDIV.appendChild(newCardImage); */
                     handWindow.appendChild(newCardDIV);
-                    newCardDIV.addEventListener("click", () => this.ClickCard(i));
+                    newCardDIV.addEventListener("click", () => this.SelectCard(i));
                 }
             }
             for (let [i, child] of Array.from(handWindow.children).entries()) {

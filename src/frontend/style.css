@@ -385,6 +385,9 @@ p, div {
 
 #town-ability {
     font-weight: 700;
+    text-align: center;
+    text-wrap: pretty;
+    max-inline-size: 16ch;
 }
 
 #town-tooltip {
@@ -394,7 +397,8 @@ p, div {
 .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted var(--color-primary);
+    /* border-bottom: 1px dotted var(--color-primary);*/
+    text-decoration: underline dotted;
     cursor: url("../../resources/assets/cursor/pointer-48.png"), pointer;
 }
 
