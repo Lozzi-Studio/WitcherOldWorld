@@ -93,8 +93,8 @@ export const game_manager = (() => {
                 selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
             }
             if (selectedCards.length > 0 && this.#selectedTown) {
-                let moveAllowed = this.#ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
-                let allowedCard = this.#ValidateMove(this.#selectedTown, selectedCards).allowedCard;
+                let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
+                let allowedCard = this.ValidateMove(this.#selectedTown, selectedCards).allowedCard;
                 if (moveAllowed){
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(allowedCard, "Discard"));
@@ -105,7 +105,26 @@ export const game_manager = (() => {
             }
         }
 
-        #ValidateMove(town, selectedCards){
+        CheckIfCanMoveToTown() {
+            var selectedCards = [];
+            for (let card_slot of this.#selection) {
+                selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
+            }
+            if (selectedCards.length > 0 && this.#selectedTown) {
+                let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
+                if (moveAllowed){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+
+        ValidateMove(town, selectedCards){
             var moveAllowed = false;
             var allowedCard;
             for (let card of selectedCards) {

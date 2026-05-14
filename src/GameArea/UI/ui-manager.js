@@ -359,6 +359,17 @@ export const ui_manager = (() => {
             }
         }
 
+        #UpdateMoveButton() {
+            if (this.FindEntity("GameArea").FindComponent("GameManager").CheckIfCanMoveToTown()) {
+                document.getElementById("button-move").addEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
+                document.getElementById("button-move").classList.remove("button--inactive");
+            }
+            else {
+                document.getElementById("button-move").removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
+                document.getElementById("button-move").classList.add("button--inactive");
+            }
+        }
+
         /**
          * Show town info window in UI including "Move Here" Button
          * @param {object} msg 
@@ -382,6 +393,7 @@ export const ui_manager = (() => {
             document.getElementById("town-tooltip").innerHTML = this.#ReplaceUmlaute(msg.town.ability.tooltip);
             
             this.#ShowTownAbilityInfoIfNeeded(msg.town.ability);
+            this.#UpdateMoveButton();
         }
 
         #HideTownInfo(msg) {
@@ -491,6 +503,7 @@ export const ui_manager = (() => {
                     document.getElementById(`card-image-${i}`).classList.remove("card--selected");
                 }
             }
+            this.#UpdateMoveButton();
         }
 
         /**
@@ -506,8 +519,6 @@ export const ui_manager = (() => {
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
             this.#UpdateUIAfterPlayerSwitch(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
-
-            document.getElementById("button-move").addEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
         }
 
         /**

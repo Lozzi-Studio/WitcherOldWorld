@@ -263,9 +263,18 @@ p, div {
     font-weight: 700;
 }
 
+.button--inactive {
+    background-color: var(--color-primary-inactive);
+}
+
 .button:hover {
     cursor: url("../../resources/assets/cursor/pointer-48.png"), pointer;
     background-color: var(--color-hover);
+}
+
+.button--inactive:hover {
+    cursor: url("../../resources/assets/cursor/sword-48.png"), default;
+    background-color: var(--color-primary-inactive);
 }
 
 #player-name {

@@ -124,7 +124,6 @@ export const broadcasts = (() => {
          * @returns 
          */
         static UpdateCardSelectionUI(card_slot, mode) {
-            console.log("broadcast gesendet", card_slot, mode);
             return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode};
         }
     }
