@@ -347,14 +347,40 @@ export const ui_manager = (() => {
             }
 
             console.log(msg.town.ability);
-            let abilityName = this.#ReplaceUmlaute(msg.town.ability.name);
-            let abilityTooltip = this.#ReplaceUmlaute(msg.town.ability.tooltip);
+            let abilityName = msg.town.ability.name;
+            let abilityTooltip = msg.town.ability.tooltip;
             let abilitySkill = msg.town.ability.trigger.skill?.toIdentifier();
             let abilitySkillMode = msg.town.ability.trigger.mode;
+            let abilityCostsMoney = msg.town.ability.trigger.payMoney;
 
             // document.getElementById("town-ability").innerHTML = abilitySkillMode + " " + abilitySkill;
-            document.getElementById("town-ability").innerHTML = abilityName;
-            document.getElementById("town-tooltip").innerHTML = abilityTooltip;
+            document.getElementById("town-ability").innerHTML = this.#ReplaceUmlaute(abilityName);
+            document.getElementById("town-tooltip").innerHTML = this.#ReplaceUmlaute(abilityTooltip);
+            
+            if (abilityName == "Erhoehe Attribut" && abilityCostsMoney == false) {
+                document.getElementById("town-ability-info").style.display = "inherit";
+                document.getElementById("town-ability-info").classList.add("container", "container--row");
+                switch (abilitySkill) {
+                    case "Combat":
+                        document.getElementById("town-ability-info__icon").innerHTML = "swords";
+                        break;
+                    case "Defense":
+                        document.getElementById("town-ability-info__icon").innerHTML = "shield";
+                        break;
+                    case "Alchemy":
+                        document.getElementById("town-ability-info__icon").innerHTML = "air_freshener";
+                        break;
+                    case "Special":
+                        document.getElementById("town-ability-info__icon").innerHTML = "star_shine";
+                }
+                document.getElementById("town-ability-info__text").innerHTML = "+1";
+            }
+            else {
+                document.getElementById("town-ability-info").classList.remove("container", "container--row");
+                document.getElementById("town-ability-info__icon").innerHTML = "";
+                document.getElementById("town-ability-info__text").innerHTML = "";
+                document.getElementById("town-ability-info").style.display = "none";
+            }
             
         }
 
