@@ -303,7 +303,7 @@ p, div {
 }
 
 #player-stats {
-    padding: 8px 16px 8px 8px;
+    padding: 8px 12px 8px 8px;
 }
 
 .stat-icon {
@@ -316,9 +316,9 @@ p, div {
 }
 
 .level-box {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
 }
 
 .level-box--neutral {
