@@ -31,7 +31,6 @@ export const controls_component = (() => {
          */
         #EnableRaycasting() {
             this.#raycastingEnabled = true;
-            this.#used = true;
         }
 
         /**
@@ -50,7 +49,7 @@ export const controls_component = (() => {
                 (event.clientX / this._parent._parent.renderer.domElement.clientWidth) * 2 - 1,
                 -((event.clientY / this._parent._parent.renderer.domElement.clientHeight) * 2 - 1),
             );
-
+            
             const raycaster = new THREE.Raycaster();
             raycaster.setFromCamera(coords, this.FindEntity("Camera").camera);
             
@@ -71,8 +70,8 @@ export const controls_component = (() => {
                 else {
                     this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
                 }
-                this.#used = true;
             }
+            this.#used = true;
         }
         
         /**
