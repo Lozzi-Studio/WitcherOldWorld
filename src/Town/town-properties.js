@@ -29,14 +29,14 @@ export const town_properties = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponent() {
-            this._RegisterHandler('town.action', (msg) => {this.#executeAbility(msg)});
+            this._RegisterHandler('town.action', (msg) => {this.#ExecuteAbility(msg)});
         }
 
         /**
          * Triggers town ability
          * @param {object} msg 
          */
-        #executeAbility(msg) {
+        #ExecuteAbility(msg) {
             switch(this.#ability.target.toIdentifier()) {
                 case "Game":
                     this.FindEntity('GameArea').FindComponent('GameManager').Broadcast(this.#ability.trigger);

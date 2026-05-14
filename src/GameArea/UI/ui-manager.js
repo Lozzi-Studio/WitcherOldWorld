@@ -35,6 +35,7 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
+            this._RegisterHandler('player.move', (msg) => {this.#UpdateButton(msg)});
         }
 
         /**
@@ -359,15 +360,30 @@ export const ui_manager = (() => {
             }
         }
 
-        #UpdateMoveButton() {
-            if (this.FindEntity("GameArea").FindComponent("GameManager").CheckIfCanMoveToTown()) {
-                document.getElementById("button-move").addEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
-                document.getElementById("button-move").classList.remove("button--inactive");
+        #UpdateButton(msg) {
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let button = document.getElementById("button-move");
+            if (msg.town == player.town) {
+                button.removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
+                button.classList.remove("button--inactive");
+
+                button.innerHTML = "Ortsaktion ausf&uuml;hren";
+                button.addEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.town.Broadcast(broadcasts.BroadcastTemplateTown.TownAction()));
             }
             else {
-                document.getElementById("button-move").removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
-                document.getElementById("button-move").classList.add("button--inactive");
+                button.removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.town.Broadcast(broadcasts.BroadcastTemplateTown.TownAction()));
+                button.innerHTML = "Gehe hierhin";
+
+                if (this.FindEntity("GameArea").FindComponent("GameManager").CheckIfCanMoveToTown()) {
+                    button.addEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
+                    button.classList.remove("button--inactive");
+                }
+                else {
+                    button.removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
+                    button.classList.add("button--inactive");
+                }
             }
+            
         }
 
         /**
@@ -393,7 +409,7 @@ export const ui_manager = (() => {
             document.getElementById("town-tooltip").innerHTML = this.#ReplaceUmlaute(msg.town.ability.tooltip);
             
             this.#ShowTownAbilityInfoIfNeeded(msg.town.ability);
-            this.#UpdateMoveButton();
+            this.#UpdateButton(msg);
         }
 
         #HideTownInfo(msg) {
@@ -503,7 +519,7 @@ export const ui_manager = (() => {
                     document.getElementById(`card-image-${i}`).classList.remove("card--selected");
                 }
             }
-            this.#UpdateMoveButton();
+            this.#UpdateButton(msg);
         }
 
         /**
