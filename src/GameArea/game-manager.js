@@ -84,24 +84,42 @@ export const game_manager = (() => {
             } else {
                 this.#selection.push(msg.card_slot);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
-                this.#DiscardCardToMove(msg);
             }
         }
 
-        #DiscardCardToMove(msg){
-            const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
-            if (selectedCard && this.#selectedTown) {
-                if (this.#ValidateMove(this.#selectedTown, selectedCard)){
+        DiscardCardToMove(){
+            var selectedCards = [];
+            for (let card_slot of this.#selection) {
+                selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
+            }
+            if (selectedCards.length > 0 && this.#selectedTown) {
+                let moveAllowed = this.#ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
+                let allowedCard = this.#ValidateMove(this.#selectedTown, selectedCards).allowedCard;
+                if (moveAllowed){
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
-                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(selectedCard, "Discard"));
-                    this.#selection = []; 
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(allowedCard, "Discard"));
+                    this.#selection = [];
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                     this.#selectedTown = null;
                 }
             }
         }
 
-        #ValidateMove(town, card){
-            return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card);
+        #ValidateMove(town, selectedCards){
+            var moveAllowed = false;
+            var allowedCard;
+            for (let card of selectedCards) {
+                if (this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card)) {
+                    moveAllowed = true;
+                    allowedCard = card;
+                    break;
+                }
+                else {
+                    moveAllowed = false;
+                    allowedCard = null;
+                }
+            }
+            return { moveAllowed: moveAllowed, allowedCard: allowedCard };
         }
 
         /**

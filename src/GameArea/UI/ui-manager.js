@@ -1,5 +1,6 @@
 import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
+import { shiftLeft } from "three/tsl";
 
 export const ui_manager = (() => {
 
@@ -39,8 +40,8 @@ export const ui_manager = (() => {
         /**
          * Triggers Cardslot Selection
          */
-        SelectCard(index) {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(index));
+        SelectCard(card_slot, card) {
+            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(card_slot, card));
         }
 
         /**
@@ -458,7 +459,7 @@ export const ui_manager = (() => {
                     newCardImage.src = `${card.imagePath}`;
                     newCardDIV.appendChild(newCardImage); */
                     handWindow.appendChild(newCardDIV);
-                    newCardDIV.addEventListener("click", () => this.SelectCard(i));
+                    newCardDIV.addEventListener("click", () => this.SelectCard(i, card));
                 }
             }
             for (let [i, child] of Array.from(handWindow.children).entries()) {
@@ -473,12 +474,22 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateHandCardSelection(msg) {
-            let cardImage = document.getElementById(`card-image-${msg.card_slot}`);
-            if (msg.mode == "Select") {
-                cardImage.classList.add("card--selected");
+            if (msg.card_slot !== undefined) {
+                let cardImage = document.getElementById(`card-image-${msg.card_slot}`);
+                if (msg.mode == "Select") {
+                    cardImage.classList.add("card--selected");
+                }
+                else {
+                    cardImage.classList.remove("card--selected");
+                }
             }
             else {
-                cardImage.classList.remove("card--selected");
+                let player = this.FindComponent("GameManager").currentPlayer;
+                let playerHand = player.FindComponent("Carddeck").hand;
+                let handWindow = document.getElementById("hand-window");
+                for (let [i, child] of Array.from(handWindow.children).entries()) {
+                    document.getElementById(`card-image-${i}`).classList.remove("card--selected");
+                }
             }
         }
 
@@ -495,6 +506,8 @@ export const ui_manager = (() => {
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
             this.#UpdateUIAfterPlayerSwitch(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
+
+            document.getElementById("button-move").addEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
         }
 
         /**
@@ -522,8 +535,6 @@ export const ui_manager = (() => {
             this.#SetWitcherLevel(player);
             this.#SetPlayerMoney(player);
             this.#SetPlayerTrophies(player);
-
-            document.getElementById("button-move").onclick = function(){console.log("Move-Button geklickt")};
         }
 
         #ExcludeUIFromRaycasting () {

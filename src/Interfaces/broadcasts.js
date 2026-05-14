@@ -78,8 +78,8 @@ export const broadcasts = (() => {
          * @param {int} card_slot 
          * @returns {object}
          */
-        static SelectCard(card_slot){
-            return {topic: 'card.select', card_slot: card_slot}
+        static SelectCard(card_slot, card) {
+            return {topic: 'card.select', card_slot: card_slot, card:card}
         }
 
         /**
@@ -124,6 +124,7 @@ export const broadcasts = (() => {
          * @returns 
          */
         static UpdateCardSelectionUI(card_slot, mode) {
+            console.log("broadcast gesendet", card_slot, mode);
             return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode};
         }
     }
