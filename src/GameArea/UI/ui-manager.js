@@ -62,7 +62,7 @@ export const ui_manager = (() => {
          * End current turn phase
          */
         EndPhase() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.PlayerNextPhase());
+            this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
         }
 
 
