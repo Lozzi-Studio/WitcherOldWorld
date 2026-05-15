@@ -212,6 +212,13 @@ export const game_manager = (() => {
         get phase() {
             return this.#currentRound;
         }
+
+        /**
+         * @returns {town.Town}
+         */
+        get selectedTown() {
+            return this.#selectedTown;
+        }
     };
 
     class Phase {

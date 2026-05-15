@@ -364,7 +364,9 @@ export const ui_manager = (() => {
         #UpdateButton(msg) {
             let player = this.FindComponent("GameManager").currentPlayer;
             let button = document.getElementById("button-move");
-            if (msg.town == player.town) {
+            let selectedTown = this.FindComponent("GameManager").selectedTown;
+            console.log("updating button", selectedTown, player.town);
+            if (selectedTown == player.town) {
                 button.removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
                 button.classList.remove("button--inactive");
 
