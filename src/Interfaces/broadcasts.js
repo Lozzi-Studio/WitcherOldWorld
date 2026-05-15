@@ -287,6 +287,16 @@ export const broadcasts = (() => {
         static DisableRaycasting() {
             return {topic: 'game.disableRaycasting'}
         }
+
+        /**
+         * 
+         * @param {string} cursor - Options: "default", "pointer"
+         * @returns 
+         */
+        static ChangeMouseCursor(cursor) {
+            console.log("broadcast cursor change", cursor);
+            return {topic: 'game.changeMouseCursor', cursor:cursor}
+        }
     }
 
     class BroadcastTemplateCamera {
@@ -360,6 +370,6 @@ export const broadcasts = (() => {
         BroadcastTemplateGame : BroadcastTemplateGame,
         BroadcastTemplateTown : BroadcastTemplateTown,
         BroadcastTemplateCamera : BroadcastTemplateCamera,
-        BroadcastTemplateMusic: BroadcastTemplateMusic,
+        BroadcastTemplateMusic: BroadcastTemplateMusic
     }
 })();

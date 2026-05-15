@@ -36,6 +36,7 @@ export const ui_manager = (() => {
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
             this._RegisterHandler('player.move', (msg) => {this.#UpdateButton(msg)});
+            this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
         }
 
         /**
@@ -520,6 +521,17 @@ export const ui_manager = (() => {
                 }
             }
             this.#UpdateButton(msg);
+        }
+
+        #ChangeMouseCursor(msg) {
+            if (msg.cursor == "pointer") {
+                document.getElementsByTagName("body")[0].classList.add("--cursor-pointer");
+                document.getElementsByTagName("body")[0].classList.remove("--cursor-default");
+            }
+            else {
+                document.getElementsByTagName("body")[0].classList.remove("--cursor-pointer");
+                document.getElementsByTagName("body")[0].classList.add("--cursor-default");
+            }
         }
 
         /**
