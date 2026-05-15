@@ -200,6 +200,14 @@ export const broadcasts = (() => {
         static DeselectTown() {
             return {topic: 'town.deselection'}
         }
+
+        static UpdateButtonActive(active) {
+            return {topic: 'town.updateButton', active: active}
+        }
+
+        static ResetTownAction() {
+            return {topic: 'town.resetAction'}
+        }
     }
 
 

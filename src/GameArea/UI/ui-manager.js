@@ -15,6 +15,18 @@ export const ui_manager = (() => {
             super();
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
+            this.handleMoveClick = () => {
+                this.FindEntity("GameArea")
+                    .FindComponent("GameManager")
+                    .DiscardCardToMove();
+            };
+
+            this.handleActionClick = () => {
+                this.FindEntity("GameArea")
+                    .FindComponent("GameManager")
+                    .currentPlayer.town
+                    .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
+            };
         }
 
 
@@ -35,7 +47,7 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
-            this._RegisterHandler('player.move', (msg) => {this.#UpdateButton(msg)});
+            this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButtonState(msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
         }
 
@@ -361,32 +373,67 @@ export const ui_manager = (() => {
             }
         }
 
-        #UpdateButton(msg) {
+        #UpdateTownButtonState(buttonActive) {
+            let button = document.getElementById("button-move");
+            if (buttonActive) {
+                button.classList.remove("button--inactive");
+            }
+            else {
+                button.classList.add("button--inactive");
+            }
+        }
+
+        #UpdateTownButtonMode(buttonMode, buttonActive) {
+            let button = document.getElementById("button-move");
+            button.removeEventListener("click", this.handleActionClick);
+            button.removeEventListener("click", this.handleMoveClick);
+
+            if (buttonMode == "action") {
+                button.innerHTML = "Ortsaktion ausf&uuml;hren";
+                if (buttonActive) {
+                    button.addEventListener("click", this.handleActionClick);
+                }
+                else {
+                    button.removeEventListener("click", this.handleActionClick);
+                }
+            }
+            else {
+                button.innerHTML = "Gehe hierhin";
+                if (buttonActive) {
+                    button.addEventListener("click", this.handleMoveClick);
+                }
+                else {
+                    button.removeEventListener("click", this.handleMoveClick);
+                }
+            }
+        }
+
+        #UpdateTownButton(msg) {
             let player = this.FindComponent("GameManager").currentPlayer;
             let button = document.getElementById("button-move");
             let selectedTown = this.FindComponent("GameManager").selectedTown;
-            console.log("updating button", selectedTown, player.town);
-            if (selectedTown == player.town) {
-                button.removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
-                button.classList.remove("button--inactive");
+            let buttonActive = true;
+            let buttonMode = "";
 
-                button.innerHTML = "Ortsaktion ausf&uuml;hren";
-                button.addEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.town.Broadcast(broadcasts.BroadcastTemplateTown.TownAction()));
+            let playerTownSelected = selectedTown == player.town;
+
+            if (playerTownSelected) {
+                buttonMode = "action";
+                if (msg.topic != 'card.updateSelectionUI') {
+                    if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
+                            buttonActive = false;
+                        } else {buttonActive = true;}
+                }
             }
             else {
-                button.removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.town.Broadcast(broadcasts.BroadcastTemplateTown.TownAction()));
-                button.innerHTML = "Gehe hierhin";
-
+                buttonMode = "move";
                 if (this.FindEntity("GameArea").FindComponent("GameManager").CheckIfCanMoveToTown()) {
-                    button.addEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
-                    button.classList.remove("button--inactive");
-                }
-                else {
-                    button.removeEventListener("click", () => this.FindEntity("GameArea").FindComponent("GameManager").DiscardCardToMove());
-                    button.classList.add("button--inactive");
-                }
+                    buttonActive = true;
+                } else {buttonActive = false;}
             }
-            
+
+            this.#UpdateTownButtonState(buttonActive);
+            this.#UpdateTownButtonMode(buttonMode, buttonActive);
         }
 
         /**
@@ -412,7 +459,7 @@ export const ui_manager = (() => {
             document.getElementById("town-tooltip").innerHTML = this.#ReplaceUmlaute(msg.town.ability.tooltip);
             
             this.#ShowTownAbilityInfoIfNeeded(msg.town.ability);
-            this.#UpdateButton(msg);
+            this.#UpdateTownButton(msg);
         }
 
         #HideTownInfo(msg) {
@@ -522,7 +569,7 @@ export const ui_manager = (() => {
                     document.getElementById(`card-image-${i}`).classList.remove("card--selected");
                 }
             }
-            this.#UpdateButton(msg);
+            this.#UpdateTownButton(msg);
         }
 
         #ChangeMouseCursor(msg) {

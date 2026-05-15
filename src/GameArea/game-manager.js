@@ -97,10 +97,11 @@ export const game_manager = (() => {
                 let allowedCard = this.ValidateMove(this.#selectedTown, selectedCards).allowedCard;
                 if (moveAllowed){
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
+                    this._parent._parent.Broadcast(broadcasts.BroadcastTemplateTown.ResetTownAction());
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(allowedCard, "Discard"));
                     this.#selection = [];
                     this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
-                    this.#selectedTown = null;
+                    // this.#selectedTown = null;
                 }
             }
         }
@@ -110,6 +111,7 @@ export const game_manager = (() => {
             for (let card_slot of this.#selection) {
                 selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
             }
+            
             if (selectedCards.length > 0 && this.#selectedTown) {
                 let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
                 if (moveAllowed){

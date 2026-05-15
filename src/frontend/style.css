@@ -5,7 +5,7 @@
 }
 
 body {
-    /*cursor: var(--cursor-default), auto;*/
+    cursor: var(--cursor-default), auto;
     overflow-y: hidden; /* Hide vertical scrollbar */
     overflow-x: hidden; /* Hide horizontal scrollbar */
 }
