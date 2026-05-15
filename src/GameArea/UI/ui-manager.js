@@ -346,6 +346,10 @@ export const ui_manager = (() => {
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
         
+        /**
+         * Shows further ability information
+         * @param {town_entity.TownEntity.ability} ability 
+         */
         #ShowTownAbilityInfoIfNeeded(ability) {
             if (ability.name == "Erhoehe Attribut" && ability.trigger.payMoney == false) {
                 document.getElementById("town-ability-info").style.display = "inherit";
@@ -373,6 +377,10 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * Sets town button's css class to active or inactive
+         * @param {bool} buttonActive 
+         */
         #UpdateTownButtonState(buttonActive) {
             let button = document.getElementById("button-move");
             if (buttonActive) {
@@ -383,6 +391,11 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * Set town button's label and eventListener
+         * @param {string} buttonMode - Options: "action", "move"
+         * @param {bool} buttonActive 
+         */
         #UpdateTownButtonMode(buttonMode, buttonActive) {
             let button = document.getElementById("button-move");
             button.removeEventListener("click", this.handleActionClick);
@@ -408,6 +421,10 @@ export const ui_manager = (() => {
             }
         }
 
+        /**
+         * Update town button state and mode
+         * @param {object} msg 
+         */
         #UpdateTownButton(msg) {
             let player = this.FindComponent("GameManager").currentPlayer;
             let button = document.getElementById("button-move");
@@ -437,7 +454,7 @@ export const ui_manager = (() => {
         }
 
         /**
-         * Show town info window in UI including "Move Here" Button
+         * Show town info window in UI including Town Button
          * @param {object} msg 
          */
         #ShowTownInfo(msg) {
@@ -462,6 +479,10 @@ export const ui_manager = (() => {
             this.#UpdateTownButton(msg);
         }
 
+        /**
+         * Hide town info window inlcuding town button
+         * @param {object} msg 
+         */
         #HideTownInfo(msg) {
             document.getElementById("town-window").style.visibility = "hidden";
         }
@@ -572,6 +593,10 @@ export const ui_manager = (() => {
             this.#UpdateTownButton(msg);
         }
 
+        /**
+         * Change mouse cursor depending on if the hovered element is clickable (not yet in use)
+         * @param {object} msg 
+         */
         #ChangeMouseCursor(msg) {
             if (msg.cursor == "pointer") {
                 document.getElementsByTagName("body")[0].classList.add("--cursor-pointer");
@@ -625,6 +650,9 @@ export const ui_manager = (() => {
             this.#SetPlayerTrophies(player);
         }
 
+        /**
+         * Checks if mouse cursor is on any UI element and handles raycasting accordingly
+         */
         #ExcludeUIFromRaycasting () {
             const UI = document.getElementById("game-ui");
             UI.addEventListener("mouseenter", () => {

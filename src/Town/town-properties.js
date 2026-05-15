@@ -36,7 +36,7 @@ export const town_properties = (() => {
         }
 
         /**
-         * Triggers town ability
+         * Triggers town ability and sets "executed" parameter to true
          * @param {object} msg 
          */
         #ExecuteAbility(msg) {
@@ -54,6 +54,10 @@ export const town_properties = (() => {
             this._parent._parent.Broadcast(broadcasts.BroadcastTemplateTown.UpdateButtonActive(false));
         }
 
+        /**
+         * Set "executed" parameter to false
+         * @param {object} msg 
+         */
         #ResetAbilityExecution(msg) {
             this.#abilityExecuted = false;
             this._parent._parent.Broadcast(broadcasts.BroadcastTemplateTown.UpdateButtonActive(true));

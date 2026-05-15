@@ -87,6 +87,9 @@ export const game_manager = (() => {
             }
         }
 
+        /**
+         * Discards selected card to move to selected town
+         */
         DiscardCardToMove(){
             var selectedCards = [];
             for (let card_slot of this.#selection) {
@@ -106,12 +109,16 @@ export const game_manager = (() => {
             }
         }
 
+        /**
+         * Gets current player's selected cards and checks if moving to selected town is valid
+         * @returns {bool}
+         */
         CheckIfCanMoveToTown() {
             var selectedCards = [];
             for (let card_slot of this.#selection) {
                 selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
             }
-            
+
             if (selectedCards.length > 0 && this.#selectedTown) {
                 let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
                 if (moveAllowed){
@@ -126,6 +133,12 @@ export const game_manager = (() => {
             }
         }
 
+        /**
+         * Checks if moving to selected town is valid (one of selected cards must be the right region + town must be neighbor of current town)
+         * @param {town_entity.TownEntity} town 
+         * @param {array} selectedCards 
+         * @returns 
+         */
         ValidateMove(town, selectedCards){
             var moveAllowed = false;
             var allowedCard;
@@ -182,6 +195,9 @@ export const game_manager = (() => {
             return "Player_" + id;
         }
 
+        /**
+         * Gives default card deck to players on game start
+         */
         #OnGameStart() {
             // give start deck to players
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));

@@ -201,10 +201,19 @@ export const broadcasts = (() => {
             return {topic: 'town.deselection'}
         }
 
+        /**
+         * 
+         * @param {bool} active 
+         * @returns {object}
+         */
         static UpdateButtonActive(active) {
             return {topic: 'town.updateButton', active: active}
         }
 
+        /**
+         * 
+         * @returns {object} 
+         */
         static ResetTownAction() {
             return {topic: 'town.resetAction'}
         }
