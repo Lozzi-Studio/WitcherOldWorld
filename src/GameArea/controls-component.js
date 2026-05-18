@@ -24,7 +24,6 @@ export const controls_component = (() => {
             this._RegisterHandler('game.enableRaycasting', (msg) => {this.#EnableRaycasting()});
             this._RegisterHandler('game.disableRaycasting', (msg) => {this.#DisableRaycasting()});
             document.addEventListener('mousedown', (event) => {this.#onMouseDown(event)}, {once: true});
-            // document.addEventListener('mousemove', (event) => {this.#onMouseMove(event)});
         }
 
         /**
@@ -74,37 +73,6 @@ export const controls_component = (() => {
             }
             this.#used = true;
         }
-
-        // VERSCHOBEN AUF USER STORY #95 VISUELLES FEEDBACK - WIP
-        /**
-         * Determines behaviour on mouse mouse and change cursor to pointer
-         * @param {object} event 
-         */
-        /* #onMouseMove(event) {
-            const coords = new THREE.Vector2(
-                (event.clientX / this._parent._parent.renderer.domElement.clientWidth) * 2 - 1,
-                -((event.clientY / this._parent._parent.renderer.domElement.clientHeight) * 2 - 1),
-            );
-            
-            const raycaster = new THREE.Raycaster();
-            raycaster.setFromCamera(coords, this.FindEntity("Camera").camera);
-            
-            if (this.#raycastingEnabled) {
-                const intersections = raycaster.intersectObjects(this._parent._parent.scene.children, true);
-                if (intersections.length > 0) {
-                    const selectedObject = intersections[0].object;
-                    if (selectedObject.name.includes("Town")) {
-                        this.Broadcast(broadcasts.BroadcastTemplateGame.ChangeMouseCursor("pointer"));
-                    }
-                    else if (selectedObject.name.includes("Button")) {
-                        this.Broadcast(broadcasts.BroadcastTemplateGame.ChangeMouseCursor("pointer"));
-                    }
-                    else {
-                        this.Broadcast(broadcasts.BroadcastTemplateGame.ChangeMouseCursor("default"));
-                    }
-                }
-            }
-        } */
         
         /**
          * Triggers after specific time intervall

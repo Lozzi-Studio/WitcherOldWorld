@@ -427,14 +427,11 @@ export const ui_manager = (() => {
          */
         #UpdateTownButton(msg) {
             let player = this.FindComponent("GameManager").currentPlayer;
-            let button = document.getElementById("button-move");
             let selectedTown = this.FindComponent("GameManager").selectedTown;
             let buttonActive = true;
             let buttonMode = "";
 
-            let playerTownSelected = selectedTown == player.town;
-
-            if (playerTownSelected) {
+            if (selectedTown == player.town) {
                 buttonMode = "action";
                 if (msg.topic != 'card.updateSelectionUI') {
                     if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
@@ -458,7 +455,7 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #ShowTownInfo(msg) {
-            document.getElementById("town-window").style.visibility = "visible";
+            document.getElementById("town-window").style.display = "flex";
             document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
             switch (msg.town.region.toIdentifier()) {
                 case "River":
@@ -484,7 +481,7 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #HideTownInfo(msg) {
-            document.getElementById("town-window").style.visibility = "hidden";
+            document.getElementById("town-window").style.display = "none";
         }
 
         /**

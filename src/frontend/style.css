@@ -391,7 +391,7 @@ p, div {
     min-width: 150px;
     max-width: 250px;
 
-    visibility: hidden;
+    display: none;
 }
 
 #town-name {

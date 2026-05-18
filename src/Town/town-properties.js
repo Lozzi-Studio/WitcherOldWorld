@@ -51,7 +51,7 @@ export const town_properties = (() => {
                 }
                 this.#abilityExecuted = true;
             }
-            this._parent._parent.Broadcast(broadcasts.BroadcastTemplateTown.UpdateButtonActive(false));
+            this.FindEntity("GameArea").FindComponent("UIManager").Broadcast(broadcasts.BroadcastTemplateTown.UpdateButtonActive(false));
         }
 
         /**
@@ -60,7 +60,7 @@ export const town_properties = (() => {
          */
         #ResetAbilityExecution(msg) {
             this.#abilityExecuted = false;
-            this._parent._parent.Broadcast(broadcasts.BroadcastTemplateTown.UpdateButtonActive(true));
+            this.FindEntity("GameArea").FindComponent("UIManager").Broadcast(broadcasts.BroadcastTemplateTown.UpdateButtonActive(true));
         }
 
         /**
