@@ -104,6 +104,7 @@ export const player_skills = (() => {
         #level;
         #minLevel;
         #maxLevel;
+        #hasMeditated;
         
         static Combat() {return new Skill("Combat")};
         static Defense() {return new Skill("Defense")};
@@ -121,6 +122,7 @@ export const player_skills = (() => {
             this.#minLevel = 1;
             this.#maxLevel = 5;
             this.#level = this.#minLevel;
+            this.#hasMeditated = false;
         }
 
         /**
@@ -144,6 +146,17 @@ export const player_skills = (() => {
         get level() {
             return this.#level;
         }
+
+        canMeditate() {
+            return this.#level == this.#maxLevel && !(this.#hasMeditated)
+        }
+
+        meditated() {
+            this.#hasMeditated = true;
+            this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy)
+        }
+
+
 
          /**
          * Get identifier of enum
