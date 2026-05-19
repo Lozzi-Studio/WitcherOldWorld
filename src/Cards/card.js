@@ -90,7 +90,7 @@ export const card = (() => {
         }
 
         getImagePathFromName() {
-            return "../../resources/assets/cards/" + this.#name.split(" ").join("_") + ".png";
+            return "../../resources/assets/cards/" + this.#name.split(" ").join("_") + ".webp";
         }
 
         get region() {

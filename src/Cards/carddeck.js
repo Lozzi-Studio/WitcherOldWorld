@@ -63,7 +63,7 @@ export const carddeck_component = (() => {
                     this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getDeckung(null, region.Region.Forest()), "Hand"));
                     this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getPraeziserSchnitt(null, region.Region.River()), "Hand"));
                     this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(null), "Hand"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getSchmetterschlag(null, region.Region.Forest()), "Hand"));
+                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesAard(null, region.Region.Forest()), "Hand"));
                     break;
                 case "Shop":
                     break;
