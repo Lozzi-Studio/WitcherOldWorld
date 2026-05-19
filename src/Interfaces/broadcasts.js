@@ -240,6 +240,15 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @param {string} skill -> options: Combat, Defense or Special
+         * @returns {object}
+         */
+        static Meditate(skill) {
+            return {topic: 'game.meditate', skill: skill}
+        }
+
+        /**
+         * 
          * @param {player_entity.Player} nextPlayer
          * @returns {object}
          */

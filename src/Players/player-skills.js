@@ -78,6 +78,31 @@ export const player_skills = (() => {
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
         }
 
+        canMeditate(){
+            return {
+                "Combat": this.#combat.canMeditate(),
+                "Alchemy" : this.#alchemy.canMeditate(),
+                "Special":  this.#special.canMeditate(),
+                "Defense": this.#defense.canMeditate(), 
+            }
+        }
+
+        #OnMeditate(msg) {
+            switch(msg){
+                case "Combat":
+                    this.#combat.meditated();
+                case "Alchemy":
+                    this.#alchemy.meditated();
+                case "Special":
+                    this.#special.meditated();
+                case "Defense":
+                    this.#defense.meditated();
+            }
+        }
+
+
+
+
         get combat() {
             return this.#combat;
         }
@@ -104,6 +129,7 @@ export const player_skills = (() => {
         #level;
         #minLevel;
         #maxLevel;
+        #hasMeditated;
         
         static Combat() {return new Skill("Combat")};
         static Defense() {return new Skill("Defense")};
@@ -121,6 +147,7 @@ export const player_skills = (() => {
             this.#minLevel = 1;
             this.#maxLevel = 5;
             this.#level = this.#minLevel;
+            this.#hasMeditated = false;
         }
 
         /**
@@ -144,6 +171,20 @@ export const player_skills = (() => {
         get level() {
             return this.#level;
         }
+
+        canMeditate() {
+            return this.#level == this.#maxLevel && !(this.#hasMeditated)
+        }
+
+        meditated() {
+            if (!this.#hasMeditated){
+            this.#hasMeditated = true;
+            this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy)
+            }
+            
+        }
+
+
 
          /**
          * Get identifier of enum
@@ -212,6 +253,8 @@ export const player_skills = (() => {
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
         }
+
+    
 
         get amount() {
             return this.#amount;
