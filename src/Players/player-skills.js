@@ -177,8 +177,11 @@ export const player_skills = (() => {
         }
 
         meditated() {
+            if (!this.#hasMeditated){
             this.#hasMeditated = true;
             this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy)
+            }
+            
         }
 
 
