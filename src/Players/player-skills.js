@@ -87,7 +87,7 @@ export const player_skills = (() => {
             }
         }
 
-        #onMeditate(msg) {
+        #OnMeditate(msg) {
             switch(msg){
                 case "Combat":
                     this.#combat.meditated();
