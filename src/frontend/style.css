@@ -495,7 +495,8 @@ p, div {
     justify-content: space-between;
 
     height: 232px;
-    aspect-ratio: 0.65;
+    width: 151px;
+    /* aspect-ratio: 0.65; */
 
     background-size: cover;
 }
