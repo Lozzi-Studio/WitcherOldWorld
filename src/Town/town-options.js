@@ -22,7 +22,7 @@ export const town_options = (() => {
         /**
          * @returns {TownAbility}
          */
-        static increaseSkillForMoney() {return new TownAbility("Erhoehe Attribut", 
+        static increaseSkillForMoney() {return new TownAbility("Erhoehe beliebiges Attribut gegen Geld", 
             "Du kannst einen Skill um eine Stufe erhöhen. Zahle Gold entsprechender der neuen Stufe. Die Spezialitaet laesst sich nur in deiner Heimatstadt erhoehen.",
             broadcasts.BroadcastTemplateSkills.ChooseSkillToIncrease(true),
             town_options.TownAbilityTarget.Game()

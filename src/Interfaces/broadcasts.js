@@ -78,8 +78,8 @@ export const broadcasts = (() => {
          * @param {int} card_slot 
          * @returns {object}
          */
-        static SelectCard(card_slot){
-            return {topic: 'card.select', card_slot: card_slot}
+        static SelectCard(card_slot, card) {
+            return {topic: 'card.select', card_slot: card_slot, card:card}
         }
 
         /**
@@ -192,6 +192,31 @@ export const broadcasts = (() => {
         static TownAction() {
             return {topic: 'town.action'}
         }
+
+        /**
+         * 
+         * @returns {object} 
+         */
+        static DeselectTown() {
+            return {topic: 'town.deselection'}
+        }
+
+        /**
+         * 
+         * @param {bool} active 
+         * @returns {object}
+         */
+        static UpdateButtonActive(active) {
+            return {topic: 'town.updateButton', active: active}
+        }
+
+        /**
+         * 
+         * @returns {object} 
+         */
+        static ResetTownAction() {
+            return {topic: 'town.resetAction'}
+        }
     }
 
 
@@ -288,6 +313,16 @@ export const broadcasts = (() => {
         static DisableRaycasting() {
             return {topic: 'game.disableRaycasting'}
         }
+
+        /**
+         * 
+         * @param {string} cursor - Options: "default", "pointer"
+         * @returns 
+         */
+        static ChangeMouseCursor(cursor) {
+            console.log("broadcast cursor change", cursor);
+            return {topic: 'game.changeMouseCursor', cursor:cursor}
+        }
     }
 
     class BroadcastTemplateCamera {
@@ -361,6 +396,6 @@ export const broadcasts = (() => {
         BroadcastTemplateGame : BroadcastTemplateGame,
         BroadcastTemplateTown : BroadcastTemplateTown,
         BroadcastTemplateCamera : BroadcastTemplateCamera,
-        BroadcastTemplateMusic: BroadcastTemplateMusic,
+        BroadcastTemplateMusic: BroadcastTemplateMusic
     }
 })();
