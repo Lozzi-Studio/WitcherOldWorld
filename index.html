@@ -52,16 +52,16 @@
             <div class="container container--col container--justify inner-borders inner-borders--neutral" id="player-shield-container"></div>
             <div class="container container--col container--justify inner-borders inner-borders--neutral" id ="player-stats">
                 <div class="container container--row container--no-padding" id="combat-lvl">
-                    <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/combat.png"></div>
+                    <div class="material-symbols-outlined filled">swords</div>
                 </div>
                 <div class="container container--row container--no-padding" id="defense-lvl">
-                    <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/defense.png"></div>
+                    <div class="material-symbols-outlined filled">shield</div>
                 </div>
                 <div class="container container--row container--no-padding" id="alchemy-lvl">
-                    <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/alchemy.png"></div>
+                    <div class="material-symbols-outlined filled">air_freshener</div>
                 </div>
                 <div class="container container--row container--no-padding" id="special-lvl">
-                    <div class="stat-icon-container"><img class="stat-icon" src="./resources/assets/stat-icons/speed.png"></div>
+                    <div class="material-symbols-outlined filled">star_shine</div>
                 </div>
             </div>
         </div>
@@ -74,8 +74,26 @@
             <div class="container container--col container--no-padding" id="phase-options-container"></div>
         </div>
 
+        <div class="container container--col container--neutral borders--bottom-right" id="town-window">
+            <div class="container container--row">
+                <div class="material-symbols-outlined filled" id="town-symbol">forest</div>
+                <div class="--fancy-font" id="town-name">TOWN-NAME</div>
+            </div>
+            <div class="tooltip" id="town-ability">
+                TOWN-ABILITY
+            </div>
+            <div class="tooltip-text" id="town-tooltip">TOWN TOOLTIP</div>
+            <div id="town-ability-info">
+                <div class="material-symbols-outlined filled" id="town-ability-info__icon"></div>
+                <div class="--fancy-font" id="town-ability-info__text"></div>
+            </div>
+            <div class="textbox textbox--fill button" id="button-move">Gehe hierhin</div>
+        </div>
+
         <div class="container container--row" id="hand-window"></div>
     </div>
+    
+    
 </body>
 </html>
 

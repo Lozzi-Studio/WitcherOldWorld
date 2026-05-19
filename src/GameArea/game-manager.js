@@ -14,6 +14,7 @@ export const game_manager = (() => {
         /**
          * Manages game stages and game behaviour
          */
+
         constructor() {
             super();
             this.#currentRound = Phase.One;
@@ -83,24 +84,70 @@ export const game_manager = (() => {
             } else {
                 this.#selection.push(msg.card_slot);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
-                this.#DiscardCardToMove(msg);
             }
         }
 
-        #DiscardCardToMove(msg){
-            const selectedCard = this.#currentPlayer.getHandCard(msg.card_slot);
-            if (selectedCard && this.#selectedTown) {
-                if (this.#ValidateMove(this.#selectedTown, selectedCard)){
+        /**
+         * Discards selected card to move to selected town
+         */
+        DiscardCardToMove(){
+            var selectedCards = [];
+            for (let card_slot of this.#selection) {
+                selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
+            }
+            if (selectedCards.length > 0 && this.#selectedTown) {
+                let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
+                let allowedCard = this.ValidateMove(this.#selectedTown, selectedCards).allowedCard;
+                if (moveAllowed){
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
-                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(selectedCard, "Discard"));
-                    this.#selection = []; 
-                    this.#selectedTown = null;
+                    this.#selectedTown.Broadcast(broadcasts.BroadcastTemplateTown.ResetTownAction());
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(allowedCard, "Discard"));
+                    this.#selection = [];
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 }
             }
         }
 
-        #ValidateMove(town, card){
-            return this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card);
+        /**
+         * Gets current player's selected cards and checks if moving to selected town is valid
+         * @returns {bool}
+         */
+        CheckIfCanMoveToTown() {
+            var selectedCards = [];
+            for (let card_slot of this.#selection) {
+                selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
+            }
+
+            if (selectedCards.length > 0 && this.#selectedTown) {
+                let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
+                if (moveAllowed){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+
+        /**
+         * Checks if moving to selected town is valid (one of selected cards must be the right region + town must be neighbor of current town)
+         * @param {town_entity.TownEntity} town 
+         * @param {array} selectedCards 
+         * @returns 
+         */
+        ValidateMove(town, selectedCards){
+            var moveAllowed = false;
+            var allowedCard;
+
+            for (let card of selectedCards) {
+                if (this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card)) {
+                    return { moveAllowed: true, allowedCard: card };
+                }
+            }
+            return { moveAllowed: false, allowedCard: null };
         }
 
         /**
@@ -142,6 +189,9 @@ export const game_manager = (() => {
             return "Player_" + id;
         }
 
+        /**
+         * Gives default card deck to players on game start
+         */
         #OnGameStart() {
             // give start deck to players
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
@@ -173,6 +223,13 @@ export const game_manager = (() => {
          */
         get phase() {
             return this.#currentRound;
+        }
+
+        /**
+         * @returns {town.Town}
+         */
+        get selectedTown() {
+            return this.#selectedTown;
         }
     };
 

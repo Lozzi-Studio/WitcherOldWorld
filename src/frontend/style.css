@@ -5,9 +5,13 @@
 }
 
 body {
-    cursor: url("../../resources/assets/cursor/sword-48.png"), auto;
+    cursor: var(--cursor-default), auto;
     overflow-y: hidden; /* Hide vertical scrollbar */
     overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+.none {
+    --color-none: #000000;
 }
 
 .material-symbols-outlined {
@@ -68,6 +72,8 @@ body {
   --color-button-border: rgba(132, 126, 116, 1.00);
   --color-hover: #ffffff;
   --color-selected: rgba(255, 225, 123, 1.00);
+  --cursor-default: url("../../resources/assets/cursor/sword-48.png");
+  --cursor-pointer: url("../../resources/assets/cursor/pointer-48.png");
 }
 
 p, div {
@@ -259,9 +265,18 @@ p, div {
     font-weight: 700;
 }
 
+.button--inactive {
+    background-color: var(--color-primary-inactive);
+}
+
 .button:hover {
-    cursor: url("../../resources/assets/cursor/pointer-48.png"), pointer;
+    cursor: var(--cursor-pointer), pointer;
     background-color: var(--color-hover);
+}
+
+.button--inactive:hover {
+    cursor: var(--cursor-default), default;
+    background-color: var(--color-primary-inactive);
 }
 
 #player-name {
@@ -290,7 +305,7 @@ p, div {
 }
 
 #player-stats {
-    padding: 8px 16px 8px 8px;
+    padding: 8px 12px 8px 8px;
 }
 
 .stat-icon {
@@ -303,9 +318,9 @@ p, div {
 }
 
 .level-box {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
 }
 
 .level-box--neutral {
@@ -367,6 +382,72 @@ p, div {
     border-color: var(--green-primary);
 }
 
+
+
+#town-window {
+    position: fixed;
+    left: 0;
+    top: 0;
+    min-width: 150px;
+    max-width: 250px;
+
+    display: none;
+}
+
+#town-name {
+    font-size: 16pt;
+}
+
+#town-ability {
+    font-weight: 700;
+    text-align: center;
+    text-wrap: pretty;
+    max-inline-size: 16ch;
+}
+
+#town-ability-info__text {
+    font-size: 16pt;
+}
+
+#town-tooltip {
+    text-align: center;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    text-decoration: underline dotted;
+    cursor: var(--cursor-pointer), pointer;
+}
+
+.tooltip:hover {
+    color: var(--color-hover);
+    border-color: var(--color-hover);
+}
+
+.tooltip-text {
+    visibility: hidden;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    z-index: 1;
+
+    background-color: black;
+    color: var(--color-primary);
+
+    font-size: 10pt;
+
+    display: inline-block;
+    width: max-content;
+    max-width: 200px;
+}
+
+.tooltip:hover + .tooltip-text {
+    visibility: visible;
+}
+
 #hand-window {
     position: fixed;
     right: 0;
@@ -376,7 +457,7 @@ p, div {
 
 #hand-window > div {
     height: 196px;
-    cursor: url("../../resources/assets/cursor/pointer-48.png"), pointer;
+    cursor: var(--cursor-pointer), pointer;
     transition: margin-right 400ms;
 }
 
@@ -415,4 +496,12 @@ p, div {
     writing-mode: vertical-rl;
     rotate: 180deg;
     margin-bottom: 4px;
+}
+
+.--cursor-pointer {
+    cursor: var(--cursor-pointer), pointer;
+}
+
+.--cursor-default {
+    cursor: var(--cursor-default), auto;
 }

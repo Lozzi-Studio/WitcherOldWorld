@@ -1,5 +1,6 @@
 import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
+import { shiftLeft } from "three/tsl";
 
 export const ui_manager = (() => {
 
@@ -14,6 +15,18 @@ export const ui_manager = (() => {
             super();
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
+            this.handleMoveClick = () => {
+                this.FindEntity("GameArea")
+                    .FindComponent("GameManager")
+                    .DiscardCardToMove();
+            };
+
+            this.handleActionClick = () => {
+                this.FindEntity("GameArea")
+                    .FindComponent("GameManager")
+                    .currentPlayer.town
+                    .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
+            };
         }
 
 
@@ -31,51 +44,25 @@ export const ui_manager = (() => {
             this._RegisterHandler('card.updateSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
             
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
+
+            this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
+            this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
+            this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButtonState(msg.active)});
+            this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
         }
 
         /**
          * Triggers Cardslot Selection
          */
-        SelectCardSlot0() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(0));
-        }
-
-        /**
-         * Triggers Cardslot Selection
-         */
-        SelectCardSlot1() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(1));
-        }
-
-        SelectCardSlot2() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(2));
-        }
-
-        SelectCardSlot3() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(3));
-        }
-
-        SelectCardSlot4() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(4));
-        }
-
-        SelectCardSlot5() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(5));
-        }
-
-        SelectCardSlot6() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(6));
-        }
-
-        ClickCard(index) {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(index));
+        SelectCard(card_slot, card) {
+            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(card_slot, card));
         }
 
         /**
          * End current turn phase
          */
         EndPhase() {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.PlayerNextPhase());
+            this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
         }
 
 
@@ -358,6 +345,144 @@ export const ui_manager = (() => {
             let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
+        
+        /**
+         * Shows further ability information
+         * @param {town_entity.TownEntity.ability} ability 
+         */
+        #ShowTownAbilityInfoIfNeeded(ability) {
+            if (ability.name == "Erhoehe Attribut" && ability.trigger.payMoney == false) {
+                document.getElementById("town-ability-info").style.display = "inherit";
+                document.getElementById("town-ability-info").classList.add("container", "container--row");
+                switch (ability.trigger.skill?.toIdentifier()) {
+                    case "Combat":
+                        document.getElementById("town-ability-info__icon").innerHTML = "swords";
+                        break;
+                    case "Defense":
+                        document.getElementById("town-ability-info__icon").innerHTML = "shield";
+                        break;
+                    case "Alchemy":
+                        document.getElementById("town-ability-info__icon").innerHTML = "air_freshener";
+                        break;
+                    case "Special":
+                        document.getElementById("town-ability-info__icon").innerHTML = "star_shine";
+                }
+                document.getElementById("town-ability-info__text").innerHTML = "+1";
+            }
+            else {
+                document.getElementById("town-ability-info").classList.remove("container", "container--row");
+                document.getElementById("town-ability-info__icon").innerHTML = "";
+                document.getElementById("town-ability-info__text").innerHTML = "";
+                document.getElementById("town-ability-info").style.display = "none";
+            }
+        }
+
+        /**
+         * Sets town button's css class to active or inactive
+         * @param {bool} buttonActive 
+         */
+        #UpdateTownButtonState(buttonActive) {
+            let button = document.getElementById("button-move");
+            if (buttonActive) {
+                button.classList.remove("button--inactive");
+            }
+            else {
+                button.classList.add("button--inactive");
+            }
+        }
+
+        /**
+         * Set town button's label and eventListener
+         * @param {string} buttonMode - Options: "action", "move"
+         * @param {bool} buttonActive 
+         */
+        #UpdateTownButtonMode(buttonMode, buttonActive) {
+            let button = document.getElementById("button-move");
+            button.removeEventListener("click", this.handleActionClick);
+            button.removeEventListener("click", this.handleMoveClick);
+
+            if (buttonMode == "action") {
+                button.innerHTML = "Ortsaktion ausf&uuml;hren";
+                if (buttonActive) {
+                    button.addEventListener("click", this.handleActionClick);
+                }
+                else {
+                    button.removeEventListener("click", this.handleActionClick);
+                }
+            }
+            else {
+                button.innerHTML = "Gehe hierhin";
+                if (buttonActive) {
+                    button.addEventListener("click", this.handleMoveClick);
+                }
+                else {
+                    button.removeEventListener("click", this.handleMoveClick);
+                }
+            }
+        }
+
+        /**
+         * Update town button state and mode
+         * @param {object} msg 
+         */
+        #UpdateTownButton(msg) {
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let selectedTown = this.FindComponent("GameManager").selectedTown;
+            let buttonActive = true;
+            let buttonMode = "";
+
+            if (selectedTown == player.town) {
+                buttonMode = "action";
+                if (msg.topic != 'card.updateSelectionUI') {
+                    if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
+                            buttonActive = false;
+                        } else {buttonActive = true;}
+                }
+            }
+            else {
+                buttonMode = "move";
+                if (this.FindEntity("GameArea").FindComponent("GameManager").CheckIfCanMoveToTown()) {
+                    buttonActive = true;
+                } else {buttonActive = false;}
+            }
+
+            this.#UpdateTownButtonState(buttonActive);
+            this.#UpdateTownButtonMode(buttonMode, buttonActive);
+        }
+
+        /**
+         * Show town info window in UI including Town Button
+         * @param {object} msg 
+         */
+        #ShowTownInfo(msg) {
+            document.getElementById("town-window").style.display = "flex";
+            document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
+            switch (msg.town.region.toIdentifier()) {
+                case "River":
+                    document.getElementById("town-symbol").innerHTML = "water";
+                    break;
+                case "Mountain":
+                    document.getElementById("town-symbol").innerHTML = "landscape";
+                    break;
+                case "Forest":
+                    document.getElementById("town-symbol").innerHTML = "forest";
+                    break;
+            }
+
+            document.getElementById("town-ability").innerHTML = this.#ReplaceUmlaute(msg.town.ability.name);
+            document.getElementById("town-tooltip").innerHTML = this.#ReplaceUmlaute(msg.town.ability.tooltip);
+            
+            this.#ShowTownAbilityInfoIfNeeded(msg.town.ability);
+            this.#UpdateTownButton(msg);
+        }
+
+        /**
+         * Hide town info window inlcuding town button
+         * @param {object} msg 
+         */
+        #HideTownInfo(msg) {
+            document.getElementById("town-window").style.display = "none";
+        }
 
         /**
          * Dynamically creates DIV elements for hand cards from card information
@@ -430,7 +555,7 @@ export const ui_manager = (() => {
                     newCardImage.src = `${card.imagePath}`;
                     newCardDIV.appendChild(newCardImage); */
                     handWindow.appendChild(newCardDIV);
-                    newCardDIV.addEventListener("click", () => this.ClickCard(i));
+                    newCardDIV.addEventListener("click", () => this.SelectCard(i, card));
                 }
             }
             for (let [i, child] of Array.from(handWindow.children).entries()) {
@@ -445,12 +570,38 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateHandCardSelection(msg) {
-            let cardImage = document.getElementById(`card-image-${msg.card_slot}`);
-            if (msg.mode == "Select") {
-                cardImage.classList.add("card--selected");
+            if (msg.card_slot !== undefined) {
+                let cardImage = document.getElementById(`card-image-${msg.card_slot}`);
+                if (msg.mode == "Select") {
+                    cardImage.classList.add("card--selected");
+                }
+                else {
+                    cardImage.classList.remove("card--selected");
+                }
             }
             else {
-                cardImage.classList.remove("card--selected");
+                let player = this.FindComponent("GameManager").currentPlayer;
+                let playerHand = player.FindComponent("Carddeck").hand;
+                let handWindow = document.getElementById("hand-window");
+                for (let [i, child] of Array.from(handWindow.children).entries()) {
+                    document.getElementById(`card-image-${i}`).classList.remove("card--selected");
+                }
+            }
+            this.#UpdateTownButton(msg);
+        }
+
+        /**
+         * Change mouse cursor depending on if the hovered element is clickable (not yet in use)
+         * @param {object} msg 
+         */
+        #ChangeMouseCursor(msg) {
+            if (msg.cursor == "pointer") {
+                document.getElementsByTagName("body")[0].classList.add("--cursor-pointer");
+                document.getElementsByTagName("body")[0].classList.remove("--cursor-default");
+            }
+            else {
+                document.getElementsByTagName("body")[0].classList.remove("--cursor-pointer");
+                document.getElementsByTagName("body")[0].classList.add("--cursor-default");
             }
         }
 
@@ -496,6 +647,9 @@ export const ui_manager = (() => {
             this.#SetPlayerTrophies(player);
         }
 
+        /**
+         * Checks if mouse cursor is on any UI element and handles raycasting accordingly
+         */
         #ExcludeUIFromRaycasting () {
             const UI = document.getElementById("game-ui");
             UI.addEventListener("mouseenter", () => {
@@ -503,7 +657,6 @@ export const ui_manager = (() => {
             });
             UI.addEventListener("mouseleave", () => {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
-
             });
         }
 
