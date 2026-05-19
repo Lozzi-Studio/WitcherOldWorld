@@ -551,7 +551,7 @@ export const ui_manager = (() => {
                     let newCardDIV = document.createElement("div"); //this.#CreateCardDIV(card);
                     newCardDIV.id = `card-image-${i}`;
                     newCardDIV.style.backgroundImage = `url(${card.imagePath})`;
-                    newCardDIV.classList.add("card");
+                    newCardDIV.classList.add("container", "container--col", "card");
                     /* let newCardImage = document.createElement("img");
                     newCardImage.src = `${card.imagePath}`;
                     newCardDIV.appendChild(newCardImage); */

@@ -475,7 +475,7 @@ p, div {
 }
 
 .card {
-    /* background-color: #3F3F3F; */
+    background-color: #3F3F3F;
     border: 2px solid #868686;
     border-radius: 8px;
 
@@ -483,7 +483,7 @@ p, div {
     justify-content: space-between;
 
     height: 196px;
-    width: 138px;
+    aspect-ratio: 0.65;
 
     background-size: cover;
 }
