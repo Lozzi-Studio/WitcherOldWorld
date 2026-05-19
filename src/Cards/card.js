@@ -12,6 +12,7 @@ export const card = (() => {
         #comboBonus;
         #region;
         #cost;
+        #imagePath;
 
         /**
          * A wrapper for action cards
@@ -31,6 +32,8 @@ export const card = (() => {
             this.#comboBonus = null;
             this.#region = region;
             this.#cost = cost;
+            this.#imagePath = this.getImagePathFromName();
+            console.log(this.#imagePath);
         }
 
         /**
@@ -86,6 +89,10 @@ export const card = (() => {
             return resolver;
         }
 
+        getImagePathFromName() {
+            return "../../resources/assets/cards/" + this.#name.split(" ").join("_") + ".png";
+        }
+
         get region() {
             return this.#region;
         }
@@ -100,6 +107,10 @@ export const card = (() => {
 
         get cost() {
             return this.#cost;
+        }
+
+        get imagePath() {
+            return this.#imagePath;
         }
     }
 

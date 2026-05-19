@@ -544,13 +544,14 @@ export const ui_manager = (() => {
             for (let [i, card] of playerHand.entries()) {
                 let cardDIV = document.getElementById(`card-image-${i}`);
                 if (cardDIV) {
-                    // cardContainer.innerHTML = card.name;
-                    // cardImage.src = `${card.imagePath}`;
-                    cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
+                    cardDIV.style.backgroundImage = `url(${card.imagePath})`;
+                    // cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
                 }
                 else {
-                    let newCardDIV = this.#CreateCardDIV(card);
+                    let newCardDIV = document.createElement("div"); //this.#CreateCardDIV(card);
                     newCardDIV.id = `card-image-${i}`;
+                    newCardDIV.style.backgroundImage = `url(${card.imagePath})`;
+                    newCardDIV.classList.add("card");
                     /* let newCardImage = document.createElement("img");
                     newCardImage.src = `${card.imagePath}`;
                     newCardDIV.appendChild(newCardImage); */

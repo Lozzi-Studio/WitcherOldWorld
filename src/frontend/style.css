@@ -475,16 +475,17 @@ p, div {
 }
 
 .card {
-    background-color: #3F3F3F;
+    /* background-color: #3F3F3F; */
     border: 2px solid #868686;
     border-radius: 8px;
 
     align-items: flex-start;
     justify-content: space-between;
 
-
     height: 196px;
     width: 138px;
+
+    background-size: cover;
 }
 
 .card--selected {
