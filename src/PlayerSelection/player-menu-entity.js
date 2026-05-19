@@ -26,7 +26,7 @@ export const player_menu_overlay = (() => {
 
             let startButton = new button.Button("Button_Start", 0.3, 0.18, new THREE.TextureLoader().load("resources/assets/background/PlayButton.png") , "Start", () => this.FindComponent("PlayerPicker").SwitchScene());
             this.AddComponent(startButton, "Button_Start");
-            startButton.SetPosition(new THREE.Vector3(0.6,-0.5,2));
+            startButton.SetPosition(new THREE.Vector3(-0.5,-0.5,2));
         }
     }
 
