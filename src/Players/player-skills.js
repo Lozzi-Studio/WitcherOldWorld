@@ -78,6 +78,31 @@ export const player_skills = (() => {
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
         }
 
+        canMeditate(){
+            return {
+                "Combat": this.#combat.canMeditate(),
+                "Alchemy" : this.#alchemy.canMeditate(),
+                "Special":  this.#special.canMeditate(),
+                "Defense": this.#defense.canMeditate(), 
+            }
+        }
+
+        #onMeditate(msg) {
+            switch(msg){
+                case "Combat":
+                    this.#combat.meditated();
+                case "Alchemy":
+                    this.#alchemy.meditated();
+                case "Special":
+                    this.#special.meditated();
+                case "Defense":
+                    this.#defense.meditated();
+            }
+        }
+
+
+
+
         get combat() {
             return this.#combat;
         }
@@ -225,6 +250,8 @@ export const player_skills = (() => {
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
         }
+
+    
 
         get amount() {
             return this.#amount;
