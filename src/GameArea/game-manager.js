@@ -1,6 +1,7 @@
 import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
 import { cards } from "../Cards/card-templates";
+import { card_options } from "../Cards/card-options";
 
 export const game_manager = (() => { 
 
@@ -10,7 +11,7 @@ export const game_manager = (() => {
         #currentPlayer;
         #selection;
         #selectedTown;
-        #selectedCard;
+        #selectedCards;
         
         /**
          * Manages game stages and game behaviour
@@ -23,7 +24,7 @@ export const game_manager = (() => {
             this.#currentPlayer = null;
             this.#selection = [];
             this.#selectedTown = null;
-            this.#selectedCard = null;
+            this.#selectedCards = [];
         }
 
         /**
@@ -91,11 +92,15 @@ export const game_manager = (() => {
             if (this.#selection.includes(msg.card_slot)){
                 this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect"));
-                this.#selectedCard = null;
+                if(this.#currentRound == 3){
+                    this.#selectedCards.splice(this.#selectedCards.indexOf(msg.card_slot), 1); //TEST THIS!! Needs UI as well
+                }
             } else {
                 this.#selection.push(msg.card_slot);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
-                this.#selectedCard = msg.card_slot;
+                if(this.#currentRound == 3){
+                    this.#selectedCards.push(msg.card_slot); //TEST THIS!! Needs UI as well
+                }
             }
         }
 
@@ -121,12 +126,14 @@ export const game_manager = (() => {
         }
 
         #DiscardCardRoundThree(){
-            if (this.#selectedCard == null || this.#currentRound != 3){
+            if (this.#selectedCard == [] || this.#currentRound != 3){
                 console.log("No card selected or wrong round");
             }
             else{
-                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#selectedCard, "Discard"));
-                console.log("Discarded: " + this.#selectedCard);
+                for (const card of cardsArray) {
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
+                    console.log("Discarded: " + card);
+                }
             }
         }
 
