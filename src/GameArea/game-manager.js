@@ -38,6 +38,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
+            this._RegisterHandler('game.discardCard',() => {this.#DiscardCardRoundThree()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -119,7 +120,7 @@ export const game_manager = (() => {
             }
         }
 
-        #DiscardCard(){
+        #DiscardCardRoundThree(){
             if (this.#selectedCard == null || this.#currentRound != 3){
                 console.log("No card selected or wrong round");
             }

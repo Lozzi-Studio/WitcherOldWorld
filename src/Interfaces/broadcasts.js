@@ -323,6 +323,14 @@ export const broadcasts = (() => {
             console.log("broadcast cursor change", cursor);
             return {topic: 'game.changeMouseCursor', cursor:cursor}
         }
+
+        /**
+         * 
+         * @returns ??
+         */
+        static DiscardCard() {
+            return {topic: 'game.discardCard'}
+        }
     }
 
     class BroadcastTemplateCamera {
