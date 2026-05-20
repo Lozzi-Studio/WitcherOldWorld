@@ -10,6 +10,7 @@ export const game_manager = (() => {
         #currentPlayer;
         #selection;
         #selectedTown;
+        #selectedCard;
         
         /**
          * Manages game stages and game behaviour
@@ -22,6 +23,7 @@ export const game_manager = (() => {
             this.#currentPlayer = null;
             this.#selection = [];
             this.#selectedTown = null;
+            this.#selectedCard = null;
         }
 
         /**
@@ -88,9 +90,11 @@ export const game_manager = (() => {
             if (this.#selection.includes(msg.card_slot)){
                 this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect"));
+                this.#selectedCard = null;
             } else {
                 this.#selection.push(msg.card_slot);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
+                this.#selectedCard = msg.card_slot;
             }
         }
 
@@ -112,6 +116,16 @@ export const game_manager = (() => {
                     this.#selection = [];
                     this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 }
+            }
+        }
+
+        #DiscardCard(){
+            if (this.#selectedCard == null || this.#currentRound != 3){
+                console.log("No card selected or wrong round");
+            }
+            else{
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#selectedCard, "Discard"));
+                console.log("Discarded: " + this.#selectedCard);
             }
         }
 
