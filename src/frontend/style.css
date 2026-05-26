@@ -382,7 +382,15 @@ p, div {
     border-color: var(--green-primary);
 }
 
+#discard-button-area{
+    position: fixed;
+    left: 0;
+    top: 0;
+    min-width: 150px;
+    max-width: 250px;
 
+    display: none;
+}
 
 #town-window {
     position: fixed;

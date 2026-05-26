@@ -37,7 +37,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
-            this._RegisterHandler('game.discardCards',() => {this.#DiscardCardsRoundThree()});
+            this._RegisterHandler('game.discardCards',() => {this.DiscardCardsRoundThree()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -91,9 +91,13 @@ export const game_manager = (() => {
                 this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect"));
                 console.log(this.#selection)
+                if (this.#selection.length === 0){
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
+                }
             } else {
                 this.#selection.push(msg.card_slot);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
+                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
                 console.log(this.#selection)
             }
         }
@@ -119,8 +123,9 @@ export const game_manager = (() => {
             }
         }
 
-        #DiscardCardsRoundThree(){
-            if (this.#selection == [] || this.#currentRound != 3){
+        DiscardCardsRoundThree(){
+            if (this.#selection.length == 0 || this.#currentRound != 3){
+                console.log(this.#currentRound)
                 console.log("No card selected or wrong round");
             }
             else{

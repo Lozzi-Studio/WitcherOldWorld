@@ -326,10 +326,19 @@ export const broadcasts = (() => {
 
         /**
          * 
-         * @returns {object}??
+         * @returns {object}
          */
         static DiscardCards() {
             return {topic: 'game.discardCards'}
+        }
+
+        /**
+         * 
+         * @param {bool} active 
+         * @returns {object}
+         */
+        static UpdateDiscardButtonActive(active) {
+            return {topic: 'game.updateDiscardButton', active: active}
         }
     }
 

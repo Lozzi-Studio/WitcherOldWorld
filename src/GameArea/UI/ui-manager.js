@@ -27,6 +27,16 @@ export const ui_manager = (() => {
                     .currentPlayer.town
                     .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
             };
+
+            this.handleDiscardClick = () => {
+                const btn = document.getElementById("button-discard");
+                if (btn && btn.classList.contains("button--inactive")) {
+                    return; 
+                }
+                this.FindEntity("GameArea")
+                    .FindComponent("GameManager")
+                    .Broadcast(broadcasts.BroadcastTemplateGame.DiscardCards());
+                }
         }
 
 
@@ -48,6 +58,7 @@ export const ui_manager = (() => {
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButtonState(msg.active)});
+            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateDiscardButtonState(msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
         }
 
@@ -264,6 +275,10 @@ export const ui_manager = (() => {
         #SetPhaseOptions(msg) {
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
             let phaseOptionTexts = [];
+
+            const discardPanel = document.getElementById("discard-button-area");
+            const discardButton = document.getElementById("button-discard");
+
             switch (phase) {
                 case 1:
                     phaseOptionTexts = [
@@ -271,6 +286,8 @@ export const ui_manager = (() => {
                         "Führe die Ortsaktion aus (optional)",
                         "Spiele Würfelpoker gegen einen anderen Hexer (optional)"
                     ];
+                    if (discardPanel) discardPanel.style.display = "none";
+                    if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
                     break;
                 case 2:
                     phaseOptionTexts = [
@@ -278,6 +295,8 @@ export const ui_manager = (() => {
                         "Meditiere",
                         "Erkunde die Stadt oder die Wildnis"
                     ];
+                    if (discardPanel) discardPanel.style.display = "none";
+                    if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
                     break;
                 case 3:
                     phaseOptionTexts = [
@@ -285,6 +304,12 @@ export const ui_manager = (() => {
                         "Ziehe Karten, bis du wieder drei Handkarten hast",
                         "Erwerbe eine Karte im Karten-Shop"
                     ];
+                    if (discardPanel) discardPanel.style.display = "flex";
+                    if (discardButton) {
+                        discardButton.style.display = "flex";
+                        discardButton.classList.add("button--inactive");
+                        discardButton.addEventListener("click", this.handleDiscardClick);
+                    }
                     break;
             }
             for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
@@ -392,6 +417,20 @@ export const ui_manager = (() => {
         }
 
         /**
+         * Sets discard button's css class to active or inactive
+         * @param {bool} buttonActive 
+         */
+        #UpdateDiscardButtonState(buttonActive) {
+            let button = document.getElementById("button-discard");
+            if (buttonActive) {
+                button.classList.remove("button--inactive");
+            }
+            else {
+                button.classList.add("button--inactive");
+            }
+        }
+
+        /**
          * Set town button's label and eventListener
          * @param {string} buttonMode - Options: "action", "move"
          * @param {bool} buttonActive 
@@ -455,6 +494,10 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #ShowTownInfo(msg) {
+            const currentPhase = this.FindComponent("GameManager").phase.toIdentifier();
+            if (currentPhase === 2 || currentPhase === 3) {
+                return; 
+            }
             document.getElementById("town-window").style.display = "flex";
             document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
             switch (msg.town.region.toIdentifier()) {
