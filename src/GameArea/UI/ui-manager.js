@@ -533,6 +533,17 @@ export const ui_manager = (() => {
             return cardDIV;
         }
 
+        #UpdateCardContent(card, cardDIV) {
+            const img = new Image();
+            img.onload = () => {
+                cardDIV.style.backgroundImage = `url(${card.imagePath})`;
+            };
+            img.onerror = () => {
+                cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
+            };
+            img.src = card.imagePath;
+        } 
+
         /**
          * Loads card images for every hand card the player has and deletes the images whe a card is played
          * @param {object} msg 
@@ -544,19 +555,15 @@ export const ui_manager = (() => {
             for (let [i, card] of playerHand.entries()) {
                 let cardDIV = document.getElementById(`card-image-${i}`);
                 if (cardDIV) {
-                    cardDIV.style.backgroundImage = `url(${card.imagePath})`;
-                    // cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
+                    this.#UpdateCardContent(card, cardDIV);
                 }
                 else {
-                    let newCardDIV = document.createElement("div"); //this.#CreateCardDIV(card);
+                    let newCardDIV = document.createElement("div");
                     newCardDIV.id = `card-image-${i}`;
-                    newCardDIV.style.backgroundImage = `url(${card.imagePath})`;
                     newCardDIV.classList.add("container", "container--col", "card");
-                    /* let newCardImage = document.createElement("img");
-                    newCardImage.src = `${card.imagePath}`;
-                    newCardDIV.appendChild(newCardImage); */
                     handWindow.appendChild(newCardDIV);
                     newCardDIV.addEventListener("click", () => this.SelectCard(i, card));
+                    this.#UpdateCardContent(card, newCardDIV);
                 }
             }
             for (let [i, child] of Array.from(handWindow.children).entries()) {

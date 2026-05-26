@@ -320,7 +320,6 @@ export const broadcasts = (() => {
          * @returns 
          */
         static ChangeMouseCursor(cursor) {
-            console.log("broadcast cursor change", cursor);
             return {topic: 'game.changeMouseCursor', cursor:cursor}
         }
     }

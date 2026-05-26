@@ -33,7 +33,6 @@ export const card = (() => {
             this.#region = region;
             this.#cost = cost;
             this.#imagePath = this.getImagePathFromName();
-            console.log(this.#imagePath);
         }
 
         /**
