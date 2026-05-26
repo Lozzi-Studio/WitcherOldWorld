@@ -129,10 +129,20 @@ export const game_manager = (() => {
                 console.log("No card selected or wrong round");
             }
             else{
-                for (const card of this.#selection) {
+                var cardsToDiscard = [];
+                for (let card_slot of this.#selection) {
+                    cardsToDiscard.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
+                }
+
+                for (const card of cardsToDiscard) {
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
                     console.log("Discarded: " + card);
                 }
+
+                this.#selection = [];
+                
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
         }
 
