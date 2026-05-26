@@ -326,10 +326,10 @@ export const broadcasts = (() => {
 
         /**
          * 
-         * @returns ??
+         * @returns {object}??
          */
-        static DiscardCard() {
-            return {topic: 'game.discardCard'}
+        static DiscardCards() {
+            return {topic: 'game.discardCards'}
         }
     }
 
