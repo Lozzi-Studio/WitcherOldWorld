@@ -18,7 +18,7 @@ export const game_manager = (() => {
 
         constructor() {
             super();
-            this.#currentRound = Phase.Three;
+            this.#currentRound = Phase.One;
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
@@ -90,7 +90,6 @@ export const game_manager = (() => {
             if (this.#selection.includes(msg.card_slot)){
                 this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect"));
-                console.log(this.#selection)
                 if (this.#selection.length === 0){
                     this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
                 }
@@ -98,7 +97,6 @@ export const game_manager = (() => {
                 this.#selection.push(msg.card_slot);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
-                console.log(this.#selection)
             }
         }
 
@@ -125,8 +123,7 @@ export const game_manager = (() => {
 
         DiscardCardsRoundThree(){
             if (this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3){
-                console.log(this.#currentRound)
-                console.log("No card selected or wrong round");
+                return;
             }
             else{
                 var cardsToDiscard = [];
@@ -136,7 +133,6 @@ export const game_manager = (() => {
 
                 for (const card of cardsToDiscard) {
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
-                    console.log("Discarded: " + card);
                 }
 
                 this.#selection = [];
