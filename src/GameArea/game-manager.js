@@ -124,7 +124,7 @@ export const game_manager = (() => {
         }
 
         DiscardCardsRoundThree(){
-            if (this.#selection.length == 0 || this.#currentRound != 3){
+            if (this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3){
                 console.log(this.#currentRound)
                 console.log("No card selected or wrong round");
             }
