@@ -305,6 +305,7 @@ export const ui_manager = (() => {
             let button = document.getElementById("end-phase-button");
             if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
                 button.style.display = "flex";
+                button.classList.add("button--inactive");
                 button.addEventListener("click", () => this.EndPhase());
             }
             else {
