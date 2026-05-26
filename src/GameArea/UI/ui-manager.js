@@ -15,17 +15,23 @@ export const ui_manager = (() => {
             super();
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
+
+            let button = document.getElementById("town-button");
             this.handleMoveClick = () => {
-                this.FindEntity("GameArea")
-                    .FindComponent("GameManager")
-                    .DiscardCardToMove();
+                if (button.classList.contains("button--inactive") == false) {
+                    this.FindEntity("GameArea")
+                        .FindComponent("GameManager")
+                        .DiscardCardToMove();
+                }
             };
 
             this.handleActionClick = () => {
-                this.FindEntity("GameArea")
-                    .FindComponent("GameManager")
-                    .currentPlayer.town
-                    .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
+                if (button.classList.contains("button--inactive") == false) {
+                    this.FindEntity("GameArea")
+                        .FindComponent("GameManager")
+                        .currentPlayer.town
+                        .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
+                }
             };
         }
 
@@ -47,7 +53,7 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
-            this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButtonState(msg.active)});
+            this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
         }
 
@@ -249,12 +255,20 @@ export const ui_manager = (() => {
         #InitPhaseOptions(msg) {
             for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
                 var phaseOptionTextbox = document.createElement("div");
-                phaseOptionTextbox.classList.add("textbox", "textbox--fill");
+                phaseOptionTextbox.classList.add("textbox");
                 phaseOptionTextbox.id = `phase-option-text-${i}`;
                 phaseOptionTextbox.innerHTML = `PHASE-OPTION-${i}`;
                 document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
             }
             this.#SetPhaseOptions(msg);
+            if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
+                document.getElementById("button-end-phase").style.display = "flex";
+                document.getElementById("button-end-phase").addEventListener("click", () => this.EndPhase());
+            }
+            else {
+                document.getElementById("button-end-phase").style.display = "none";
+                document.getElementById("button-end-phase").removeEventListener("click", () => this.EndPhase());
+            }
         }
 
         /**
@@ -379,10 +393,11 @@ export const ui_manager = (() => {
 
         /**
          * Sets town button's css class to active or inactive
+         * @param {string} buttonID
          * @param {bool} buttonActive 
          */
-        #UpdateTownButtonState(buttonActive) {
-            let button = document.getElementById("button-move");
+        #UpdateButtonState(buttonID, buttonActive) {
+            let button = document.getElementById(buttonID);
             if (buttonActive) {
                 button.classList.remove("button--inactive");
             }
@@ -394,30 +409,19 @@ export const ui_manager = (() => {
         /**
          * Set town button's label and eventListener
          * @param {string} buttonMode - Options: "action", "move"
-         * @param {bool} buttonActive 
          */
-        #UpdateTownButtonMode(buttonMode, buttonActive) {
-            let button = document.getElementById("button-move");
+        #UpdateTownButtonMode(buttonMode) {
+            let button = document.getElementById("town-button");
             button.removeEventListener("click", this.handleActionClick);
             button.removeEventListener("click", this.handleMoveClick);
 
             if (buttonMode == "action") {
                 button.innerHTML = "Ortsaktion ausf&uuml;hren";
-                if (buttonActive) {
-                    button.addEventListener("click", this.handleActionClick);
-                }
-                else {
-                    button.removeEventListener("click", this.handleActionClick);
-                }
+                button.addEventListener("click", this.handleActionClick);
             }
             else {
                 button.innerHTML = "Gehe hierhin";
-                if (buttonActive) {
-                    button.addEventListener("click", this.handleMoveClick);
-                }
-                else {
-                    button.removeEventListener("click", this.handleMoveClick);
-                }
+                button.addEventListener("click", this.handleMoveClick);
             }
         }
 
@@ -446,7 +450,7 @@ export const ui_manager = (() => {
                 } else {buttonActive = false;}
             }
 
-            this.#UpdateTownButtonState(buttonActive);
+            this.#UpdateButtonState("town-button", buttonActive);
             this.#UpdateTownButtonMode(buttonMode, buttonActive);
         }
 
