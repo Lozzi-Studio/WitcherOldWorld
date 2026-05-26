@@ -40,9 +40,10 @@ export const ui_manager = (() => {
          * Used to intialize and add any default components/events
          */        
         InitComponent() {
-            this._RegisterHandler('game.start', (msg) => {this.#InitUI(msg)});
-            this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateUIAfterPlayerSwitch(msg)});
-            this._RegisterHandler("game.nextPhase", (msg) => {this.#SetPhaseOptions(msg)});
+            this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
+            this._RegisterHandler("game.nextTurn", (msg) => {this.#OnNextPlayer(msg)});
+            this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
+            this._RegisterHandler("player.move", (msg) => {this.#UpdateButtonState("end-phase-button", true)});
 
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('player.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
@@ -261,14 +262,6 @@ export const ui_manager = (() => {
                 document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
             }
             this.#SetPhaseOptions(msg);
-            if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
-                document.getElementById("button-end-phase").style.display = "flex";
-                document.getElementById("button-end-phase").addEventListener("click", () => this.EndPhase());
-            }
-            else {
-                document.getElementById("button-end-phase").style.display = "none";
-                document.getElementById("button-end-phase").removeEventListener("click", () => this.EndPhase());
-            }
         }
 
         /**
@@ -306,6 +299,18 @@ export const ui_manager = (() => {
             }
 
             document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
+        }
+        
+        #UpdateNextPhaseButton() {
+            let button = document.getElementById("end-phase-button");
+            if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
+                button.style.display = "flex";
+                button.addEventListener("click", () => this.EndPhase());
+            }
+            else {
+                button.style.display = "none";
+                button.removeEventListener("click", () => this.EndPhase());
+            }
         }
 
         /**
@@ -613,7 +618,7 @@ export const ui_manager = (() => {
          * Initilaizes UI components
          * @param {object} msg 
          */
-        #InitUI(msg) {
+        #OnGameStart(msg) {
             this.#InitPlayerShield();
             this.#InitPlayerSkills();
             this.#InitPhaseOptions();
@@ -621,21 +626,27 @@ export const ui_manager = (() => {
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
-            this.#UpdateUIAfterPlayerSwitch(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
+            this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
         }
 
         /**
          * Update UI on player switch
          * @param {object} msg 
          */
-        #UpdateUIAfterPlayerSwitch(msg) {
+        #OnNextPlayer(msg) {
             this.#SetPlayerInfo(msg.nextPlayer);
             this.#SetPlayerAvatar(msg.nextPlayer);
             this.#UpdatePlayerStats(msg.nextPlayer);
+            this.#OnNextPhase(msg);
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
+        }
+
+        #OnNextPhase(msg) {
+            this.#SetPhaseOptions(msg);
+            this.#UpdateNextPhaseButton(msg);
         }
 
         /**
