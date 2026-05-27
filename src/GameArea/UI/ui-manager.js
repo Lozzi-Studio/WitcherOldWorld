@@ -545,7 +545,7 @@ export const ui_manager = (() => {
         } 
 
         /**
-         * Loads card images for every hand card the player has and deletes the images whe a card is played
+         * Loads card images for every hand card the player has and deletes the images when a card is played
          * @param {object} msg 
          */
         #UpdateHandCards(msg) {
