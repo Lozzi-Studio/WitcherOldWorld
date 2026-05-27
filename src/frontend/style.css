@@ -241,12 +241,12 @@ p, div {
     color: var(--color-secondary);
 }
 
-.textbox > p {
-    color: var(--color-primary);
+.textbox--fill > p {
+    color: var(--color-secondary)
 }
 
-.textbox--fill > p {
-    color: var(--color-secondary);
+.textbox--fill--inactive {
+    background: var(--color-primary-inactive);
 }
 
 .textbox--fancy-font > p {
@@ -518,4 +518,8 @@ p, div {
 
 .--cursor-default {
     cursor: var(--cursor-default), auto;
+}
+
+#button-end-phase {
+    display:none;
 }

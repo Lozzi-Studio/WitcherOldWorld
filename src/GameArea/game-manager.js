@@ -107,6 +107,7 @@ export const game_manager = (() => {
                 let allowedCard = this.ValidateMove(this.#selectedTown, selectedCards).allowedCard;
                 if (moveAllowed){
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
+                    this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
                     this.#selectedTown.Broadcast(broadcasts.BroadcastTemplateTown.ResetTownAction());
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(allowedCard, "Discard"));
                     this.#selection = [];
