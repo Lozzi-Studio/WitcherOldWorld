@@ -26,7 +26,11 @@ export const game = (() => {
          */
         constructor() {
             super();
-            this.#players = [{name: "Gernot", witcherschool: player_options.WitcherSchool.Wolf(), money: 2}];
+            this.#players = [
+                {name: "Geralt", witcherschool: player_options.WitcherSchool.Wolf(), money: 2},
+                {name: "Vesemir", witcherschool: player_options.WitcherSchool.Bear(), money: 3},
+                {name: "Lambert", witcherschool: player_options.WitcherSchool.Cat(), money: 4}
+            ];
         }
 
         /**

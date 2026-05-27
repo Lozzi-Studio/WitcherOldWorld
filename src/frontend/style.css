@@ -453,10 +453,22 @@ p, div {
     right: 0;
     bottom: 0;
     gap:0;
+
+    transform: scale(1.0);
+    transform-origin: bottom right;
+    transition: transform 400ms;
+
+    opacity: 0.8;
+}
+
+#hand-window:hover {
+    transform: scale(1.5);
+    transform-origin: bottom right;
+    opacity: 1;
+    transition: transform 400ms, opacity 400ms;
 }
 
 #hand-window > div {
-    height: 196px;
     cursor: var(--cursor-pointer), pointer;
     transition: margin-right 400ms;
 }
@@ -482,9 +494,11 @@ p, div {
     align-items: flex-start;
     justify-content: space-between;
 
+    height: 232px;
+    width: 151px;
+    /* aspect-ratio: 0.65; */
 
-    height: 196px;
-    width: 138px;
+    background-size: cover;
 }
 
 .card--selected {

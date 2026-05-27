@@ -82,7 +82,7 @@ export const cards = (() => {
          */
         static getPraeziserSchnitt(comboOptions, region) {
             return new card.Card(
-                "Praezischer Schnitt",
+                "Praeziser Schnitt",
                 card_options.Color.Blue(),
                 comboOptions,
                 card_options.CardEffect.createCardEffect(),
@@ -313,10 +313,10 @@ export const cards = (() => {
          */
         static getRuestungSchmelzen(comboOptions) {
             return new card.Card(
-                "Rüstung Schmelzen",
+                "Ruestung Schmelzen",
                 card_options.Color.Purple(),
                 comboOptions,
-                card_options.CardEffect.createCardEffectI(2,0,0,false,false),
+                card_options.CardEffect.createCardEffect(2,0,0,false,false),
                 region.Region.Mountain(),
                 1
             )
