@@ -427,8 +427,8 @@ export const ui_manager = (() => {
          * @param {string} buttonID
          * @param {bool} buttonActive 
          */
-        #UpdateTownButtonState(buttonActive) {
-            let button = document.getElementById("button-move");
+        #UpdateButtonState(buttonID, buttonActive) {
+            let button = document.getElementById(buttonID);
             if (buttonActive) {
                 button.classList.remove("button--inactive");
             }
@@ -436,6 +436,7 @@ export const ui_manager = (() => {
                 button.classList.add("button--inactive");
             }
         }
+
 
         /**
          * Set town button's label and eventListener
@@ -490,10 +491,6 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #ShowTownInfo(msg) {
-            const currentPhase = this.FindComponent("GameManager").phase.toIdentifier();
-            if (currentPhase === 2 || currentPhase === 3) {
-                return; 
-            }
             document.getElementById("town-window").style.display = "flex";
             document.getElementById("town-name").innerHTML = `${msg.town.town_name}`;
             switch (msg.town.region.toIdentifier()) {

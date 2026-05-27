@@ -18,7 +18,7 @@ export const game_manager = (() => {
 
         constructor() {
             super();
-            this.#currentRound = Phase.One;
+            this.#currentRound = Phase.Three;
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
@@ -37,7 +37,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
-            this._RegisterHandler('game.discardCards',() => {this.DiscardCardsRoundThree()});
+            this._RegisterHandler('game.discardCards',() => {this.DiscardSelectedCards()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -122,7 +122,7 @@ export const game_manager = (() => {
             }
         }
 
-        DiscardCardsRoundThree(){
+        DiscardSelectedCards(){
             if (this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3){
                 return;
             }
