@@ -15,17 +15,23 @@ export const ui_manager = (() => {
             super();
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
+
+            let button = document.getElementById("town-button");
             this.handleMoveClick = () => {
-                this.FindEntity("GameArea")
-                    .FindComponent("GameManager")
-                    .DiscardCardToMove();
+                if (button.classList.contains("button--inactive") == false) {
+                    this.FindEntity("GameArea")
+                        .FindComponent("GameManager")
+                        .DiscardCardToMove();
+                }
             };
 
             this.handleActionClick = () => {
-                this.FindEntity("GameArea")
-                    .FindComponent("GameManager")
-                    .currentPlayer.town
-                    .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
+                if (button.classList.contains("button--inactive") == false) {
+                    this.FindEntity("GameArea")
+                        .FindComponent("GameManager")
+                        .currentPlayer.town
+                        .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
+                }
             };
 
             this.handleDiscardClick = () => {
@@ -44,9 +50,10 @@ export const ui_manager = (() => {
          * Used to intialize and add any default components/events
          */        
         InitComponent() {
-            this._RegisterHandler('game.start', (msg) => {this.#InitUI(msg)});
-            this._RegisterHandler("game.nextTurn", (msg) => {this.#UpdateUIAfterPlayerSwitch(msg)});
-            this._RegisterHandler("game.nextPhase", (msg) => {this.#SetPhaseOptions(msg)});
+            this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
+            this._RegisterHandler("game.nextTurn", (msg) => {this.#OnNextPlayer(msg)});
+            this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
+            this._RegisterHandler("player.move", (msg) => {this.#UpdateButtonState("end-phase-button", true)});
 
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('player.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
@@ -57,8 +64,8 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
-            this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButtonState(msg.active)});
-            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateDiscardButtonState(msg.active)});
+            this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
+            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateButtonState("button-discard", msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
         }
 
@@ -260,7 +267,7 @@ export const ui_manager = (() => {
         #InitPhaseOptions(msg) {
             for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
                 var phaseOptionTextbox = document.createElement("div");
-                phaseOptionTextbox.classList.add("textbox", "textbox--fill");
+                phaseOptionTextbox.classList.add("textbox");
                 phaseOptionTextbox.id = `phase-option-text-${i}`;
                 phaseOptionTextbox.innerHTML = `PHASE-OPTION-${i}`;
                 document.getElementById("phase-options-container").appendChild(phaseOptionTextbox);
@@ -317,6 +324,19 @@ export const ui_manager = (() => {
             }
 
             document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
+        }
+        
+        #UpdateNextPhaseButton() {
+            let button = document.getElementById("end-phase-button");
+            if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
+                button.style.display = "flex";
+                button.classList.add("button--inactive");
+                button.addEventListener("click", () => this.EndPhase());
+            }
+            else {
+                button.style.display = "none";
+                button.removeEventListener("click", () => this.EndPhase());
+            }
         }
 
         /**
@@ -404,6 +424,7 @@ export const ui_manager = (() => {
 
         /**
          * Sets town button's css class to active or inactive
+         * @param {string} buttonID
          * @param {bool} buttonActive 
          */
         #UpdateTownButtonState(buttonActive) {
@@ -417,46 +438,21 @@ export const ui_manager = (() => {
         }
 
         /**
-         * Sets discard button's css class to active or inactive
-         * @param {bool} buttonActive 
-         */
-        #UpdateDiscardButtonState(buttonActive) {
-            let button = document.getElementById("button-discard");
-            if (buttonActive) {
-                button.classList.remove("button--inactive");
-            }
-            else {
-                button.classList.add("button--inactive");
-            }
-        }
-
-        /**
          * Set town button's label and eventListener
          * @param {string} buttonMode - Options: "action", "move"
-         * @param {bool} buttonActive 
          */
-        #UpdateTownButtonMode(buttonMode, buttonActive) {
-            let button = document.getElementById("button-move");
+        #UpdateTownButtonMode(buttonMode) {
+            let button = document.getElementById("town-button");
             button.removeEventListener("click", this.handleActionClick);
             button.removeEventListener("click", this.handleMoveClick);
 
             if (buttonMode == "action") {
                 button.innerHTML = "Ortsaktion ausf&uuml;hren";
-                if (buttonActive) {
-                    button.addEventListener("click", this.handleActionClick);
-                }
-                else {
-                    button.removeEventListener("click", this.handleActionClick);
-                }
+                button.addEventListener("click", this.handleActionClick);
             }
             else {
                 button.innerHTML = "Gehe hierhin";
-                if (buttonActive) {
-                    button.addEventListener("click", this.handleMoveClick);
-                }
-                else {
-                    button.removeEventListener("click", this.handleMoveClick);
-                }
+                button.addEventListener("click", this.handleMoveClick);
             }
         }
 
@@ -485,7 +481,7 @@ export const ui_manager = (() => {
                 } else {buttonActive = false;}
             }
 
-            this.#UpdateTownButtonState(buttonActive);
+            this.#UpdateButtonState("town-button", buttonActive);
             this.#UpdateTownButtonMode(buttonMode, buttonActive);
         }
 
@@ -576,8 +572,19 @@ export const ui_manager = (() => {
             return cardDIV;
         }
 
+        #UpdateCardContent(card, cardDIV) {
+            const img = new Image();
+            img.onload = () => {
+                cardDIV.style.backgroundImage = `url(${card.imagePath})`;
+            };
+            img.onerror = () => {
+                cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
+            };
+            img.src = card.imagePath;
+        } 
+
         /**
-         * Loads card images for every hand card the player has and deletes the images whe a card is played
+         * Loads card images for every hand card the player has and deletes the images when a card is played
          * @param {object} msg 
          */
         #UpdateHandCards(msg) {
@@ -587,18 +594,15 @@ export const ui_manager = (() => {
             for (let [i, card] of playerHand.entries()) {
                 let cardDIV = document.getElementById(`card-image-${i}`);
                 if (cardDIV) {
-                    // cardContainer.innerHTML = card.name;
-                    // cardImage.src = `${card.imagePath}`;
-                    cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
+                    this.#UpdateCardContent(card, cardDIV);
                 }
                 else {
-                    let newCardDIV = this.#CreateCardDIV(card);
+                    let newCardDIV = document.createElement("div");
                     newCardDIV.id = `card-image-${i}`;
-                    /* let newCardImage = document.createElement("img");
-                    newCardImage.src = `${card.imagePath}`;
-                    newCardDIV.appendChild(newCardImage); */
+                    newCardDIV.classList.add("container", "container--col", "card");
                     handWindow.appendChild(newCardDIV);
                     newCardDIV.addEventListener("click", () => this.SelectCard(i, card));
+                    this.#UpdateCardContent(card, newCardDIV);
                 }
             }
             for (let [i, child] of Array.from(handWindow.children).entries()) {
@@ -652,7 +656,7 @@ export const ui_manager = (() => {
          * Initilaizes UI components
          * @param {object} msg 
          */
-        #InitUI(msg) {
+        #OnGameStart(msg) {
             this.#InitPlayerShield();
             this.#InitPlayerSkills();
             this.#InitPhaseOptions();
@@ -660,21 +664,27 @@ export const ui_manager = (() => {
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
-            this.#UpdateUIAfterPlayerSwitch(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
+            this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
         }
 
         /**
          * Update UI on player switch
          * @param {object} msg 
          */
-        #UpdateUIAfterPlayerSwitch(msg) {
+        #OnNextPlayer(msg) {
             this.#SetPlayerInfo(msg.nextPlayer);
             this.#SetPlayerAvatar(msg.nextPlayer);
             this.#UpdatePlayerStats(msg.nextPlayer);
+            this.#OnNextPhase(msg);
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
+        }
+
+        #OnNextPhase(msg) {
+            this.#SetPhaseOptions(msg);
+            this.#UpdateNextPhaseButton(msg);
         }
 
         /**
