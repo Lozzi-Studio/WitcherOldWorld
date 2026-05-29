@@ -484,8 +484,6 @@ export const ui_manager = (() => {
             
             this.#ShowTownAbilityInfoIfNeeded(msg.town.ability);
             this.#UpdateTownButton(msg);
-            let townEntityName = "Town_" + msg.town.id;
-            this.#PositionDOMElementBasedOnEntity("town-window", this.FindEntity(townEntityName), 50, 120);
         }
 
         /**
@@ -699,7 +697,10 @@ export const ui_manager = (() => {
         }
 
         Update(timeElapsed) {
-            
+            if (document.getElementById("town-window").style.display == "flex") {
+                let townEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedTown;
+                this.#PositionDOMElementBasedOnEntity("town-window", townEntity, 50, 120);
+            }
         }
 
         /**
