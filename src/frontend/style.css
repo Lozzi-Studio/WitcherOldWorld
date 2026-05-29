@@ -109,6 +109,13 @@ p, div {
     align-self: stretch; 
 }
 
+.container--justify-between {
+    gap: 0px;
+    justify-content: space-between;
+    flex-basis: 100%;
+    align-self: stretch; 
+}
+
 .container--row {
     flex-direction: row;
 }
@@ -279,6 +286,15 @@ p, div {
     background-color: var(--color-primary-inactive);
 }
 
+.close-button {
+    color: var(--color-primary);
+}
+
+.close-button:hover {
+    cursor: var(--cursor-pointer), pointer;
+    color: var(--color-hover);
+}
+
 #player-name {
     font-size: 14pt;
     margin-bottom: -3px;  /* needed for gwent font */
@@ -396,6 +412,8 @@ p, div {
 
 #town-name {
     font-size: 16pt;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 #town-ability {

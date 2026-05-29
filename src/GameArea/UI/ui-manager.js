@@ -53,9 +53,10 @@ export const ui_manager = (() => {
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
-            this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
+
+            document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
         }
 
         /**
