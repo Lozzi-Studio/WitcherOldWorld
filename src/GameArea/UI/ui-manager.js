@@ -304,15 +304,15 @@ export const ui_manager = (() => {
         
         #UpdateNextPhaseButton() {
             let button = document.getElementById("end-phase-button");
-            if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
+            //if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
                 button.style.display = "flex";
                 button.classList.add("button--inactive");
                 button.addEventListener("click", () => this.EndPhase());
-            }
+            /* }
             else {
                 button.style.display = "none";
                 button.removeEventListener("click", () => this.EndPhase());
-            }
+            } */
         }
 
         /**
@@ -544,6 +544,11 @@ export const ui_manager = (() => {
             return cardDIV;
         }
 
+        /**
+         * 
+         * @param {cards.Card} card 
+         * @param {HTMLElement} cardDIV 
+         */
         #UpdateCardContent(card, cardDIV) {
             const img = new Image();
             img.onload = () => {
@@ -655,6 +660,10 @@ export const ui_manager = (() => {
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
         }
 
+        /**
+         * Update UI on next phase
+         * @param {object} msg 
+         */
         #OnNextPhase(msg) {
             this.#SetPhaseOptions(msg);
             this.#UpdateNextPhaseButton(msg);
@@ -686,6 +695,13 @@ export const ui_manager = (() => {
             });
         }
 
+        /**
+         * 
+         * @param {string} elementID 
+         * @param {entity.Entity} entity 
+         * @param {float} percentOffsetX 
+         * @param {float} percentOffsetY 
+         */
         #PositionDOMElementBasedOnEntity(elementID, entity, percentOffsetX, percentOffsetY) {
             let camera = this.FindEntity("Camera").camera;
             camera.updateMatrixWorld(true);
@@ -698,6 +714,10 @@ export const ui_manager = (() => {
             document.getElementById(elementID).style.transform = `translate(-${percentOffsetX}%, -${percentOffsetY}%) translate(${x}px,${y}px)`;
         }
 
+        /**
+         * Triggers after specific time interval
+         * @param {float} timeElapsed 
+         */
         Update(timeElapsed) {
             if (document.getElementById("town-window").style.display == "flex") {
                 let townEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedTown;
