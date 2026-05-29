@@ -548,6 +548,7 @@ export const ui_manager = (() => {
             const img = new Image();
             img.onload = () => {
                 cardDIV.style.backgroundImage = `url(${card.imagePath})`;
+                cardDIV.innerHTML = ""
             };
             img.onerror = () => {
                 cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
