@@ -84,6 +84,6 @@ export const town_manager = (() =>{
     }
 
     return {
-        TownMangaer : TownManager
+        TownManager : TownManager
     }
 }) ();
