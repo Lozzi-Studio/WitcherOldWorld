@@ -53,9 +53,10 @@ export const ui_manager = (() => {
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
-            this._RegisterHandler('town.deselection', (msg) => {this.#HideTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
+
+            document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
         }
 
         /**
@@ -683,6 +684,25 @@ export const ui_manager = (() => {
             UI.addEventListener("mouseleave", () => {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
             });
+        }
+
+        #PositionDOMElementBasedOnEntity(elementID, entity, percentOffsetX, percentOffsetY) {
+            let camera = this.FindEntity("Camera").camera;
+            camera.updateMatrixWorld(true);
+            let coordinates = entity.position.clone().project(camera);
+
+            let canvas = this._parent._parent.renderer.domElement;
+            const x = (coordinates.x *  .5 + .5) * canvas.clientWidth;
+            const y = (coordinates.y * -.5 + .5) * canvas.clientHeight;
+
+            document.getElementById(elementID).style.transform = `translate(-${percentOffsetX}%, -${percentOffsetY}%) translate(${x}px,${y}px)`;
+        }
+
+        Update(timeElapsed) {
+            if (document.getElementById("town-window").style.display == "flex") {
+                let townEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedTown;
+                this.#PositionDOMElementBasedOnEntity("town-window", townEntity, 50, 120);
+            }
         }
 
         /**

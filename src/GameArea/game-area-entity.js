@@ -33,7 +33,7 @@ export const game_area_entity = (() => {
             this.AddComponent(new ui_manager.UIManager());
             this.AddComponent(new region_picker.RegionPicker());
             this.AddComponent(new controls_component.Controls());
-            this.AddComponent(new town_manager.TownMangaer(this._parent.Filter(e => e._name.includes("Town"))));
+            this.AddComponent(new town_manager.TownManager(this._parent.Filter(e => e._name.includes("Town"))));
         }
     }
 
