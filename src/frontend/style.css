@@ -164,7 +164,7 @@ p, div {
 #player-window {
     position: fixed;
     left: 0px;
-    bottom: 0px;
+    top: 0px;
 
     gap: 4px;
 }
