@@ -74,6 +74,10 @@ body {
   --color-selected: rgba(255, 225, 123, 1.00);
   --cursor-default: url("../../resources/assets/cursor/sword-48.png");
   --cursor-pointer: url("../../resources/assets/cursor/pointer-48.png");
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 p, div {
