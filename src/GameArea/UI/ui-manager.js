@@ -484,6 +484,8 @@ export const ui_manager = (() => {
             
             this.#ShowTownAbilityInfoIfNeeded(msg.town.ability);
             this.#UpdateTownButton(msg);
+            let townEntityName = "Town_" + msg.town.id;
+            this.#PositionDOMElementBasedOnEntity("town-window", this.FindEntity(townEntityName), 50, 120);
         }
 
         /**
@@ -682,6 +684,22 @@ export const ui_manager = (() => {
             UI.addEventListener("mouseleave", () => {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
             });
+        }
+
+        #PositionDOMElementBasedOnEntity(elementID, entity, percentOffsetX, percentOffsetY) {
+            let camera = this.FindEntity("Camera").camera;
+            camera.updateMatrixWorld(true);
+            let coordinates = entity.position.clone().project(camera);
+
+            let canvas = this._parent._parent.renderer.domElement;
+            const x = (coordinates.x *  .5 + .5) * canvas.clientWidth;
+            const y = (coordinates.y * -.5 + .5) * canvas.clientHeight;
+
+            document.getElementById(elementID).style.transform = `translate(-${percentOffsetX}%, -${percentOffsetY}%) translate(${x}px,${y}px)`;
+        }
+
+        Update(timeElapsed) {
+            
         }
 
         /**
