@@ -240,7 +240,7 @@ export const broadcasts = (() => {
 
         /**
          * 
-         * @param {player_entity.Player} newPlayer
+         * @param {player_entity.Player} player
          * @returns {object}
         */
        static NextPlayer(player) {
