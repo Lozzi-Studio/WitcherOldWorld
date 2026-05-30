@@ -187,12 +187,12 @@ export const ui_manager = (() => {
          * Get skill level from player and set values in UI
          * @param {player_entity.Player} player 
          */
-        #SetPlayerSkills(msg) {
+        #SetPlayerSkills(player) {
             for (const skill of [
-                msg.player.FindComponent("PlayerSkills").combat,
-                msg.player.FindComponent("PlayerSkills").defense,
-                msg.player.FindComponent("PlayerSkills").alchemy,
-                msg.player.FindComponent("PlayerSkills").special
+                player.FindComponent("PlayerSkills").combat,
+                player.FindComponent("PlayerSkills").defense,
+                player.FindComponent("PlayerSkills").alchemy,
+                player.FindComponent("PlayerSkills").special
             ]) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
@@ -212,8 +212,8 @@ export const ui_manager = (() => {
          * Set witcher level in UI
          * @param {player_entity.Player} player 
          */
-        #SetWitcherLevel(msg) {
-            document.getElementById("witcher-level").innerHTML = msg.player.FindComponent("PlayerSkills").witcher.level;
+        #SetWitcherLevel(player) {
+            document.getElementById("witcher-level").innerHTML = player.FindComponent("PlayerSkills").witcher.level;
         }
         
         /**
@@ -346,9 +346,9 @@ export const ui_manager = (() => {
          * Set UI shield value for player
          * @param {player_entity.Player} player 
          */
-        #SetPlayerShieldStatus(msg) {
-            let defenseLevel = msg.player.FindComponent("PlayerSkills").defense.level;
-            let shieldPoints = msg.player.FindComponent("Shield").amount;
+        #SetPlayerShieldStatus(player) {
+            let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
+            let shieldPoints = player.FindComponent("Shield").amount;
             for (let i = 0; i < defenseLevel; i++) {
                 document.getElementById(`shield-${i+1}`).classList.remove("icon--inactive");
                 document.getElementById(`shield-${i+1}`).classList.add("icon--active");
@@ -364,8 +364,8 @@ export const ui_manager = (() => {
          * Set player money in UI
          * @param {object} msg 
          */
-        #SetPlayerMoney(msg) {
-            let playerMoney = msg.player.FindComponent("MoneyStorage").amount;
+        #SetPlayerMoney(player) {
+            let playerMoney = player.FindComponent("MoneyStorage").amount;
             document.getElementById("money-amount").innerHTML = playerMoney;
         }
 
@@ -373,8 +373,8 @@ export const ui_manager = (() => {
          * Set player trophies in UI
          * @param {object} msg 
          */
-        #SetPlayerTrophies(msg) {
-            let playerTrophies = msg.player.FindComponent("TrophyStorage").amount;
+        #SetPlayerTrophies(player) {
+            let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
         
@@ -663,7 +663,7 @@ export const ui_manager = (() => {
         #OnNextPlayer(msg) {
             this.#SetPlayerInfo(msg);
             this.#SetPlayerAvatar(msg);
-            this.#UpdatePlayerStats(msg);
+            this.#UpdatePlayerStats(msg.player);
             this.#OnNextPhase();
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
@@ -693,11 +693,12 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdatePlayerStats(msg) {
-            this.#SetPlayerSkills(msg);
-            this.#SetPlayerShieldStatus(msg);
-            this.#SetWitcherLevel(msg);
-            this.#SetPlayerMoney(msg);
-            this.#SetPlayerTrophies(msg);
+            let player = this.FindComponent("GameManager").currentPlayer;
+            this.#SetPlayerSkills(player);
+            this.#SetPlayerShieldStatus(player);
+            this.#SetWitcherLevel(player);
+            this.#SetPlayerMoney(player);
+            this.#SetPlayerTrophies(player);
         }
 
         /**
