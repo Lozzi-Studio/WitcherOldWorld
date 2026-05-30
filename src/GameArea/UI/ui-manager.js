@@ -54,7 +54,7 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('player.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
-            this._RegisterHandler('player.updateHandCardsUI', (msg) => {this.#UpdateHandCards(msg)});
+            this._RegisterHandler('player.updateHandCardsUI', () => {this.#UpdateHandCards()});
             this._RegisterHandler('card.updateSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
             
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
@@ -576,7 +576,7 @@ export const ui_manager = (() => {
          * Loads card images for every hand card the player has and deletes the images when a card is played
          * @param {object} msg 
          */
-        #UpdateHandCards(msg) {
+        #UpdateHandCards() {
             let player = this.FindComponent("GameManager").currentPlayer;
             let playerHand = player.FindComponent("Carddeck").hand;
             let handWindow = document.getElementById("hand-window");
@@ -665,6 +665,7 @@ export const ui_manager = (() => {
             this.#SetPlayerAvatar(msg);
             this.#UpdatePlayerStats(msg.player);
             this.#OnNextPhase();
+            this.#UpdateHandCards();
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
