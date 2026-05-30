@@ -33,6 +33,13 @@ export const ui_manager = (() => {
                         .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
                 }
             };
+
+            let skipButton = document.getElementById("debug-next-phase-button");
+            this.HandleNextPhaseClick = () => {
+                if (skipButton.classList.contains("button--inactive") == false) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+                }
+            };
         }
 
 
@@ -41,7 +48,7 @@ export const ui_manager = (() => {
          */        
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
-            this._RegisterHandler("game.nextTurn", (msg) => {this.#OnNextPlayer(msg)});
+            this._RegisterHandler("game.nextPlayer", (msg) => {this.#OnNextPlayer(msg.newPlayer)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
             this._RegisterHandler("player.move", (msg) => {this.#UpdateButtonState("end-phase-button", true)});
 
@@ -57,6 +64,7 @@ export const ui_manager = (() => {
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
+            document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
         }
 
         /**
@@ -304,15 +312,15 @@ export const ui_manager = (() => {
         
         #UpdateNextPhaseButton() {
             let button = document.getElementById("end-phase-button");
-            //if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
+            if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
                 button.style.display = "flex";
                 button.classList.add("button--inactive");
                 button.addEventListener("click", () => this.EndPhase());
-            /* }
+            }
             else {
                 button.style.display = "none";
                 button.removeEventListener("click", () => this.EndPhase());
-            } */
+            }
         }
 
         /**
@@ -642,18 +650,18 @@ export const ui_manager = (() => {
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
-            this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
+            this.#OnNextPlayer(playerList[0]);
         }
 
         /**
          * Update UI on player switch
          * @param {object} msg 
          */
-        #OnNextPlayer(msg) {
-            this.#SetPlayerInfo(msg.nextPlayer);
-            this.#SetPlayerAvatar(msg.nextPlayer);
-            this.#UpdatePlayerStats(msg.nextPlayer);
-            this.#OnNextPhase(msg);
+        #OnNextPlayer(newPlayer) {
+            this.#SetPlayerInfo(newPlayer);
+            this.#SetPlayerAvatar(newPlayer);
+            this.#UpdatePlayerStats(newPlayer);
+            this.#OnNextPhase();
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
@@ -664,9 +672,17 @@ export const ui_manager = (() => {
          * Update UI on next phase
          * @param {object} msg 
          */
-        #OnNextPhase(msg) {
-            this.#SetPhaseOptions(msg);
-            this.#UpdateNextPhaseButton(msg);
+        #OnNextPhase() {
+            this.#SetPhaseOptions();
+            this.#UpdateNextPhaseButton();
+
+            const currentPhase = this.FindComponent("GameManager").phase.toIdentifier();
+            if (currentPhase == 3) {
+                document.getElementById("debug-next-phase-button").innerHTML = "Next Player";
+            }
+            else {
+                document.getElementById("debug-next-phase-button").innerHTML = "Next Phase";
+            }
         }
 
         /**
@@ -702,7 +718,7 @@ export const ui_manager = (() => {
          * @param {float} percentOffsetX 
          * @param {float} percentOffsetY 
          */
-        #PositionDOMElementBasedOnEntity(elementID, entity, percentOffsetX, percentOffsetY) {
+        #PositionHTMLElementBasedOnEntity(elementID, entity, percentOffsetX, percentOffsetY) {
             let camera = this.FindEntity("Camera").camera;
             camera.updateMatrixWorld(true);
             let coordinates = entity.position.clone().project(camera);
@@ -721,7 +737,7 @@ export const ui_manager = (() => {
         Update(timeElapsed) {
             if (document.getElementById("town-window").style.display == "flex") {
                 let townEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedTown;
-                this.#PositionDOMElementBasedOnEntity("town-window", townEntity, 50, 120);
+                this.#PositionHTMLElementBasedOnEntity("town-window", townEntity, 50, 120);
             }
         }
 
