@@ -56,6 +56,8 @@ export const ui_manager = (() => {
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
 
+            this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
+
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
         }
 
@@ -452,7 +454,7 @@ export const ui_manager = (() => {
             }
             else {
                 buttonMode = "move";
-                if (this.FindEntity("GameArea").FindComponent("GameManager").CheckIfCanMoveToTown()) {
+                if (this.FindEntity("GameArea").FindComponent("GameManager").ValidateMove().moveAllowed) {
                     buttonActive = true;
                 } else {buttonActive = false;}
             }
@@ -607,7 +609,13 @@ export const ui_manager = (() => {
                     document.getElementById(`card-image-${i}`).classList.remove("card--selected");
                 }
             }
-            this.#UpdateTownButton(msg);
+            switch(msg.phase) {
+                case 1:
+                    this.#UpdateTownButton(msg);
+                    break;
+                case 3:
+                    this.#UpdateShopButton(msg);
+            }   
         }
 
         /**
@@ -697,6 +705,24 @@ export const ui_manager = (() => {
 
             document.getElementById(elementID).style.transform = `translate(-${percentOffsetX}%, -${percentOffsetY}%) translate(${x}px,${y}px)`;
         }
+
+        /**
+         * Show Confirm Button For Shop
+         * @param {object} msg 
+         */
+        #ShowShopConfirm(msg) {
+            document.getElementById("shop-window").style.display = "flex";
+            this.#UpdateShopButton(msg);
+        }
+        
+        /**
+         * Checks Condition For Shop Button
+         * @param {object} msg 
+         */
+        #UpdateShopButton(msg) {
+            console.log(this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
+            this.#UpdateButtonState("shop-button", this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
+       }
 
         Update(timeElapsed) {
             if (document.getElementById("town-window").style.display == "flex") {

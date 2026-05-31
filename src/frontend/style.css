@@ -402,7 +402,21 @@ p, div {
     border-color: var(--green-primary);
 }
 
+#shop-window {
+    position: fixed;
+    right: 50px;
+    bottom: 270px;
+    min-width: 300px;
+    max-width: 300px;
 
+    transition: right 400ms, bottom 400ms;
+}
+
+#UntenRechts:hover #shop-window {
+    right: 180px;
+    bottom: 400px;
+    transition: right 400ms, bottom 400ms;
+}
 
 #town-window {
     position: fixed;
@@ -483,7 +497,7 @@ p, div {
     opacity: 0.8;
 }
 
-#hand-window:hover {
+#UntenRechts:hover #hand-window {
     transform: scale(1.5);
     transform-origin: bottom right;
     opacity: 1;

@@ -121,11 +121,13 @@ export const broadcasts = (() => {
          * 
          * @param {int} card_slot 
          * @param {string} mode - Options: "Select", "Deselect" 
+         * @param {int} phase
          * @returns 
          */
-        static UpdateCardSelectionUI(card_slot, mode) {
-            return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode};
+        static UpdateCardSelectionUI(card_slot, mode, phase) {
+            return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode, phase: phase};
         }
+
     }
 
     class BroadcastTemplateSkills {
@@ -388,6 +390,17 @@ export const broadcasts = (() => {
         }
     }
 
+    class BroadcastTemplateCardShop {
+
+        /**
+         * @param {int} slot
+         * @returns {object}
+         */
+        static SelectCardFromShop(slot, cost) {
+            return {topic: 'cardshop.select', slot: slot, cost: cost}
+        }
+    }
+
     return {
         BroadcastTemplatePlayer : BroadcastTemplatePlayer,
         BroadcastTemplateSkills : BroadcastTemplateSkills,
@@ -395,6 +408,7 @@ export const broadcasts = (() => {
         BroadcastTemplateGame : BroadcastTemplateGame,
         BroadcastTemplateTown : BroadcastTemplateTown,
         BroadcastTemplateCamera : BroadcastTemplateCamera,
-        BroadcastTemplateMusic: BroadcastTemplateMusic
+        BroadcastTemplateMusic: BroadcastTemplateMusic,
+        BroadcastTemplateCardShop: BroadcastTemplateCardShop
     }
 })();

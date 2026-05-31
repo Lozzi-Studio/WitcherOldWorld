@@ -14,6 +14,7 @@ import { region } from "../GameArea/region";
 import { Vector3 } from 'three';
 import { player_options } from '../Players/player-options';
 import { cards } from '../Cards/card-templates';
+import { cardshop_entity } from '../CardShop/cardshop-entity';
 
 
 export const game = (() => {
@@ -39,10 +40,10 @@ export const game = (() => {
         InitControls() {
             this.#InitCamera();
             this._controls.enabled = true;
-            this._controls.minPolarAngle = Math.PI / 4;
-            this._controls.maxPolarAngle = Math.PI * 0.44;
+            this._controls.minPolarAngle = Math.PI / 6;
+            this._controls.maxPolarAngle = Math.PI * 0.38;
             this._controls.minDistance = 10;
-            this._controls.maxDistance = 48;
+            this._controls.maxDistance = 55;
         }   
 
         /**
@@ -52,6 +53,7 @@ export const game = (() => {
 
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitMap();
+            this.#InitShop();
 
             this._entityManager.AddEntity(this._parent._currentCamera);
             this._entityManager.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
@@ -62,21 +64,22 @@ export const game = (() => {
             this._entityManager.AddEntity(new game_area_entity.GameArea());
 
             document.getElementById('game-ui').style.display = 'block';
-            this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
+            this._entityManager.AddEntity(new cardshop_entity.Cardshop());
 
+            this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
         }
 
         /**
          * Initialize camera entity
          */
         #InitCamera() {
-            const fov = 60;
+            const fov = 65;
             const aspect = 1920 / 1080;
             const near = 1.0;
-            const far = 10000.0;
+            const far = 10000;
             let newCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
             newCamera.position.set(0,50,50);
-            newCamera.rotation.x = -Math.PI / 4;
+            newCamera.rotation.x = -Math.PI / 2;
             this._parent.SetCamera(new camera_entity.Camera(newCamera, this._controls));
         }
 
@@ -151,6 +154,35 @@ export const game = (() => {
             const loader = new GLTFLoader();
             loader.load("resources/assets/provMap.glb", (glb) =>{
             this._scene.add(glb.scene)});
+        }
+
+        /**
+         * Intialize Cardshop and surrondings
+         */
+        #InitShop() {
+            const texture = new THREE.TextureLoader().load("resources/assets/textures/wood.jpg");
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(5,2);
+
+            const materialdisplayCardsFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
+            const displayCards = new THREE.Mesh(new THREE.PlaneGeometry(33,10), materialdisplayCardsFront);
+            displayCards.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , -Math.PI / 5, -Math.PI / 2));
+            displayCards.position.set(33,5,0);
+            this._scene.add(displayCards);
+
+            texture.repeat.set(5,1);
+            const materialdisplayCostFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
+            const displayCost = new THREE.Mesh(new THREE.PlaneGeometry(33,5.2), materialdisplayCostFront);
+            displayCost.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , -Math.PI / 2, -Math.PI / 2));
+            displayCost.position.set(29,0,0);
+            this._scene.add(displayCost);
+
+            const materialdisplayModifierFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
+            const displayModifier = new THREE.Mesh(new THREE.PlaneGeometry(33,5), materialdisplayModifierFront);
+            displayModifier.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , 0, -Math.PI / 2));
+            displayModifier.position.set(38.5,8,0);
+            this._scene.add(displayModifier);
         }
 
         set players(players) {
