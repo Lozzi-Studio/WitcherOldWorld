@@ -285,7 +285,7 @@ export const ui_manager = (() => {
 
             const discardPanel = document.getElementById("discard-button-area");
             const discardButton = document.getElementById("button-discard");
-            const discardButtons = document.getElementById("discard-modal");
+            const discardButtons = document.getElementById("discard-buttons");
             const handWindow = document.getElementById("hand-window");
 
             switch (phase) {
@@ -297,6 +297,7 @@ export const ui_manager = (() => {
                     ];
                     if (discardPanel) discardPanel.style.display = "none";
                     if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
+                    if (discardButtons) discardButtons.style.display = "none";
                     if (handWindow) handWindow.style.position = "absolute";
                     break;
                 case 2:
@@ -307,6 +308,7 @@ export const ui_manager = (() => {
                     ];
                     if (discardPanel) discardPanel.style.display = "none";
                     if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
+                    if (discardButtons) discardButtons.style.display = "none";
                     if (handWindow) handWindow.style.position = "absolute";
                     break;
                 case 3:
@@ -321,6 +323,7 @@ export const ui_manager = (() => {
                         discardButton.classList.add("button--inactive");
                         discardButton.addEventListener("click", this.handleDiscardClick);
                     }
+                    if (discardButtons) discardButtons.style.display = "flex";
                     if (handWindow) handWindow.style.position = "relative";
                     break;
             }
