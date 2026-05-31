@@ -653,7 +653,7 @@ export const ui_manager = (() => {
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
-            this.#OnNextPlayer( {player: playerList[0]} );
+            this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextPlayer(playerList[0]));
         }
 
         /**
