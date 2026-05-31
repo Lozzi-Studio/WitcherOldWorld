@@ -455,17 +455,21 @@ export const ui_manager = (() => {
 
             if (selectedTown == player.town) {
                 buttonMode = "action";
-                if (msg.topic != 'card.updateSelectionUI') {
-                    if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
-                            buttonActive = false;
-                        } else {buttonActive = true;}
+                if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
+                    buttonActive = false;
+                }
+                else {
+                    buttonActive = true;
                 }
             }
             else {
                 buttonMode = "move";
                 if (this.FindEntity("GameArea").FindComponent("GameManager").CheckIfCanMoveToTown()) {
                     buttonActive = true;
-                } else {buttonActive = false;}
+                }
+                else {
+                    buttonActive = false;
+                }
             }
 
             this.#UpdateButtonState("town-button", buttonActive);
