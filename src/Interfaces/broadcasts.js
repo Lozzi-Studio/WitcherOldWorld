@@ -76,10 +76,11 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {int} card_slot 
+         * @param {string} mode - Options: "Hand", "Shop"
          * @returns {object}
          */
-        static SelectCard(card_slot, card) {
-            return {topic: 'card.select', card_slot: card_slot, card:card}
+        static SelectCard(card_slot, card, mode) {
+            return {topic: 'card.select', card_slot: card_slot, card:card, mode: mode}
         }
 
         /**
@@ -394,10 +395,20 @@ export const broadcasts = (() => {
 
         /**
          * @param {int} slot
+         * @param {int} cost
          * @returns {object}
          */
         static SelectCardFromShop(slot, cost) {
             return {topic: 'cardshop.select', slot: slot, cost: cost}
+        }
+
+        /**
+         * @param {int} slot
+         * @param {int} cost
+         * @returns {object}
+         */
+        static BuyCardFromShop(slot, cost) {
+            return {topic: 'cardshop.buy', slot: slot, cost: cost}
         }
     }
 

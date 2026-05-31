@@ -13,6 +13,7 @@ export const carddeck_component = (() => {
         #cardPotion;
         #cardPotionLimit
         #handLimit;
+        #isShop;
 
         /**
          * A component to track player cards
@@ -26,6 +27,7 @@ export const carddeck_component = (() => {
             this.#cardPotion = [];
             this.#cardPotionLimit = 4;
             this.#handLimit = handLimit;
+            this.#isShop = false;
         }
 
         /**
@@ -53,6 +55,7 @@ export const carddeck_component = (() => {
          * @param {object} msg 
          */
         #LoadStartdeck(msg){
+            //TODO Create Defaults
             switch (msg.deck) {
                 case "Player":
                     // hier müssen noch die richtigen Karten angegeben werden
@@ -67,13 +70,24 @@ export const carddeck_component = (() => {
                     this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
                     break;
                 case "Shop":
+                    this.#isShop = true;
+                    this.#cardDeck.push(cards.CardTemplates.getDeckung());
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt());
+                    this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen());
+                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle());
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard());
+                    this.#cardDeck.push(cards.CardTemplates.getDeckung());
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt());
+                    this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen());
+                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle());
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard());
                     break;
             }
             //TODO
         }
 
         /**
-         * Rotate a card from deck to hand, from hand to discard  
+         * Rotate a card from deck to hand, from discard to Hand  
          * @param {object} msg 
          */
         #DrawCard(msg){
@@ -84,10 +98,16 @@ export const carddeck_component = (() => {
                             this.#Shuffle({includeDiscard: true});
                         } 
                         this.#cardHand.push(this.#cardDeck.pop());
+                        if (!this.#isShop) {
+                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+                        }
                         break;
                     case "Discard":
                         if (this.#cardDiscard.length != 0) {
-                            this.#cardHand.push(this.#cardDeck.pop())
+                            this.#cardHand.push(this.#cardDiscard.pop())
+                            if (!this.#isShop) {
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+                            }
                         }
                         break;
                     case "Potion":
@@ -96,7 +116,7 @@ export const carddeck_component = (() => {
                         }
                 }
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+            
         }
 
         /**
@@ -108,7 +128,10 @@ export const carddeck_component = (() => {
                 case "Hand":
                     if (this.#cardHand.length < this.#handLimit) {
                         this.#cardHand.push(msg.card);
-                    }
+                        if (!this.#isShop) {
+                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                        }
+                        }
                     break;
                 case "Discard":
                     this.#cardDiscard.push(msg.card);
@@ -118,7 +141,6 @@ export const carddeck_component = (() => {
                     this.#Shuffle({includeDiscard: false});
                     break;
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
         }
 
         /**

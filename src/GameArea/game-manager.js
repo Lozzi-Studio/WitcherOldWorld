@@ -10,6 +10,7 @@ export const game_manager = (() => {
         #currentPlayer;
         #selection;
         #selectedTown;
+        #currentShopSelection;
         
         /**
          * Manages game stages and game behaviour
@@ -22,6 +23,7 @@ export const game_manager = (() => {
             this.#currentPlayer = null;
             this.#selection = [];
             this.#selectedTown = null;
+            this.#currentShopSelection = null;
         }
 
         /**
@@ -36,6 +38,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
+            this._RegisterHandler('cardshop.buy', (msg) => {this.#OnCardshopBuy(msg)});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
             this.#currentRound.next();
             this.#currentRound.next();
@@ -119,11 +122,28 @@ export const game_manager = (() => {
         }
 
         /**
+         * Buys card from shop and discards hand cards
+         * @param {object} msg 
+         */
+        #OnCardshopBuy(msg){
+            if (this.#selection.length >= msg.cost) {
+                for (let i = 0; i < msg.cost; i++){
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[this.#selection[0]], "Discard"));
+                }
+                this.#selection = [];
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(this.FindEntity("Cardshop").FindComponent("CardshopSlot_" + msg.slot).card,"Hand"));
+                this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.FindEntity("Cardshop").FindComponent("CardshopSlot_" + msg.slot).card, "Discard"))
+                this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
+            }
+
+        }
+
+        /**
          * Checks if enough cards are selected to satisfy the cost of a new card
          * @returns {bool}
          */
         ValidateBuyCard() {
-            return this.#selection.length >= 1;
+            return this.#selection.length >= this.FindEntity("Cardshop").FindComponent("CardshopManager").cost;
         }
 
         /**

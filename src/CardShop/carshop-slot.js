@@ -100,7 +100,7 @@ export const cardshop_slot = (() => {
          * Update the card in the slot
          * @param {card.Card} newCard 
          */
-        updateSlot(newCard) {
+        UpdateSlot(newCard) {
             this.#card = newCard;
             try {
                 let texture = new THREE.TextureLoader().load(newCard.imagePath);
@@ -137,6 +137,10 @@ export const cardshop_slot = (() => {
 
         get hitbox() {
             return this.#hitbox;
+        }
+
+        get card() {
+            return this.#card;
         }
     }
 

@@ -33,6 +33,12 @@ export const ui_manager = (() => {
                         .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
                 }
             };
+            
+            this.handleBuyClick = () => {
+                this.FindEntity("Cardshop")
+                    .FindComponent("CardshopManager")
+                    .Broadcast(broadcasts.BroadcastTemplateCardShop.BuyCardFromShop());
+            }
         }
 
 
@@ -720,9 +726,10 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateShopButton(msg) {
-            console.log(this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
             this.#UpdateButtonState("shop-button", this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
-       }
+            let button = document.getElementById("shop-button");
+            button.addEventListener("click", this.handleBuyClick);
+        }
 
         Update(timeElapsed) {
             if (document.getElementById("town-window").style.display == "flex") {

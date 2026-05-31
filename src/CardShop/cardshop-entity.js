@@ -3,6 +3,8 @@ import { entity } from "../Interfaces/entity";
 import { cardshop_slot } from "./carshop-slot";
 import { broadcasts } from "../Interfaces/broadcasts";
 import { cards } from "../Cards/card-templates";
+import { carddeck_component } from "../Cards/carddeck";
+import { cardshop_manager } from "./cardshop-manager";
 
 
 export const cardshop_entity = (() => {
@@ -25,12 +27,10 @@ export const cardshop_entity = (() => {
             this.AddComponent(new cardshop_slot.CardShopSlot(new Vector3(33, 5.1, 0), 0, 3), "CardshopSlot_3");
             this.AddComponent(new cardshop_slot.CardShopSlot(new Vector3(33, 5.1, 6), 0, 4), "CardshopSlot_4");
             this.AddComponent(new cardshop_slot.CardShopSlot(new Vector3(33, 5.1, 12), -1, 5), "CardshopSlot_5");
+            this.AddComponent(new carddeck_component.Carddeck(5));
+            this.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Shop"));
+            this.AddComponent(new cardshop_manager.CardshopManager());
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.FindComponent("CardshopSlot_3").hitbox));
-            this.FindComponent("CardshopSlot_1").updateSlot(cards.CardTemplates.getDeckung());
-            this.FindComponent("CardshopSlot_2").updateSlot(cards.CardTemplates.getPraeziserSchnitt());
-            this.FindComponent("CardshopSlot_3").updateSlot(cards.CardTemplates.getRuestungSchmelzen());
-            this.FindComponent("CardshopSlot_4").updateSlot(cards.CardTemplates.getSchockwelle());
-            this.FindComponent("CardshopSlot_5").updateSlot(cards.CardTemplates.getVerstaerktesAard());
         }
     }
 
