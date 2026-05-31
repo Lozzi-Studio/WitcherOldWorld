@@ -508,6 +508,13 @@ p, div {
     border-radius: 10px;
 }
 
+#meditate-option {
+    background-image: url("../../resources/assets/gen-img/town-action-meditate.webp");
+    width: 300px;
+    height: 400px;
+    border-radius: 12px;
+}
+
 .card {
     background-color: #3F3F3F;
     border: 2px solid #868686;
