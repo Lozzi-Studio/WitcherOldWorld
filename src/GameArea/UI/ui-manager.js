@@ -33,6 +33,13 @@ export const ui_manager = (() => {
                         .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
                 }
             };
+
+            let skipButton = document.getElementById("debug-next-phase-button");
+            this.HandleNextPhaseClick = () => {
+                if (skipButton.classList.contains("button--inactive") == false) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+                }
+            };
         }
 
 
@@ -41,7 +48,7 @@ export const ui_manager = (() => {
          */        
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
-            this._RegisterHandler("game.nextTurn", (msg) => {this.#OnNextPlayer(msg)});
+            this._RegisterHandler("game.nextPlayer", (msg) => {this.#OnNextPlayer(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
             this._RegisterHandler("player.move", (msg) => {this.#UpdateButtonState("end-phase-button", true)});
 
@@ -57,6 +64,7 @@ export const ui_manager = (() => {
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
+            document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
         }
 
         /**
@@ -106,10 +114,10 @@ export const ui_manager = (() => {
          * Set UI Info of player
          * @param {player_entity.Player} player 
          */
-        #SetPlayerInfo(player) {
-            let name = player.playerName.toUpperCase();
-            let school = player.witcherSchool.name;
-            let combat_lvl = player.FindComponent("PlayerSkills").combat.level;
+        #SetPlayerInfo(msg) {
+            let name = msg.player.playerName.toUpperCase();
+            let school = msg.player.witcherSchool.name;
+            let combat_lvl = msg.player.FindComponent("PlayerSkills").combat.level;
 
             document.getElementById("player-name").innerHTML = this.#ReplaceUmlaute(name);
         }
@@ -145,8 +153,8 @@ export const ui_manager = (() => {
          * Change avatar picture for player
          * @param {player_entity.Player} player 
          */
-        #SetPlayerAvatar(player) {
-            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(player);
+        #SetPlayerAvatar(msg) {
+            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.player);
         }
 
         /**
@@ -180,7 +188,12 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          */
         #SetPlayerSkills(player) {
-            for (const skill of [player.FindComponent("PlayerSkills").combat, player.FindComponent("PlayerSkills").defense, player.FindComponent("PlayerSkills").alchemy, player.FindComponent("PlayerSkills").special]) {
+            for (const skill of [
+                player.FindComponent("PlayerSkills").combat,
+                player.FindComponent("PlayerSkills").defense,
+                player.FindComponent("PlayerSkills").alchemy,
+                player.FindComponent("PlayerSkills").special
+            ]) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
                     let id = `${skillName}-level-box-${i}`;
@@ -351,8 +364,7 @@ export const ui_manager = (() => {
          * Set player money in UI
          * @param {object} msg 
          */
-        #SetPlayerMoney(msg) {
-            const player = this.FindComponent("GameManager").currentPlayer;
+        #SetPlayerMoney(player) {
             let playerMoney = player.FindComponent("MoneyStorage").amount;
             document.getElementById("money-amount").innerHTML = playerMoney;
         }
@@ -361,8 +373,7 @@ export const ui_manager = (() => {
          * Set player trophies in UI
          * @param {object} msg 
          */
-        #SetPlayerTrophies(msg) {
-            const player = this.FindComponent("GameManager").currentPlayer;
+        #SetPlayerTrophies(player) {
             let playerTrophies = player.FindComponent("TrophyStorage").amount;
             document.getElementById("trophy-amount").innerHTML = playerTrophies;
         }
@@ -544,6 +555,11 @@ export const ui_manager = (() => {
             return cardDIV;
         }
 
+        /**
+         * 
+         * @param {cards.Card} card 
+         * @param {HTMLElement} cardDIV 
+         */
         #UpdateCardContent(card, cardDIV) {
             const img = new Image();
             img.onload = () => {
@@ -637,7 +653,7 @@ export const ui_manager = (() => {
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
-            this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextTurn(playerList[0]))
+            this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextPlayer(playerList[0]));
         }
 
         /**
@@ -645,19 +661,32 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #OnNextPlayer(msg) {
-            this.#SetPlayerInfo(msg.nextPlayer);
-            this.#SetPlayerAvatar(msg.nextPlayer);
-            this.#UpdatePlayerStats(msg.nextPlayer);
-            this.#OnNextPhase(msg);
+            this.#SetPlayerInfo(msg);
+            this.#SetPlayerAvatar(msg);
+            this.#UpdatePlayerStats(msg.player);
+            this.#OnNextPhase();
+            this.#UpdateHandCards(msg);
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
         }
 
-        #OnNextPhase(msg) {
-            this.#SetPhaseOptions(msg);
-            this.#UpdateNextPhaseButton(msg);
+        /**
+         * Update UI on next phase
+         * @param {object} msg 
+         */
+        #OnNextPhase() {
+            this.#SetPhaseOptions();
+            this.#UpdateNextPhaseButton();
+
+            const currentPhase = this.FindComponent("GameManager").phase.toIdentifier();
+            if (currentPhase == 3) {
+                document.getElementById("debug-next-phase-button").innerHTML = "Next Player";
+            }
+            else {
+                document.getElementById("debug-next-phase-button").innerHTML = "Next Phase";
+            }
         }
 
         /**
@@ -665,7 +694,7 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdatePlayerStats(msg) {
-            const player = this.FindComponent("GameManager").currentPlayer;
+            let player = this.FindComponent("GameManager").currentPlayer;
             this.#SetPlayerSkills(player);
             this.#SetPlayerShieldStatus(player);
             this.#SetWitcherLevel(player);
@@ -686,7 +715,14 @@ export const ui_manager = (() => {
             });
         }
 
-        #PositionDOMElementBasedOnEntity(elementID, entity, percentOffsetX, percentOffsetY) {
+        /**
+         * 
+         * @param {string} elementID 
+         * @param {entity.Entity} entity 
+         * @param {float} percentOffsetX 
+         * @param {float} percentOffsetY 
+         */
+        #PositionHTMLElementBasedOnEntity(elementID, entity, percentOffsetX, percentOffsetY) {
             let camera = this.FindEntity("Camera").camera;
             camera.updateMatrixWorld(true);
             let coordinates = entity.position.clone().project(camera);
@@ -698,10 +734,14 @@ export const ui_manager = (() => {
             document.getElementById(elementID).style.transform = `translate(-${percentOffsetX}%, -${percentOffsetY}%) translate(${x}px,${y}px)`;
         }
 
+        /**
+         * Triggers after specific time interval
+         * @param {float} timeElapsed 
+         */
         Update(timeElapsed) {
             if (document.getElementById("town-window").style.display == "flex") {
                 let townEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedTown;
-                this.#PositionDOMElementBasedOnEntity("town-window", townEntity, 50, 120);
+                this.#PositionHTMLElementBasedOnEntity("town-window", townEntity, 50, 120);
             }
         }
 
