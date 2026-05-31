@@ -345,13 +345,22 @@ export const ui_manager = (() => {
         ShowPhaseThreeButtons(active){
             const discardButtons = document.getElementById("discard-buttons");
             const handWindow = document.getElementById("hand-window");
+            const discardModal = document.getElementById("discard-modal");
             if(active){
                 if (discardButtons) discardButtons.style.display = "flex";
                 if (handWindow) handWindow.style.position = "relative";
+                if (discardModal) {
+                    discardModal.classList.add("container--neutral");
+                    discardModal.style.padding = ""; // Setzt das Padding auf den CSS-Standard zurück
+                }
             }
             else{
                 if (discardButtons) discardButtons.style.display = "none";
                 if (handWindow) handWindow.style.position = "absolute";
+                if (discardModal) {
+                    discardModal.classList.remove("container--neutral");
+                    discardModal.style.padding = "0"; 
+                }
             }
         }
 
