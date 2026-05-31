@@ -69,10 +69,11 @@ export const ui_manager = (() => {
         /**
          * End current turn phase
          */
-        EndPhase() {
-            this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+        #EndPhaseOne(button) {
+            if (!button.classList.contains("button--inactive")) {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+            }
         }
-
 
         /**
          * Replace with german specific vowel
@@ -307,11 +308,11 @@ export const ui_manager = (() => {
             if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
                 button.style.display = "flex";
                 button.classList.add("button--inactive");
-                button.addEventListener("click", () => this.EndPhase());
+                button.addEventListener("click", () => this.#EndPhaseOne(button));
             }
             else {
                 button.style.display = "none";
-                button.removeEventListener("click", () => this.EndPhase());
+                button.removeEventListener("click", () => this.#EndPhaseOne(button));
             }
         }
 
