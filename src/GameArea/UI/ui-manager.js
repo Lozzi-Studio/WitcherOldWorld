@@ -285,8 +285,6 @@ export const ui_manager = (() => {
 
             const discardPanel = document.getElementById("discard-button-area");
             const discardButton = document.getElementById("button-discard");
-            const discardButtons = document.getElementById("discard-buttons");
-            const handWindow = document.getElementById("hand-window");
 
             switch (phase) {
                 case 1:
@@ -297,8 +295,7 @@ export const ui_manager = (() => {
                     ];
                     if (discardPanel) discardPanel.style.display = "none";
                     if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
-                    if (discardButtons) discardButtons.style.display = "none";
-                    if (handWindow) handWindow.style.position = "absolute";
+                    this.ShowPhaseThreeButtons(false);
                     break;
                 case 2:
                     phaseOptionTexts = [
@@ -308,8 +305,7 @@ export const ui_manager = (() => {
                     ];
                     if (discardPanel) discardPanel.style.display = "none";
                     if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
-                    if (discardButtons) discardButtons.style.display = "none";
-                    if (handWindow) handWindow.style.position = "absolute";
+                    this.ShowPhaseThreeButtons(false);
                     break;
                 case 3:
                     phaseOptionTexts = [
@@ -323,8 +319,7 @@ export const ui_manager = (() => {
                         discardButton.classList.add("button--inactive");
                         discardButton.addEventListener("click", this.handleDiscardClick);
                     }
-                    if (discardButtons) discardButtons.style.display = "flex";
-                    if (handWindow) handWindow.style.position = "relative";
+                    this.ShowPhaseThreeButtons(true);
                     break;
             }
             for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
@@ -344,6 +339,19 @@ export const ui_manager = (() => {
             else {
                 button.style.display = "none";
                 button.removeEventListener("click", () => this.EndPhase());
+            }
+        }
+
+        ShowPhaseThreeButtons(active){
+            const discardButtons = document.getElementById("discard-buttons");
+            const handWindow = document.getElementById("hand-window");
+            if(active){
+                if (discardButtons) discardButtons.style.display = "flex";
+                if (handWindow) handWindow.style.position = "relative";
+            }
+            else{
+                if (discardButtons) discardButtons.style.display = "none";
+                if (handWindow) handWindow.style.position = "absolute";
             }
         }
 
