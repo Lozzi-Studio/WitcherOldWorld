@@ -243,7 +243,7 @@ export const broadcasts = (() => {
          * @returns {object}
          */
         static loadPhaseTwoUi(){
-            return {topic: "game.phase2"};
+            return {topic: 'game.phaseTwo'};
         }
 
         /**
