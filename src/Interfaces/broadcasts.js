@@ -240,6 +240,14 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @returns {object}
+         */
+        static loadPhaseTwoUi(){
+            return {topic: "game.phase2"};
+        }
+
+        /**
+         * 
          * @param {string} skill -> options: Combat, Defense or Special
          * @returns {object}
          */
