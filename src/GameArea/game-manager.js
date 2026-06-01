@@ -69,6 +69,10 @@ export const game_manager = (() => {
          */
         #NextTurnPhase(msg){
             const nextPlayer = this.#currentRound.next();
+            if (this.#currentRound.toIdentifier() == 2) {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.loadPhaseTwoUi());
+            }
+            
             if (nextPlayer) {
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
