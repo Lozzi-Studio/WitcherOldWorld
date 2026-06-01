@@ -248,6 +248,15 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @param {player_entity.Player} player
+         * @returns {object}
+        */
+       static NextPlayer(player) {
+            return {topic: 'game.nextPlayer', player: player};
+        }
+
+        /**
+         * 
          * @param {string} skill -> options: Combat, Defense or Special
          * @returns {object}
          */
@@ -260,8 +269,8 @@ export const broadcasts = (() => {
          * @param {player_entity.Player} nextPlayer
          * @returns {object}
          */
-        static NextTurn(nextPlayer) {
-            return {topic: 'game.nextTurn', nextPlayer: nextPlayer};
+        static NextRound(nextPlayer) {
+            return {topic: 'game.nextRound', nextPlayer: nextPlayer};
         }
 
         /**

@@ -592,3 +592,10 @@ p, div {
 #button-end-phase {
     display:none;
 }
+
+
+#debug-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
