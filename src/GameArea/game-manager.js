@@ -136,6 +136,7 @@ export const game_manager = (() => {
                 this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(this.FindEntity("Cardshop").FindComponent("CardshopSlot_" + msg.slot).card,"Hand"));
                 this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.FindEntity("Cardshop").FindComponent("CardshopSlot_" + msg.slot).card, "Discard"))
                 this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
+                this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
             }
 
         }

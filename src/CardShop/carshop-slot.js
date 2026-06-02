@@ -121,6 +121,7 @@ export const cardshop_slot = (() => {
             )
             this.#cardBox.name = this.#cardBox.name + "_" + Math.max(0, this.#card.cost + this.#modifier).toString()
             this.#hitbox.name = this.#hitbox.name + "_" + Math.max(0, this.#card.cost + this.#modifier).toString()
+            this.#hitbox.material = new THREE.MeshBasicMaterial({color: 'black', transparent: true, opacity: 0.2});
         }
 
         #SelectSlot(msg) {

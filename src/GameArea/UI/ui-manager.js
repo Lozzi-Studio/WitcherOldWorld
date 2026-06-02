@@ -704,6 +704,7 @@ export const ui_manager = (() => {
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Player";
             }
             else {
+                 document.getElementById("shop-window").style.display = "none";
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Phase";
             }
         }
@@ -772,24 +773,6 @@ export const ui_manager = (() => {
             button.addEventListener("click", this.handleBuyClick);
         }
 
-        /**
-         * Show Confirm Button For Shop
-         * @param {object} msg 
-         */
-        #ShowShopConfirm(msg) {
-            document.getElementById("shop-window").style.display = "flex";
-            this.#UpdateShopButton(msg);
-        }
-        
-        /**
-         * Checks Condition For Shop Button
-         * @param {object} msg 
-         */
-        #UpdateShopButton(msg) {
-            this.#UpdateButtonState("shop-button", this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
-            let button = document.getElementById("shop-button");
-            button.addEventListener("click", this.handleBuyClick);
-        }
 
         /**
          * Triggers after specific time interval

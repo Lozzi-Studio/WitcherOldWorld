@@ -63,9 +63,11 @@ export const controls_component = (() => {
                     else if (selectedObject.name.includes("Button")) {
                         this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
                     } else if (selectedObject.name.includes("ShopCard") || selectedObject.name.includes("ShopCardDisplay")) {
-                        var msg = broadcasts.BroadcastTemplateCardShop.SelectCardFromShop(selectedObject.name.split("_")[1], selectedObject.name.split("_")[2]);
-                        this.FindEntity("Cardshop").Broadcast(msg);
-                        this.Broadcast(msg); 
+                        if (this.FindComponent("GameManager").phase.toIdentifier() == 3) {
+                            var msg = broadcasts.BroadcastTemplateCardShop.SelectCardFromShop(selectedObject.name.split("_")[1], selectedObject.name.split("_")[2]);
+                            this.FindEntity("Cardshop").Broadcast(msg);
+                            this.Broadcast(msg); 
+                        };
                     }
                 }
             }
