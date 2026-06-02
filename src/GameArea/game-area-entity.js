@@ -12,6 +12,7 @@ import { broadcasts } from "../Interfaces/broadcasts";
 import { region_picker } from "./UI/region-picker";
 import { town_manager } from "./town_manager";
 import { lights } from "../Scenes/lights";
+import { notifaction_manager } from "./UI/notification-manager";
 
 export const game_area_entity = (() => {
 
@@ -34,6 +35,7 @@ export const game_area_entity = (() => {
             this.AddComponent(new region_picker.RegionPicker());
             this.AddComponent(new controls_component.Controls());
             this.AddComponent(new town_manager.TownManager(this._parent.Filter(e => e._name.includes("Town"))));
+            this.AddComponent(new notifaction_manager.NotificationManager());
         }
     }
 
