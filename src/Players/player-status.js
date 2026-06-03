@@ -16,6 +16,7 @@ export const player_status = (() => {
 
         InitComponent() {
             this._RegisterHandler('player.addStatus', (msg) => {this.#AddStatus(msg);});
+            this._RegisterHandler('player.clearAllStatuses', (msg) => {this.#ClearAllStatuses();});
         }
 
         #AddStatus(msg){
@@ -32,6 +33,10 @@ export const player_status = (() => {
             // return None
             //TODO function for getting a specified status
         };
+
+        #ClearAllStatuses(){
+            #statusList = [];
+        }
         
     }
 }) ();
