@@ -1,4 +1,4 @@
-import { component } from "../../Interfaces/component";
+import { component } from "../Interfaces/component";
 
 export const notifaction_manager = (() => {
 
@@ -34,7 +34,7 @@ export const notifaction_manager = (() => {
         #QueueNotification(msg) {
             //TODO an Luca: Message anpassen an was passiert ist und welcher spieler (entferne das beispiel gerne)
             this.#changeIncomingBanners(1);
-            var currentPlayer = this.FindComponent("GameManager").currentPlayer;
+            var currentPlayer = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
             switch(msg.topic) {
                 case 'game.nextPhase':
                     this.#notificationQueue.push(currentPlayer.playerName + " hat die nächste Phase gestartet");

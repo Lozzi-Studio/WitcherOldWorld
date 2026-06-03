@@ -14,6 +14,7 @@ import { region } from "../GameArea/region";
 import { Vector3 } from 'three';
 import { player_options } from '../Players/player-options';
 import { cards } from '../Cards/card-templates';
+import { notification_entity } from '../notifications/notification-entity';
 
 
 export const game = (() => {
@@ -49,7 +50,7 @@ export const game = (() => {
          * Used to intialize and add any default Entities
          */
         InitSceneEntities() {
-
+            this._entityManager.AddEntity(new notification_entity.NotificationEntity(), "NotificationEntity", true);
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitMap();
 

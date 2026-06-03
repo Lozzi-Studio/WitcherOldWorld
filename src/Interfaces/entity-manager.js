@@ -11,6 +11,7 @@ export const entity_manager = (() => {
         constructor(scene, renderer) {
             this._entitiesMap = {};
             this._entities = [];
+            this._globalListener = [];
             this._scene = scene;
             this.#renderer = renderer;
         }
@@ -39,7 +40,7 @@ export const entity_manager = (() => {
          * @param {string} name 
          * @param {bool} init
          */
-        AddEntity(entity,name, init = true) {
+        AddEntity(entity,name, globalListener = false, init = true) {
             if (!name) {
                 name = entity.constructor.name;
             }
@@ -50,6 +51,9 @@ export const entity_manager = (() => {
             entity.name = name;
             if (init) {
                 entity.InitComponents();
+            }
+            if (globalListener) {
+                this._globalListener.push(entity);
             }
         }
 
@@ -93,6 +97,12 @@ export const entity_manager = (() => {
                 if (e != entityToIgnore) {
                     e.Broadcast(msg);
                 }
+            }
+        }
+
+        BroadcastGlobalListener(msg) {
+            for (let e of this._globalListener) {
+                e.Broadcast(msg,true);
             }
         }
 
