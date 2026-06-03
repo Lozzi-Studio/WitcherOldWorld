@@ -369,20 +369,6 @@ export const ui_manager = (() => {
             }
         }
 
-        ShowPhaseThreeButtons(active){
-            const discardButtons = document.getElementById("discard-buttons");
-            const handWindow = document.getElementById("hand-window");
-            const discardModal = document.getElementById("discard-modal");
-            if(active){
-                if (discardButtons) discardButtons.style.display = "flex";
-                if (handWindow) handWindow.style.position = "relative";
-            }
-            else{
-                if (discardButtons) discardButtons.style.display = "none";
-                if (handWindow) handWindow.style.position = "absolute";
-            }
-        }
-
         /**
          * Init player shield in UI
          */
