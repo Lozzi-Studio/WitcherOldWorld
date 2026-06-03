@@ -9,6 +9,7 @@ export const notifaction_manager = (() => {
         #reverse
         #showTime
         #log;
+        #countIncomingBanner;
 
         //TODO: Styling vom logger anpassen und den logger per default verstecken und per knopf erscheinen/verschwinden lassen
         constructor() {
@@ -17,10 +18,11 @@ export const notifaction_manager = (() => {
             this.#log = [];
             this.#duration = 0;
             this.#reverse = false;
+            this.#countIncomingBanner = 0;
 
             //die beiden relevanten werte für finetuning (passen gerne noch das html aussehen an xD)
             this.#maxFadeDuration = 1;
-            this.#showTime = 3;
+            this.#showTime = 2;
         }
 
         InitComponent() {
@@ -30,13 +32,23 @@ export const notifaction_manager = (() => {
         }
 
         #QueueNotification(msg) {
-            //TODO an Luca: Message anpassen an was passier ist und welcher spieler (entferne das beispiel gerne)
+            //TODO an Luca: Message anpassen an was passiert ist und welcher spieler (entferne das beispiel gerne)
+            this.#changeIncomingBanners(1);
             var currentPlayer = this.FindComponent("GameManager").currentPlayer;
             switch(msg.topic) {
                 case 'game.nextPhase':
                     this.#notificationQueue.push(currentPlayer.playerName + " hat die nächste Phase gestartet");
                     break;
             }
+        }
+
+        /**
+         * Helper to increase/decrease incoming banners and update html
+         * @param {int} amount 
+         */
+        #changeIncomingBanners(amount) {
+            this.#countIncomingBanner += amount;
+            document.getElementById("notifications").innerHTML = this.#countIncomingBanner;
         }
 
         Update(timeElapsed) {
@@ -60,9 +72,15 @@ export const notifaction_manager = (() => {
                     document.getElementById("logger").appendChild(li);
                     this.#duration = 0;
                     htmlBanner.style.display = "none";
+                    this.#changeIncomingBanners(-1);
                 } else {
                     this.#duration += this.#showTime;
                 }
+            }
+            if ((!document.getElementById("notifications").style.display || document.getElementById("notifications").style.display == "none") && this.#countIncomingBanner > 1) {
+                document.getElementById("notifications").style.display = "flex";
+            } else if ( document.getElementById("notifications").style.display == "flex" && this.#countIncomingBanner == 0){
+                document.getElementById("notifications").style.display = "none";
             }
         }
     }
