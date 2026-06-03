@@ -160,6 +160,15 @@ export const game_manager = (() => {
             return { moveAllowed: false, allowedCard: null };
         }
 
+        #DrawCardsUntilHandFull(){
+            deckLength = this.#currentPlayer.FindComponent("Carddeck").hand.length;
+            amountToDraw = 3-deckLength;
+            if(amountToDraw <= 0){
+                return;
+            }
+            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
+        }
+
         /**
          * Triggers town UI on click on town
          * @param {object} msg 
