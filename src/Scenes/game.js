@@ -148,9 +148,13 @@ export const game = (() => {
             cubeSouth.position.set(0,-0.3,-25.2);
             this._scene.add( cubeSouth );
 
-            const loader = new GLTFLoader();
-            loader.load("resources/assets/provMap.glb", (glb) =>{
+            const loadMap = new GLTFLoader();
+            loadMap.load("resources/assets/3D-Assets/provMap.glb", (glb) =>{
             this._scene.add(glb.scene)});
+
+            const loadTable = new GLTFLoader();
+            loadTable.load("resources/assets/3D-Assets/bar-table.glb", (glb) =>{
+                this._scene.add(glb.scene)});
         }
 
         set players(players) {
