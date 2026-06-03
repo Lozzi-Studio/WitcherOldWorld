@@ -126,17 +126,11 @@ export const game_manager = (() => {
 
         DiscardSelectedCards(){
             if (!(this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3)){
-                var cardsToDiscard = [];
                 for (let card_slot of this.#selection) {
-                    cardsToDiscard.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
-                }
-
-                for (const card of cardsToDiscard) {
-                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot], "Discard"));
                 }
 
                 this.#selection = [];
-                
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
