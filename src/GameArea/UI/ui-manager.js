@@ -52,7 +52,6 @@ export const ui_manager = (() => {
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler("game.nextTurn", (msg) => {this.#OnNextPlayer(msg)});
-            this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
             this._RegisterHandler("player.move", (msg) => {this.#UpdateButtonState("end-phase-button", true)});
 
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
@@ -67,6 +66,7 @@ export const ui_manager = (() => {
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
             this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateButtonState("button-discard", msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
+            this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
         }
 
         /**
@@ -122,6 +122,11 @@ export const ui_manager = (() => {
             let combat_lvl = player.FindComponent("PlayerSkills").combat.level;
 
             document.getElementById("player-name").innerHTML = this.#ReplaceUmlaute(name);
+        }
+
+        OnNextPhase(msg) {
+        this.#SetPhaseOptions(msg);
+        this.#setDiscardButtonState();
         }
 
         /**
@@ -283,9 +288,6 @@ export const ui_manager = (() => {
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
             let phaseOptionTexts = [];
 
-            const discardPanel = document.getElementById("discard-button-area");
-            const discardButton = document.getElementById("button-discard");
-
             switch (phase) {
                 case 1:
                     phaseOptionTexts = [
@@ -293,9 +295,6 @@ export const ui_manager = (() => {
                         "Führe die Ortsaktion aus (optional)",
                         "Spiele Würfelpoker gegen einen anderen Hexer (optional)"
                     ];
-                    if (discardPanel) discardPanel.style.display = "none";
-                    if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
-                    this.ShowPhaseThreeButtons(false);
                     break;
                 case 2:
                     phaseOptionTexts = [
@@ -303,9 +302,6 @@ export const ui_manager = (() => {
                         "Meditiere",
                         "Erkunde die Stadt oder die Wildnis"
                     ];
-                    if (discardPanel) discardPanel.style.display = "none";
-                    if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
-                    this.ShowPhaseThreeButtons(false);
                     break;
                 case 3:
                     phaseOptionTexts = [
@@ -313,6 +309,37 @@ export const ui_manager = (() => {
                         "Ziehe Karten, bis du wieder drei Handkarten hast",
                         "Erwerbe eine Karte im Karten-Shop"
                     ];
+                    break;
+            }
+            for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
+                document.getElementById(`phase-option-text-${i}`).innerHTML = phaseOptionTexts[i];
+            }
+
+            document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
+        }
+
+
+        /**
+         * Set button state based on current phase
+         */
+        #setDiscardButtonState(){
+            const phase = this.FindComponent("GameManager").phase.toIdentifier();
+
+            const discardPanel = document.getElementById("discard-button-area");
+            const discardButton = document.getElementById("button-discard");
+
+            switch (phase) {
+                case 1:
+                    if (discardPanel) discardPanel.style.display = "none";
+                    if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
+                    this.ShowPhaseThreeButtons(false);
+                    break;
+                case 2:
+                    if (discardPanel) discardPanel.style.display = "none";
+                    if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
+                    this.ShowPhaseThreeButtons(false);
+                    break;
+                case 3:
                     if (discardPanel) discardPanel.style.display = "flex";
                     if (discardButton) {
                         discardButton.style.display = "flex";
@@ -322,14 +349,10 @@ export const ui_manager = (() => {
                     this.ShowPhaseThreeButtons(true);
                     break;
             }
-            for (let i = 0; i < this.#numberOfPhaseOptions; i++) {
-                document.getElementById(`phase-option-text-${i}`).innerHTML = phaseOptionTexts[i];
-            }
-
-            document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
+
         
-        #UpdateNextPhaseButton() {
+        #UpdateNextPhaseButton(msg) {
             let button = document.getElementById("end-phase-button");
             if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
                 button.style.display = "flex";
@@ -675,6 +698,7 @@ export const ui_manager = (() => {
             this.#InitPlayerShield();
             this.#InitPlayerSkills();
             this.#InitPhaseOptions();
+            this.#setDiscardButtonState();
             this.#ExcludeUIFromRaycasting();
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
