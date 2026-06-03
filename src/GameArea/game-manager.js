@@ -125,10 +125,7 @@ export const game_manager = (() => {
         }
 
         DiscardSelectedCards(){
-            if (this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3){
-                return;
-            }
-            else{
+            if (!(this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3)){
                 var cardsToDiscard = [];
                 for (let card_slot of this.#selection) {
                     cardsToDiscard.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
