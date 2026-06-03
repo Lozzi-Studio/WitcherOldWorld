@@ -60,6 +60,16 @@ export const broadcasts = (() => {
         static UpdateHandCardsUI(mode, card) {
             return {topic: 'player.updateHandCardsUI', mode: mode, card: card};
         }
+
+        /**
+         * 
+         * @param {string} name - Options: ???
+         * @param {int} amount
+         * @returns 
+         */
+        static AddStatus(name,amount){
+            return {topic: 'player.addStatus',name: name, amount: amount}
+        }
     }
 
     class BroadcastTemplateCards {
