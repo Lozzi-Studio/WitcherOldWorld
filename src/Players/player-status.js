@@ -38,4 +38,8 @@ export const player_status = (() => {
         }
         
     }
+    
+    return {
+        PlayerStatus : PlayerStatus
+    }
 }) ();
