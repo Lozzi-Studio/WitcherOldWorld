@@ -18,7 +18,7 @@ export const game_manager = (() => {
 
         constructor() {
             super();
-            this.#currentRound = Phase.Three;
+            this.#currentRound = Phase.One;
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
