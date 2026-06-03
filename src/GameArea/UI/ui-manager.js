@@ -572,6 +572,7 @@ export const ui_manager = (() => {
                 cardDIV.innerHTML = "";
             };
             img.onerror = () => {
+                cardDIV.style.backgroundImage = "none";
                 cardDIV.innerHTML = this.#CreateCardDIV(card).innerHTML;
             };
             img.src = card.imagePath;
