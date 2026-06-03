@@ -3,7 +3,7 @@ import { component } from "../Interfaces/component";
 import { cards } from "../Cards/card-templates";
 import { card_options } from "../Cards/card-options";
 
-export const game_manager = (() => { 
+export const game_manager = (() => {
 
     class GameManager extends component.Component {
         #currentRound;
@@ -11,7 +11,7 @@ export const game_manager = (() => {
         #currentPlayer;
         #selection;
         #selectedTown;
-        
+
         /**
          * Manages game stages and game behaviour
          */
@@ -77,8 +77,10 @@ export const game_manager = (() => {
                 if (this.#currentPlayer == undefined) {
                     this.#currentPlayerId = 1;
                     this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
-                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextTurn(this.#currentPlayer));
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextRound(this.#currentPlayer));
                 }
+                this.Broadcast(broadcasts.BroadcastTemplateGame.NextPlayer(this.#currentPlayer));
+                this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
             }
         }
 
@@ -233,6 +235,7 @@ export const game_manager = (() => {
             for (let player of players) {
                 player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
             }
+            this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
         }
 
         /**

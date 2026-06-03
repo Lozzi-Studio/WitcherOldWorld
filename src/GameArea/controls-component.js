@@ -63,12 +63,6 @@ export const controls_component = (() => {
                     else if (selectedObject.name.includes("Button")) {
                         this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
                     }
-                    else {
-                        this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
-                    }
-                }
-                else {
-                    this.Broadcast(broadcasts.BroadcastTemplateTown.DeselectTown());
                 }
             }
             this.#used = true;

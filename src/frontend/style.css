@@ -74,6 +74,10 @@ body {
   --color-selected: rgba(255, 225, 123, 1.00);
   --cursor-default: url("../../resources/assets/cursor/sword-48.png");
   --cursor-pointer: url("../../resources/assets/cursor/pointer-48.png");
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 p, div {
@@ -105,6 +109,13 @@ p, div {
 .container--justify {
     gap: 0px;
     justify-content: space-around;
+    flex-basis: 100%;
+    align-self: stretch; 
+}
+
+.container--justify-between {
+    gap: 0px;
+    justify-content: space-between;
     flex-basis: 100%;
     align-self: stretch; 
 }
@@ -157,7 +168,7 @@ p, div {
 #player-window {
     position: fixed;
     left: 0px;
-    bottom: 0px;
+    top: 0px;
 
     gap: 4px;
 }
@@ -277,6 +288,15 @@ p, div {
 .button--inactive:hover {
     cursor: var(--cursor-default), default;
     background-color: var(--color-primary-inactive);
+}
+
+.close-button {
+    color: var(--color-primary);
+}
+
+.close-button:hover {
+    cursor: var(--cursor-pointer), pointer;
+    color: var(--color-hover);
 }
 
 #player-name {
@@ -412,6 +432,8 @@ p, div {
 
 #town-name {
     font-size: 16pt;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 #town-ability {
@@ -538,4 +560,11 @@ p, div {
 
 #button-end-phase {
     display:none;
+}
+
+
+#debug-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
