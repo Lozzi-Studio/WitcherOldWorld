@@ -20,9 +20,9 @@ export const player_status = (() => {
         }
 
         #AddStatus(msg){
+            //TODO: Template File für stati > Bezeichner (topic): name > amount: anzahl
             // newStatus = {'name': msg.name, 'amount': msg.amount}
             // #statusList.append(newStatus);
-            //TODO function for adding status
         };
 
         #GetStatus(statusName){
@@ -31,7 +31,6 @@ export const player_status = (() => {
                     // amount += status.amount
                     // return amount
             // return None
-            //TODO function for getting a specified status
         };
 
         #ClearAllStatuses(){
