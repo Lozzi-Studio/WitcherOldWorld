@@ -36,13 +36,12 @@ export const ui_manager = (() => {
 
             this.handleDiscardClick = () => {
                 const btn = document.getElementById("button-discard");
-                if (btn && btn.classList.contains("button--inactive")) {
-                    return; 
-                }
-                this.FindEntity("GameArea")
+                if (!(btn && btn.classList.contains("button--inactive"))) {
+                    this.FindEntity("GameArea")
                     .FindComponent("GameManager")
                     .Broadcast(broadcasts.BroadcastTemplateGame.DiscardSelectedCards());
                 }
+            }    
 
             let skipButton = document.getElementById("debug-next-phase-button");
             this.HandleNextPhaseClick = () => {
