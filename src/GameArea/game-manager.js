@@ -37,7 +37,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
-            this._RegisterHandler('game.discardCards',() => {this.DiscardSelectedCards()});
+            this._RegisterHandler('game.discardSelectedCards',() => {this.DiscardSelectedCards()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 

@@ -336,8 +336,8 @@ export const broadcasts = (() => {
          * 
          * @returns {object}
          */
-        static DiscardCards() {
-            return {topic: 'game.discardCards'}
+        static DiscardSelectedCards() {
+            return {topic: 'game.discardSelectedCards'}
         }
 
         /**

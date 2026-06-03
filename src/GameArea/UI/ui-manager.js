@@ -41,7 +41,7 @@ export const ui_manager = (() => {
                 }
                 this.FindEntity("GameArea")
                     .FindComponent("GameManager")
-                    .Broadcast(broadcasts.BroadcastTemplateGame.DiscardCards());
+                    .Broadcast(broadcasts.BroadcastTemplateGame.DiscardSelectedCards());
                 }
 
             let skipButton = document.getElementById("debug-next-phase-button");
