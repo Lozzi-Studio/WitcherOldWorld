@@ -29,15 +29,19 @@ export const notifaction_manager = (() => {
             //TODO an Luca: die richtigen events einfügen (das akutelle sollte weg ist nur testweise); 
             // die sollen alle auf diese eine funktion verweisen => {this.#QueueNotification(msg)}
             this._RegisterHandler('game.nextPhase', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('game.nextPlayer', (msg) => {this.#QueueNotification(msg)});
         }
 
         #QueueNotification(msg) {
-            //TODO an Luca: Message anpassen an was passiert ist und welcher spieler (entferne das beispiel gerne)
+            //TODO an Luca: Message anpassen an was passiert ist und welcher spieler (entferne das beispiel 'game.nextPhase' gerne)
             this.#changeIncomingBanners(1);
             var currentPlayer = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
             switch(msg.topic) {
                 case 'game.nextPhase':
                     this.#notificationQueue.push(currentPlayer.playerName + " hat die nächste Phase gestartet");
+                    break;
+                case 'game.nextPlayer':
+                    this.#notificationQueue.push(msg.player + "'s Zug Start");
                     break;
             }
         }
