@@ -11,7 +11,7 @@ export const player_status = (() => {
          */
         constructor() {
             super();
-            #statusList = [];
+            this.#statusList = [];
         }
 
         InitComponent() {
