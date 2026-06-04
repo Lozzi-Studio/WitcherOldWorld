@@ -34,6 +34,16 @@ export const ui_manager = (() => {
                 }
             };
 
+            this.handleDiscardClick = () => {
+                const btn = document.getElementById("button-discard");
+                if (!(btn && btn.classList.contains("button--inactive"))) {
+                    this.FindEntity("GameArea")
+                    .FindComponent("GameManager")
+                    .Broadcast(broadcasts.BroadcastTemplateGame.DiscardSelectedCards());
+                    this.#DisableDiscardButtons();
+                }
+            }    
+
             let skipButton = document.getElementById("debug-next-phase-button");
             this.HandleNextPhaseClick = () => {
                 if (skipButton.classList.contains("button--inactive") == false) {
@@ -49,7 +59,6 @@ export const ui_manager = (() => {
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler("game.nextPlayer", (msg) => {this.#OnNextPlayer(msg)});
-            this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
             this._RegisterHandler("player.move", (msg) => {this.#UpdateButtonState("end-phase-button", true)});
 
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
@@ -61,7 +70,9 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
+            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateButtonState("button-discard", msg.active)});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
+            this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
@@ -286,6 +297,7 @@ export const ui_manager = (() => {
         #SetPhaseOptions(msg) {
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
             let phaseOptionTexts = [];
+
             switch (phase) {
                 case 1:
                     phaseOptionTexts = [
@@ -315,8 +327,22 @@ export const ui_manager = (() => {
 
             document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
+
+
+        /**
+         * Set button state based on current phase
+         */
+        #DisableDiscardButtons(){
+            const discardPanel = document.getElementById("discard-button-area");
+            const discardButton = document.getElementById("button-discard");
+
+            if (discardPanel) discardPanel.style.display = "none";
+            if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
+            this.ShowPhaseThreeButtons(false);
+        }
+
         
-        #UpdateNextPhaseButton() {
+        #UpdateNextPhaseButton(msg) {
             let button = document.getElementById("end-phase-button");
             if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
                 button.style.display = "flex";
@@ -326,6 +352,20 @@ export const ui_manager = (() => {
             else {
                 button.style.display = "none";
                 button.removeEventListener("click", () => this.#EndPhaseOne(button));
+            }
+        }
+
+        ShowPhaseThreeButtons(active){
+            const discardButtons = document.getElementById("discard-buttons");
+            const handWindow = document.getElementById("hand-window");
+            const discardModal = document.getElementById("discard-modal");
+            if(active){
+                if (discardButtons) discardButtons.style.display = "flex";
+                if (handWindow) handWindow.style.position = "relative";
+            }
+            else{
+                if (discardButtons) discardButtons.style.display = "none";
+                if (handWindow) handWindow.style.position = "absolute";
             }
         }
 
@@ -424,6 +464,7 @@ export const ui_manager = (() => {
                 button.classList.add("button--inactive");
             }
         }
+
 
         /**
          * Set town button's label and eventListener
@@ -655,6 +696,7 @@ export const ui_manager = (() => {
             this.#InitPlayerSkills();
             this.#InitPhaseOptions();
             this.#ExcludeUIFromRaycasting();
+            this.#DisableDiscardButtons();
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
@@ -683,11 +725,16 @@ export const ui_manager = (() => {
          */
         #OnNextPhase() {
             this.#SetPhaseOptions();
-            this.#UpdateNextPhaseButton();
-
+    
             const currentPhase = this.FindComponent("GameManager").phase.toIdentifier();
+            const discardPanel = document.getElementById("discard-button-area");
+            const discardButton = document.getElementById("button-discard");
             if (currentPhase == 3) {
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Player";
+                discardButton.style.display = "flex";
+                discardButton.classList.add("button--inactive");
+                discardButton.addEventListener("click", this.handleDiscardClick);
+                this.ShowPhaseThreeButtons(true);
             }
             else {
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Phase";
