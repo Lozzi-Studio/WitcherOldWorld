@@ -67,8 +67,8 @@ export const broadcasts = (() => {
          * @param {int} amount
          * @returns 
          */
-        static AddStatus(name,amount){
-            return {topic: 'player.addStatus',name: name, amount: amount}
+        static AddStatus(type, amount){
+            return {topic: 'player.addStatus',type: type, timing:timing, amount: amount}
         }
 
         /**

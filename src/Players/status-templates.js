@@ -1,6 +1,6 @@
-import { player_status } from "../player-status.js"
+import { player_status } from "./player-status.js";
 
-export const stati = (() => {
+export const status_templates = (() => {
 
     class StatusTemplates {
 
