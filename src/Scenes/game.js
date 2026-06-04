@@ -166,20 +166,20 @@ export const game = (() => {
             texture.repeat.set(5,2);
 
             const materialdisplayCardsFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
-            const displayCards = new THREE.Mesh(new THREE.PlaneGeometry(33,10), materialdisplayCardsFront);
+            const displayCards = new THREE.Mesh(new THREE.PlaneGeometry(39,10), materialdisplayCardsFront);
             displayCards.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , -Math.PI / 5, -Math.PI / 2));
             displayCards.position.set(33,5,0);
             this._scene.add(displayCards);
 
             texture.repeat.set(5,1);
             const materialdisplayCostFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
-            const displayCost = new THREE.Mesh(new THREE.PlaneGeometry(33,5.2), materialdisplayCostFront);
+            const displayCost = new THREE.Mesh(new THREE.PlaneGeometry(39,5.2), materialdisplayCostFront);
             displayCost.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , -Math.PI / 2, -Math.PI / 2));
             displayCost.position.set(29,0,0);
             this._scene.add(displayCost);
 
             const materialdisplayModifierFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
-            const displayModifier = new THREE.Mesh(new THREE.PlaneGeometry(33,5), materialdisplayModifierFront);
+            const displayModifier = new THREE.Mesh(new THREE.PlaneGeometry(39,5), materialdisplayModifierFront);
             displayModifier.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , 0, -Math.PI / 2));
             displayModifier.position.set(38.5,8,0);
             this._scene.add(displayModifier);

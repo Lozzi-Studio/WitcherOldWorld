@@ -32,8 +32,8 @@ export const cardshop_manager = (() => {
          */
         #UpdateShopSlots(msg) { 
             var shopCards = this.FindComponent("Carddeck").hand;
-            if (shopCards.length < 5) {
-                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 5 - shopCards.length))
+            if (shopCards.length < 6) {
+                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 6 - shopCards.length))
             }
             var i = 1;
             for (let card of this.FindComponent("Carddeck").hand) {
