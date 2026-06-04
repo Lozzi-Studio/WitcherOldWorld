@@ -1,6 +1,7 @@
 import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
 import { cards } from "../Cards/card-templates";
+import { card_options } from "../Cards/card-options";
 
 export const game_manager = (() => {
 
@@ -18,7 +19,7 @@ export const game_manager = (() => {
 
         constructor() {
             super();
-            this.#currentRound = Phase.One;
+            this.#currentRound = Phase.Three;
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
@@ -39,6 +40,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
             this._RegisterHandler('cardshop.buy', (msg) => {this.#OnCardshopBuy(msg)});
+            this._RegisterHandler('game.discardSelectedCards',() => {this.DiscardSelectedCards()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
             this.#currentRound.next();
             this.#currentRound.next();
@@ -95,9 +97,13 @@ export const game_manager = (() => {
             if (this.#selection.includes(msg.card_slot)){
                 this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                if (this.#selection.length === 0){
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
+                }
             } else {
                 this.#selection.push(msg.card_slot);
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
             }
         }
 
@@ -120,6 +126,18 @@ export const game_manager = (() => {
                     this.#selection = [];
                     this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 }
+            }
+        }
+
+        DiscardSelectedCards(){
+            if (!(this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3)){
+                for (let card_slot of this.#selection) {
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot], "Discard"));
+                }
+
+                this.#selection = [];
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
         }
 

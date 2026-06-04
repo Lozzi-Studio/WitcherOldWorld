@@ -334,6 +334,23 @@ export const broadcasts = (() => {
         static ChangeMouseCursor(cursor) {
             return {topic: 'game.changeMouseCursor', cursor:cursor}
         }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static DiscardSelectedCards() {
+            return {topic: 'game.discardSelectedCards'}
+        }
+
+        /**
+         * 
+         * @param {bool} active 
+         * @returns {object}
+         */
+        static UpdateDiscardButtonActive(active) {
+            return {topic: 'game.updateDiscardButton', active: active}
+        }
     }
 
     class BroadcastTemplateCamera {
