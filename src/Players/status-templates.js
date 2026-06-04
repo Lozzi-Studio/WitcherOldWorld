@@ -6,20 +6,22 @@ export const stati = (() => {
 
         /**
          * Get status template for status "status name"
+         * @param {timing} string - "phaseThree", "battle"
          * @param {amount} int 
          * @returns {object}
          */
-        static drawLessCards(amount){
-            return {"name": "drawLessCards","amount":amount}
+        static drawLessCards(timing, amount){
+            return {"type": "drawLessCards", "timing": timing, "amount":amount}
         }
 
         /**
          * Get status template for status "status name"
+         * @param {timing} string - "phaseThree", "battle"
          * @param {amount} int 
          * @returns {object}
          */
-        static drawMoreCards(amount){
-            return {"name": "drawMoreCards","amount":amount}
+        static drawMoreCards(timing, amount){
+            return {"type": "drawMoreCards","timing": timing, "amount":amount}
         }
 
     }
