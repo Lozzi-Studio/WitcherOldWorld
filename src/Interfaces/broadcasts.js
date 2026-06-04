@@ -381,6 +381,23 @@ export const broadcasts = (() => {
         static StopFocus() {
             return {topic: 'camera.stopFocus'}
         }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static FocusOnShop() {
+            return {topic: 'camera.focusOnShop'}
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static StopFocusShop() {
+            return {topic: 'camera.stopFocusShop'}
+        }
+        
     }
 
     class BroadcastTemplateMusic {

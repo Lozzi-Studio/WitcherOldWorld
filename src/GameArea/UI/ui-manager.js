@@ -7,6 +7,7 @@ export const ui_manager = (() => {
     class UIManager extends component.Component {
         #maxSkillLevel;
         #numberOfPhaseOptions;
+        #phasethreeparttwo;
 
         /**
          * Manages API between UI and Backend
@@ -15,6 +16,7 @@ export const ui_manager = (() => {
             super();
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
+            this.#phasethreeparttwo = false;
 
             let button = document.getElementById("town-button");
             this.handleMoveClick = () => {
@@ -38,6 +40,8 @@ export const ui_manager = (() => {
                 this.FindEntity("Cardshop")
                     .FindComponent("CardshopManager")
                     .Broadcast(broadcasts.BroadcastTemplateCardShop.BuyCardFromShop());
+                    this.#phasethreeparttwo = false;
+                    this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.StopFocusShop());
             }
 
             this.handleDiscardClick = () => {
@@ -47,8 +51,19 @@ export const ui_manager = (() => {
                     .FindComponent("GameManager")
                     .Broadcast(broadcasts.BroadcastTemplateGame.DiscardSelectedCards());
                     this.#DisableDiscardButtons();
+                    this.#phasethreeparttwo = true;
+                    this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.FocusOnShop());
                 }
             }    
+
+            this.handleSkipClick = () => {
+                let button = document.getElementById("town-button");
+                if (!(button.classList.contains("button--inactive"))){
+                    this.#DisableDiscardButtons();
+                    this.#phasethreeparttwo = true;
+                    this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.FocusOnShop());
+                }
+            }
 
             let skipButton = document.getElementById("debug-next-phase-button");
             this.HandleNextPhaseClick = () => {
@@ -76,7 +91,7 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
-            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateButtonState("button-discard", msg.active)});
+            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateButtonState("button-discard", msg.active);});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
 
@@ -367,12 +382,16 @@ export const ui_manager = (() => {
             const discardButtons = document.getElementById("discard-buttons");
             const handWindow = document.getElementById("hand-window");
             const discardModal = document.getElementById("discard-modal");
+            const skipButton = document.getElementById("button-skip");
             if(active){
                 if (discardButtons) discardButtons.style.display = "flex";
+                skipButton.style.display = "flex";
+                this.#UpdateButtonState("button-skip", true);
                 if (handWindow) handWindow.style.position = "relative";
             }
             else{
                 if (discardButtons) discardButtons.style.display = "none";
+                skipButton.style.display = "none";
                 if (handWindow) handWindow.style.position = "absolute";
             }
         }
@@ -683,6 +702,7 @@ export const ui_manager = (() => {
                     break;
                 case 3:
                     this.#UpdateShopButton(msg);
+                    break;
             }   
         }
 
@@ -743,15 +763,20 @@ export const ui_manager = (() => {
             const currentPhase = this.FindComponent("GameManager").phase.toIdentifier();
             const discardPanel = document.getElementById("discard-button-area");
             const discardButton = document.getElementById("button-discard");
+            const skipButton = document.getElementById("button-skip");
             if (currentPhase == 3) {
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Player";
                 discardButton.style.display = "flex";
                 discardButton.classList.add("button--inactive");
                 discardButton.addEventListener("click", this.handleDiscardClick);
+
+                skipButton.style.display = "flex";
+                skipButton.classList.add("button--inactive");
+                skipButton.addEventListener("click", this.handleSkipClick);
                 this.ShowPhaseThreeButtons(true);
             }
             else {
-                 document.getElementById("shop-window").style.display = "none";
+                document.getElementById("shop-window").style.display = "none";
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Phase";
             }
         }
@@ -839,6 +864,13 @@ export const ui_manager = (() => {
         #LoadSkillDecider(msg) {
             //TODO as seperate component
             console.log("Choose A Skill!")
+        }
+
+        /**
+         * @returns {bool}
+         */
+        get phasethreeparttwo() {
+            return this.#phasethreeparttwo;
         }
   
     }

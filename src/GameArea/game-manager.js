@@ -19,7 +19,7 @@ export const game_manager = (() => {
 
         constructor() {
             super();
-            this.#currentRound = Phase.Three;
+            this.#currentRound = Phase.One;
             this.#currentPlayerId = 1;
             this.#currentPlayer = null;
             this.#selection = [];
@@ -42,8 +42,6 @@ export const game_manager = (() => {
             this._RegisterHandler('cardshop.buy', (msg) => {this.#OnCardshopBuy(msg)});
             this._RegisterHandler('game.discardSelectedCards',() => {this.DiscardSelectedCards()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
-            this.#currentRound.next();
-            this.#currentRound.next();
         }
 
         #OnMeditate(msg) {
@@ -172,14 +170,17 @@ export const game_manager = (() => {
          * @returns {object}
          */
         ValidateMove(){
-            var town = this.#selectedTown;
-            for (let card_slot of this.#selection) {
-                var card = this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]
-                if (this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card)) {
-                    return { moveAllowed: true, allowedCard: card };
+            if (this.#selectedTown != null) {
+                var town = this.#selectedTown;
+                for (let card_slot of this.#selection) {
+                    var card = this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]
+                    if (this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card)) {
+                        return { moveAllowed: true, allowedCard: card };
+                    }
                 }
             }
             return { moveAllowed: false, allowedCard: null };
+
         }
 
         /**

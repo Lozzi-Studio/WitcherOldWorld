@@ -47,15 +47,15 @@ export const cardshop_slot = (() => {
          */
         #InitModel() {
             const displayCard = new THREE.Mesh(new THREE.PlaneGeometry(5.7,9.6), new THREE.MeshBasicMaterial({color: 'black', transparent: true, opacity: 0.2}));
-            displayCard.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , -Math.PI / 5, -Math.PI / 2));
+            displayCard.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 4 , 0, 0)); 
             displayCard.position.set(this.#position.x, this.#position.y, this.#position.z);
             displayCard.name = "ShopCardDisplay_" + this.#slot.toString();
             this.#hitbox = displayCard;
             this._parent._parent.scene.add(displayCard);
 
             const displayedCard = new THREE.Mesh(new THREE.PlaneGeometry(5,8.5));
-            displayedCard.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , -Math.PI / 5, -Math.PI / 2));
-            displayedCard.position.set(this.#position.x-0.2, this.#position.y, this.#position.z);
+            displayedCard.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 4 , 0, 0));
+            displayedCard.position.set(this.#position.x, this.#position.y, this.#position.z+0.2);
             displayedCard.name = "ShopCard_" + this.#slot.toString();
             this.#cardBox = displayedCard;
             this._parent._parent.scene.add(displayedCard);
@@ -74,8 +74,8 @@ export const cardshop_slot = (() => {
                 )
                 const textModifierMaterial = new THREE.MeshBasicMaterial()
                 const textModifier = new THREE.Mesh(textModifierGeometry, textModifierMaterial)
-                textModifier.position.set(this.#position.x+5, this.#position.y+2.85, this.#position.z-1);
-                textModifier.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , 0, -Math.PI / 2));
+                textModifier.position.set(this.#position.x-1, this.#position.y+2.85, this.#position.z-5);
+                textModifier.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , 0, 0));
                 this._parent._parent.scene.add(textModifier);
             }
 
@@ -90,8 +90,8 @@ export const cardshop_slot = (() => {
             )
             const textCostMaterial = new THREE.MeshBasicMaterial()
             const textCost = new THREE.Mesh(textCostGeometry, textCostMaterial)
-            textCost.position.set(this.#position.x-4, this.#position.y-5, this.#position.z-0.5);
-            textCost.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , -Math.PI / 2, -Math.PI / 2));
+            textCost.position.set(this.#position.x-0.5, this.#position.y-5, this.#position.z+4);
+            textCost.rotation.setFromVector3(new THREE.Vector3( 0 , 0,0));
             this.#costBox = textCost;
             this._parent._parent.scene.add(textCost);
         }
