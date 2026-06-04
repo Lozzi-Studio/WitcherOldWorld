@@ -23,6 +23,12 @@ export const player_status = (() => {
             this._RegisterHandler('player.getStatus', (msg) => {this.#GetStatus(msg);});
         }
 
+        /**
+         * Adds a temporary status to the temporary status list of the player
+         * If the status already exists, the amount is increased by the incoming amount
+         * @param {object} msg 
+         * @returns
+         */
         #AddTemporaryStatus(msg){
             const existingStatus = this.#temporaryStatusList.find(status => status.type === msg.type);
             if (existingStatus && existingStatus.timing === msg.timing) {
@@ -37,16 +43,24 @@ export const player_status = (() => {
                     newStatus = status_templates.StatusTemplates.drawMoreCards(msg.timing, msg.amount);
                     break;
                 default:
-                    console.warn(`Unknown status type: ${msg.type}`);
+                    console.log(`Unknown status type: ${msg.type}`);
                     return;
             }
             this.#temporaryStatusList.push(newStatus);
         };
 
+        /**
+         * Gets a status by status type
+         * @param {object} msg 
+         * @returns {object}
+         */
         #GetStatus(msg){
             return this.#temporaryStatusList.find(status => status.type === msg.type);
         };
 
+        /**
+         * Clears the temporary status list
+         */
         #ClearAllTemporaryStatuses(){
             #statusList = [];
         }
