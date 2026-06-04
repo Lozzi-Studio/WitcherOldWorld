@@ -63,7 +63,7 @@ export const broadcasts = (() => {
 
         /**
          * 
-         * @param {string} name - Options: ???
+         * @param {string} timing
          * @param {int} amount
          * @returns 
          */
@@ -73,10 +73,19 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @param {string} name
          * @returns 
          */
-        static ClearAllStatuses(){
-            return {topic: 'player.clearAllStatuses'}
+        static GetStatus(type){
+            return {topic: 'player.getStatus',type: type}
+        }
+
+        /**
+         * 
+         * @returns 
+         */
+        static ClearAllTemporaryStatuses(){
+            return {topic: 'player.clearAllTemporaryStatuses'}
         }
     }
 
