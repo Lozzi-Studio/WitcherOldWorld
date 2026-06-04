@@ -5,23 +5,26 @@ import { status_templates } from "./status-templates"
 export const player_status = (() => {
     
     class PlayerStatus extends component.Component{
-        #statusList;        
+        #temporaryStatusList;  
+        #permanentStatusList;       
 
         /**
          * A tracker for player status
          */
         constructor() {
             super();
-            this.#statusList = [];
+            this.#temporaryStatusList = [];
+            this.#permanentStatusList = [];
         }
 
         InitComponent() {
-            this._RegisterHandler('player.addStatus', (msg) => {this.#AddStatus(msg);});
-            this._RegisterHandler('player.clearAllStatuses', (msg) => {this.#ClearAllStatuses();});
+            this._RegisterHandler('player.addStatus', (msg) => {this.#AddTemporaryStatus(msg);});
+            this._RegisterHandler('player.clearAllTemporaryStatuses', (msg) => {this.#ClearAllTemporaryStatuses();});
+            this._RegisterHandler('player.getStatus', (msg) => {this.#GetStatus(msg);});
         }
 
-        #AddStatus(msg){
-            const existingStatus = this.#statusList.find(status => status.type === msg.type);
+        #AddTemporaryStatus(msg){
+            const existingStatus = this.#temporaryStatusList.find(status => status.type === msg.type);
             if (existingStatus && existingStatus.timing === msg.timing) {
                 existingStatus.amount += msg.amount;
                 return; 
@@ -37,18 +40,14 @@ export const player_status = (() => {
                     console.warn(`Unknown status type: ${msg.type}`);
                     return;
             }
-            this.#statusList.push(newStatus);
+            this.#temporaryStatusList.push(newStatus);
         };
 
-        #GetStatus(statusName){
-            // for every status in statusList
-                // if status == status name
-                    // amount += status.amount
-                    // return amount
-            // return None
+        #GetStatus(msg){
+            return this.#temporaryStatusList.find(status => status.type === msg.type);
         };
 
-        #ClearAllStatuses(){
+        #ClearAllTemporaryStatuses(){
             #statusList = [];
         }
         
