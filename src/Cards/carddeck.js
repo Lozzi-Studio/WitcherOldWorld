@@ -198,6 +198,10 @@ export const carddeck_component = (() => {
             return this.#cardDiscard;
         }
 
+        get handLimit() {
+            return this.#handLimit;
+        }
+
     }
 
     return {
