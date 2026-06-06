@@ -70,14 +70,6 @@ export const broadcasts = (() => {
         static AddStatus(type, amount){
             return {topic: 'player.addStatus',type: type, timing:timing, amount: amount}
         }
-
-        /**
-         * 
-         * @returns 
-         */
-        static ClearAllTemporaryStatuses(){
-            return {topic: 'player.clearAllTemporaryStatuses'}
-        }
     }
 
     class BroadcastTemplateCards {

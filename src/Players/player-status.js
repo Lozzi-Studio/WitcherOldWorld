@@ -19,7 +19,7 @@ export const player_status = (() => {
 
         InitComponent() {
             this._RegisterHandler('player.addStatus', (msg) => {this.#AddTemporaryStatus(msg);});
-            this._RegisterHandler('player.clearAllTemporaryStatuses', (msg) => {this.#ClearAllTemporaryStatuses();});
+            this._RegisterHandler('game.nextRound', (msg) => {this.#ClearAllTemporaryStatuses();});
         }
 
         /**
@@ -64,7 +64,7 @@ export const player_status = (() => {
          * Clears the temporary status list
          */
         #ClearAllTemporaryStatuses(){
-            #statusList = [];
+            this.#temporaryStatusList = [];
         }
         
     }
