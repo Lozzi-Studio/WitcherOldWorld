@@ -119,8 +119,8 @@ export const cardshop_slot = (() => {
                     depth: 0.1,
                 }
             )
-            this.#cardBox.name = this.#cardBox.name + "_" + Math.max(0, this.#card.cost + this.#modifier).toString()
-            this.#hitbox.name = this.#hitbox.name + "_" + Math.max(0, this.#card.cost + this.#modifier).toString()
+            this.#cardBox.name = "ShopCardDisplay_" + this.#slot.toString() + "_" + Math.max(0, this.#card.cost + this.#modifier).toString()
+            this.#hitbox.name = "ShopCard_" + this.#slot.toString() + "_" + Math.max(0, this.#card.cost + this.#modifier).toString()
             this.#hitbox.material = new THREE.MeshBasicMaterial({color: 'black', transparent: true, opacity: 0.2});
         }
 
