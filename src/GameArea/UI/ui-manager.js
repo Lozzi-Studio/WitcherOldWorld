@@ -37,11 +37,13 @@ export const ui_manager = (() => {
             };
             
             this.handleBuyClick = () => {
-                this.FindEntity("Cardshop")
-                    .FindComponent("CardshopManager")
-                    .Broadcast(broadcasts.BroadcastTemplateCardShop.BuyCardFromShop());
-                    this.#phasethreeparttwo = false;
-                    this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.StopFocusShop());
+                if (document.getElementById("shop-button").classList.contains("button--inactive") == false) {
+                    this.FindEntity("Cardshop")
+                        .FindComponent("CardshopManager")
+                        .Broadcast(broadcasts.BroadcastTemplateCardShop.BuyCardFromShop());
+                        this.#phasethreeparttwo = false;
+                        this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.StopFocusShop());
+                }
             }
 
             this.handleDiscardClick = () => {
