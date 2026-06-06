@@ -1,6 +1,7 @@
 import { component } from "../Interfaces/component";
 import { broadcasts } from "../Interfaces/broadcasts";
 import { status_templates } from "./status-templates"
+import { status_options } from "./status-options";
 
 export const player_status = (() => {
     
@@ -31,7 +32,7 @@ export const player_status = (() => {
         #AddStatus(msg){
             if(msg.mode === "temporary"){
                 const existingStatus = this.#temporaryStatusList.find(
-                    status => status.type === msg.status.type && status.timing === msg.status.timing);
+                    status => status.type === msg.status.type && status.timing.toIdentifier() === msg.status.timing.toIdentifier());
                 if (existingStatus) {
                     existingStatus.amount += msg.status.amount;
                     return; 
@@ -41,7 +42,7 @@ export const player_status = (() => {
             }
             if(msg.mode === "permanent"){
                 const existingStatus = this.#permanentStatusList.find(
-                    status => status.type === msg.status.type && status.timing === msg.status.timing);
+                    status => status.type === msg.status.type && status.timing.toIdentifier() === msg.status.timing.toIdentifier());
                 if (existingStatus) {
                     existingStatus.amount += msg.status.amount;
                     return; 
@@ -54,12 +55,12 @@ export const player_status = (() => {
         /**
          * Gets a status by status type
          * @param {string} type 
-         * @param {string} timing 
+         * @param {Timing} timing
          * @returns {int | None}
          */
         GetStatusAmount(type, timing){
-            const matchingStatusTemporary =  this.#temporaryStatusList.find(status => status.type === type && status.timing === timing);
-            const matchingStatusPermanent =  this.#permanentStatusList.find(status => status.type === type && status.timing === timing);
+            const matchingStatusTemporary =  this.#temporaryStatusList.find(status => status.type === type && status.timing.toIdentifier() === timing.toIdentifier());
+            const matchingStatusPermanent =  this.#permanentStatusList.find(status => status.type === type && status.timing.toIdentifier() === timing.toIdentifier());
             
             const tempAmount = matchingStatusTemporary ? matchingStatusTemporary.amount : 0;
             const permAmount = matchingStatusPermanent ? matchingStatusPermanent.amount : 0;

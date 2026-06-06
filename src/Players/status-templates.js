@@ -1,4 +1,5 @@
 import { player_status } from "./player-status.js";
+import { status_options } from "./status-options.js";
 
 export const status_templates = (() => {
 
@@ -6,7 +7,7 @@ export const status_templates = (() => {
 
         /**
          * Get status template for status "status name"
-         * @param {timing} string - "phaseThree", "battle"
+         * @param {Timing} timing
          * @param {amount} int 
          * @returns {object}
          */
@@ -16,7 +17,7 @@ export const status_templates = (() => {
 
         /**
          * Get status template for status "status name"
-         * @param {timing} string - "phaseThree", "battle"
+         * @param {Timing} timing
          * @param {amount} int 
          * @returns {object}
          */
