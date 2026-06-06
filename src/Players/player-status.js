@@ -39,6 +39,7 @@ export const player_status = (() => {
             switch(msg.type){
                 case "drawLessCards":
                     newStatus = status_templates.StatusTemplates.drawLessCards(msg.timing, msg.amount);
+                    break;
                 case "drawMoreCards":
                     newStatus = status_templates.StatusTemplates.drawMoreCards(msg.timing, msg.amount);
                     break;
