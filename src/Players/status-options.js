@@ -33,4 +33,8 @@ export const status_options = (() => {
             return this.#timing;
         }
     }
+    
+    return {
+        Timing : Timing
+    }
 })();
