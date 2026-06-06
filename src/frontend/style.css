@@ -419,7 +419,9 @@ p, div {
     align-self: flex-end;
     gap: 50px; 
     
-}#shop-window {
+}
+
+#shop-window {
     position: fixed;
     right: 5px;
     bottom: 380px;
