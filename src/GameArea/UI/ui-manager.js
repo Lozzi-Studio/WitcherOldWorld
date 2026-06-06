@@ -59,7 +59,7 @@ export const ui_manager = (() => {
             }    
 
             this.handleSkipClick = () => {
-                let button = document.getElementById("town-button");
+                let button = document.getElementById("button-skip");
                 if (!(button.classList.contains("button--inactive"))){
                     this.#DisableDiscardButtons();
                     this.#phasethreeparttwo = true;

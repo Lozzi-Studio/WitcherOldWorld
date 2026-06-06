@@ -2,6 +2,7 @@ import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
 import { cards } from "../Cards/card-templates";
 import { card_options } from "../Cards/card-options";
+import { card } from "../Cards/card";
 
 export const game_manager = (() => {
 
@@ -75,6 +76,10 @@ export const game_manager = (() => {
         #NextTurnPhase(msg){
             const nextPlayer = this.#currentRound.next();
             if (nextPlayer) {
+                for (let card_slot of this.#selection) {
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                }
+                this.#selection = [];
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
                 if (this.#currentPlayer == undefined) {
@@ -147,8 +152,8 @@ export const game_manager = (() => {
             if (this.#selection.length >= msg.cost) {
                 for (let i = 0; i < msg.cost; i++){
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[this.#selection[0]], "Discard"));
+                    this.#selection.splice(0, 1);
                 }
-                this.#selection = [];
                 this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(this.FindEntity("Cardshop").FindComponent("CardshopSlot_" + msg.slot).card,"Hand"));
                 this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.FindEntity("Cardshop").FindComponent("CardshopSlot_" + msg.slot).card, "Discard"))
                 this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
