@@ -64,10 +64,11 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {object} status
+         * @param {string} mode – "temporary", "permanent"
          * @returns 
          */
         static AddStatus(status){
-            return {topic: 'player.addStatus',status: status}
+            return {topic: 'player.addStatus',status: status, mode:mode}
         }
     }
 

@@ -18,7 +18,7 @@ export const player_status = (() => {
         }
 
         InitComponent() {
-            this._RegisterHandler('player.addStatus', (msg) => {this.#AddTemporaryStatus(msg);});
+            this._RegisterHandler('player.addStatus', (msg) => {this.#AddStatus(msg);});
             this._RegisterHandler('game.nextRound', (msg) => {this.#ClearAllTemporaryStatuses();});
         }
 
@@ -28,13 +28,25 @@ export const player_status = (() => {
          * @param {object} msg 
          * @returns
          */
-        #AddTemporaryStatus(msg){
-            const existingStatus = this.#temporaryStatusList.find(status => status.type === msg.status.type);
-            if (existingStatus && existingStatus.timing === msg.status.timing) {
-                existingStatus.amount += msg.status.amount;
+        #AddStatus(msg){
+            if(msg.mode === "temporary"){
+                const existingStatus = this.#temporaryStatusList.find(status => status.type === msg.status.type);
+                if (existingStatus && existingStatus.timing === msg.status.timing) {
+                    existingStatus.amount += msg.status.amount;
+                    return; 
+                }
+                this.#temporaryStatusList.push(msg.status);
                 return;
             }
-            this.#temporaryStatusList.push(msg.status);
+            if(msg.mode === "permanent"){
+                const existingStatus = this.#permanentStatusList.find(status => status.type === msg.status.type);
+                if (existingStatus && existingStatus.timing === msg.status.timing) {
+                    existingStatus.amount += msg.status.amount;
+                    return; 
+                }
+                this.#permanentStatusList.push(msg.status);
+                return;
+            }
         };
 
         /**
