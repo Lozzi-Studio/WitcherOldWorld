@@ -31,12 +31,12 @@ export const cardshop_manager = (() => {
          * Update each Slot in Shop
          */
         #UpdateShopSlots(msg) { 
-            var shopCards = this.FindComponent("Carddeck").hand;
-            if (shopCards.length < shopCards.handLimit) {
-                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck",shopCards.handLimit - shopCards.length))
+            var shopCards = this.FindComponent("Carddeck");
+            if (shopCards.hand.length < shopCards.handLimit) {
+                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck",shopCards.handLimit - shopCards.hand.length))
             }
             var i = 6;
-            for (let card of this.FindComponent("Carddeck").hand) {
+            for (let card of shopCards.hand) {
                 this.FindComponent("CardshopSlot_" + i).UpdateSlot(card);
                 i -= 1;
             }
