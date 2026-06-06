@@ -29,24 +29,12 @@ export const player_status = (() => {
          * @returns
          */
         #AddTemporaryStatus(msg){
-            const existingStatus = this.#temporaryStatusList.find(status => status.type === msg.type);
-            if (existingStatus && existingStatus.timing === msg.timing) {
-                existingStatus.amount += msg.amount;
-                return; 
+            const existingStatus = this.#temporaryStatusList.find(status => status.type === msg.status.type);
+            if (existingStatus && existingStatus.timing === msg.status.timing) {
+                existingStatus.amount += msg.status.amount;
+                return;
             }
-            let newStatus;
-            switch(msg.type){
-                case "drawLessCards":
-                    newStatus = status_templates.StatusTemplates.drawLessCards(msg.timing, msg.amount);
-                    break;
-                case "drawMoreCards":
-                    newStatus = status_templates.StatusTemplates.drawMoreCards(msg.timing, msg.amount);
-                    break;
-                default:
-                    console.log(`Unknown status type: ${msg.type}`);
-                    return;
-            }
-            this.#temporaryStatusList.push(newStatus);
+            this.#temporaryStatusList.push(msg.status);
         };
 
         /**

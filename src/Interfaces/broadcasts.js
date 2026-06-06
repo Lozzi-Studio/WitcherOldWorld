@@ -63,12 +63,11 @@ export const broadcasts = (() => {
 
         /**
          * 
-         * @param {string} timing
-         * @param {int} amount
+         * @param {object} status
          * @returns 
          */
-        static AddStatus(type, amount){
-            return {topic: 'player.addStatus',type: type, timing:timing, amount: amount}
+        static AddStatus(status){
+            return {topic: 'player.addStatus',status: status}
         }
     }
 
