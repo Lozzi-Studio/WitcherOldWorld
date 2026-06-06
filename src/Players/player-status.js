@@ -20,7 +20,6 @@ export const player_status = (() => {
         InitComponent() {
             this._RegisterHandler('player.addStatus', (msg) => {this.#AddTemporaryStatus(msg);});
             this._RegisterHandler('player.clearAllTemporaryStatuses', (msg) => {this.#ClearAllTemporaryStatuses();});
-            this._RegisterHandler('player.getStatus', (msg) => {this.#GetStatus(msg);});
         }
 
         /**
@@ -52,11 +51,13 @@ export const player_status = (() => {
 
         /**
          * Gets a status by status type
-         * @param {object} msg 
-         * @returns {object}
+         * @param {string} type 
+         * @param {string} timing 
+         * @returns {int | None}
          */
-        #GetStatus(msg){
-            return this.#temporaryStatusList.find(status => status.type === msg.type);
+        GetStatusAmount(type, timing){
+            const matchingStatus =  this.#temporaryStatusList.find(status => status.type === type && status.timing === timing);
+            return matchingStatus ? matchingStatus.amount : None;
         };
 
         /**

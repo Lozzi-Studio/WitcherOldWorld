@@ -73,15 +73,6 @@ export const broadcasts = (() => {
 
         /**
          * 
-         * @param {string} name
-         * @returns 
-         */
-        static GetStatus(type){
-            return {topic: 'player.getStatus',type: type}
-        }
-
-        /**
-         * 
          * @returns 
          */
         static ClearAllTemporaryStatuses(){
