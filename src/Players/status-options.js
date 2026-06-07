@@ -10,7 +10,7 @@ export const status_options = (() => {
 
         /**
          * An enum to deternime timing options of stati
-         * @param {string} color 
+         * @param {string} timing 
          */
         constructor(timing){
             this.#timing = timing;
@@ -22,7 +22,7 @@ export const status_options = (() => {
          * @returns {bool}
          */
         equals(timing){
-            return (this.toIdentifier() == timing.toIdentifier());
+            return (this.#timing.toIdentifier() === timing.toIdentifier());
         }
 
         /**

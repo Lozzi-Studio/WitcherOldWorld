@@ -32,7 +32,7 @@ export const player_status = (() => {
         #AddStatus(msg){
             if(msg.mode === "temporary"){
                 const existingStatus = this.#temporaryStatusList.find(
-                    status => status.type === msg.status.type && status.timing.toIdentifier() === msg.status.timing.toIdentifier());
+                    status => status.type === msg.status.type && status.timing.equals(msg.status.timing));
                 if (existingStatus) {
                     existingStatus.amount += msg.status.amount;
                     return; 
@@ -42,7 +42,7 @@ export const player_status = (() => {
             }
             if(msg.mode === "permanent"){
                 const existingStatus = this.#permanentStatusList.find(
-                    status => status.type === msg.status.type && status.timing.toIdentifier() === msg.status.timing.toIdentifier());
+                    status => status.type === msg.status.type && status.timing.equals(msg.status.timing));
                 if (existingStatus) {
                     existingStatus.amount += msg.status.amount;
                     return; 
@@ -59,9 +59,11 @@ export const player_status = (() => {
          * @returns {int | None}
          */
         GetStatusAmount(type, timing){
-            const matchingStatusTemporary =  this.#temporaryStatusList.find(status => status.type === type && status.timing.toIdentifier() === timing.toIdentifier());
-            const matchingStatusPermanent =  this.#permanentStatusList.find(status => status.type === type && status.timing.toIdentifier() === timing.toIdentifier());
-            
+            console.log(this.#temporaryStatusList);
+            const matchingStatusTemporary =  this.#temporaryStatusList.find(status => status.type === type && status.timing.equals(timing));
+            console.log(matchingStatusTemporary);
+            const matchingStatusPermanent =  this.#permanentStatusList.find(status => status.type === type && status.timing.equals(timing));
+
             const tempAmount = matchingStatusTemporary ? matchingStatusTemporary.amount : 0;
             const permAmount = matchingStatusPermanent ? matchingStatusPermanent.amount : 0;
             
