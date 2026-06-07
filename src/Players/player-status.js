@@ -54,15 +54,12 @@ export const player_status = (() => {
 
         /**
          * Gets a status by status type
-         * @param {string} type 
-         * @param {Timing} timing
+         * @param {StatusTemplates} given_status
          * @returns {int | None}
          */
-        GetStatusAmount(type, timing){
-            console.log(this.#temporaryStatusList);
-            const matchingStatusTemporary =  this.#temporaryStatusList.find(status => status.type === type && status.timing.equals(timing));
-            console.log(matchingStatusTemporary);
-            const matchingStatusPermanent =  this.#permanentStatusList.find(status => status.type === type && status.timing.equals(timing));
+        GetStatusAmount(given_status){
+            const matchingStatusTemporary =  this.#temporaryStatusList.find(status => status.type === given_status.type && status.timing.equals(given_status.timing));
+            const matchingStatusPermanent =  this.#permanentStatusList.find(status => status.type === given_status.type && status.timing.equals(given_status.timing));
 
             const tempAmount = matchingStatusTemporary ? matchingStatusTemporary.amount : 0;
             const permAmount = matchingStatusPermanent ? matchingStatusPermanent.amount : 0;

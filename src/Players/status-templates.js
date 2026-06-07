@@ -12,7 +12,7 @@ export const status_templates = (() => {
          * @param {amount} int 
          * @returns {object}
          */
-        static drawLessCards(timing, amount){
+        static drawLessCards(timing, amount=0){
             return {"type": "drawLessCards", "timing": timing, "amount":amount}
         }
 

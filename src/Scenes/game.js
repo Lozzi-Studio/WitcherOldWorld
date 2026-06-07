@@ -15,11 +15,6 @@ import { Vector3 } from 'three';
 import { player_options } from '../Players/player-options';
 import { cards } from '../Cards/card-templates';
 
-// TEMP: TEST 
-import { player_status } from '../Players/player-status';
-import { status_options } from '../Players/status-options';
-import { status_templates } from '../Players/status-templates';
-
 export const game = (() => {
 
     class GameScene extends scene.Scene{
@@ -48,28 +43,6 @@ export const game = (() => {
             this._controls.minDistance = 10;
             this._controls.maxDistance = 48;
         }   
-
-        /**
-         * TEMP: TEST 
-         */
-        #TestStatusSystem() {
-
-            const player1 = this._entityManager.FindEntity("Player_1");
-            console.log(player1);
-
-            const combatTiming = status_options.Timing.InCombat();
-
-            const tempStatus = status_templates.StatusTemplates.drawMoreCards(combatTiming, 2);
-            const permStatus = status_templates.StatusTemplates.drawMoreCards(combatTiming, 3);
-            
-            player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddStatus(tempStatus, "temporary"));
-            player1.Broadcast(broadcasts.BroadcastTemplatePlayer.AddStatus(permStatus, "permanent"));
-
-            const status = player1.FindComponent('PlayerStatus');
-            console.log(status);
-            console.log(status.GetStatusAmount('drawLessCards',status_options.Timing.InCombat()));
-
-        }
         
         /**
          * Used to intialize and add any default Entities
@@ -89,8 +62,6 @@ export const game = (() => {
 
             document.getElementById('game-ui').style.display = 'block';
             this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
-            // TEMP: TEST 
-            this.#TestStatusSystem();
         }
 
         /**

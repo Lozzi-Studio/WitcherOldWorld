@@ -22,7 +22,7 @@ export const status_options = (() => {
          * @returns {bool}
          */
         equals(timing){
-            return (this.#timing.toIdentifier() === timing.toIdentifier());
+            return (this.toIdentifier() == timing.toIdentifier());
         }
 
         /**
