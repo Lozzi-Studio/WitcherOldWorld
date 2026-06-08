@@ -7,6 +7,7 @@ export const ui_manager = (() => {
     class UIManager extends component.Component {
         #maxSkillLevel;
         #numberOfPhaseOptions;
+        #phasethreeparttwo;
 
         /**
          * Manages API between UI and Backend
@@ -15,6 +16,7 @@ export const ui_manager = (() => {
             super();
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
+            this.#phasethreeparttwo = false;
 
             let button = document.getElementById("town-button");
             this.handleMoveClick = () => {
@@ -33,6 +35,37 @@ export const ui_manager = (() => {
                         .Broadcast(broadcasts.BroadcastTemplateTown.TownAction());
                 }
             };
+            
+            this.handleBuyClick = () => {
+                if (document.getElementById("shop-button").classList.contains("button--inactive") == false) {
+                    this.FindEntity("Cardshop")
+                        .FindComponent("CardshopManager")
+                        .Broadcast(broadcasts.BroadcastTemplateCardShop.BuyCardFromShop());
+                        this.#phasethreeparttwo = false;
+                        this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.StopFocusShop());
+                }
+            }
+
+            this.handleDiscardClick = () => {
+                const btn = document.getElementById("button-discard");
+                if (!(btn && btn.classList.contains("button--inactive"))) {
+                    this.FindEntity("GameArea")
+                    .FindComponent("GameManager")
+                    .Broadcast(broadcasts.BroadcastTemplateGame.DiscardSelectedCards());
+                    this.#DisableDiscardButtons();
+                    this.#phasethreeparttwo = true;
+                    this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.FocusOnShop());
+                }
+            }    
+
+            this.handleSkipClick = () => {
+                let button = document.getElementById("button-skip");
+                if (!(button.classList.contains("button--inactive"))){
+                    this.#DisableDiscardButtons();
+                    this.#phasethreeparttwo = true;
+                    this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.FocusOnShop());
+                }
+            }
 
             let skipButton = document.getElementById("debug-next-phase-button");
             this.HandleNextPhaseClick = () => {
@@ -49,7 +82,6 @@ export const ui_manager = (() => {
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler("game.nextPlayer", (msg) => {this.#OnNextPlayer(msg)});
-            this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
             this._RegisterHandler("player.move", (msg) => {this.#UpdateButtonState("end-phase-button", true)});
 
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
@@ -61,7 +93,11 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
+            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateButtonState("button-discard", msg.active);});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
+            this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
+
+            this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
@@ -286,6 +322,7 @@ export const ui_manager = (() => {
         #SetPhaseOptions(msg) {
             const phase = this.FindComponent("GameManager").phase.toIdentifier();
             let phaseOptionTexts = [];
+
             switch (phase) {
                 case 1:
                     phaseOptionTexts = [
@@ -315,8 +352,22 @@ export const ui_manager = (() => {
 
             document.getElementById("phase-text").innerHTML = `Phase ${phase}/3`;
         }
+
+
+        /**
+         * Set button state based on current phase
+         */
+        #DisableDiscardButtons(){
+            const discardPanel = document.getElementById("discard-button-area");
+            const discardButton = document.getElementById("button-discard");
+
+            if (discardPanel) discardPanel.style.display = "none";
+            if (discardButton) discardButton.removeEventListener("click", this.handleDiscardClick);
+            this.ShowPhaseThreeButtons(false);
+        }
+
         
-        #UpdateNextPhaseButton() {
+        #UpdateNextPhaseButton(msg) {
             let button = document.getElementById("end-phase-button");
             if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
                 button.style.display = "flex";
@@ -326,6 +377,24 @@ export const ui_manager = (() => {
             else {
                 button.style.display = "none";
                 button.removeEventListener("click", () => this.#EndPhaseOne(button));
+            }
+        }
+
+        ShowPhaseThreeButtons(active){
+            const discardButtons = document.getElementById("discard-buttons");
+            const handWindow = document.getElementById("hand-window");
+            const discardModal = document.getElementById("discard-modal");
+            const skipButton = document.getElementById("button-skip");
+            if(active){
+                if (discardButtons) discardButtons.style.display = "flex";
+                skipButton.style.display = "flex";
+                this.#UpdateButtonState("button-skip", true);
+                if (handWindow) handWindow.style.position = "relative";
+            }
+            else{
+                if (discardButtons) discardButtons.style.display = "none";
+                skipButton.style.display = "none";
+                if (handWindow) handWindow.style.position = "absolute";
             }
         }
 
@@ -425,6 +494,7 @@ export const ui_manager = (() => {
             }
         }
 
+
         /**
          * Set town button's label and eventListener
          * @param {string} buttonMode - Options: "action", "move"
@@ -465,7 +535,7 @@ export const ui_manager = (() => {
             }
             else {
                 buttonMode = "move";
-                if (this.FindEntity("GameArea").FindComponent("GameManager").CheckIfCanMoveToTown()) {
+                if (this.FindEntity("GameArea").FindComponent("GameManager").ValidateMove().moveAllowed) {
                     buttonActive = true;
                 }
                 else {
@@ -629,7 +699,14 @@ export const ui_manager = (() => {
                     document.getElementById(`card-image-${i}`).classList.remove("card--selected");
                 }
             }
-            this.#UpdateTownButton(msg);
+            switch(msg.phase) {
+                case 1:
+                    this.#UpdateTownButton(msg);
+                    break;
+                case 3:
+                    this.#UpdateShopButton(msg);
+                    break;
+            }   
         }
 
         /**
@@ -656,6 +733,7 @@ export const ui_manager = (() => {
             this.#InitPlayerSkills();
             this.#InitPhaseOptions();
             this.#ExcludeUIFromRaycasting();
+            this.#DisableDiscardButtons();
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             this.#InitPlayerAvatars(playerList);
@@ -684,13 +762,24 @@ export const ui_manager = (() => {
          */
         #OnNextPhase() {
             this.#SetPhaseOptions();
-            this.#UpdateNextPhaseButton();
-
+    
             const currentPhase = this.FindComponent("GameManager").phase.toIdentifier();
+            const discardPanel = document.getElementById("discard-button-area");
+            const discardButton = document.getElementById("button-discard");
+            const skipButton = document.getElementById("button-skip");
             if (currentPhase == 3) {
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Player";
+                discardButton.style.display = "flex";
+                discardButton.classList.add("button--inactive");
+                discardButton.addEventListener("click", this.handleDiscardClick);
+
+                skipButton.style.display = "flex";
+                skipButton.classList.add("button--inactive");
+                skipButton.addEventListener("click", this.handleSkipClick);
+                this.ShowPhaseThreeButtons(true);
             }
             else {
+                document.getElementById("shop-window").style.display = "none";
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Phase";
             }
         }
@@ -741,6 +830,26 @@ export const ui_manager = (() => {
         }
 
         /**
+         * Show Confirm Button For Shop
+         * @param {object} msg 
+         */
+        #ShowShopConfirm(msg) {
+            document.getElementById("shop-window").style.display = "flex";
+            this.#UpdateShopButton(msg);
+        }
+        
+        /**
+         * Checks Condition For Shop Button
+         * @param {object} msg 
+         */
+        #UpdateShopButton(msg) {
+            this.#UpdateButtonState("shop-button", this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
+            let button = document.getElementById("shop-button");
+            button.addEventListener("click", this.handleBuyClick);
+        }
+
+
+        /**
          * Triggers after specific time interval
          * @param {float} timeElapsed 
          */
@@ -758,6 +867,13 @@ export const ui_manager = (() => {
         #LoadSkillDecider(msg) {
             //TODO as seperate component
             console.log("Choose A Skill!")
+        }
+
+        /**
+         * @returns {bool}
+         */
+        get phasethreeparttwo() {
+            return this.#phasethreeparttwo;
         }
   
     }
