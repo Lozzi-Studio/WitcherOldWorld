@@ -31,37 +31,46 @@
     <div id="game-ui" style="display: none;"> 
         <div class="container container--row container--neutral borders--bottom-right" id="player-window">
             <div class="container container--col">
-                <div class="avatar-container avatar-container--big">
-                    <img class="avatar avatar--big" id="player-avatar" src="">
-                    <div class="textbox-circle textbox--fill" id="witcher-level">-</div>
-                </div>
-                <div class="textbox textbox--fill textbox--fancy-font">
-                    <p id="player-name">NAME</p>
+                <div class="container container--col" id="avatar-name-container">
+                    <div class="avatar-container avatar-container--big">
+                        <img class="avatar avatar--big" id="player-avatar" src="">
+                        <div class="textbox-circle textbox--fill --fancy-font" id="witcher-level">-</div>
+                    </div>
+                    <div class="textbox textbox--fill textbox--fancy-font" id="player-name-container">
+                        <p id="player-name">NAME</p>
+                    </div>
                 </div>
                 <div class="container container--row container--no-padding container--justify" id="player-inventory-container">
                     <div class="container container--row container--no-padding">
-                        <div class="material-symbols-outlined">toll</div>
-                        <div class="text-single-number" id="money-amount">-</div>
+                        <div class="material-symbols-outlined filled">toll</div>
+                        <div class="text-single-number --fancy-font" id="money-amount">-</div>
                     </div>
                     <div class="container container--row container--no-padding">
-                        <div class="material-symbols-outlined">trophy</div>
-                        <div class="text-single-number" id="trophy-amount">-</div>
+                        <div class="material-symbols-outlined filled">trophy</div>
+                        <div class="text-single-number --fancy-font" id="trophy-amount">-</div>
                     </div>
                 </div>
+                <div class="container container--row container--justify inner-borders inner-borders--neutral" id="player-shield-container"></div>
             </div>
-            <div class="container container--col container--justify inner-borders inner-borders--neutral" id="player-shield-container"></div>
-            <div class="container container--col container--justify inner-borders inner-borders--neutral" id ="player-stats">
-                <div class="container container--row container--no-padding" id="combat-lvl">
-                    <div class="material-symbols-outlined filled">swords</div>
+            <div class="container container--col container--no-padding" id="skills-container">
+                <div class="container container--row" id="skills-header">
+                        <div class="material-symbols-outlined dummy">info</div>
+                        <div class="--fancy-font">Skills</div>
+                        <div class="material-symbols-outlined" id="expand-skills-button">info</div>
                 </div>
-                <div class="container container--row container--no-padding" id="defense-lvl">
-                    <div class="material-symbols-outlined filled">shield</div>
-                </div>
-                <div class="container container--row container--no-padding" id="alchemy-lvl">
-                    <div class="material-symbols-outlined filled">air_freshener</div>
-                </div>
-                <div class="container container--row container--no-padding" id="special-lvl">
-                    <div class="material-symbols-outlined filled">star_shine</div>
+                <div class="container container--row">
+                    <div class="container container--col inner-borders inner-borders--neutral player-stats" id="combat-lvl">
+                        <div class="material-symbols-outlined filled" id="combat-icon">swords</div>
+                    </div>
+                    <div class="container container--col inner-borders inner-borders--neutral player-stats" id="defense-lvl">
+                        <div class="material-symbols-outlined filled" id="defense-icon">shield</div>
+                    </div>
+                    <div class="container container--col inner-borders inner-borders--neutral player-stats" id="alchemy-lvl">
+                        <div class="material-symbols-outlined filled" id="alchemy-icon">air_freshener</div>
+                    </div>
+                    <div class="container container--col inner-borders inner-borders--neutral player-stats" id="special-lvl">
+                        <div class="material-symbols-outlined filled" id="special-icon">star_shine</div>
+                    </div>
                 </div>
             </div>
         </div>

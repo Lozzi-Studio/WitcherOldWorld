@@ -27,6 +27,10 @@ body {
     'FILL' 1;
 }
 
+.dummy {
+    opacity: 0;
+}
+
 /* .theme--color {
     --color-bg: rgba(59, 55, 49, 0.70);
     --color-border: rgba(233, 225, 213, 1.00);
@@ -171,6 +175,8 @@ p, div {
     top: 0px;
 
     gap: 4px;
+
+    align-items: center;
 }
 
 .icon--active {
@@ -315,17 +321,18 @@ p, div {
     width: 34px;
     height: 34px;
 
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
 }
 
 .text-single-number {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
 }
 
-#player-stats {
-    padding: 8px 12px 8px 8px;
+.player-stats {
+    padding: 16px 8px 8px 8px;
+    gap: 16px;
 }
 
 .stat-icon {
@@ -351,9 +358,25 @@ p, div {
     opacity: 0.4;
 }
 
+#player-inventory-container {
+    padding-left: 8px;
+    padding-right: 8px;
+}
 
+#player-name-container {
+    margin-top: -20px;
+    margin-bottom: -6px;
+    z-index: 1;
+}
 
+#skills-container {
+    gap: 0px;
+    align-items: stretch;
+}
 
+#skills-header {
+    justify-content: space-between;
+}
 
 
 

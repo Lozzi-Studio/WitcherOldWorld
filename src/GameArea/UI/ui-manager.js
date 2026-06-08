@@ -199,14 +199,14 @@ export const ui_manager = (() => {
          * @param {string} skillName 
          */
         #CreateSkillBoxes(skillName) {
-            let containerName = `${skillName}-lvl`
-            const container = document.getElementById(containerName);
+            const container = document.getElementById(`${skillName}-lvl`);
+            const icon = document.getElementById(`${skillName}-icon`)
 
             for (let i = 0; i < this.#maxSkillLevel; i++) {
                 const box = document.createElement("div");
                 box.classList.add("level-box", "level-box--neutral", "level-box--empty");
-                box.id = `${skillName}-level-box-${i}`;
-                container.appendChild(box);
+                box.id = `${skillName}-level-box-${this.#maxSkillLevel - i}`;
+                container.insertBefore(box, icon);
             }
         }
 
@@ -233,7 +233,7 @@ export const ui_manager = (() => {
             ]) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
-                    let id = `${skillName}-level-box-${i}`;
+                    let id = `${skillName}-level-box-${i+1}`;
                     if (i < skill.level) {
                         document.getElementById(id).classList.remove("level-box--empty");
                     }
@@ -406,7 +406,7 @@ export const ui_manager = (() => {
             for (let i = 0; i < maxShield; i++) {
                 var emptyShield = document.createElement("span");
                 emptyShield.classList.add("material-symbols-outlined", "icon--inactive");
-                emptyShield.id = `shield-${maxShield-i}`
+                emptyShield.id = `shield-${i+1}`
                 emptyShield.innerHTML = "shield";
                 document.getElementById("player-shield-container").appendChild(emptyShield);
             }
