@@ -28,6 +28,8 @@ export const camera_position = (() => {
         InitComponent() {
             this._RegisterHandler("camera.moveTo", (msg) => {this.#MoveTo(msg)});
             this._RegisterHandler("camera.focusOn", (msg) => {this.#FocusOn(msg)});
+            this._RegisterHandler("camera.focusOnShop", (msg) => {this.#FocusOnShop(msg)});
+            this._RegisterHandler("camera.stopFocusShop", (msg) => {this.#StopFocusShop(msg)});
             this._RegisterHandler("camera.stopFocus", (msg) => {this.#StopFocus(msg)});
 
             window.addEventListener("keydown", (event) => {this.#onKeyDown(event)});
@@ -55,6 +57,27 @@ export const camera_position = (() => {
         }
 
         /**
+         * Focus camera on Shop
+         * @param {object} msg 
+         */
+        #FocusOnShop(msg) {
+            this._parent.controls.enableDamping = false;
+            this._parent.controls.enabled = false;
+            this._parent.camera.position.set(0, 25, -15);
+            this._parent.controls.target.set(0, 5.1, -33);
+        }
+
+        /**
+         * Stops focus on shop and return to last focus
+         * @param {object} msg 
+         */
+        #StopFocusShop(msg) {
+            this._parent.controls.enableDamping = true;
+            this._parent.controls.enabled = true;
+            this._parent.controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
+        }
+
+        /**
          * Stops focus on specific target and returns focus to origin
          * @param {object} msg 
          */
@@ -69,19 +92,21 @@ export const camera_position = (() => {
          * @param {object} event 
          */
         #onKeyDown(event) {
-            switch (event.keyCode) {
-                case 87: // W
-                    this.#direction = Direction.Up();
-                    break;
-                case 83: // S
-                    this.#direction = Direction.Down();
-                    break;
-                case 65: // A
-                    this.#direction = Direction.Left();
-                    break;
-                case 68: // D
-                    this.#direction = Direction.Right();
-                    break;
+            if (this._parent.controls.enabled) {
+                switch (event.keyCode) {
+                    case 87: // W
+                        this.#direction = Direction.Up();
+                        break;
+                    case 83: // S
+                        this.#direction = Direction.Down();
+                        break;
+                    case 65: // A
+                        this.#direction = Direction.Left();
+                        break;
+                    case 68: // D
+                        this.#direction = Direction.Right();
+                        break;
+                }
             }
         }
 
@@ -115,7 +140,9 @@ export const camera_position = (() => {
                     this._parent.controls.target.x += -1 * t;
                     break;
                 case "none":
-                    this._parent.controls.target.set(this.#target?.position.x ?? 0, this.#target?.position.y ?? 0, this.#target?.position.z ?? 0);
+                    if (this._parent.controls.enabled) {
+                        this._parent.controls.target.set(this.#target?.position.x ?? 0, this.#target?.position.y ?? 0, this.#target?.position.z ?? 0);
+                    }
                     break;
             }  
         }

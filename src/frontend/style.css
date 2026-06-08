@@ -418,6 +418,15 @@ p, div {
     justify-content: flex-end;
     align-self: flex-end;
     gap: 50px; 
+    
+}
+
+#shop-window {
+    position: fixed;
+    right: 5px;
+    bottom: 380px;
+    min-width: 100px;
+    max-width: 300px;
 }
 
 #town-window {
@@ -426,7 +435,6 @@ p, div {
     top: 0;
     min-width: 150px;
     max-width: 250px;
-
     display: none;
 }
 

@@ -21,22 +21,22 @@ export const controls_component = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponent() {
-            this._RegisterHandler('game.enableRaycasting', (msg) => {this.#EnableRaycasting()});
-            this._RegisterHandler('game.disableRaycasting', (msg) => {this.#DisableRaycasting()});
+            this._RegisterHandler('game.enableRaycasting', (msg) => {this.#EnableRaycasting(msg)});
+            this._RegisterHandler('game.disableRaycasting', (msg) => {this.#DisableRaycasting(msg)});
             document.addEventListener('mousedown', (event) => {this.#onMouseDown(event)}, {once: true});
         }
 
         /**
          * Enable or disable raycasting (used to exclude UI elements from raycasting)
          */
-        #EnableRaycasting() {
+        #EnableRaycasting(msg) {
             this.#raycastingEnabled = true;
         }
 
         /**
          * Enable or disable raycasting (used to exclude UI elements from raycasting)
          */
-        #DisableRaycasting() {
+        #DisableRaycasting(msg) {
             this.#raycastingEnabled = false;
         }
 
@@ -62,6 +62,12 @@ export const controls_component = (() => {
                     }
                     else if (selectedObject.name.includes("Button")) {
                         this.Broadcast(broadcasts.BroadcastTemplateGame.ButtonPress());  
+                    } else if (selectedObject.name.includes("ShopCard") || selectedObject.name.includes("ShopCardDisplay")) {
+                        if (this.FindComponent("GameManager").phase.toIdentifier() == 3 && this.FindComponent("UIManager").phasethreeparttwo) {
+                            var msg = broadcasts.BroadcastTemplateCardShop.SelectCardFromShop(selectedObject.name.split("_")[1], selectedObject.name.split("_")[2]);
+                            this.FindEntity("Cardshop").Broadcast(msg);
+                            this.Broadcast(msg); 
+                        };
                     }
                 }
             }
