@@ -55,10 +55,11 @@ export const game = (() => {
 
             document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
             document.getElementById('game-loading-screen').style.display = 'flex';
+
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitMap();
             this.#InitShop();
-
+            
             this._entityManager.AddEntity(this._parent._currentCamera);
             this._entityManager.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
             
@@ -66,15 +67,30 @@ export const game = (() => {
             this.#InitTowns();
             this.#InitPlayers();
             this._entityManager.AddEntity(new game_area_entity.GameArea());
-
+            
             document.getElementById('game-ui').style.display = 'block';
             this._entityManager.AddEntity(new cardshop_entity.Cardshop());
-
+            
             this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
+            this.#CacheGameData();
             document.getElementById('game-loading-screen').style.display = 'none';
             document.getElementById('game-ui').style.display = 'block';
 
         }
+
+        #CacheGameData(){
+            var loader = new THREE.TextureLoader()
+            for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").hand) {
+                console.log(card);
+                this.CacheData(card, loader.load(card.imagePath));
+            }
+            for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").deck) {
+                console.log(card);
+                this.CacheData(card.name, loader.load(card.imagePath));
+            }
+            console.log(this._cache);
+        }
+            
 
         /**
          * Initialize camera entity

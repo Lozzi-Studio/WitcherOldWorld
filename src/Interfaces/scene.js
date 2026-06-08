@@ -15,6 +15,8 @@ export const scene = (() => {
             this._parent = null;
             this._camera = null;   
             this._controls = null;
+
+            this._cache = {};
         }
 
         /**
@@ -43,6 +45,15 @@ export const scene = (() => {
          */
         SwitchScene(name, stopAudio = true){
             this._parent?.SwitchScene(name, stopAudio);
+        }
+
+        /**
+         * Cache Data with key
+         * @param {String} keyVar 
+         * @param {*} valueVar 
+         */
+        CacheData(keyVar, valueVar) {
+            this._cache[keyVar] =  valueVar;
         }
 
         get scene(){
