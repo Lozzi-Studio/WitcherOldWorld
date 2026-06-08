@@ -131,6 +131,10 @@ export const entity = (() => {
             return this._name;
         }
 
+        get position() {
+            return this._position;
+        }
+
         set name(newName) {
             this._name = newName;
         }
