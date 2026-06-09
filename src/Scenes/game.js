@@ -45,7 +45,7 @@ export const game = (() => {
             this._controls.minDistance = 10;
             this._controls.maxDistance = 55;
         }   
-
+        
         /**
          * Used to intialize and add any default Entities
          */
