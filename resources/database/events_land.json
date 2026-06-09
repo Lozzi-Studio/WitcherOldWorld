@@ -1,0 +1,84 @@
+{
+    "events" : [
+        {
+            "Text": "Ein Wagen, der mitten auf der Straße steht, ist nichts Außergew&oumlhnliches f&uumlr einen weitgereisten Hexer. Auch dass ein Mann danabensteht und lautstarkt mit dem Schicksal hadert, &uumlberrascht dich nicht. Dass sein Pferd irgendwie auf dem Dach des am Wegesrand gelegenen Gasthofes gelandet ist, erstaund dich hingegen schon. Ein Pferd? Auf dem Dach?! \n\"Bitte helft mir, mein Pferd vom Dach zu holen! Ich habe keine Ahnung, wie es dort gelandet ist.",
+            "OptionA": "Ich helfe dem Mann.",
+            "OptionB": "Das ist zu absurd, selbst f&uumlr einen Hexer. Ich reise schnell weiter.",
+            "ResultTextA": "Als du aus dem Sattel steigst, springen sechs schwerbewaffnete Banditen aus ihrem Versteck am Wegesrand. Die werden auch immer einfallsreicher das musst du schon sagen. Nach einem kurzen Schlagabtausch siehst du ein, dass es sinnlos ist, weiterzuk&aumlmpfen, und gibst uhnen, was sie wollen.",
+            "ResultTextB": "Du machst einen Bogen um den Wagen herum und findest dabei seltene Pilze.",
+            "ResultA": {
+                "Info": "Wirf 1 W&uumlrfel.",
+                "W6": [
+                    {
+                        "Info": "Lege 3 Gold ab. Deine niedrigste Attributstufe steit um 1.",
+                        "Gold": "-3",
+                        "LowestSkill": "1"
+                    },
+                    {
+                        "Info": "Lege 2 Gold ab. Deine niedrigste Attributstufe steit um 1.",
+                        "Gold": "-2",
+                        "LowestSkill": "1"
+                    },
+                    {
+                        "Info": "Wirf 1 Trank ab. Deine niedrigste Attributstufe steit um 1.",
+                        "Potion": "-1",
+                        "LowestSkill": "1"
+                    }
+                ]
+            },
+            "ResultB": {
+                "Info": "Ziehe 2 Tr&aumlnke.",
+                "Potion": "2"
+            }
+        },
+        {
+            "Text": "Du sp&uumlrst die Magie des Sees, schon lang bevor du das Ufer erreichst. Das Wasser verstr&oumlmt ein azurblaues Leuchten, und als du vom Pferd steigst, um zu meditieren, bemerkst du etwas Eigenartiges. &uumlber der Wasseroberfl&aumlche, nur wenige Meter von dir entfernt, schwebt eine geisterhafte Erscheinung. Sie flackert immerzu und kommt mit jedem Mal n&aumlher.",
+            "OptionA": "Mein Schwert &uumlbernimmt das Reden",
+            "OptionB": "Ich tue das einzig Vern&uumlnftige und reite schnell weiter.",
+            "ResultTextA": "Du hast dich mit etwas angelegt, das weit &uumlber deine Kr&aumlfte hinausgeht. Dein Schwert gleitet widerstandslos durch die Erscheinung hindurch, ohne irgendwelchen Schaden anzurichten. Es ist, als w&uumlrdest du gegen Luft k&aumlmpfen. Dann pl&oumltzlich, ein stechender Schmerz! Als du wieder zu dir kommst, liegst du allein am Seeufer.",
+            "ResultTextB": "Nicht jeder Feind kann im Kampf bezwungen werden und manchmal ist R&uumlckzug das kl&uumlgste Man&oumlnover. Auch das ist eine wichtige Lektion.",
+            "ResultA": {
+                "Info": "Senke deinen Schildwert um 1. Eine zufaelliges Attributstufe um 1.",
+                "Shield": "-1",
+                "RngSkill": "-1"
+            },
+            "ResultB": {
+                "Info": "Deine Vertidigungsstufe steigt um 1.",
+                "Defense": "1"
+            }
+        },
+        {
+            "Text": "Die Blutspur f&uumlhrt geradewegs zu einer Grund. Die Ggegend ist mit B&aumlumen und dichtem Dornengestr&uumlpp &uumlberwuchert, doch die Schleifspuren am Boden lassen keinen Zweifel: Der Vermisste, den du suchen sollst, ist nicht freiwillig hergekommen. \nKaum hast du die Schwelle zur Gruft /uumlberschritten, da beginnt dein Medaillon zu vibrieren.",
+            "OptionA": "Ich steige in die Gruft hinab.",
+            "OptionB": "Ich kehre um. F&uumlr den Vermissten besteht ohnenin keine Hoffnung mehr.",
+            "ResultTextA": "Ein riesiger Ghul st&uumlrzt sich aus der Dunkelheit auf dich. Ein wilder Kampf entbrennt, und die Narben, die seine Klauen hinterlassen, werden dir bis ans Ende deines Lebends erhalten bleiben.",
+            "ResultTextB": "Dir f&aumlllt auf, dass rings um die Gruft Balissafr&uumlchte wachsen. Die Gelegenheit l&aumlsst du dir nicht entgehen.",
+            "ResultA": {
+                "Info": "Lege 2 Tr&aumlnke ab. Deine Kampftstufe steigt um 1.",
+                "Potion": "2",
+                "Combat": "1"
+            },
+            "ResultB": {
+                "Info": "Ziehe 2 Tr&aumlnke.",
+                "Potion": "2"
+            }
+        },
+        {
+            "Text": "Mitten im Nirgendw begegnest du einen Einsiedler. Der Mann hat dunkle Schatten unter den Augen und wirkt durch seinen langen, zerzausten Bart, als w&aumlre er nicht ganz bei Verstand. \n\"Biite, darf ich mich in Eurer Schwertklinge spiegeln\", fragt er mit heiserer Stimme.",
+            "OptionA": "Ich gebe ihm das Schwert in die Hand",
+            "OptionB": "\"&aumlh, lieber nicht. Habt ihr etwas Gef&aumlhrliches in der Gegend bemerkt?\"",
+            "ResultTextA": "Als der Einsiedler sein Spiegelbild steht, schreit er. \"Ich sehe sie! Sie sind immer noch da!\" Wie ein Wahnsinniger schl&aumlgt er auf dich ein. Kurz darauf f&aumlngt er sich wieder und japst nach Luft. \"Die Geister derer, die ich entt&aumluscht habe ..., sie verfolgen mich. Ich sehe sie in jedem Spiegel. All meine Tr&auml und Kr&aumluter helfen mir nicht. Hier nehm sie!\"",
+            "ResultTextB": "Der Einsiedler schickt dich zu einem Harpyiennest. Die Kreaturen sind nicht auf dich vorbereitet und leisten kaum Gegenwehr.",
+            "ResultA": {
+                "Info": "Deine Spezialiserungsstufe sinkt um 1. Ziehe 2 Tr&aumlnke.",
+                "Special": "-1",
+                "Potion": "2"
+            },
+            "ResultB": {
+                "Info": "Lege 2 Tr&aumlnke ab. Deine Kampfstufe steigt um 1.",
+                "Potion": "-2",
+                "Combat": "1"
+            }
+        }
+    ]
+}
