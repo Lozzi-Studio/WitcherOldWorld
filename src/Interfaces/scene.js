@@ -16,7 +16,7 @@ export const scene = (() => {
             this._camera = null;   
             this._controls = null;
 
-            this._cache = {};
+            this._cache = new Map;
         }
 
         /**
@@ -49,11 +49,21 @@ export const scene = (() => {
 
         /**
          * Cache Data with key
-         * @param {String} keyVar 
+         * @param {string} keyVar 
          * @param {*} valueVar 
          */
         CacheData(keyVar, valueVar) {
-            this._cache[keyVar] =  valueVar;
+            console.log(keyVar);
+            this._cache.set(keyVar, valueVar);
+        }
+
+        /**
+         * 
+         * @param {string} keyVar 
+         * @returns {*}
+         */
+        GetFromCache(keyVar) {
+            return this._cache.get(keyVar);
         }
 
         get scene(){

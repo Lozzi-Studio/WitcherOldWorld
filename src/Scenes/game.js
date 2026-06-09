@@ -57,38 +57,58 @@ export const game = (() => {
             document.getElementById('game-loading-screen').style.display = 'flex';
 
             this._scene.background = new THREE.Color(0x3D342C);
-            this.#InitMap();
             this.#InitShop();
-            
+            this.#CacheGameData();
+
+        }
+
+        #CacheGameData(){
+            var promises = [];
+
+            for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").hand) {
+                let cardName = card.name;
+                promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
+            }
+            for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").deck) {
+                let cardName = card.name;
+                promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
+            }
+
+            promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
+
+            Promise.all(promises).then(() => {
+                this.#startGame();
+            });
+        }
+
+        #loadTexture(url) {
+            return new Promise(resolve => {
+                new THREE.TextureLoader().load(url, resolve);
+            });
+        }
+
+        #loadModel(url) {
+            return new Promise(resolve => {
+                new GLTFLoader().load(url, resolve);
+            });
+        }
+
+        #startGame() {
             this._entityManager.AddEntity(this._parent._currentCamera);
             this._entityManager.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
-            
+
             //Keep Order!
             this.#InitTowns();
             this.#InitPlayers();
             this._entityManager.AddEntity(new game_area_entity.GameArea());
             
-            document.getElementById('game-ui').style.display = 'block';
-            this._entityManager.AddEntity(new cardshop_entity.Cardshop());
-            
             this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
-            this.#CacheGameData();
+            this._entityManager.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
+
+            this.#InitMap();
             document.getElementById('game-loading-screen').style.display = 'none';
             document.getElementById('game-ui').style.display = 'block';
-
-        }
-
-        #CacheGameData(){
-            var loader = new THREE.TextureLoader()
-            for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").hand) {
-                console.log(card);
-                this.CacheData(card, loader.load(card.imagePath));
-            }
-            for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").deck) {
-                console.log(card);
-                this.CacheData(card.name, loader.load(card.imagePath));
-            }
-            console.log(this._cache);
         }
             
 
@@ -148,30 +168,8 @@ export const game = (() => {
          * Initialize Map and surrounding objects
          */
         #InitMap() {
-
-            const cubeEast = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 51 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
-            cubeEast.position.set(25.2,-0.3,0);
-            this._scene.add( cubeEast );
-
-            const cubeNorth = new THREE.Mesh( new THREE.BoxGeometry( 51, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
-            cubeNorth.position.set(0,-0.3,25.2);
-            this._scene.add( cubeNorth );
-
-            const cubeWest = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 51 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
-            cubeWest.position.set(-25.2,-0.3,0);
-            this._scene.add( cubeWest );
-
-            const cubeSouth = new THREE.Mesh( new THREE.BoxGeometry( 51, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
-            cubeSouth.position.set(0,-0.3,-25.2);
-            this._scene.add( cubeSouth );
-
-            const loadMap = new GLTFLoader();
-            loadMap.load("resources/assets/3D-Assets/provMap.glb", (glb) =>{
-            this._scene.add(glb.scene)});
-
-            const loadTable = new GLTFLoader();
-            loadTable.load("resources/assets/3D-Assets/bar-table.glb", (glb) =>{
-                this._scene.add(glb.scene)});
+           this._scene.add(this.GetFromCache("map"));
+           this._scene.add(this.GetFromCache("table"));
         }
 
         /**
@@ -201,6 +199,7 @@ export const game = (() => {
             displayModifier.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , 0, 0));
             displayModifier.position.set(0,8,-38.5);
             this._scene.add(displayModifier);
+            this._entityManager.AddEntity(new cardshop_entity.Cardshop());
         }
 
         set players(players) {
