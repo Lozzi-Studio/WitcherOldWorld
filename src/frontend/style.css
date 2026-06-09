@@ -545,12 +545,11 @@ p, div {
     z-index: 10;
 }
 
-
-
 #meditate-option {
     background-image: url("../../resources/assets/gen-img/town-action-meditate.webp");
     background-size: cover;
-    text-align: center;
+    font-size: 16pt;
+    font-family: Gwent;
     width: 250px;
     height: 350px;
     border-radius: 12px;
@@ -559,27 +558,39 @@ p, div {
 #fight-monster-option {
     background-image: url("../../resources/assets/gen-img/town-action-Fight-monster.webp");
     background-size: cover;
-    text-align: center;
+    font-size: 16pt;
+    font-family: Gwent;
     width: 250px;
     height: 350px;
     border-radius: 12px;
 }
 
-#explore-wilderness-option {
-    background-image: url("../../resources/assets/gen-img/town-action-explore-City.webp");
-    background-size: cover;
-    text-align: center;
-    width: 300px;
-    height: 168px;
-    border-radius: 12px;
+#explore-options {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch; 
+    gap: 8px;            
 }
 
 #explore-city-option {
+    background-image: url("../../resources/assets/gen-img/town-action-explore-City.webp");
+    background-size: cover;
+    font-size: 16pt;
+    font-family: Gwent;
+    width: 300px;
+    flex: 1;            
+    min-height: 0;
+    border-radius: 12px;
+}
+
+#explore-wilderness-option {
     background-image: url("../../resources/assets/gen-img/town-action-explore-wildernis.webp");
     background-size: cover;
-    text-align: center;
-    width: 300;
-    height: 168px;
+    font-size: 16pt;
+    font-family: Gwent;
+    width: 300px;
+    flex: 1;             
+    min-height: 0;
     border-radius: 12px;
 }
 
