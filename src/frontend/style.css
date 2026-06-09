@@ -355,20 +355,32 @@ p, div {
     opacity: 0.4;
 }
 
+/*Für phase 2 Menü */
+.option--disabled {
+    position: relative;
+    pointer-events: none;
+    cursor: var(--cursor-default), auto;
+}
 
+.option--disabled::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    backdrop-filter: grayscale(100%) brightness(0.5);
+    z-index: 0;
+}
 
-
-
-
-
+.option--disabled > * {
+    position: relative;
+    z-index: 1;
+}
 
 #phase-window {
     position: fixed;
     top: 0px;
     right: 0px;
-
     display: inline-flex;
-    /*width: 200px;*/
     width: fit-content;
     max-width: 200px;
 
@@ -382,7 +394,6 @@ p, div {
 #phase-text {
     font-size: 24pt;
     font-family: Gwent;
-    margin-bottom: -3px; /* needed for gwent font */
     color: var(--color-primary);
 }
 
