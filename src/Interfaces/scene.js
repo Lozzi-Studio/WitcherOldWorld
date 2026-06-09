@@ -53,7 +53,6 @@ export const scene = (() => {
          * @param {*} valueVar 
          */
         CacheData(keyVar, valueVar) {
-            console.log(keyVar);
             this._cache.set(keyVar, valueVar);
         }
 
