@@ -29,7 +29,7 @@
     </div>
 
     <div id="game-ui" style="display: none;"> 
-        <div class="container container--row container--neutral borders--bottom-right" id="player-window">
+        <div class="container container--row container--neutral borders--bottom-right position-top-left" id="player-window">
             <div class="container container--col">
                 <div class="container container--col" id="avatar-name-container">
                     <div class="avatar-container avatar-container--big">
@@ -50,32 +50,44 @@
                         <div class="text-single-number --fancy-font" id="trophy-amount">-</div>
                     </div>
                 </div>
-                <div class="container container--row container--justify inner-borders inner-borders--neutral" id="player-shield-container"></div>
+                <div class="line line--neutral"></div>
+                <div class="container container--row container--justify container--no-padding" id="player-shield-container"></div>
             </div>
             <div class="container container--col container--no-padding" id="skills-container">
                 <div class="container container--row" id="skills-header">
-                        <div class="material-symbols-outlined dummy">info</div>
-                        <div class="--fancy-font">Skills</div>
+                        <div class="--fancy-font" id="skills-header-text">Skills</div>
                         <div class="material-symbols-outlined" id="expand-skills-button">info</div>
                 </div>
                 <div class="container container--row">
-                    <div class="container container--col inner-borders inner-borders--neutral player-stats" id="combat-lvl">
-                        <div class="material-symbols-outlined filled" id="combat-icon">swords</div>
+                    <div class="container container--col container--no-padding">
+                        <div class="textbox textbox--fill button levelup-button" id="combat-levelup-button">+</div>
+                        <div class="container container--col inner-borders inner-borders--neutral player-stats" id="combat-lvl">
+                            <div class="material-symbols-outlined filled" id="combat-icon">swords</div>
+                        </div>
                     </div>
-                    <div class="container container--col inner-borders inner-borders--neutral player-stats" id="defense-lvl">
-                        <div class="material-symbols-outlined filled" id="defense-icon">shield</div>
+                    <div class="container container--col container--no-padding">
+                        <div class="textbox textbox--fill button levelup-button" id="defense-levelup-button">+</div>
+                        <div class="container container--col inner-borders inner-borders--neutral player-stats" id="defense-lvl">
+                            <div class="material-symbols-outlined filled" id="defense-icon">shield</div>
+                        </div>
                     </div>
-                    <div class="container container--col inner-borders inner-borders--neutral player-stats" id="alchemy-lvl">
-                        <div class="material-symbols-outlined filled" id="alchemy-icon">air_freshener</div>
+                    <div class="container container--col container--no-padding">
+                        <div class="textbox textbox--fill button levelup-button" id="alchemy-levelup-button">+</div>
+                        <div class="container container--col inner-borders inner-borders--neutral player-stats" id="alchemy-lvl">
+                            <div class="material-symbols-outlined filled" id="alchemy-icon">air_freshener</div>
+                        </div>
                     </div>
-                    <div class="container container--col inner-borders inner-borders--neutral player-stats" id="special-lvl">
-                        <div class="material-symbols-outlined filled" id="special-icon">star_shine</div>
+                    <div class="container container--col container--no-padding">
+                        <div class="textbox textbox--fill button levelup-button" id="special-levelup-button">+</div>
+                        <div class="container container--col inner-borders inner-borders--neutral player-stats" id="special-lvl">
+                            <div class="material-symbols-outlined filled" id="special-icon">star_shine</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="container container--col container--neutral borders--bottom-left" id="phase-window">
+        <div class="container container--col container--neutral borders--bottom-left position-top-right" id="phase-window">
             <div class="container container--row container--no-padding" id="avatars-container"></div>
             <div>
                 <div class="container container--row"><p id="phase-text">PHASE ID</p></div>
@@ -84,10 +96,8 @@
             <div class="textbox textbox--fill button" id="end-phase-button">Phase beenden</div>
         </div>
 
-        <div class="container container--cols" id="discard-modal">
-            
+        <div class="container container--cols position-bottom-right" id="discard-modal">
             <div class="container container--row" id="hand-window"></div>
-
             <div class="container container--row modal-button-row" id="discard-buttons">
                 <div class="textbox textbox--fill button" id="button-discard">
                     Ausgewählte Karten ablegen
@@ -121,10 +131,30 @@
         </div>
 
 
-        <div class="container container--col borders--top-right container--neutral" id="debug-menu">
+        <div class="container container--col borders--top-right container--neutral position-bottom-left" id="debug-menu">
             <div class="--fancy-font">Debug Menu</div>
             <div class="textbox textbox--fill button" id="debug-next-phase-button">Skip Phase</div>
+            <div class="textbox textbox--fill button" id="debug-upgrade-skill-button">Upgrade Skill</div>
         </div>
+
+        <div class="container container--neutral container--col borders--all" id="choose-skill-menu" style="display: none;">
+            <div class="--fancy-font">Level-Up: Wähle einen Skill</div>
+            <div class="container container--row">
+                <div class="container container--col">
+                    <div class="textbox textbox--fill button levelup-button" id="combat-levelup-button">+</div>
+                    <div class="container container--col inner-borders inner-borders--neutral">
+                        combat
+                    </div>
+                </div>
+                <div class="container container--col">
+                    <div class="textbox textbox--fill button levelup-button" id="defense-levelup-button">+</div>
+                    <div class="container container--col inner-borders inner-borders--neutral">
+                        defense
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     
     

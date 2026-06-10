@@ -93,6 +93,37 @@ p, div {
     margin:0px;
 }
 
+.position-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.position-top-left{
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.position-top-right{
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.position-bottom-left{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.position-bottom-right{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
 .container {
     display: flex;
     flex-wrap: nowrap;
@@ -169,11 +200,16 @@ p, div {
     border-color: var(--color-primary);
 }
 
-#player-window {
-    position: fixed;
-    left: 0px;
-    top: 0px;
+.line {
+    height: 1px;
+    width: 100%;
+}
 
+.line--neutral {
+    background-color: var(--color-primary);
+}
+
+#player-window {
     gap: 4px;
 
     align-items: center;
@@ -268,6 +304,13 @@ p, div {
 
 .textbox--fancy-font > p {
     font-family: Gwent;
+}
+
+.levelup-button {
+    font-size: 24px;
+    padding: 0;
+    height: 32px;
+    aspect-ratio: 1;
 }
 
 .--fancy-font {
@@ -382,10 +425,6 @@ p, div {
 
 
 #phase-window {
-    position: fixed;
-    top: 0px;
-    right: 0px;
-
     display: inline-flex;
     /*width: 200px;*/
     width: fit-content;
@@ -427,9 +466,6 @@ p, div {
 
 #discard-modal {
     border-radius: 10px;
-    position: absolute;
-    bottom: 20px;
-    right: 20px; 
     z-index: 1000;
     
     display: flex;
@@ -590,12 +626,25 @@ p, div {
 }
 
 #button-end-phase {
-    display:none;
+    display: none;
 }
 
+#combat-levelup-button {
+    display: none;
+}
 
-#debug-menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+#defense-levelup-button {
+    display: none;
+}
+
+#alchemy-levelup-button {
+    display: none;
+}
+
+#special-levelup-button {
+    display: none;
+}
+
+#expand-skills-button {
+    display: block;
 }

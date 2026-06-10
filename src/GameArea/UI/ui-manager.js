@@ -1,13 +1,14 @@
 import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
 import { shiftLeft } from "three/tsl";
+import { player_skills } from "../../Players/player-skills";
 
 export const ui_manager = (() => {
 
     class UIManager extends component.Component {
         #maxSkillLevel;
         #numberOfPhaseOptions;
-        #phasethreeparttwo;
+        #phaseThreePartTwo;
 
         /**
          * Manages API between UI and Backend
@@ -16,7 +17,7 @@ export const ui_manager = (() => {
             super();
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
-            this.#phasethreeparttwo = false;
+            this.#phaseThreePartTwo = false;
 
             let button = document.getElementById("town-button");
             this.handleMoveClick = () => {
@@ -41,7 +42,7 @@ export const ui_manager = (() => {
                     this.FindEntity("Cardshop")
                         .FindComponent("CardshopManager")
                         .Broadcast(broadcasts.BroadcastTemplateCardShop.BuyCardFromShop());
-                        this.#phasethreeparttwo = false;
+                        this.#phaseThreePartTwo = false;
                         this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.StopFocusShop());
                 }
             }
@@ -53,7 +54,7 @@ export const ui_manager = (() => {
                     .FindComponent("GameManager")
                     .Broadcast(broadcasts.BroadcastTemplateGame.DiscardSelectedCards());
                     this.#DisableDiscardButtons();
-                    this.#phasethreeparttwo = true;
+                    this.#phaseThreePartTwo = true;
                     this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.FocusOnShop());
                 }
             }    
@@ -62,7 +63,7 @@ export const ui_manager = (() => {
                 let button = document.getElementById("button-skip");
                 if (!(button.classList.contains("button--inactive"))){
                     this.#DisableDiscardButtons();
-                    this.#phasethreeparttwo = true;
+                    this.#phaseThreePartTwo = true;
                     this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.FocusOnShop());
                 }
             }
@@ -71,6 +72,13 @@ export const ui_manager = (() => {
             this.HandleNextPhaseClick = () => {
                 if (skipButton.classList.contains("button--inactive") == false) {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+                }
+            };
+
+            let upgradeSkillButton = document.getElementById("debug-upgrade-skill-button");
+            this.HandleUpgradeSkillClick = () => {
+                if (skipButton.classList.contains("button--inactive") == false) {
+                    this.#LoadSkillDecider();
                 }
             };
         }
@@ -101,6 +109,7 @@ export const ui_manager = (() => {
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
+            document.getElementById("debug-upgrade-skill-button").addEventListener("click", this.HandleUpgradeSkillClick);
         }
 
         /**
@@ -860,20 +869,45 @@ export const ui_manager = (() => {
             }
         }
 
+        
+
+        #InitLevelupButton(skill) {
+            let skillName = skill.toIdentifier().toLowerCase();
+            let levelupButton = document.getElementById(skillName + "-levelup-button");
+            levelupButton.style.display = "block";
+
+            levelupButton.addEventListener("click", () => {
+                let player = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
+                player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase", true));
+            });
+        }
+
         /**
          * 
          * @param {object} msg 
          */
         #LoadSkillDecider(msg) {
-            //TODO as seperate component
-            console.log("Choose A Skill!")
+            let skillWindow = document.getElementById("player-window");
+            skillWindow.classList.remove("borders--bottom-right", "position-top-left");
+            skillWindow.classList.add("borders--all", "position-center");
+
+            let heading = document.getElementById("skills-header-text");
+            heading.innerHTML = "Level-Up: Wähle einen Skill";
+
+            let expandButton = document.getElementById("expand-skills-button");
+            expandButton.style.display = "none";
+
+            this.#InitLevelupButton(player_skills.Skill.Combat());
+            this.#InitLevelupButton(player_skills.Skill.Defense());
+            this.#InitLevelupButton(player_skills.Skill.Alchemy());
+            this.#InitLevelupButton(player_skills.Skill.Special());
         }
 
         /**
          * @returns {bool}
          */
         get phasethreeparttwo() {
-            return this.#phasethreeparttwo;
+            return this.#phaseThreePartTwo;
         }
   
     }
