@@ -74,6 +74,11 @@ export const game = (() => {
                 promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
             }
 
+            promises.push(this.#loadMusic("resources/sounds/MainMenuTheme.mp3").then(result => {this.CacheData("MainMenuTheme", result)}));
+            promises.push(this.#loadMusic("resources/sounds/MainTheme.mp3").then(result => {this.CacheData("MainTheme", result)}));
+            promises.push(this.#loadMusic("resources/sounds/Battle_Monster.mp3").then(result => {this.CacheData("BattleMonsterTheme", result)}));
+            promises.push(this.#loadMusic("resources/sounds/ChaseTheme.mp3").then(result => {this.CacheData("ChaseTheme", result)}));
+
             promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
 
@@ -91,6 +96,12 @@ export const game = (() => {
         #loadModel(url) {
             return new Promise(resolve => {
                 new GLTFLoader().load(url, resolve);
+            });
+        }
+
+        #loadMusic(url) {
+            return new Promise(resolve => {
+                new THREE.AudioLoader().load(url, resolve);
             });
         }
 
