@@ -869,7 +869,11 @@ export const ui_manager = (() => {
             }
         }
 
-        
+        #HideLevelupButton(skill) {
+            let skillName = skill.toIdentifier().toLowerCase();
+            let levelupButton = document.getElementById(skillName + "-levelup-button");
+            levelupButton.style.display = "none";
+        }
 
         #InitLevelupButton(skill) {
             let skillName = skill.toIdentifier().toLowerCase();
@@ -877,8 +881,16 @@ export const ui_manager = (() => {
             levelupButton.style.display = "block";
 
             levelupButton.addEventListener("click", () => {
-                let player = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
-                player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase", true));
+                if (!levelupButton.classList.contains("button--inactive")) {
+                    let player = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
+                    player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase", true));
+
+                    for (let buttonID of (["combat-levelup-button", "defense-levelup-button", "alchemy-levelup-button", "special-levelup-button"])) {
+                        document.getElementById(buttonID).classList.add("button--inactive");
+                    }
+
+                    document.getElementById("skill-levelup-continue-button").classList.remove("button--inactive");
+                }
             });
         }
 
@@ -887,20 +899,48 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #LoadSkillDecider(msg) {
+            this.#HideTownInfo(msg);
+
             let skillWindow = document.getElementById("player-window");
             skillWindow.classList.remove("borders--bottom-right", "position-top-left");
             skillWindow.classList.add("borders--all", "position-center");
 
             let heading = document.getElementById("skills-header-text");
-            heading.innerHTML = "Level-Up: Wähle einen Skill";
+            heading.innerHTML = "Wähle einen Skill";
 
             let expandButton = document.getElementById("expand-skills-button");
             expandButton.style.display = "none";
 
-            this.#InitLevelupButton(player_skills.Skill.Combat());
-            this.#InitLevelupButton(player_skills.Skill.Defense());
-            this.#InitLevelupButton(player_skills.Skill.Alchemy());
-            this.#InitLevelupButton(player_skills.Skill.Special());
+            let skills = [
+                player_skills.Skill.Combat(),
+                player_skills.Skill.Defense(),
+                player_skills.Skill.Alchemy(),
+                player_skills.Skill.Special()
+            ]
+
+            for (let skill of skills) {
+                this.#InitLevelupButton(skill);
+            }
+
+            let continueButton = document.getElementById("skill-levelup-continue-button");
+            continueButton.style.display = "block";
+            continueButton.classList.add("button--inactive");
+
+            continueButton.addEventListener("click", () => {
+                if (!continueButton.classList.contains("button--inactive")) {
+                    for (let skill of skills) {
+                        this.#HideLevelupButton(skill)
+                    }
+                }
+                continueButton.style.display = "none";
+
+                skillWindow.classList.remove("borders--all", "position-center");
+                skillWindow.classList.add("borders--bottom-right", "position-top-left");
+
+                heading.innerHTML = "Skills";
+
+                expandButton.style.display = "block";
+            });
         }
 
         /**

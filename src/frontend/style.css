@@ -648,3 +648,7 @@ p, div {
 #expand-skills-button {
     display: block;
 }
+
+#skill-levelup-continue-button {
+    display: none;
+}
