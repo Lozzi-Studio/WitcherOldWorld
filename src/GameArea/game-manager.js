@@ -3,6 +3,8 @@ import { component } from "../Interfaces/component";
 import { cards } from "../Cards/card-templates";
 import { card_options } from "../Cards/card-options";
 import { card } from "../Cards/card";
+import { region } from "./region";
+import { monster_entity } from "../Monster/monster-entity";
 
 export const game_manager = (() => {
 
@@ -13,6 +15,7 @@ export const game_manager = (() => {
         #selection;
         #selectedTown;
         #currentShopSelection;
+        #currentMonster;
         
         /**
          * Manages game stages and game behaviour
@@ -26,6 +29,7 @@ export const game_manager = (() => {
             this.#selection = [];
             this.#selectedTown = null;
             this.#currentShopSelection = null;
+            this.#currentMonster = new Map();
         }
 
         /**
@@ -227,8 +231,21 @@ export const game_manager = (() => {
         #OnGameStart() {
             // give start deck to players
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
+            let playerTownPositions = [];
             for (let player of players) {
                 player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
+                playerTownPositions.push(player.town);
+            }
+            let regions = [region.Region.Forest(), region.Region.Mountain(), region.Region.River()];
+            let i = 0;
+   
+            for (let region of regions) {
+
+                const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(region, playerTownPositions, false));
+                this.#currentMonster.set(region.toIdentifier(), newMonster);
+                playerTownPositions.push(newMonster.town);
+                i += 1;
+                this._parent._parent.AddEntity(newMonster, "Monster_" + region.toIdentifier());
             }
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
         }

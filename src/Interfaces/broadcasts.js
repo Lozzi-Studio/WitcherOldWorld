@@ -94,7 +94,7 @@ export const broadcasts = (() => {
         }
 
         /**
-         * @param {string} deck - Options: "Player", "Shop"
+         * @param {string} deck - Options: "Player", "Shop", "Monster"
          * @returns {object}
         */
         static LoadCarddeck(deck) {

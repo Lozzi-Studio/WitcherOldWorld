@@ -13,7 +13,7 @@ export const carddeck_component = (() => {
         #cardPotion;
         #cardPotionLimit
         #handLimit;
-        #isShop;
+        #noUiUpdate;
 
         /**
          * A component to track player cards
@@ -27,7 +27,7 @@ export const carddeck_component = (() => {
             this.#cardPotion = [];
             this.#cardPotionLimit = 4;
             this.#handLimit = handLimit;
-            this.#isShop = false;
+            this.#noUiUpdate = false;
         }
 
         /**
@@ -70,7 +70,7 @@ export const carddeck_component = (() => {
                     this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
                     break;
                 case "Shop":
-                    this.#isShop = true;
+                    this.#noUiUpdate = true;
                     this.#cardDeck.push(cards.CardTemplates.getDeckung());
                     this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt());
                     this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen());
@@ -82,6 +82,9 @@ export const carddeck_component = (() => {
                     this.#cardDeck.push(cards.CardTemplates.getSchockwelle());
                     this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard());
                     break;
+                case "Monster":
+                    this.#noUiUpdate = true;
+                    this.#cardDeck.push({"OptionA": 1, "OptionB": 2})
             }
             //TODO
         }
@@ -98,14 +101,14 @@ export const carddeck_component = (() => {
                             this.#Shuffle({includeDiscard: true});
                         } 
                         this.#cardHand.push(this.#cardDeck.pop());
-                        if (!this.#isShop) {
+                        if (!this.#noUiUpdate) {
                             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
                         }
                         break;
                     case "Discard":
                         if (this.#cardDiscard.length != 0) {
                             this.#cardHand.push(this.#cardDiscard.pop())
-                            if (!this.#isShop) {
+                            if (!this.#noUiUpdate) {
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
                             }
                         }
@@ -128,7 +131,7 @@ export const carddeck_component = (() => {
                 case "Hand":
                     if (this.#cardHand.length < this.#handLimit) {
                         this.#cardHand.push(msg.card);
-                        if (!this.#isShop) {
+                        if (!this.#noUiUpdate) {
                             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
                         }
                         }
