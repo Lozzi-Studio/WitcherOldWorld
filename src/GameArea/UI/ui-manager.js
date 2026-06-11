@@ -62,6 +62,7 @@ export const ui_manager = (() => {
             this.handleSkipClick = () => {
                 let button = document.getElementById("button-skip");
                 if (!(button.classList.contains("button--inactive"))){
+                    this.FindEntity("GameArea").FindComponent("GameManager").Broadcast(broadcasts.BroadcastTemplateGame.DrawCardsUntilHandFull());
                     this.#DisableDiscardButtons();
                     this.#phasethreeparttwo = true;
                     this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.FocusOnShop());
