@@ -197,14 +197,14 @@ export const game_manager = (() => {
          * @returns
          */
         #DrawCardsUntilHandFull(){
-            deckLength = this.#currentPlayer.FindComponent("Carddeck").hand.length;
+            const deckLength = this.#currentPlayer.FindComponent("Carddeck").hand.length;
 
             const drawLessStatus = status_templates.StatusTemplates.drawLessCards(status_options.Timing.EndOfTurn());
             const drawMoreStatus = status_templates.StatusTemplates.drawMoreCards(status_options.Timing.EndOfTurn());
-            drawLess = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawLessStatus);
-            drawMore = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawMoreStatus);
+            const drawLess = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawLessStatus);
+            const drawMore = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawMoreStatus);
 
-            amountToDraw = 3-deckLength-drawLess+drawMore;
+            let amountToDraw = 3-deckLength-drawLess+drawMore;
             if(amountToDraw <= 0){
                 return;
             }
