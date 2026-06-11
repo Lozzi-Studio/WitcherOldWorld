@@ -21,7 +21,7 @@ export const cardshop_manager = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponent() {
-            this.#UpdateShopSlots({});
+            this._RegisterHandler('game.start', (msg) => { this.#UpdateShopSlots(msg)});
             this._RegisterHandler('cardshop.select', (msg) => {this.#SelectSlot(msg)});
             this._RegisterHandler('cardshop.buy', (msg) => {this.#BuySlot(msg)});
             this._RegisterHandler('card.drawCard', (msg) => {this.#UpdateShopSlots(msg)})

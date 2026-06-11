@@ -363,6 +363,14 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @returns {object}
+         */
+        static DrawCardsUntilHandFull(){
+            return {topic: 'game.drawUntilFull'}
+        }
+
+        /**
+         * 
          * @param {bool} active 
          * @returns {object}
          */

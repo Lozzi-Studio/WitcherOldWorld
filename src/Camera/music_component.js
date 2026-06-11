@@ -47,10 +47,9 @@ export const music_component = (() => {
          * @param {object} msg 
          */
         #PlayMainMenuTheme(msg) {
-            this.#loader.load( 'resources/sounds/MainMenuTheme.mp3',(buffer) => {
-                this.#maxVolume = 0.1;
-                this.#loadTrack(buffer);
-            });
+            var buffer = this._parent.GetFromCache("MainMenuTheme")
+            this.#maxVolume = 0.1;
+            this.#loadTrack(buffer);
         }
 
         /**
@@ -58,10 +57,9 @@ export const music_component = (() => {
          * @param {object} msg 
          */
         #PlayMainTheme(msg) {
-            this.#loader.load( 'resources/sounds/MainTheme.mp3',(buffer) => {
-                this.#maxVolume = 0.05;
-                this.#loadTrack(buffer);
-            });
+            var buffer = this._parent.GetFromCache("MainTheme")
+            this.#maxVolume = 0.05;
+            this.#loadTrack(buffer);
         }
 
         /**
@@ -69,10 +67,9 @@ export const music_component = (() => {
          * @param {object} msg 
          */
         #PlayBattleMonsterTheme(msg){
-            this.#loader.load( 'resources/sounds/Battle_Monster.mp3',(buffer) => {
-                this.#maxVolume = 0.05;
-                this.#loadTrack(buffer);
-            });
+            var buffer = this._parent.GetFromCache("BattleMonsterTheme")
+            this.#maxVolume = 0.05;
+            this.#loadTrack(buffer);
         }
 
         /**
@@ -80,10 +77,9 @@ export const music_component = (() => {
          * @param {object} msg 
          */
         #PlayChaseTheme(msg) {
-            this.#loader.load( 'resources/sounds/ChaseTheme.mp3',(buffer) => {
-                this.#maxVolume = 0.08;
-                this.#loadTrack(buffer);
-            });
+            var buffer = this._parent.GetFromCache("ChaseTheme")
+            this.#maxVolume = 0.08;
+            this.#loadTrack(buffer);
         }
 
         /**

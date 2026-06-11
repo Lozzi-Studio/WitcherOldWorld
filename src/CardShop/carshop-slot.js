@@ -103,7 +103,7 @@ export const cardshop_slot = (() => {
         UpdateSlot(newCard) {
             this.#card = newCard;
             try {
-                let texture = new THREE.TextureLoader().load(newCard.imagePath);
+                let texture = this._parent.GetFromCache(newCard.name);
                 this.#cardBox.material = new THREE.MeshBasicMaterial( { map: texture});
             } catch(error) {
                 this.#cardBox.material = new THREE.MeshBasicMaterial();

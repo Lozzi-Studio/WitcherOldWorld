@@ -15,6 +15,10 @@
 </head>
 <body style="margin-top: 0; margin-left: 0;">
     <script type="module" src="./src/main.js"></script>
+    <div id="game-loading-screen" style="display: none;">
+        <div id="loading_tip" class="--fancy-font"></div>
+        <div class="loader"></div>
+    </div>
 
     <div id="placeholder" style="display: none;" > </div>
 
@@ -27,6 +31,7 @@
 		</video>
 
     </div>
+
 
     <div id="game-ui" style="display: none;"> 
         <div class="container container--row container--neutral borders--bottom-right" id="player-window">
@@ -99,10 +104,10 @@
 
             <div class="container container--row modal-button-row" id="discard-buttons">
                 <div class="textbox textbox--fill button" id="button-discard">
-                    Ausgewählte Karten ablegen
+                    Ablegen & Nachziehen
                 </div>
                 <div class="textbox textbox--fill button" id="button-skip">
-                    Überspringen
+                    Überspringen & Nachziehen
                 </div>
             </div>  
             
