@@ -3,6 +3,9 @@ import { component } from "../Interfaces/component";
 import { cards } from "../Cards/card-templates";
 import { card_options } from "../Cards/card-options";
 import { card } from "../Cards/card";
+import { player_status } from "../Players/player-status";
+import { status_templates } from "../Players/status-templates";
+import { status_options } from "../Players/status-options";
 
 export const game_manager = (() => {
 
@@ -42,6 +45,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
             this._RegisterHandler('cardshop.buy', (msg) => {this.#OnCardshopBuy(msg)});
             this._RegisterHandler('game.discardSelectedCards',() => {this.DiscardSelectedCards()});
+            this._RegisterHandler('game.drawUntilFull',()=> {this.#DrawCardsUntilHandFull()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -188,9 +192,19 @@ export const game_manager = (() => {
 
         }
 
+        /**
+         * Calculates how many cards should be drawn at the end of the round and adds them to the hand deck
+         * @returns
+         */
         #DrawCardsUntilHandFull(){
             deckLength = this.#currentPlayer.FindComponent("Carddeck").hand.length;
-            amountToDraw = 3-deckLength;
+
+            const drawLessStatus = status_templates.StatusTemplates.drawLessCards(status_options.Timing.EndOfTurn());
+            const drawMoreStatus = status_templates.StatusTemplates.drawMoreCards(status_options.Timing.EndOfTurn());
+            drawLess = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawLessStatus);
+            drawMore = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawMoreStatus);
+
+            amountToDraw = 3-deckLength-drawLess+drawMore;
             if(amountToDraw <= 0){
                 return;
             }
