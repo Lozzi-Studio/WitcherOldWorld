@@ -122,7 +122,7 @@ export const game_manager = (() => {
             for (let card_slot of this.#selection) {
                 selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
             }
-            if (selectedCards.length > 0 && this.#selectedTown) {
+            if (selectedCards.length === 1 && this.#selectedTown) {
                 let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
                 let allowedCard = this.ValidateMove(this.#selectedTown, selectedCards).allowedCard;
                 if (moveAllowed){
@@ -179,6 +179,10 @@ export const game_manager = (() => {
          * @returns {object}
          */
         ValidateMove(){
+            if (this.#selection.length !== 1) {
+                return { moveAllowed: false, allowedCard: null };
+            }
+            
             if (this.#selectedTown != null) {
                 var town = this.#selectedTown;
                 for (let card_slot of this.#selection) {
