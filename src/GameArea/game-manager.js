@@ -182,7 +182,7 @@ export const game_manager = (() => {
             if (this.#selection.length !== 1) {
                 return { moveAllowed: false, allowedCard: null };
             }
-            
+
             if (this.#selectedTown != null) {
                 var town = this.#selectedTown;
                 for (let card_slot of this.#selection) {
@@ -209,10 +209,9 @@ export const game_manager = (() => {
             const drawMore = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawMoreStatus);
 
             let amountToDraw = 3-deckLength-drawLess+drawMore;
-            if(amountToDraw <= 0){
-                return;
-            }
-            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
+            if(amountToDraw > 0){ 
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
+            } 
         }
 
         /**
