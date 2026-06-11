@@ -4,6 +4,7 @@ import { placeholder_entity } from '../Start_Placeholder/placeholder_entity';
 import { camera_entity } from '../Camera/camera_entity';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import data from '../../resources/database/loadingScreen_tooltips.json'
 
 //Die existiert nur damit es ne Start scene gibt in der der USer klicken muss, damit die chrome audio policy erfüllt ist. Macht sonst nichts und startet enfach nur das Hauptmenu.
 
