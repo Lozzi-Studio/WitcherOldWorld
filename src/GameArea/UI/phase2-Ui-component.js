@@ -12,7 +12,6 @@ export const phase_two_ui_component = (() => {
 
         InitComponent(){
             this._RegisterHandler('game.phaseTwo', (msg) => {this.#OnPhaseTwoStart(msg)});
-            //this._RegisterHandler('game.phaseTwoEnd', (msg) => {this.#onPhaseTwoEnd(msg)});
             document.getElementById("meditate-option").addEventListener("click", () => {this.#onBtnClickMeditate()});
             
         }
