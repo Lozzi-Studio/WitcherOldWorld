@@ -261,6 +261,14 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @returns {object}
+         */
+        static closePhaseTwoUI(){
+            return {topic: 'game.phaseTwoEnd'};
+        }
+
+        /**
+         * 
          * @param {player_entity.Player} player
          * @returns {object}
         */
