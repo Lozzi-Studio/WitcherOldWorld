@@ -79,6 +79,13 @@ export const game_manager = (() => {
          */
         #NextTurnPhase(msg){
             const nextPlayer = this.#currentRound.next();
+
+            if ( this.#currentRound.toIdentifier() == 2) {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.loadPhaseTwoUi());
+            } else if (this.#currentRound.toIdentifier() == 1 || this.#currentRound.toIdentifier() == 3) {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.closePhaseTwoUI());
+            }
+            
             if (nextPlayer) {
                 for (let card_slot of this.#selection) {
                     this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
