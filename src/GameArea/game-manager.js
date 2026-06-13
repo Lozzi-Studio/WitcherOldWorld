@@ -137,12 +137,16 @@ export const game_manager = (() => {
         }
 
         DiscardSelectedCards(){
+            let discardedCards = []
             if (!(this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3)){
                 for (let card_slot of this.#selection) {
+                    discardedCards.push(card_slot)
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot], "Discard"));
                 }
 
                 this.#selection = [];
+                let discardMessage = " hat " + discardedCards.length + " Karte/n abgeworfen";
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(discardMessage));
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
@@ -211,6 +215,8 @@ export const game_manager = (() => {
             let amountToDraw = 3-deckLength-drawLess+drawMore;
             if(amountToDraw > 0){ 
                 this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
+                let drawMessage = " hat " + amountToDraw + " Karte/n gezogen";
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(drawMessage));
             } 
         }
 

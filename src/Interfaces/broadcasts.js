@@ -473,6 +473,16 @@ export const broadcasts = (() => {
         }
     }
 
+    class BroadcastTemplateNotification {
+        /**
+         * @param {string} message
+         * @returns {object}
+         */
+        static CustomNotification(message) {
+            return {topic: 'notification.custom', message: message}
+        }
+    }
+
     return {
         BroadcastTemplatePlayer : BroadcastTemplatePlayer,
         BroadcastTemplateSkills : BroadcastTemplateSkills,
@@ -481,6 +491,7 @@ export const broadcasts = (() => {
         BroadcastTemplateTown : BroadcastTemplateTown,
         BroadcastTemplateCamera : BroadcastTemplateCamera,
         BroadcastTemplateMusic: BroadcastTemplateMusic,
-        BroadcastTemplateCardShop: BroadcastTemplateCardShop
+        BroadcastTemplateCardShop: BroadcastTemplateCardShop,
+        BroadcastTemplateNotification : BroadcastTemplateNotification
     }
 })();

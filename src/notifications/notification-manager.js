@@ -33,6 +33,7 @@ export const notifaction_manager = (() => {
             this._RegisterHandler('game.meditate', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('skill.changeLevel', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('player.move', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('notification.custom', (msg) => {this.#QueueNotification(msg)});
         }
 
         #QueueNotification(msg) {
@@ -68,6 +69,9 @@ export const notifaction_manager = (() => {
                         this.#notificationQueue.push(moveText);
                         notificationAdded = true; 
                     }
+                    break;
+                case 'notification.custom':
+                    this.#notificationQueue.push(currentPlayer.playerName + msg.message);
                     break;
             }
             if (notificationAdded) {
