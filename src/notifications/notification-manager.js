@@ -36,21 +36,32 @@ export const notifaction_manager = (() => {
 
         #QueueNotification(msg) {
             //TODO an Luca: Message anpassen an was passiert ist und welcher spieler (entferne das beispiel 'game.nextPhase' gerne)
-            this.#changeIncomingBanners(1);
             var currentPlayer = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
+            var currentPhase = this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() + 1;
+            let notificationAdded = false;
+
             switch(msg.topic) {
                 case 'game.nextPhase':
-                    this.#notificationQueue.push(currentPlayer.playerName + " hat die nächste Phase gestartet");
+                    if(currentPhase != 4){
+                        this.#notificationQueue.push(currentPlayer.playerName + " hat Phase " + currentPhase + " gestartet");
+                        notificationAdded = true;
+                    }
                     break;
                 case 'game.nextPlayer':
-                    this.#notificationQueue.push(msg.player.playerName + "ist am Zug");
+                    this.#notificationQueue.push(msg.player.playerName + " ist am Zug");
+                    notificationAdded = true;
                     break;
                 case 'game.meditate':
-                    this.#notificationQueue.push(currentPlayer.playerName + "hat für die Fähigkeit " + msg.skill + " meditiert.");
+                    this.#notificationQueue.push(currentPlayer.playerName + " hat für die Fähigkeit " + msg.skill + " meditiert.");
+                    notificationAdded = true;
                     break;
                 case 'skill.changeLevel':
                     this.#notificationQueue.push(currentPlayer.playerName + " hat die Fähigkeit " + msg.skill.toGermanIdentifier() + " verbessert.");
+                    notificationAdded = true;
                     break;
+            }
+            if (notificationAdded) {
+                this.#changeIncomingBanners(1);
             }
         }
 
