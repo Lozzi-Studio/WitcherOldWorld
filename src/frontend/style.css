@@ -358,6 +358,7 @@ p, div {
 /*Für phase 2 Menü */
 .option--disabled {
     position: relative;
+    color: #000000;
     pointer-events: none;
     cursor: var(--cursor-default), auto;
 }
@@ -559,8 +560,9 @@ p, div {
 #meditate-option {
     background-image: url("../../resources/assets/gen-img/town-action-meditate.webp");
     background-size: cover;
-    font-size: 16pt;
+    font-size: 24pt;
     font-family: Gwent;
+    color: #ffffff;
     width: 250px;
     height: 350px;
     border-radius: 12px;
@@ -569,7 +571,8 @@ p, div {
 #fight-monster-option {
     background-image: url("../../resources/assets/gen-img/town-action-Fight-monster.webp");
     background-size: cover;
-    font-size: 16pt;
+    font-size: 24pt;
+    color: #ffffff;
     font-family: Gwent;
     width: 250px;
     height: 350px;
@@ -586,7 +589,7 @@ p, div {
 #explore-city-option {
     background-image: url("../../resources/assets/gen-img/town-action-explore-City.webp");
     background-size: cover;
-    font-size: 16pt;
+    font-size: 22pt;
     font-family: Gwent;
     width: 300px;
     flex: 1;            
@@ -597,7 +600,7 @@ p, div {
 #explore-wilderness-option {
     background-image: url("../../resources/assets/gen-img/town-action-explore-wildernis.webp");
     background-size: cover;
-    font-size: 16pt;
+    font-size: 22pt;
     font-family: Gwent;
     width: 300px;
     flex: 1;             

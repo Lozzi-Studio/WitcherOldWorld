@@ -34,6 +34,16 @@ export const phase_two_ui_component = (() => {
             
         }
 
+        #exploreCityOption(){
+            //TODO 
+        }
+
+        #exploreWildernessOption(){
+            //TODO 
+        }
+
+
+
         #onBtnClickMeditate(){
             const currentPlayer = this.FindComponent('GameManager').currentPlayer;
             const canMeditate = currentPlayer.FindComponent("PlayerSkills").canMeditate();
