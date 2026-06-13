@@ -20,9 +20,9 @@ export const notifaction_manager = (() => {
             this.#reverse = false;
             this.#countIncomingBanner = 0;
 
-            //die beiden relevanten werte für finetuning (passen gerne noch das html aussehen an xD)
+            //die beiden relevanten werte für finetuning (pass gerne noch das html aussehen an xD)
             this.#maxFadeDuration = 1;
-            this.#showTime = 2;
+            this.#showTime = 1;
         }
 
         InitComponent() {
@@ -32,6 +32,7 @@ export const notifaction_manager = (() => {
             this._RegisterHandler('game.nextPlayer', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('skill.changeLevel', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('player.move', (msg) => {this.#QueueNotification(msg)});
         }
 
         #QueueNotification(msg) {
@@ -58,6 +59,15 @@ export const notifaction_manager = (() => {
                 case 'skill.changeLevel':
                     this.#notificationQueue.push(currentPlayer.playerName + " hat die Fähigkeit " + msg.skill.toGermanIdentifier() + " verbessert.");
                     notificationAdded = true;
+                    break;
+                case 'player.move':
+                    let moveText = currentPlayer.playerName + " ist nach " + msg.town.town_name + " gereist.";
+                    
+                    // Makes sure that notification is only sent once
+                    if (this.#notificationQueue[this.#notificationQueue.length - 1] !== moveText) {
+                        this.#notificationQueue.push(moveText);
+                        notificationAdded = true; 
+                    }
                     break;
             }
             if (notificationAdded) {
