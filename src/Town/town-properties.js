@@ -79,6 +79,10 @@ export const town_properties = (() => {
         get abilityExecuted() {
             return this.#abilityExecuted;
         }
+
+        get ability(){
+            return this.#ability;
+        }
     }
 
     return {

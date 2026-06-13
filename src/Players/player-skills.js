@@ -193,6 +193,27 @@ export const player_skills = (() => {
         toIdentifier() {
             return this.#name;
         }
+
+        /**
+         * Get german identifier of enum
+         * @returns {string}
+         */
+        toGermanIdentifier(){
+            switch(this.#name){
+                case "Combat":
+                    return "Kampf";
+                    break;
+                case "Defense":
+                    return "Verteidigung";
+                    break;
+                case "Alchemy":
+                    return "Alchemie";
+                    break;
+                case "Special":
+                    return "Spezialfähigkeit";
+                    break;
+            } 
+        }
     }
 
     class Shield extends component.Component {

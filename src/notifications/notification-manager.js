@@ -30,6 +30,8 @@ export const notifaction_manager = (() => {
             // die sollen alle auf diese eine funktion verweisen => {this.#QueueNotification(msg)}
             this._RegisterHandler('game.nextPhase', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('game.nextPlayer', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('game.meditate', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('skill.changeLevel', (msg) => {this.#QueueNotification(msg)});
         }
 
         #QueueNotification(msg) {
@@ -41,7 +43,13 @@ export const notifaction_manager = (() => {
                     this.#notificationQueue.push(currentPlayer.playerName + " hat die nächste Phase gestartet");
                     break;
                 case 'game.nextPlayer':
-                    this.#notificationQueue.push(msg.player + "'s Zug Start");
+                    this.#notificationQueue.push(msg.player.playerName + "ist am Zug");
+                    break;
+                case 'game.meditate':
+                    this.#notificationQueue.push(currentPlayer.playerName + "hat für die Fähigkeit " + msg.skill + " meditiert.");
+                    break;
+                case 'skill.changeLevel':
+                    this.#notificationQueue.push(currentPlayer.playerName + " hat die Fähigkeit " + msg.skill.toGermanIdentifier() + " verbessert.");
                     break;
             }
         }
