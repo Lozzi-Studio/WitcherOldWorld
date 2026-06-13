@@ -1,6 +1,11 @@
 import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
 import { cards } from "../Cards/card-templates";
+import { card_options } from "../Cards/card-options";
+import { card } from "../Cards/card";
+import { player_status } from "../Players/player-status";
+import { status_templates } from "../Players/status-templates";
+import { status_options } from "../Players/status-options";
 
 export const game_manager = (() => {
 
@@ -10,7 +15,8 @@ export const game_manager = (() => {
         #currentPlayer;
         #selection;
         #selectedTown;
-
+        #currentShopSelection;
+        
         /**
          * Manages game stages and game behaviour
          */
@@ -22,6 +28,7 @@ export const game_manager = (() => {
             this.#currentPlayer = null;
             this.#selection = [];
             this.#selectedTown = null;
+            this.#currentShopSelection = null;
         }
 
         /**
@@ -36,6 +43,9 @@ export const game_manager = (() => {
             this._RegisterHandler('game.swapoutCard', (msg) => {this.#SwapoutCard(msg);});
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
+            this._RegisterHandler('cardshop.buy', (msg) => {this.#OnCardshopBuy(msg)});
+            this._RegisterHandler('game.discardSelectedCards',() => {this.DiscardSelectedCards()});
+            this._RegisterHandler('game.drawUntilFull',()=> {this.#DrawCardsUntilHandFull()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -70,6 +80,10 @@ export const game_manager = (() => {
         #NextTurnPhase(msg){
             const nextPlayer = this.#currentRound.next();
             if (nextPlayer) {
+                for (let card_slot of this.#selection) {
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                }
+                this.#selection = [];
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
                 if (this.#currentPlayer == undefined) {
@@ -89,10 +103,14 @@ export const game_manager = (() => {
         #OnCardSelect(msg){
             if (this.#selection.includes(msg.card_slot)){
                 this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect"));
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                if (this.#selection.length === 0){
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
+                }
             } else {
                 this.#selection.push(msg.card_slot);
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select"));
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
             }
         }
 
@@ -104,7 +122,7 @@ export const game_manager = (() => {
             for (let card_slot of this.#selection) {
                 selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
             }
-            if (selectedCards.length > 0 && this.#selectedTown) {
+            if (selectedCards.length === 1 && this.#selectedTown) {
                 let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
                 let allowedCard = this.ValidateMove(this.#selectedTown, selectedCards).allowedCard;
                 if (moveAllowed){
@@ -118,46 +136,82 @@ export const game_manager = (() => {
             }
         }
 
-        /**
-         * Gets current player's selected cards and checks if moving to selected town is valid
-         * @returns {bool}
-         */
-        CheckIfCanMoveToTown() {
-            var selectedCards = [];
-            for (let card_slot of this.#selection) {
-                selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
-            }
+        DiscardSelectedCards(){
+            if (!(this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3)){
+                for (let card_slot of this.#selection) {
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot], "Discard"));
+                }
 
-            if (selectedCards.length > 0 && this.#selectedTown) {
-                let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
-                if (moveAllowed){
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-            else {
-                return false;
+                this.#selection = [];
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
         }
 
         /**
-         * Checks if moving to selected town is valid (one of selected cards must be the right region + town must be neighbor of current town)
-         * @param {town_entity.TownEntity} town 
-         * @param {array} selectedCards 
-         * @returns 
+         * Buys card from shop and discards hand cards
+         * @param {object} msg 
          */
-        ValidateMove(town, selectedCards){
-            var moveAllowed = false;
-            var allowedCard;
+        #OnCardshopBuy(msg){
+            if (this.#selection.length >= msg.cost) {
+                for (let i = 0; i < msg.cost; i++){
+                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[this.#selection[0]], "Discard"));
+                    this.#selection.splice(0, 1);
+                }
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(this.FindEntity("Cardshop").FindComponent("CardshopSlot_" + msg.slot).card,"Hand"));
+                this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.FindEntity("Cardshop").FindComponent("CardshopSlot_" + msg.slot).card, "Discard"))
+                this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
+                this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+            }
 
-            for (let card of selectedCards) {
-                if (this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card)) {
-                    return { moveAllowed: true, allowedCard: card };
+        }
+
+        /**
+         * Checks if enough cards are selected to satisfy the cost of a new card
+         * @returns {bool}
+         */
+        ValidateBuyCard() {
+            return this.#selection.length >= this.FindEntity("Cardshop").FindComponent("CardshopManager").cost;
+        }
+
+        /**
+         * Checks if moving to selected town is valid (one of selected cards must be the right region + town must be neighbor of current town)
+         * @returns {object}
+         */
+        ValidateMove(){
+            if (this.#selection.length !== 1) {
+                return { moveAllowed: false, allowedCard: null };
+            }
+
+            if (this.#selectedTown != null) {
+                var town = this.#selectedTown;
+                for (let card_slot of this.#selection) {
+                    var card = this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]
+                    if (this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card)) {
+                        return { moveAllowed: true, allowedCard: card };
+                    }
                 }
             }
             return { moveAllowed: false, allowedCard: null };
+
+        }
+
+        /**
+         * Calculates how many cards should be drawn at the end of the round and adds them to the hand deck
+         * @returns
+         */
+        #DrawCardsUntilHandFull(){
+            const deckLength = this.#currentPlayer.FindComponent("Carddeck").hand.length;
+
+            const drawLessStatus = status_templates.StatusTemplates.drawLessCards(status_options.Timing.EndOfTurn());
+            const drawMoreStatus = status_templates.StatusTemplates.drawMoreCards(status_options.Timing.EndOfTurn());
+            const drawLess = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawLessStatus);
+            const drawMore = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawMoreStatus);
+
+            let amountToDraw = 3-deckLength-drawLess+drawMore;
+            if(amountToDraw > 0){ 
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
+            } 
         }
 
         /**
@@ -165,13 +219,7 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #OnTownSelection(msg){
-            switch(this.#currentRound.toIdentifier()) {
-                case 1:
-                    this.#selectedTown = msg.town;
-                    break;
-                default:
-                    break;
-            }
+            this.#selectedTown = msg.town;
         }
 
         /**

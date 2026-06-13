@@ -1,0 +1,74 @@
+import { broadcasts } from "../Interfaces/broadcasts";
+import { component } from "../Interfaces/component";
+
+
+export const cardshop_manager = (() => {
+
+    class CardshopManager extends component.Component{
+        #selection;
+        #costSelection;
+
+        /**
+         * a wrapper to manage the cardshop
+         */
+        constructor() {
+            super();
+            this.#selection = null;
+            this.#costSelection = null;
+        }
+
+        /**
+         * Used to intialize and add any default components/events
+         */
+        InitComponent() {
+            this._RegisterHandler('game.start', (msg) => { this.#UpdateShopSlots(msg)});
+            this._RegisterHandler('cardshop.select', (msg) => {this.#SelectSlot(msg)});
+            this._RegisterHandler('cardshop.buy', (msg) => {this.#BuySlot(msg)});
+            this._RegisterHandler('card.drawCard', (msg) => {this.#UpdateShopSlots(msg)})
+        }
+
+        /**
+         * Update each Slot in Shop
+         */
+        #UpdateShopSlots(msg) { 
+            var shopCards = this.FindComponent("Carddeck");
+            if (shopCards.hand.length < shopCards.handLimit) {
+                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck",shopCards.handLimit - shopCards.hand.length))
+            }
+            var i = 6;
+            for (let card of shopCards.hand) {
+                this.FindComponent("CardshopSlot_" + i).UpdateSlot(card);
+                i -= 1;
+            }
+        }
+
+        /**
+         * Update Current Selected Slot
+         * @param {object} msg 
+         */
+        #SelectSlot(msg) {
+            this.#selection = msg.slot;
+            this.#costSelection = msg.cost;
+        }
+
+        /**
+         * Buy Selected Card from Shop
+         * @param {object} msg 
+         */
+        #BuySlot(msg) {
+            if (this.#selection) {
+                this.FindEntity("GameArea").FindComponent("GameManager").Broadcast(broadcasts.BroadcastTemplateCardShop.BuyCardFromShop(this.#selection, this.#costSelection));
+            }
+        }
+
+        
+        get cost() {
+            return this.#costSelection;
+        }
+    }
+
+    return {
+        CardshopManager : CardshopManager
+    }
+
+}) ();

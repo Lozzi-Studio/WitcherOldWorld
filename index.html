@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TestProject</title>
+    <title>WitcherOldWorld</title>
     <link rel="stylesheet" type="text/css" href="src/frontend/style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +15,10 @@
 </head>
 <body style="margin-top: 0; margin-left: 0;">
     <script type="module" src="./src/main.js"></script>
+    <div id="game-loading-screen" style="display: none;">
+        <div id="loading_tip" class="--fancy-font"></div>
+        <div class="loader"></div>
+    </div>
 
     <div id="placeholder" style="display: none;" > </div>
 
@@ -27,6 +31,7 @@
 		</video>
 
     </div>
+
 
     <div id="game-ui" style="display: none;"> 
         <div class="container container--row container--neutral borders--bottom-right" id="player-window">
@@ -87,6 +92,21 @@
             <div class="textbox textbox--fill button" id="end-phase-button">Phase beenden</div>
         </div>
 
+        <div class="container container--cols" id="discard-modal">
+            
+            <div class="container container--row" id="hand-window"></div>
+
+            <div class="container container--row modal-button-row" id="discard-buttons">
+                <div class="textbox textbox--fill button" id="button-discard">
+                    Ablegen & Nachziehen
+                </div>
+                <div class="textbox textbox--fill button" id="button-skip">
+                    Überspringen & Nachziehen
+                </div>
+            </div>  
+            
+        </div>
+
         <div class="container container--col container--neutral borders--all" id="town-window">
             <div class="container container--row container--justify-between">
                 <div class="material-symbols-outlined filled" id="town-symbol">forest</div>
@@ -103,8 +123,12 @@
             </div>
             <div class="textbox textbox--fill button" id="town-button">Gehe hierhin</div>
         </div>
+        
+        <div class="container container--col container--neutral borders--all" id="shop-window" style="display: none;">
+            <div class="textbox textbox--fill button" id="shop-button">Kaufen</div>
+        </div>
 
-        <div class="container container--row" id="hand-window"></div>
+
         <div class="container container--col borders--top-right container--neutral" id="debug-menu">
             <div class="--fancy-font">Debug Menu</div>
             <div class="textbox textbox--fill button" id="debug-next-phase-button">Skip Phase</div>

@@ -115,6 +115,15 @@ export const entity_manager = (() => {
             this._scene.SwitchScene(name, stopAudio);
         }
 
+        /**
+         * 
+         * @param {string} key 
+         * @returns {*}
+         */
+        GetFromCache(key){
+            return this._scene.GetFromCache(key);
+        }
+
         get renderer() {
             return this.#renderer;
         }

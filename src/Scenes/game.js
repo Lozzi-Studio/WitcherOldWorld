@@ -14,6 +14,9 @@ import { region } from "../GameArea/region";
 import { Vector3 } from 'three';
 import { player_options } from '../Players/player-options';
 import { cards } from '../Cards/card-templates';
+import { cardshop_entity } from '../CardShop/cardshop-entity';
+
+import data from '../../resources/database/loadingScreen_tooltips.json'
 import { notification_entity } from '../notifications/notification-entity';
 
 
@@ -40,44 +43,98 @@ export const game = (() => {
         InitControls() {
             this.#InitCamera();
             this._controls.enabled = true;
-            this._controls.minPolarAngle = Math.PI / 4;
-            this._controls.maxPolarAngle = Math.PI * 0.44;
+            this._controls.minPolarAngle = Math.PI / 6;
+            this._controls.maxPolarAngle = Math.PI * 0.38;
             this._controls.minDistance = 10;
-            this._controls.maxDistance = 48;
+            this._controls.maxDistance = 55;
         }   
-
+        
         /**
          * Used to intialize and add any default Entities
          */
         InitSceneEntities() {
+
+            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
+            document.getElementById('game-loading-screen').style.display = 'flex';
             this._entityManager.AddEntity(new notification_entity.NotificationEntity(), "NotificationEntity", true);
             this._scene.background = new THREE.Color(0x3D342C);
-            this.#InitMap();
+            this.#InitShop();
+            this.#CacheGameData();
 
+        }
+
+        #CacheGameData(){
+            var promises = [];
+
+            for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").hand) {
+                let cardName = card.name;
+                promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
+            }
+            for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").deck) {
+                let cardName = card.name;
+                promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
+            }
+
+            promises.push(this.#loadMusic("resources/sounds/MainMenuTheme.mp3").then(result => {this.CacheData("MainMenuTheme", result)}));
+            promises.push(this.#loadMusic("resources/sounds/MainTheme.mp3").then(result => {this.CacheData("MainTheme", result)}));
+            promises.push(this.#loadMusic("resources/sounds/Battle_Monster.mp3").then(result => {this.CacheData("BattleMonsterTheme", result)}));
+            promises.push(this.#loadMusic("resources/sounds/ChaseTheme.mp3").then(result => {this.CacheData("ChaseTheme", result)}));
+
+            promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
+
+            Promise.all(promises).then(() => {
+                setTimeout(() => { this.#startGame();}, 3000);
+            });
+        }
+
+        #loadTexture(url) {
+            return new Promise(resolve => {
+                new THREE.TextureLoader().load(url, resolve);
+            });
+        }
+
+        #loadModel(url) {
+            return new Promise(resolve => {
+                new GLTFLoader().load(url, resolve);
+            });
+        }
+
+        #loadMusic(url) {
+            return new Promise(resolve => {
+                new THREE.AudioLoader().load(url, resolve);
+            });
+        }
+
+        #startGame() {
             this._entityManager.AddEntity(this._parent._currentCamera);
             this._entityManager.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
-            
+
             //Keep Order!
             this.#InitTowns();
             this.#InitPlayers();
             this._entityManager.AddEntity(new game_area_entity.GameArea());
-
-            document.getElementById('game-ui').style.display = 'block';
+            
             this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
+            this._entityManager.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
 
+            this.#InitMap();
+            document.getElementById('game-loading-screen').style.display = 'none';
+            document.getElementById('game-ui').style.display = 'block';
         }
+            
 
         /**
          * Initialize camera entity
          */
         #InitCamera() {
-            const fov = 60;
+            const fov = 65;
             const aspect = 1920 / 1080;
             const near = 1.0;
-            const far = 10000.0;
+            const far = 10000;
             let newCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
             newCamera.position.set(0,50,50);
-            newCamera.rotation.x = -Math.PI / 4;
+            newCamera.rotation.x = -Math.PI / 2;
             this._parent.SetCamera(new camera_entity.Camera(newCamera, this._controls));
         }
 
@@ -123,35 +180,38 @@ export const game = (() => {
          * Initialize Map and surrounding objects
          */
         #InitMap() {
+           this._scene.add(this.GetFromCache("map"));
+           this._scene.add(this.GetFromCache("table"));
+        }
+
+        /**
+         * Intialize Cardshop and surrondings
+         */
+        #InitShop() {
             const texture = new THREE.TextureLoader().load("resources/assets/textures/wood.jpg");
             texture.wrapS = THREE.RepeatWrapping;
             texture.wrapT = THREE.RepeatWrapping;
-            texture.repeat.set(5,3);
-            const material = new THREE.MeshBasicMaterial( { map:  texture} )
-            const table = new THREE.Mesh(new THREE.PlaneGeometry(200,100), material);
-            table.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2, 0, 0));
-            table.position.set(0,-0.3,0);
-            this._scene.add(table);
-            
-            const cubeEast = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 51 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
-            cubeEast.position.set(25.2,-0.3,0);
-            this._scene.add( cubeEast );
+            texture.repeat.set(5,2);
 
-            const cubeNorth = new THREE.Mesh( new THREE.BoxGeometry( 51, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
-            cubeNorth.position.set(0,-0.3,25.2);
-            this._scene.add( cubeNorth );
+            const materialdisplayCardsFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
+            const displayCards = new THREE.Mesh(new THREE.PlaneGeometry(39,10), materialdisplayCardsFront);
+            displayCards.rotation.setFromVector3(new THREE.Vector3( - Math.PI /4 ,  0, 0));
+            displayCards.position.set(0,5,-33);
+            this._scene.add(displayCards);
 
-            const cubeWest = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 51 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
-            cubeWest.position.set(-25.2,-0.3,0);
-            this._scene.add( cubeWest );
+            texture.repeat.set(5,1);
+            const materialdisplayCostFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
+            const displayCost = new THREE.Mesh(new THREE.PlaneGeometry(39,5.2), materialdisplayCostFront);
+            displayCost.rotation.setFromVector3(new THREE.Vector3( -Math.PI, Math.PI,0));
+            displayCost.position.set(0,0,-29);
+            this._scene.add(displayCost);
 
-            const cubeSouth = new THREE.Mesh( new THREE.BoxGeometry( 51, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x3D342C } ) );
-            cubeSouth.position.set(0,-0.3,-25.2);
-            this._scene.add( cubeSouth );
-
-            const loader = new GLTFLoader();
-            loader.load("resources/assets/provMap.glb", (glb) =>{
-            this._scene.add(glb.scene)});
+            const materialdisplayModifierFront = new THREE.MeshBasicMaterial( { map:  texture, side: THREE.FrontSide} )
+            const displayModifier = new THREE.Mesh(new THREE.PlaneGeometry(39,5), materialdisplayModifierFront);
+            displayModifier.rotation.setFromVector3(new THREE.Vector3( -Math.PI / 2 , 0, 0));
+            displayModifier.position.set(0,8,-38.5);
+            this._scene.add(displayModifier);
+            this._entityManager.AddEntity(new cardshop_entity.Cardshop());
         }
 
         set players(players) {

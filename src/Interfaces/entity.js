@@ -118,6 +118,15 @@ export const entity = (() => {
         }
 
         /**
+         * 
+         * @param {string} key 
+         * @returns {*}
+         */
+        GetFromCache(key){
+            return this._parent.GetFromCache(key);
+        }
+
+        /**
          * Triggers after specific time intervall
          * @param {float} timeElapsed 
          */
@@ -133,6 +142,10 @@ export const entity = (() => {
         
         get name() {
             return this._name;
+        }
+
+        get position() {
+            return this._position;
         }
 
         set name(newName) {

@@ -407,7 +407,32 @@ p, div {
     border-color: var(--green-primary);
 }
 
+#discard-modal {
+    border-radius: 10px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px; 
+    z-index: 1000;
+    
+    display: flex;
+    flex-direction: column;
+}
 
+.modal-button-row {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    gap: 50px; 
+    
+}
+
+#shop-window {
+    position: fixed;
+    right: 5px;
+    bottom: 380px;
+    min-width: 100px;
+    max-width: 300px;
+}
 
 #town-window {
     position: fixed;
@@ -415,7 +440,6 @@ p, div {
     top: 0;
     min-width: 150px;
     max-width: 250px;
-
     display: none;
 }
 
@@ -476,7 +500,7 @@ p, div {
 }
 
 #hand-window {
-    position: fixed;
+    position: relative;
     right: 0;
     bottom: 0;
     gap:0;
@@ -556,6 +580,49 @@ p, div {
     position: fixed;
     bottom: 0;
     left: 0;
+}
+
+#game-loading-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../resources/assets/background/loading_screen.png');
+    background-size: cover;
+    border: 1px solid black;
+    z-index: 99;
+}
+
+#loading_tip {
+    height: 200px;
+    width: 600px;
+
+    position: fixed;
+    top: 85%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -300px;
+    text-align: center;
+}
+
+.loader {
+    border: 8px solid var(--color-bg);
+    border-top: 8px solid var(--color-border); 
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+
+  
+    position: fixed;
+    top: 85%;
+    left: 90%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 #notification-box {
