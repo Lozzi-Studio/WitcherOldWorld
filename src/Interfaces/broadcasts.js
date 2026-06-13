@@ -259,13 +259,13 @@ export const broadcasts = (() => {
             return {topic: 'game.phaseTwo'};
         }
 
-        /**
-         * 
-         * @returns {object}
-         */
-        static closePhaseTwoUI(){
-            return {topic: 'game.phaseTwoEnd'};
-        }
+        ///**
+        // * 
+        // * @returns {object}
+        // */
+        //static closePhaseTwoUI(){
+        //    return {topic: 'game.phaseTwoEnd'};
+        //}
 
         /**
          * 
