@@ -215,8 +215,6 @@ export const game_manager = (() => {
             let amountToDraw = 3-deckLength-drawLess+drawMore;
             if(amountToDraw > 0){ 
                 this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
-                let drawMessage = " hat " + amountToDraw + " Karte/n gezogen";
-                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(drawMessage));
             } 
         }
 

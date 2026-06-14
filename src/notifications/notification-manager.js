@@ -33,6 +33,7 @@ export const notifaction_manager = (() => {
             this._RegisterHandler('game.meditate', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('skill.changeLevel', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('player.move', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('card.drawCard', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('notification.custom', (msg) => {this.#QueueNotification(msg)});
         }
 
@@ -67,6 +68,13 @@ export const notifaction_manager = (() => {
                     // Makes sure that notification is only sent once
                     if (this.#notificationQueue[this.#notificationQueue.length - 1] !== moveText) {
                         this.#notificationQueue.push(moveText);
+                        notificationAdded = true; 
+                    }
+                    break;
+                case 'card.drawCard':
+                    console.log(currentPhase);
+                    if (msg.mode === "Deck" && currentPhase > 2) {
+                        this.#notificationQueue.push(currentPlayer.playerName + " hat " + msg.amount + " Karte/n nachgezogen"); 
                         notificationAdded = true; 
                     }
                     break;
