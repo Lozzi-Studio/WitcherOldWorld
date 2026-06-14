@@ -75,6 +75,21 @@ export const ui_manager = (() => {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
                 }
             };
+
+            this.handleLogToggleClick = () => {
+                const logWindow = document.getElementById("log-window");
+                const logToggleIcon = document.getElementById("log-toggle-icon");
+                const logger = document.getElementById("logger");
+
+                logWindow.classList.toggle("log-window--open");
+                
+                if (logWindow.classList.contains("log-window--open")) {
+                    logToggleIcon.innerText = "arrow_back_ios"; 
+                    logger.scrollTop = logger.scrollHeight;
+                } else {
+                    logToggleIcon.innerText = "arrow_forward_ios"; 
+                }
+            }
         }
 
 
@@ -103,6 +118,7 @@ export const ui_manager = (() => {
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
+            document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
         }
 
         /**

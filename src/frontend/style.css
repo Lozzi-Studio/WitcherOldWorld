@@ -655,41 +655,73 @@ p, div {
 
 #log-window {
     position: fixed;
-    top: 250px;
-    left: -300px;
+    top: 380px; 
+    left: -310px;
     
-    min-width: 310px;
+    width: 310px; 
     min-height: 100px;
     max-height: 100px;
     justify-content: flex-start;
 
-    transform: translate(0%, 0%);
-    transform-origin: top left;
-    transition: transform 400ms;
+    transition: transform 400ms ease-in-out;
+    border-width: 3px 0px 3px 0px !important; 
+    border-radius: 0px !important; 
+    box-sizing: border-box;
 }
 
-#log-window:hover {
-    transform: translate(90%, 0%);
-    transform-origin: top left;
-    transition: transform 400ms,
+
+.log-window--open {
+    transform: translateX(310px); 
 }
 
-.scroallable-log {
-    overflow-y: auto;
-    list-style-type: none;
-    margin: 0px auto 0;
-    padding: 0;
+#log-toggle-btn {
+    position: absolute;
+    right: -30px; 
+    top: -3px; 
+    width: 30px;
+    height: calc(100% + 6px); 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: var(--cursor-pointer), pointer;
+    
+    background-color: var(--color-bg);
+    border: 3px solid var(--color-border);
+    border-left: none;
+    border-radius: 0px 12px 12px 0px;
+    box-sizing: border-box;
 }
 
+#log-toggle-btn:hover #log-toggle-icon {
+    color: var(--color-hover);
+    transform: scale(1.2);
+}
+
+#log-toggle-icon {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
 
 .log-element {
     margin: 0px auto 0;
     padding: 5px;
     vertical-align: top;
     text-align: left;
+    
+    word-wrap: break-word;
+    white-space: normal;
+    width: 100%; 
 }
 
-
+.scroallable-log {
+    overflow-y: auto;
+    overflow-x: hidden;
+    list-style-type: none;
+    margin: 0px auto 0;
+    padding: 0;
+    width: 100%;
+    padding: 0px 5px 0px 0px;
+}
 
 ::-webkit-scrollbar {
       width: 15px;
