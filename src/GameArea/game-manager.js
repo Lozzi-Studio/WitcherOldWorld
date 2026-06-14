@@ -82,8 +82,6 @@ export const game_manager = (() => {
 
             if ( this.#currentRound.toIdentifier() == 2) {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.loadPhaseTwoUi());
-            } else if (this.#currentRound.toIdentifier() == 1 || this.#currentRound.toIdentifier() == 3) {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.closePhaseTwoUI());
             }
             
             if (nextPlayer) {
