@@ -557,6 +557,32 @@ p, div {
     z-index: 10;
 }
 
+#explorartion-window {
+    position: fixed;
+    align-items: stretch;
+    max-width: 512px;
+    text-align: center;
+    align-items: center;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+}
+
+#explorartion-window .button {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    text-align: center;
+}
+
+#eplore-header{
+    font-size: 24pt;
+    font-family: Gwent;
+    color: #ffffff;
+}
+
 #meditate-option {
     background-image: url("../../resources/assets/gen-img/town-action-meditate.webp");
     background-size: cover;
