@@ -11,7 +11,6 @@ export const notifaction_manager = (() => {
         #log;
         #countIncomingBanner;
 
-        //TODO: Styling vom logger anpassen und den logger per default verstecken und per knopf erscheinen/verschwinden lassen
         constructor() {
             super();
             this.#notificationQueue = [];
@@ -20,14 +19,12 @@ export const notifaction_manager = (() => {
             this.#reverse = false;
             this.#countIncomingBanner = 0;
 
-            //die beiden relevanten werte für finetuning (pass gerne noch das html aussehen an xD)
+            //die beiden relevanten werte für finetuning
             this.#maxFadeDuration = 1;
             this.#showTime = 1;
         }
 
         InitComponent() {
-            //TODO an Luca: die richtigen events einfügen (das akutelle sollte weg ist nur testweise); 
-            // die sollen alle auf diese eine funktion verweisen => {this.#QueueNotification(msg)}
             this._RegisterHandler('game.nextPhase', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('game.nextPlayer', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#QueueNotification(msg)});
@@ -38,7 +35,6 @@ export const notifaction_manager = (() => {
         }
 
         #QueueNotification(msg) {
-            //TODO an Luca: Message anpassen an was passiert ist und welcher spieler (entferne das beispiel 'game.nextPhase' gerne)
             var currentPlayer = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
             var currentPhase = this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() + 1;
             let notificationAdded = false;
