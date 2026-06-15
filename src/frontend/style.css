@@ -629,7 +629,6 @@ p, div {
 
 #notification-banner {
     display: none;
-    gap: 5px !important;
     width: 100%;
     min-height: 48px; 
     box-sizing: border-box;
