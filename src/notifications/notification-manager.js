@@ -46,24 +46,24 @@ export const notifaction_manager = (() => {
             switch(msg.topic) {
                 case 'game.nextPhase':
                     if(currentPhase != 4){
-                        this.#notificationQueue.push(currentPlayer.playerName + " hat Phase " + currentPhase + " gestartet");
+                        this.#notificationQueue.push(`<span style="color: var(--color-selected);">${currentPlayer.playerName}</span> hat Phase ${currentPhase} gestartet.`);
                         notificationAdded = true;
                     }
                     break;
                 case 'game.nextPlayer':
-                    this.#notificationQueue.push(msg.player.playerName + " ist am Zug");
+                    this.#notificationQueue.push(`<span style="color: var(--color-selected);">${currentPlayer.playerName}</span> ist am Zug.`);
                     notificationAdded = true;
                     break;
                 case 'game.meditate':
-                    this.#notificationQueue.push(currentPlayer.playerName + " hat für die Fähigkeit " + msg.skill + " meditiert.");
+                    this.#notificationQueue.push(`<span style="color: var(--color-selected);">${currentPlayer.playerName}</span> hat für die Fähigkeit ` + msg.skill + " meditiert.");
                     notificationAdded = true;
                     break;
                 case 'skill.changeLevel':
-                    this.#notificationQueue.push(currentPlayer.playerName + " hat die Fähigkeit " + msg.skill.toGermanIdentifier() + " verbessert.");
+                    this.#notificationQueue.push(`<span style="color: var(--color-selected);">${currentPlayer.playerName}</span> hat die Fähigkeit ` + msg.skill.toGermanIdentifier() + " verbessert.");
                     notificationAdded = true;
                     break;
                 case 'player.move':
-                    let moveText = currentPlayer.playerName + " ist nach " + msg.town.town_name + " gereist.";
+                    let moveText = `<span style="color: var(--color-selected);">${currentPlayer.playerName}</span> ist nach ` + msg.town.town_name + " gereist.";
                     
                     // Makes sure that notification is only sent once
                     if (this.#notificationQueue[this.#notificationQueue.length - 1] !== moveText) {
@@ -74,12 +74,12 @@ export const notifaction_manager = (() => {
                 case 'card.drawCard':
                     console.log(currentPhase);
                     if (msg.mode === "Deck" && currentPhase > 2) {
-                        this.#notificationQueue.push(currentPlayer.playerName + " hat " + msg.amount + " Karte/n nachgezogen"); 
+                        this.#notificationQueue.push(`<span style="color: var(--color-selected);">${currentPlayer.playerName}</span> hat ` + msg.amount + " Karte/n nachgezogen."); 
                         notificationAdded = true; 
                     }
                     break;
                 case 'notification.custom':
-                    this.#notificationQueue.push(currentPlayer.playerName + msg.message);
+                    this.#notificationQueue.push(`<span style="color: var(--color-selected);">${currentPlayer.playerName}</span>` + msg.message);
                     break;
             }
             if (notificationAdded) {
