@@ -16,6 +16,7 @@ export const game_manager = (() => {
         #selectedTown;
         #currentShopSelection;
         #currentMonster;
+        #isPlayerBattleTurn;
         
         /**
          * Manages game stages and game behaviour
@@ -30,6 +31,7 @@ export const game_manager = (() => {
             this.#selectedTown = null;
             this.#currentShopSelection = null;
             this.#currentMonster = new Map();
+            this.#isPlayerBattleTurn = false;
         }
 
         /**
@@ -45,7 +47,9 @@ export const game_manager = (() => {
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
             this._RegisterHandler('cardshop.buy', (msg) => {this.#OnCardshopBuy(msg)});
-            this._RegisterHandler('game.discardSelectedCards',() => {this.DiscardSelectedCards()});
+            this._RegisterHandler('game.discardSelectedCards',(msg) => {this.DiscardSelectedCards(msg)});
+            this._RegisterHandler('battle.playerTurn', (msg) => {this.#isBattleTurn(msg)});
+            this._RegisterHandler('battle.playCombo', (msg) => {this.#OnComboPlay(msg)});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -101,23 +105,40 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #OnCardSelect(msg){
-            if (this.#selection.includes(msg.card_slot)){
-                this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect", this.#currentRound.toIdentifier()));
-                if (this.#selection.length === 0){
-                    this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
+            if (this.#isPlayerBattleTurn && this.#currentRound.toIdentifier() == 2) {
+                if (this.#selection.length == 0) {
+                    this.#selection.push(msg.card_slot);
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                } else if (this.#selection.includes(msg.card_slot)){
+                    let deselection = this.#selection.splice(this.#selection.indexOf(msg.card_slot),this.#selection.length - this.#selection.indexOf(msg.card_slot));
+                    for (let cardSlot of deselection) {
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(cardSlot, "Deselect", this.#currentRound.toIdentifier()));
+                    }
+                } else {
+                    if (this.#currentPlayer.GetHandCard(this.#selection[this.#selection.length - 1]).CanCombo(this.#currentPlayer.GetHandCard(msg.card_slot).color)) {
+                        this.#selection.push(msg.card_slot);
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                    }
                 }
-            } else {
-                this.#selection.push(msg.card_slot);
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
-                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
+            }else {
+                if (this.#selection.includes(msg.card_slot)){
+                    this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                    if (this.#selection.length === 0){
+                        this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
+                    }
+                } else {
+                    this.#selection.push(msg.card_slot);
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
+                }
             }
         }
 
         /**
          * Discards selected card to move to selected town
          */
-        DiscardCardToMove(){
+        DiscardCardToMove(msg){
             var selectedCards = [];
             for (let card_slot of this.#selection) {
                 selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
@@ -136,7 +157,7 @@ export const game_manager = (() => {
             }
         }
 
-        DiscardSelectedCards(){
+        DiscardSelectedCards(msg){
             if (!(this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3)){
                 for (let card_slot of this.#selection) {
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot], "Discard"));
@@ -164,6 +185,10 @@ export const game_manager = (() => {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
             }
 
+        }
+
+        ValidateCardSelected() {
+            return this.#selection.length > 0;
         }
 
         /**
@@ -241,13 +266,31 @@ export const game_manager = (() => {
    
             for (let region of regions) {
 
-                const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(region, playerTownPositions, false));
+                const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(region, playerTownPositions, false), 12, 1);
                 this.#currentMonster.set(region.toIdentifier(), newMonster);
                 playerTownPositions.push(newMonster.town);
                 i += 1;
                 this._parent._parent.AddEntity(newMonster, "Monster_" + region.toIdentifier());
             }
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
+        }
+
+        #isBattleTurn(msg) {
+            this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+            this.#selection = [];
+            this.#isPlayerBattleTurn = true;
+        }
+
+        #OnComboPlay(msg) {
+            for (let [i , card] of this.#selection.entries()) {
+                if (i == (this.#selection.length - 1)) {
+                    this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo(this.#currentPlayer.GetHandCard(this.#selection[0])));
+                } else {
+                    this.#currentPlayer.GetHandCard(this.#selection[i]).AddNextComboCard(this.#currentPlayer.GetHandCard(this.#selection[i + 1]));
+                }
+            }
+
+            this.#selection = [];
         }
 
         /**
@@ -280,6 +323,10 @@ export const game_manager = (() => {
          */
         get selectedTown() {
             return this.#selectedTown;
+        }
+
+        get isBattleTurn() {
+            return this.#isBattleTurn;
         }
     };
 

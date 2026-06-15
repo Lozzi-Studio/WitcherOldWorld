@@ -1,5 +1,7 @@
+import { card_options } from "../Cards/card-options";
 import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
+import { player_skills } from "../Players/player-skills";
 import { status_options } from "../Players/status-options";
 import { status_templates } from "../Players/status-templates";
 
@@ -9,43 +11,220 @@ export const battle_manager = (() => {
     class BattleManager extends component.Component {
         #player;
         #monster;
+        #playerDrawValues;
 
         constructor(player, monster) {
             super();
             this.#player = player;
             this.#monster = monster;
+            
+            this.#playerDrawValues = [1, 2, 3, 4, 4];
         }
 
         InitComponent() {
-            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true));
-            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true));
-            this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddStatus(status_templates.StatusTemplates.forestTracker(), "permanent"));
-            this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddStatus(status_templates.StatusTemplates.forestTracker(), "permanent"));          
-            this.#GetStartingTurn();    
+            this._RegisterHandler('battle.playCombo', (msg) => {this.#PlayCombo(msg)});
+
+            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, false));
+            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Monster")); 
+            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, false));
+            let varDiff = this.#monster.FindComponent("Carddeck").deck.length -this.#monster.health;
+            for (let i = 0; i < varDiff; i++) {
+                this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.DiscardRandomCard());
+            }
+            this.#GetStartingTurn();
         }
 
         #GetStartingTurn() {
-            switch(this.#monster.name.split("_")[1]) {
+            let amount = 0;
+            switch (this.#monster.name.split("_")[1]) {
                 case "River":
-                    this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.riverTracker());
-                    this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.riverTracker());
+                    amount = this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.riverTracker());
+                    if (amount > 0) {
+                        this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.riverTracker());
+                        this.#PlayerTurn();
+                    } else {
+                        this.#MonsterTurn();
+                    }
+                    break;
                 case "Forest":
-                    this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.forestTracker());
-                    this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.forestTracker());
+                    amount = this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.forestTracker());
+                    if (amount > 0) {
+                        this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.forestTracker());
+                        this.#PlayerTurn();
+                    } else {
+                        this.#MonsterTurn();
+                    }
+                    break;
                 case "Mountain":
-                    this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.mountainTracker());
-                    this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.mountainTracker());
+                    amount = this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.mountainTracker());
+                    if (amount > 0) {
+                        this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.mountainTracker());
+                        this.#PlayerTurn();
+                    } else {
+                        this.#MonsterTurn();
+                    }
+                    break;
+                default:
+                    this.#PlayerTurn();
             }
-           
-
         }
 
-        MonsterTurn() {
+        #MonsterTurn() {
+            let nextMove = this.#monster.FindComponent("MonsterAi").ChooseNextMove();
+            if (nextMove.damage > 0) {
+                this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.damage));
+            } else if (nextMove.skill != ""){
+                if (nextMove.discard) {
+                    if (nextMove.level != undefined){
+                        this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level));
+                        switch (nextMove.skill) {
+                            case "combat":
+                                this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Combat(), "Decrease", false));
+                                break;
+                            case "defense":
+                                this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Defense(), "Decrease", false));
+                                break;
+                            case "alchemy":
+                                this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Alchemy(), "Decrease", false));
+                                break;
+                        }
+                    }
+                } else {
+                    let dmg = 0;
+                    switch (nextMove.skill) {
+                        case "combat":
+                            dmg = this.#player.FindComponent("PlayerSkills").combat;
+                            break;
+                        case "defense":
+                            dmg = this.#player.FindComponent("PlayerSkills").defense;
+                            break;
+                        case "alchemy":
+                            dmg = this.#player.FindComponent("PlayerSkills").alchemy;
+                            break;
+                        case "special":
+                            dmg = this.#player.FindComponent("PlayerSkills").special;
+                            break;
+                    }
+                    this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(dmg));
+                }
+            } else if (nextMove.level != undefined){
+                if (nextMove.discard) {
+                    for (let i = 0; i < nextMove.level; i++) {
+                        this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardRandomCard());
+                    }
+                } else {
+                    this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level));
+                }
+            } else {
+                this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(2));
+            }
+
+            console.log(nextMove);
             
+            if (this.#player.FindComponent("Carddeck").hand.length <= 0 && this.#player.FindComponent("Carddeck").deck.length <= 0 ) {
+                if (this.#monster.FindComponent("Carddeck").hand.length <= 0 && this.#monster.FindComponent("Carddeck").deck.length <= 1 ) {
+                    this.#ResolveDraw();
+                } else {
+                    this.#ResolveMonsterWin();
+                }
+            } else {
+                this.#PlayerTurn();
+            }
         }
 
-        PlayerTurn() {
+        #PlayerTurn() {
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn());
+        }
 
+        #ResolveMonsterWin(){
+            console.log("MonsterWin");
+            this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
+            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
+            switch (this.#monster.name.split("_")[1]) {
+                case "River":
+                    amount = this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.riverTracker());
+                    if (amount <= 0) {
+                        this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddStatus(status_templates.StatusTemplates.riverTracker(), "permanent"));
+                    } 
+                    break;
+                case "Forest":
+                    amount = this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.forestTracker());
+                    if (amount <= 0) {
+                        this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddStatus(status_templates.StatusTemplates.forestTracker(), "permanent"));
+                    }
+                    break;
+                case "Mountain":
+                    amount = this.#player.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.mountainTracker());
+                    if (amount <= 0) {
+                        this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddStatus(status_templates.StatusTemplates.mountainTracker(), "permanent"));
+                    }
+                    break;
+            }
+            console.log("Get 0 Cost Card (first card in shop left to right or first on deckPile) on Discard");
+            this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddStatus(status_templates.StatusTemplates.drawLessCards(status_options.Timing.EndOfTurn(), 1), "temporary"));
+            console.log("Go To Next Phase");
+        }
+
+        #ResolvePlayerWin(){
+            console.log("PlayerWin");
+            this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
+            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
+            this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+            this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
+            console.log("Entferne Alle Spuren und Gerüchte von allen Spielern | Prob in GameManger bei Erschaffung neues Monster");
+            console.log("Neues Monster höherer Stufe erscheint in der Region");
+            console.log("Go To Next Phase");
+        } 
+        
+        #ResolveDraw(){
+            console.log("Draw");
+            this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
+            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
+            this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
+            console.log("Get 0 Cost Card (first card in shop left to right or first on deckPile) on Discard");
+            console.log("Neues Monster selber Stufe erscheint in der Region");
+            console.log("Go To Next Phase");
+        }
+
+
+        #PlayCombo(msg) {
+            let result = card_options.CardEffect.createCardEffect(0,0,0,false,false);
+            let cardsToDiscard = [];
+            for (let effect of msg.card.getEffect([])) {
+                if (effect.bonus != null) {
+                    result.damage += effect.bonus.damage;
+                    result.shield += effect.bonus.shield;
+                    result.drawModifier += effect.bonus.drawModifier;
+                }
+                result.damage += effect.effects.damage;
+                result.shield += effect.effects.shield;
+                result.drawModifier += effect.effects.drawModifier;
+                if (!(effect.effects.backtohand || effect.bonus ? effect.bonus.backtohand : false)) {
+                   cardsToDiscard.push(effect.card);
+                }
+                if (effect.effects.gettopdiscard || effect.bonus ? effect.bonus.gettopdiscard : false) {
+                    this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
+                }
+            }
+            for (let card of cardsToDiscard) {
+                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
+            }
+            
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+            this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage));
+            
+            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1] + result.drawModifier)))));
+            this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, result.shield));
+            
+            if (this.#monster.FindComponent("Carddeck").hand.length <= 0 && this.#monster.FindComponent("Carddeck").deck.length <= 0 ) {
+                if (this.#player.FindComponent("Carddeck").hand.length <= 0 && this.#player.FindComponent("Carddeck").deck.length <= 0 ) {
+                    this.#ResolveDraw();
+                } else {
+                    this.#ResolvePlayerWin();
+                }
+            } else {
+                this.#MonsterTurn();
+            }
         }
     }
 

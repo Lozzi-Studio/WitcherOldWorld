@@ -424,7 +424,7 @@ p, div {
 #shop-window {
     position: fixed;
     right: 5px;
-    bottom: 380px;
+    bottom: 400px;
     min-width: 100px;
     max-width: 300px;
 }
@@ -618,4 +618,12 @@ p, div {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+#battle-player-window {
+    position: fixed;
+    right: 5px;
+    bottom: 400px;
+    min-width: 100px;
+    max-width: 300px;
 }

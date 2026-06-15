@@ -12,18 +12,21 @@ export const monster_ai = (() => {
 
         /**
          * Choose the next move for the monster
-         * @returns {int}
+         * @returns {object}
          */
         ChooseNextMove() {
             this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
-            let damage = 0;
+            let effect = {};
             if (Math.floor(Math.random() * 2) >= 1) {
-                damage = this.FindComponent("Carddeck").hand[0]["OptionA"];
+                effect = this.FindComponent("Carddeck").hand[0]["OptionA"];
             } else {
-                damage = this.FindComponent("Carddeck").hand[0]["OptionB"];
+                effect = this.FindComponent("Carddeck").hand[0]["OptionB"];
+            }
+            if (effect.level != []) {
+                effect.level = effect.level[this.FindComponent("MonsterProperty").rank-1]
             }
             this.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.FindComponent("Carddeck").hand[0], "Discard"));
-            return damage;
+            return effect;
         }
     }
 

@@ -85,7 +85,7 @@ export const cards = (() => {
                 "Praeziser Schnitt",
                 card_options.Color.Blue(),
                 comboOptions,
-                card_options.CardEffect.createCardEffect(),
+                card_options.CardEffect.createCardEffect(1,0,0,false,false),
                 region,
                 0
             )

@@ -103,7 +103,7 @@ export const broadcasts = (() => {
 
         /**
          * @param {card.Card} card
-         * @param {string} destination - Options: "Hand", "Deck", "Discard"
+         * @param {string} destination - Options: "Hand", "Deck", "BattleDeck","Discard"
          * @returns {object}
         */
         static AddCard(card, destination) {
@@ -122,10 +122,11 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {bool} includeDiscard 
+         * @param {bool} includeHand
          * @returns {object}
          */
-        static ShuffleDeck(includeDiscard) {
-            return {topic: 'card.shuffle', includeDiscard: includeDiscard}
+        static ShuffleDeck(includeDiscard, includeHand) {
+            return {topic: 'card.shuffle', includeDiscard: includeDiscard, includeHand: includeHand}
         }
 
         /**
@@ -133,10 +134,18 @@ export const broadcasts = (() => {
          * @param {int} card_slot 
          * @param {string} mode - Options: "Select", "Deselect" 
          * @param {int} phase
-         * @returns 
+         * @returns {object}
          */
         static UpdateCardSelectionUI(card_slot, mode, phase) {
             return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode, phase: phase};
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static DiscardRandomCard() {
+            return {topic: 'card.randomDiscard'}
         }
 
     }
@@ -361,6 +370,10 @@ export const broadcasts = (() => {
         static UpdateDiscardButtonActive(active) {
             return {topic: 'game.updateDiscardButton', active: active}
         }
+
+        static ApplyDamage(amount) {
+            return {topic: 'game.applyDamage', amount: amount}
+        }
     }
 
     class BroadcastTemplateCamera {
@@ -465,6 +478,17 @@ export const broadcasts = (() => {
         }
     }
 
+    class BroadcastTemplateBattle {
+
+        static StartPlayerTurn() {
+            return {topic: 'battle.playerTurn'}
+        }
+
+        static PlayCombo(card) {
+            return {topic: 'battle.playCombo', card: card}
+        }
+    }
+
     return {
         BroadcastTemplatePlayer : BroadcastTemplatePlayer,
         BroadcastTemplateSkills : BroadcastTemplateSkills,
@@ -473,6 +497,7 @@ export const broadcasts = (() => {
         BroadcastTemplateTown : BroadcastTemplateTown,
         BroadcastTemplateCamera : BroadcastTemplateCamera,
         BroadcastTemplateMusic: BroadcastTemplateMusic,
-        BroadcastTemplateCardShop: BroadcastTemplateCardShop
+        BroadcastTemplateCardShop: BroadcastTemplateCardShop,
+        BroadcastTemplateBattle: BroadcastTemplateBattle
     }
 })();

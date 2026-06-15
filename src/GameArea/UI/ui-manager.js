@@ -73,6 +73,14 @@ export const ui_manager = (() => {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
                 }
             };
+
+            this.handlePlayClick = () => {
+                const btn = document.getElementById("button-play");
+                if (!(btn.classList.contains("button--inactive"))) {
+                    document.getElementById("battle-player-window").style.display = "none";
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo());
+                }
+            }
         }
 
 
@@ -98,6 +106,8 @@ export const ui_manager = (() => {
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
 
             this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
+
+            this._RegisterHandler('battle.playerTurn', (msg) => {this.#OnBattlePlayerTurn(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
@@ -419,6 +429,9 @@ export const ui_manager = (() => {
         #SetPlayerShieldStatus(player) {
             let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
             let shieldPoints = player.FindComponent("Shield").amount;
+             for (let i = 0; i < 5; i++) {
+                document.getElementById(`shield-${i+1}`).classList.remove("filled");
+            }
             for (let i = 0; i < defenseLevel; i++) {
                 document.getElementById(`shield-${i+1}`).classList.remove("icon--inactive");
                 document.getElementById(`shield-${i+1}`).classList.add("icon--active");
@@ -703,6 +716,9 @@ export const ui_manager = (() => {
                 case 1:
                     this.#UpdateTownButton(msg);
                     break;
+                case 2:
+                    this.#UpdatePlayButton(msg);
+                    break;
                 case 3:
                     this.#UpdateShopButton(msg);
                     break;
@@ -846,6 +862,16 @@ export const ui_manager = (() => {
             this.#UpdateButtonState("shop-button", this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
             let button = document.getElementById("shop-button");
             button.addEventListener("click", this.handleBuyClick);
+        }
+
+        #OnBattlePlayerTurn(msg) {
+            document.getElementById("battle-player-window").style.display = "flex";
+            this.#UpdateButtonState("button-play", false);
+        }
+
+        #UpdatePlayButton(msg)  {
+            this.#UpdateButtonState("button-play", this.FindEntity("GameArea").FindComponent("GameManager").ValidateCardSelected());
+            document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
         }
 
 

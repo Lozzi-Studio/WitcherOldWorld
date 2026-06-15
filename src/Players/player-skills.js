@@ -243,7 +243,7 @@ export const player_skills = (() => {
                             this.#amount = this.#maxAmount;
                         }
                     } else if (this.#amount > 0) {
-                        if (this.#amount - msg.amount < 0) {
+                        if ((this.#amount - msg.amount) < 0) {
                             this.#amount = 0;
                         } else {
                             this.#amount -= msg.amount;
