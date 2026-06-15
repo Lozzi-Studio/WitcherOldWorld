@@ -122,11 +122,13 @@ export const notifaction_manager = (() => {
                     this.#duration += this.#showTime;
                 }
             }
-            if ((!document.getElementById("notifications").style.display || document.getElementById("notifications").style.display == "none") && this.#countIncomingBanner > 1) {
-                document.getElementById("notifications").style.display = "flex";
-            } else if ( document.getElementById("notifications").style.display == "flex" && this.#countIncomingBanner == 0){
-                document.getElementById("notifications").style.display = "none";
+            const notificationsBadge = document.getElementById("notifications");
+            if (this.#countIncomingBanner > 1) {
+                notificationsBadge.style.display = "flex";
+            } else {
+                notificationsBadge.style.display = "none";
             }
+
         }
     }
 
