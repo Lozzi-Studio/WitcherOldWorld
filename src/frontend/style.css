@@ -628,29 +628,51 @@ p, div {
 #notification-box {
     position: fixed;
     left: 0px;
-    top: 200px;
-    min-width: 300px;
-    max-width: 300px;
+    top: 220px;
+    width: 310px;
+    z-index: 99;
 } 
 
 #notification-banner {
     display: none;
-    min-width: 300px;
-    max-width: 300px;
+    width: 100%;
+    min-height: 48px; 
+    box-sizing: border-box;
+    padding: 8px 20px 8px 16px; 
+    
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    
+    font-size: 12pt;
+    border-width: 2px 2px 2px 0px !important;
+    border-radius: 0px 8px 8px 0px !important;
+    
+    background-color: var(--color-bg); 
+    border-color: var(--color-border);
     opacity: 0;
+
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 #notifications {
     display: none;
-    position:absolute;
-    top: -20px;
-    right: -34px;
+    position: absolute;
+    
+    top: -10px;
+    right: -10px;
 
-    width: 34px;
-    height: 34px;
-
-    font-size: 18px;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
     font-weight: 700;
+
+    color: var(--color-secondary);
+    z-index: 100;
 }
 
 #log-window {

@@ -122,6 +122,7 @@ export const notifaction_manager = (() => {
                     this.#duration += this.#showTime;
                 }
             }
+            
             const notificationsBadge = document.getElementById("notifications");
             if (this.#countIncomingBanner > 1) {
                 notificationsBadge.style.display = "flex";
