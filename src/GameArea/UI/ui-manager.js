@@ -78,6 +78,9 @@ export const ui_manager = (() => {
                 if (skipButton.classList.contains("button--inactive") == false) {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
                 }
+                if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 3) {
+                    document.getElementById("phase-two-options-menu").style.display = "none";
+                }
             };
 
             let upgradeSkillButton = document.getElementById("debug-upgrade-skill-button");
@@ -112,10 +115,12 @@ export const ui_manager = (() => {
             this.HandlePlayerInfoClick = () => {
                 if (playerInfoButton.innerHTML == "info") {
                     this.#ShowSchoolInfo();
+                    this.#ShowSkillInfo();
                     playerInfoButton.innerHTML = "close";
                 }
                 else {
                     this.#HideSchoolInfo();
+                    this.#HideSkillInfo();
                     playerInfoButton.innerHTML = "info";
                 }
             }
@@ -246,11 +251,13 @@ export const ui_manager = (() => {
         }
 
         #ShowLevelBonuses(skill) {
+            // CURRENTLY NOT IN USE - USING NUMBERS INSTEAD
+            // TODO: Glyphen Farbe einstellbar machen, evtl als Font nutzen?
             let path = "./resources/assets/glyphs/"
             let skillName = skill.toIdentifier().toLowerCase();
 
             console.log(skillName);
-            const container = document.getElementById(`${skillName}-lvl-bonus`);
+            const container = document.getElementById(`${skillName}-lvl-bonus-glyph`);
 
             for (let i = 0; i < this.#maxSkillLevel; i++) {
                 const box = document.createElement("img");
@@ -310,15 +317,17 @@ export const ui_manager = (() => {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
                     let id = `${skillName}-level-box-${i+1}`;
+                    let idBonus = `${skillName}-level-bonus-${i+1}`;
                     if (i < skill.level) {
                         document.getElementById(id).classList.remove("level-box--empty");
+                        document.getElementById(idBonus).classList.remove("level-bonus-glyph--inactive");
                     }
                     else {
                         document.getElementById(id).classList.add("level-box--empty");
+                        document.getElementById(idBonus).classList.add("level-bonus-glyph--inactive");
                     }
                 }
             }
-            
         }
 
         /**
@@ -827,7 +836,7 @@ export const ui_manager = (() => {
             this.#OnNextPhase();
             this.#UpdateHandCards(msg);
             this.#UpdatePlayerSchool(msg);
-            this.#HideSchoolInfo();
+            this.#InitPlayerWindow();
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
@@ -947,6 +956,7 @@ export const ui_manager = (() => {
         #InitLevelupButton(skill) {
             let skillName = skill.toIdentifier().toLowerCase();
             let levelupButton = document.getElementById(skillName + "-levelup-button");
+            let levelupBonus = document.getElementById(skillName + "-levelup-bonus");
             levelupButton.style.display = "block";
 
             let player = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
@@ -990,6 +1000,25 @@ export const ui_manager = (() => {
             this.#SetSkillWindowMode("levelup");
         }
 
+        #InitPlayerWindow() {
+            this.#HideSchoolInfo();
+            this.#HideSkillInfo();
+
+            let skills = this.#GetSkillsFromCurrentPlayer();
+
+            for (let skill of skills) {
+                let skillName = skill.toIdentifier().toLowerCase();
+                document.getElementById(`${skillName}-levelup-button`).style.display = "none";
+                document.getElementById(`${skillName}-levelup-bonus`).style.display = "none";
+            }
+
+            document.getElementById("player-info-button").style.display = "block";
+            document.getElementById("player-info-button").innerHTML = "info";
+            document.getElementById("skill-levelup-buttons-container").style.display = "none";
+            document.getElementById("levelup-impossible-text").style.display = "none";
+
+        }
+
         #SetSkillWindowMode(mode) {
             let skillWindow = document.getElementById("player-window");
             let heading = document.getElementById("skills-header-text");
@@ -1010,15 +1039,19 @@ export const ui_manager = (() => {
                     headingContainer.style.justifyContent = "space-between";
 
                     expandButton.style.display = "block";
+                    expandButton.innerHTML = "info";
 
                     buttonsContainer.style.display = "none";
                     levelupImpossibleText.style.display = "none";
                     
                     for (let skill of skills) {
-                        this.#HideLevelupButton(skill)
+                        this.#HideLevelupButton(skill);
+                        let skillName = skill.toIdentifier().toLowerCase();
+                        document.getElementById(`${skillName}-levelup-bonus`).style.display = "none";
                     }
 
                     this.#HideSchoolInfo();
+                    this.#HideSkillInfo();
                     break;
                 case "levelup":
                     skillWindow.classList.remove("borders--bottom-right", "position-top-left");
@@ -1038,7 +1071,9 @@ export const ui_manager = (() => {
                     this.#hasSkillLeftForLevelup = false;
                     for (let skill of skills) {
                         this.#InitLevelupButton(skill);
-                        this.#ShowLevelBonuses(skill);
+                        // this.#ShowLevelBonuses(skill);
+                        let skillName = skill.toIdentifier().toLowerCase();
+                        document.getElementById(`${skillName}-levelup-bonus`).style.display = "flex";
                     }
 
                     if (this.#isLevelupPossible) {
@@ -1054,6 +1089,7 @@ export const ui_manager = (() => {
                     }
                     
                     this.#ShowSchoolInfo();
+                    this.#ShowSkillInfo();
                     break;
             }
         }
@@ -1070,6 +1106,9 @@ export const ui_manager = (() => {
 
             let abilityInfo = document.getElementById("school-ability-info");
             abilityInfo.innerHTML = msg.player.witcherSchool.ability["info"];
+
+            let abilityBonusInfo = document.getElementById("special-info");
+            abilityBonusInfo.innerHTML = msg.player.witcherSchool.ability["bonus"];
         }
 
         #ShowSchoolInfo() {
@@ -1080,6 +1119,26 @@ export const ui_manager = (() => {
         #HideSchoolInfo() {
             let schoolInfo = document.getElementById("school-info");
             schoolInfo.style.display = "none";
+        }
+
+        #ShowSkillInfo() {
+            let skills = this.#GetSkillsFromCurrentPlayer();
+            for (let skill of skills) {
+                    let skillName = skill.toIdentifier().toLowerCase();
+                    document.getElementById(`${skillName}-lvl-bonus`).style.display = "flex";
+                    document.getElementById(`${skillName}-info`).style.display = "flex";
+                    document.getElementById(`${skillName}-name`).style.display = "flex";
+                }
+        }
+
+        #HideSkillInfo() {
+            let skills = this.#GetSkillsFromCurrentPlayer();
+            for (let skill of skills) {
+                    let skillName = skill.toIdentifier().toLowerCase();
+                    document.getElementById(`${skillName}-lvl-bonus`).style.display = "none";
+                    document.getElementById(`${skillName}-info`).style.display = "none";
+                    document.getElementById(`${skillName}-name`).style.display = "none";
+                }
         }
 
         /**

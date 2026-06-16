@@ -17,14 +17,15 @@ body {
 .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24;
 }
 
 .material-symbols-outlined.filled {
   font-variation-settings:
     'FILL' 1;
+}
+
+.material-symbols-outlined.small {
+  font-size: 20px;
 }
 
 .dummy {
@@ -386,12 +387,22 @@ p, div {
 }
 
 .player-stats {
-    padding: 8px 8px 8px 8px;
-    gap: 18px;
+    padding: 16px 8px 8px 8px;
+    gap: 16px;
 }
 
-.level-bonus {
-    height: 24px;
+.player-stats-bonus {
+    padding: 12px 8px 8px 8px;
+    gap:12px;
+}
+
+.level-bonus-glyph {
+    /* height: 24px; */
+    color: var(--color-primary);
+}
+
+.level-bonus-glyph--inactive {
+    color: var(--color-primary-inactive);
 }
 
 .stat-icon {
@@ -722,35 +733,6 @@ p, div {
     display: none;
 }
 
-#combat-levelup-button {
-    display: none;
-}
-
-#defense-levelup-button {
-    display: none;
-}
-
-#alchemy-levelup-button {
-    display: none;
-}
-
-#special-levelup-button {
-    display: none;
-}
-
-#player-info-button {
-    display: block;
-}
-
-#skill-levelup-buttons-container {
-    display: none;
-}
-
-#levelup-impossible-text {
-    display: none;
-    text-align: center;
-}
-
 #school-image {
     width: 72px;
 }
@@ -761,11 +743,38 @@ p, div {
     max-width: 140px;
     padding-left: 8px;
     padding-right: 8px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
 }
 
+.skill-info {
+    word-wrap: break-word;
+    width: 100%;
+    width: 90px;
+    font-size: 12px;
+    text-align: center;
+    height: 47px;
+}
 
+#levelup-impossible-text {
+    text-align: center;
+}
+
+#combat-levelup-bonus {
+    opacity: 0;
+}
+
+#defense-levelup-bonus {
+    opacity: 1;
+}
+
+#alchemy-levelup-bonus {
+    opacity: 1;
+}
+
+#special-levelup-bonus {
+    opacity: 0;
+}
 
 #game-loading-screen {
     position: absolute;

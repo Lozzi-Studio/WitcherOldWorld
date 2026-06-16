@@ -57,27 +57,32 @@ export const player_options = (() => {
                 case "Vipernschule":
                     return {
                         "name": "Vergiftete Waffe",
-                        "info": "Super toller Infotext zu der Fähigkeit Vergiftete Waffe"
+                        "info": "Super toller Infotext zu der Fähigkeit Vergiftete Waffe, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
+                        "bonus": "Anzahl an super tollen Sachen der Vipernschule"
                     };
                 case "Katzenschule":
                     return {
                         "name": "Schnelligkeit",
-                        "info": "Super toller Infotext zu der Fähigkeit Schnelligkeit"
+                        "info": "Super toller Infotext zu der Fähigkeit Schnelligkeit, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
+                        "bonus": "Anzahl an super tollen Sachen der Katzenschule"
                     };
                 case "Baerenschule":
                     return {
                         "name": "Ruestung",
-                        "info": "Super toller Infotext zu der Fähigkeit Ruestung"
+                        "info": "Super toller Infotext zu der Fähigkeit Ruestung, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
+                        "bonus": "Anzahl an super tollen Sachen der Baerenschule"
                     };
                 case "Wolfsschule":
                     return {
                         "name": "Schwertkunst",
-                        "info": "Super toller Infotext zu der Fähigkeit Schwertkunst"
+                        "info": "Super toller Infotext zu der Fähigkeit Schwertkunst, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
+                        "bonus": "Anzahl an super tollen Sachen der Wolfsschule"
                     };
                 case "Greifenschule":
                     return {
                         "name": "Magie",
-                        "info": "Super toller Infotext zu der Fähigkeit Magie"
+                        "info": "Super toller Infotext zu der Fähigkeit Magie, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
+                        "bonus": "Anzahl an super tollen Sachen der Greifenschule"
                     };
             }
         }
