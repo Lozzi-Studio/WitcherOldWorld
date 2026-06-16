@@ -49,8 +49,8 @@ class DemoGame{
         this.#sceneManager.AddScene(new game.GameScene());
         this.#sceneManager.AddScene(new main_menu.MainMenu());
         this.#sceneManager.AddScene(new player_menu.PlayerMenu());
-        //this.#sceneManager.SwitchScene("Placeholder");
-        this.#sceneManager.SwitchScene("GameScene");
+        this.#sceneManager.SwitchScene("Placeholder");
+        //this.#sceneManager.SwitchScene("GameScene");
     }
 }
 

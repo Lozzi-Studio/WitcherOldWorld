@@ -76,7 +76,7 @@ export const player_options = (() => {
                     return {
                         "name": "Schwertkunst",
                         "info": "1x pro Kampf\: In deinem ersten Zug darfst du Karten von deinem Deck ziehen (und ggf. in beliebiger Reihenfolge zurücklegen)",
-                        "bonus": "Anzahl an super tollen Sachen der Wolfsschule"
+                        "bonus": "Anzahl Karten die du ansehen / ziehen darfst"
                     };
                 case "Greifenschule":
                     return {
