@@ -50,6 +50,7 @@ export const game_manager = (() => {
             this._RegisterHandler('game.discardSelectedCards',(msg) => {this.DiscardSelectedCards(msg)});
             this._RegisterHandler('battle.playerTurn', (msg) => {this.#isBattleTurn(msg)});
             this._RegisterHandler('battle.playCombo', (msg) => {this.#OnComboPlay(msg)});
+            this._RegisterHandler('game.newMonster', (msg) => {this.#CreateNewMonster(msg)});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -273,6 +274,47 @@ export const game_manager = (() => {
                 this._parent._parent.AddEntity(newMonster, "Monster_" + region.toIdentifier());
             }
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
+        }
+
+        #CreateNewMonster(msg) {
+            let hpPool = [12,15,19];
+            let playerTownPositions = [];
+            for (let player of players) {
+                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
+                playerTownPositions.push(player.town);
+            }
+            for (let monster of this.#currentMonster.values()) {
+                playerTownPositions.push(monster.town);
+            }
+            let region = null
+            switch(msg.region) {
+                case "Forest":
+                    region = region.Region.Forest();
+                    tracker = status_templates.StatusTemplates.forestTracker();
+                    break;
+                case "Mountain":
+                    region = region.Region.Mountain();
+                    tracker = status_templates.StatusTemplates.mountainTracker();
+                    break;
+                case "River":
+                    region = region.Region.River();
+                    tracker = status_templates.StatusTemplates.riverTracker();
+                    break;
+            }
+            const players = this._parent._parent.Filter(x => x.name.includes("Player"));
+            if (msg.newMonster) {
+                for (let player in players) {
+                    amount = player.FindComponent("PlayerStatus").GetStatusAmount(tracker);
+                    while (amount > 0) {
+                        player.FindComponent("PlayerStatus").RemovePermanentStatus(tracker);
+                        amount = player.FindComponent("PlayerStatus").GetStatusAmount(tracker);
+                    }
+                }
+            }
+
+            const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(region, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
+            this.#currentMonster.set(msg.region, newMonster);
+            this._parent._parent.AddEntity(newMonster, "Monster_" + region.toIdentifier());
         }
 
         #isBattleTurn(msg) {

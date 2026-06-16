@@ -45,6 +45,10 @@ export const monster_entity = (() => {
             return this.FindComponent("MonsterProperty").health;
         }
 
+        get rank() {
+            return this.FindComponent("MonsterProperty").rank;
+        }
+
     }
 
     return {

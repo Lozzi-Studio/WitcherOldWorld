@@ -171,8 +171,7 @@ export const battle_manager = (() => {
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
-            console.log("Entferne Alle Spuren und Gerüchte von allen Spielern | Prob in GameManger bei Erschaffung neues Monster");
-            console.log("Neues Monster höherer Stufe erscheint in der Region");
+            tthis.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.CreateNewMonster(this.#monster.rank + 1 <= 3 ? this.#monster.rank : 3, this.#monster.name.split("_")[1], true));
             console.log("Go To Next Phase");
         } 
         
@@ -182,7 +181,7 @@ export const battle_manager = (() => {
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
             console.log("Get 0 Cost Card (first card in shop left to right or first on deckPile) on Discard");
-            console.log("Neues Monster selber Stufe erscheint in der Region");
+            tthis.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.CreateNewMonster(this.#monster.rank, this.#monster.name.split("_")[1], false));
             console.log("Go To Next Phase");
         }
 

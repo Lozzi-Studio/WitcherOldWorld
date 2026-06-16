@@ -374,6 +374,10 @@ export const broadcasts = (() => {
         static ApplyDamage(amount) {
             return {topic: 'game.applyDamage', amount: amount}
         }
+
+        static CreateNewMonster(rank, region, newMonster) {
+            return {topic: 'game.newMonster', rank: rank, region: region, newMonster: newMonster}
+        }
     }
 
     class BroadcastTemplateCamera {
