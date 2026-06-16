@@ -9,6 +9,9 @@ export const ui_manager = (() => {
         #maxSkillLevel;
         #numberOfPhaseOptions;
         #phaseThreePartTwo;
+        #isLevelupPossible;
+        #hasEnoughMoneyForLevelup;
+        #hasSkillLeftForLevelup;
 
         /**
          * Manages API between UI and Backend
@@ -90,6 +93,21 @@ export const ui_manager = (() => {
                     this.FindComponent("GameManager").currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(+1));
                 }
             };
+
+            let cancelButton = document.getElementById("skill-levelup-cancel-button");
+            this.HandleCancelLevelupClick = () => {
+                if (cancelButton.classList.contains("button--inactive") == false) {
+                    this.#SetSkillWindowMode("default");
+                }
+            }
+
+            let continueButton = document.getElementById("skill-levelup-continue-button");
+            this.HandleContinueLevelupClick = () => {
+                if (continueButton.classList.contains("button--inactive") == false) {
+                    this.#SetSkillWindowMode("default");
+                }
+            }
+            
         }
 
 
@@ -120,6 +138,8 @@ export const ui_manager = (() => {
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
             document.getElementById("debug-upgrade-skill-button").addEventListener("click", this.HandleUpgradeSkillClick);
             document.getElementById("debug-add-money-button").addEventListener("click", this.HandleAddMoneyClick);
+            document.getElementById("skill-levelup-cancel-button").addEventListener("click", this.HandleCancelLevelupClick);
+            document.getElementById("skill-levelup-continue-button").addEventListener("click", this.HandleContinueLevelupClick);
         }
 
         /**
@@ -904,7 +924,15 @@ export const ui_manager = (() => {
             let skillFromPlayer = player.FindComponent("PlayerSkills").getSkillByName(skill.toIdentifier());
             let costs = skillFromPlayer.level + 1;
             if (player.FindComponent("MoneyStorage").CanPay(costs)) {
+                this.#hasEnoughMoneyForLevelup = true;
+            }
+            if (skillFromPlayer.level < this.#maxSkillLevel) {
+                this.#hasSkillLeftForLevelup = true;
+            }
+
+            if (this.#hasEnoughMoneyForLevelup && this.#hasSkillLeftForLevelup) {
                 this.#UpdateButtonState(levelupButton.id, true);
+                this.#isLevelupPossible = true;
             }
             else {
                 this.#UpdateButtonState(levelupButton.id, false);
@@ -919,6 +947,7 @@ export const ui_manager = (() => {
                     }
 
                     this.#UpdateButtonState("skill-levelup-continue-button", true);
+                    this.#UpdateButtonState("skill-levelup-cancel-button", false);
                 }
             });
         }
@@ -930,26 +959,6 @@ export const ui_manager = (() => {
         #LoadSkillDecider(msg) {
             this.#HideTownInfo(msg);
             this.#SetSkillWindowMode("levelup");
-
-            let skills = this.#GetSkillsFromCurrentPlayer();
-            for (let skill of skills) {
-                this.#InitLevelupButton(skill);
-            }
-
-            let continueButton = document.getElementById("skill-levelup-continue-button");
-            continueButton.addEventListener("click", () => {this.#HideSkillDecider()});
-        }
-
-        #HideSkillDecider() {
-            let continueButton = document.getElementById("skill-levelup-continue-button");
-            if (!continueButton.classList.contains("button--inactive")) {
-                let skills = this.#GetSkillsFromCurrentPlayer();
-                for (let skill of skills) {
-                    this.#HideLevelupButton(skill)
-                    this.#SetSkillWindowMode("default");
-                }
-            }
-            
         }
 
         #SetSkillWindowMode(mode) {
@@ -957,7 +966,11 @@ export const ui_manager = (() => {
             let heading = document.getElementById("skills-header-text");
             let headingContainer = document.getElementById("skills-header");
             let expandButton = document.getElementById("expand-skills-button");
+            let buttonsContainer = document.getElementById("skill-levelup-buttons-container");
+            let cancelButton = document.getElementById("skill-levelup-cancel-button");
             let continueButton = document.getElementById("skill-levelup-continue-button");
+            let levelupImpossibleText = document.getElementById("levelup-impossible-text");
+            let skills = this.#GetSkillsFromCurrentPlayer();
 
             switch(mode) {
                 case "default":
@@ -969,7 +982,12 @@ export const ui_manager = (() => {
 
                     expandButton.style.display = "block";
 
-                    continueButton.style.display = "none";
+                    buttonsContainer.style.display = "none";
+                    levelupImpossibleText.style.display = "none";
+                    
+                    for (let skill of skills) {
+                        this.#HideLevelupButton(skill)
+                    }
                     break;
                 case "levelup":
                     skillWindow.classList.remove("borders--bottom-right", "position-top-left");
@@ -980,8 +998,29 @@ export const ui_manager = (() => {
 
                     expandButton.style.display = "none";
 
-                    continueButton.style.display = "block";
+                    buttonsContainer.style.display = "flex";
+                    cancelButton.classList.remove("button--inactive");
                     continueButton.classList.add("button--inactive");
+                    
+                    this.#isLevelupPossible = false;
+                    this.#hasEnoughMoneyForLevelup = false;
+                    this.#hasSkillLeftForLevelup = false;
+                    for (let skill of skills) {
+                        this.#InitLevelupButton(skill);
+                    }
+
+                    if (this.#isLevelupPossible) {
+                        levelupImpossibleText.style.display = "none";
+                    } else {
+                        levelupImpossibleText.style.display = "block";
+                        if (!this.#hasSkillLeftForLevelup) {
+                            levelupImpossibleText.innerHTML = "Alle Skills bereits auf Max.";
+                        }
+                        if (!this.#hasEnoughMoneyForLevelup) {
+                            levelupImpossibleText.innerHTML = "Du hast nicht genug Geld";
+                        }
+                    }
+
                     break;
             }
         }
@@ -998,4 +1037,4 @@ export const ui_manager = (() => {
     return {
         UIManager : UIManager
     }
-}) (); 
+}) ();

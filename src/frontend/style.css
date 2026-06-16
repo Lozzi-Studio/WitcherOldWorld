@@ -730,8 +730,13 @@ p, div {
     display: block;
 }
 
-#skill-levelup-continue-button {
+#skill-levelup-buttons-container {
     display: none;
+}
+
+#levelup-impossible-text {
+    display: none;
+    text-align: center;
 }
 
 #game-loading-screen {
