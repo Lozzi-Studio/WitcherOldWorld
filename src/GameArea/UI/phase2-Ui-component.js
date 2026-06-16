@@ -1,5 +1,6 @@
 import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
+import { player_skills } from "../../Players/player-skills";
 
 export const phase_two_ui_component = (() => {
 
@@ -25,7 +26,7 @@ export const phase_two_ui_component = (() => {
         }
 
         #OnPhaseTwoStart(msg){
-            document.getElementById("phase-two-options-menu").style.display = "flex";
+            document.getElementById("phase-two-options-menu").style.display = "flex"; 
             this.#activateMeditateOption();
         }
 

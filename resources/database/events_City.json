@@ -8,7 +8,7 @@
             "ResultTextB": "Der Herrscher ist am Boden zerst&oumlrt und jagt dich vom Hof. Du t&oumltest die Bestie, haupts&aumlchlich um gegen das Gef&uuml der Ohmacht anzuk&aumlmpfen.",
             "ResultA": {
                 "Info": "Deine Alchemiestufe sinkt um 1. Lege 1 Trank ab. Du erh&aumllst 5 Gold.",
-                "Alchemie": "-1",
+                "Alchemy": "-1",
                 "Potion": "-1",
                 "Gold": "5"
             },
