@@ -929,55 +929,61 @@ export const ui_manager = (() => {
          */
         #LoadSkillDecider(msg) {
             this.#HideTownInfo(msg);
-
-            let skillWindow = document.getElementById("player-window");
-            skillWindow.classList.remove("borders--bottom-right", "position-top-left");
-            skillWindow.classList.add("borders--all", "position-center");
-
-            let heading = document.getElementById("skills-header-text");
-            heading.innerHTML = "Wähle einen Skill";
-
-            let headingContainer = document.getElementById("skills-header");
-            headingContainer.style.justifyContent = "center";
-
-            let expandButton = document.getElementById("expand-skills-button");
-            expandButton.style.display = "none";
+            this.#SetSkillWindowMode("levelup");
 
             let skills = this.#GetSkillsFromCurrentPlayer();
-
             for (let skill of skills) {
                 this.#InitLevelupButton(skill);
             }
 
             let continueButton = document.getElementById("skill-levelup-continue-button");
-            continueButton.style.display = "block";
-            continueButton.classList.add("button--inactive");
-
             continueButton.addEventListener("click", () => {this.#HideSkillDecider()});
         }
 
         #HideSkillDecider() {
-            let skills = this.#GetSkillsFromCurrentPlayer();
-            
             let continueButton = document.getElementById("skill-levelup-continue-button");
             if (!continueButton.classList.contains("button--inactive")) {
+                let skills = this.#GetSkillsFromCurrentPlayer();
                 for (let skill of skills) {
                     this.#HideLevelupButton(skill)
+                    this.#SetSkillWindowMode("default");
                 }
             }
-            continueButton.style.display = "none";
             
+        }
+
+        #SetSkillWindowMode(mode) {
             let skillWindow = document.getElementById("player-window");
-            skillWindow.classList.remove("borders--all", "position-center");
-            skillWindow.classList.add("borders--bottom-right", "position-top-left");
-            
             let heading = document.getElementById("skills-header-text");
-            heading.innerHTML = "Skills";
             let headingContainer = document.getElementById("skills-header");
-            headingContainer.style.justifyContent = "space-between";
-            
             let expandButton = document.getElementById("expand-skills-button");
-            expandButton.style.display = "block";
+            let continueButton = document.getElementById("skill-levelup-continue-button");
+
+            switch(mode) {
+                case "default":
+                    skillWindow.classList.remove("borders--all", "position-center");
+                    skillWindow.classList.add("borders--bottom-right", "position-top-left");
+
+                    heading.innerHTML = "Skills";
+                    headingContainer.style.justifyContent = "space-between";
+
+                    expandButton.style.display = "block";
+
+                    continueButton.style.display = "none";
+                    break;
+                case "levelup":
+                    skillWindow.classList.remove("borders--bottom-right", "position-top-left");
+                    skillWindow.classList.add("borders--all", "position-center");
+
+                    heading.innerHTML = "Wähle einen Skill";
+                    headingContainer.style.justifyContent = "center";
+
+                    expandButton.style.display = "none";
+
+                    continueButton.style.display = "block";
+                    continueButton.classList.add("button--inactive");
+                    break;
+            }
         }
 
         /**
