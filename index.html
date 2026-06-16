@@ -61,7 +61,7 @@
             <div class="container container--col container--no-padding" id="skills-container">
                 <div class="container container--row" id="skills-header">
                         <div class="--fancy-font" id="skills-header-text">Skills</div>
-                        <div class="material-symbols-outlined" id="expand-skills-button">info</div>
+                        <div class="material-symbols-outlined glyph-button" id="player-info-button">info</div>
                 </div>
                 <div class="container container--row">
                     <div class="container container--col container--no-padding">
@@ -88,31 +88,21 @@
                             <div class="material-symbols-outlined filled" id="special-icon">star_shine</div>
                         </div>
                     </div>
+                    <div class="container container--col" id="school-info">
+                        <img id="school-image">
+                        <div class="textbox textbox--fill textbox--fancy-font"><p id="school-name">NAME</p></div>
+                        <div class="container container--row container--no-padding">
+                            <div class="material-symbols-outlined filled" id="special-icon">star_shine</div>
+                            <div class="--fancy-font" id="school-ability-name">ABILITY</div>
+                        </div>
+                        <div id="school-ability-info">ABILITY</div>
+                    </div>
                 </div>
                 <div id="levelup-impossible-text">Du hast nicht genug Geld</div>
                 <div class="container container--row container--justify-between" id="skill-levelup-buttons-container">
                     <div class="textbox textbox--fill button" id="skill-levelup-cancel-button">Zurück</div>
                     <div class="textbox textbox--fill button" id="skill-levelup-continue-button">Fortfahren</div>
                 </div>
-            </div>
-        </div>
-
-        <div class="container borders--all container--neutral container--row" id="phase-two-options-menu" style="display: none;">
-            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="meditate-option">
-                Meditate
-            </div>   
-            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="fight-monster-option">
-                Fight-monster
-            </div>
-
-            <div class="container container--col container--stretch container container--no-padding container--col" id ="explore-options">
-                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-city-option">
-                    Die Stadt erkunden
-                </div>
-                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-wilderness-option">
-                    Die Wildnis erkunden
-                </div>
-                <div class="textbox textbox--fill button" id="skill-levelup-continue-button">Fortfahren</div>
             </div>
         </div>
 
@@ -160,7 +150,7 @@
             <div class="container container--row container--justify-between">
                 <div class="material-symbols-outlined filled" id="town-symbol">forest</div>
                 <div class="--fancy-font" id="town-name">TOWN-NAME</div>
-                <div class="material-symbols-outlined filled close-button" id="close-town-window-button">close</div>
+                <div class="material-symbols-outlined filled glyph-button" id="close-town-window-button">close</div>
             </div>
             <div class="tooltip" id="town-ability">
                 TOWN-ABILITY

@@ -343,11 +343,11 @@ p, div {
     background-color: var(--color-primary-inactive);
 }
 
-.close-button {
+.glyph-button {
     color: var(--color-primary);
 }
 
-.close-button:hover {
+.glyph-button:hover {
     cursor: var(--cursor-pointer), pointer;
     color: var(--color-hover);
 }
@@ -726,7 +726,7 @@ p, div {
     display: none;
 }
 
-#expand-skills-button {
+#player-info-button {
     display: block;
 }
 
@@ -738,6 +738,21 @@ p, div {
     display: none;
     text-align: center;
 }
+
+#school-image {
+    width: 72px;
+}
+
+#school-ability-info {
+    word-wrap: break-word;
+    width: 100%;
+    max-width: 140px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 14px;
+}
+
+
 
 #game-loading-screen {
     position: absolute;

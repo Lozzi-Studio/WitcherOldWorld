@@ -7,6 +7,7 @@ export const player_options = (() => {
         #ability;
         #homeTown;
         #color;
+        #imagePath;
         static Cat() {return new WitcherSchool("Katzenschule");}
         static Viper() {return new WitcherSchool("Vipernschule");}
         static Bear() {return new WitcherSchool("Baerenschule");}
@@ -23,6 +24,7 @@ export const player_options = (() => {
             this.#ability = WitcherSchool.getAbilityFromName(name);
             this.#homeTown = WitcherSchool.getHomeTownFromName(name);
             this.#color = WitcherSchool.getColorFromName(name);
+            this.#imagePath = WitcherSchool.getImagePathFromName(name);
         }
 
         get name() {
@@ -41,6 +43,10 @@ export const player_options = (() => {
             return this.#color;
         }
 
+        get imagePath() {
+            return this.#imagePath;
+        }
+
         /**
          * Get ability string from witcher school
          * @param {string} name 
@@ -49,15 +55,30 @@ export const player_options = (() => {
         static getAbilityFromName(name) {
             switch(name) {
                 case "Vipernschule":
-                    return "Vergiftete Waffe";
+                    return {
+                        "name": "Vergiftete Waffe",
+                        "info": "Super toller Infotext zu der Fähigkeit Vergiftete Waffe"
+                    };
                 case "Katzenschule":
-                    return "Schnelligkeit";
+                    return {
+                        "name": "Schnelligkeit",
+                        "info": "Super toller Infotext zu der Fähigkeit Schnelligkeit"
+                    };
                 case "Baerenschule":
-                    return "Ruestung";
+                    return {
+                        "name": "Ruestung",
+                        "info": "Super toller Infotext zu der Fähigkeit Ruestung"
+                    };
                 case "Wolfsschule":
-                    return "Schwertkunst";
+                    return {
+                        "name": "Schwertkunst",
+                        "info": "Super toller Infotext zu der Fähigkeit Schwertkunst"
+                    };
                 case "Greifenschule":
-                    return "Magie";
+                    return {
+                        "name": "Magie",
+                        "info": "Super toller Infotext zu der Fähigkeit Magie"
+                    };
             }
         }
 
@@ -98,6 +119,27 @@ export const player_options = (() => {
                     return 0xc73510;
                 case "Greifenschule":
                     return 0xd2c415;
+            }
+        }
+
+        /**
+         * Get image from name
+         * @param {string} name 
+         * @returns {string}
+         */
+        static getImagePathFromName(name){
+            let path = "./resources/assets/school-icons/"
+            switch(name) {
+                case "Vipernschule":
+                    return path + "viper.png";
+                case "Katzenschule":
+                    return path + "cat.png";
+                case "Wolfsschule":
+                    return path + "wolf.png";
+                case "Baerenschule":
+                    return path + "bear.png";
+                case "Greifenschule":
+                    return path + "griffin.png";
             }
         }
     }

@@ -108,6 +108,17 @@ export const ui_manager = (() => {
                 }
             }
             
+            let playerInfoButton = document.getElementById("player-info-button");
+            this.HandlePlayerInfoClick = () => {
+                if (playerInfoButton.innerHTML == "info") {
+                    this.#ShowSchoolInfo();
+                    playerInfoButton.innerHTML = "close";
+                }
+                else {
+                    this.#HideSchoolInfo();
+                    playerInfoButton.innerHTML = "info";
+                }
+            }
         }
 
 
@@ -140,6 +151,7 @@ export const ui_manager = (() => {
             document.getElementById("debug-add-money-button").addEventListener("click", this.HandleAddMoneyClick);
             document.getElementById("skill-levelup-cancel-button").addEventListener("click", this.HandleCancelLevelupClick);
             document.getElementById("skill-levelup-continue-button").addEventListener("click", this.HandleContinueLevelupClick);
+            document.getElementById("player-info-button").addEventListener("click", this.HandlePlayerInfoClick);
         }
 
         /**
@@ -799,6 +811,8 @@ export const ui_manager = (() => {
             this.#UpdatePlayerStats(msg.player);
             this.#OnNextPhase();
             this.#UpdateHandCards(msg);
+            this.#UpdatePlayerSchool(msg);
+            this.#HideSchoolInfo();
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
@@ -965,7 +979,7 @@ export const ui_manager = (() => {
             let skillWindow = document.getElementById("player-window");
             let heading = document.getElementById("skills-header-text");
             let headingContainer = document.getElementById("skills-header");
-            let expandButton = document.getElementById("expand-skills-button");
+            let expandButton = document.getElementById("player-info-button");
             let buttonsContainer = document.getElementById("skill-levelup-buttons-container");
             let cancelButton = document.getElementById("skill-levelup-cancel-button");
             let continueButton = document.getElementById("skill-levelup-continue-button");
@@ -988,6 +1002,8 @@ export const ui_manager = (() => {
                     for (let skill of skills) {
                         this.#HideLevelupButton(skill)
                     }
+
+                    this.#HideSchoolInfo();
                     break;
                 case "levelup":
                     skillWindow.classList.remove("borders--bottom-right", "position-top-left");
@@ -1023,6 +1039,30 @@ export const ui_manager = (() => {
 
                     break;
             }
+        }
+
+        #UpdatePlayerSchool(msg) {
+            let image = document.getElementById("school-image");
+            image.src = msg.player.witcherSchool.imagePath;
+
+            let schoolName = document.getElementById("school-name");
+            schoolName.innerHTML = msg.player.witcherSchool.name;
+
+            let abilityName = document.getElementById("school-ability-name");
+            abilityName.innerHTML = msg.player.witcherSchool.ability["name"];
+
+            let abilityInfo = document.getElementById("school-ability-info");
+            abilityInfo.innerHTML = msg.player.witcherSchool.ability["info"];
+        }
+
+        #ShowSchoolInfo() {
+            let schoolInfo = document.getElementById("school-info");
+            schoolInfo.style.display = "flex";
+        }
+
+        #HideSchoolInfo() {
+            let schoolInfo = document.getElementById("school-info");
+            schoolInfo.style.display = "none";
         }
 
         /**
