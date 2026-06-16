@@ -178,6 +178,10 @@ p, div {
     gap: 4px;
 }
 
+.container--no-gap {
+    gap: 0px;
+}
+
 .borders--all {
     border-width: 3px;
     border-radius: 12px;
@@ -382,8 +386,12 @@ p, div {
 }
 
 .player-stats {
-    padding: 16px 8px 8px 8px;
-    gap: 16px;
+    padding: 8px 8px 8px 8px;
+    gap: 18px;
+}
+
+.level-bonus {
+    height: 24px;
 }
 
 .stat-icon {

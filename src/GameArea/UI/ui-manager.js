@@ -245,19 +245,34 @@ export const ui_manager = (() => {
             document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.player);
         }
 
+        #ShowLevelBonuses(skill) {
+            let path = "./resources/assets/glyphs/"
+            let skillName = skill.toIdentifier().toLowerCase();
+
+            console.log(skillName);
+            const container = document.getElementById(`${skillName}-lvl-bonus`);
+
+            for (let i = 0; i < this.#maxSkillLevel; i++) {
+                const box = document.createElement("img");
+                box.classList.add("level-bonus");
+                box.id = `${skillName}-level-bonus-${this.#maxSkillLevel - i}`;
+                box.src = path + skillName + (this.#maxSkillLevel - i) + ".svg";
+                container.appendChild(box);
+            }
+        }
+
         /**
          * Create UI Boxes for skill points
          * @param {string} skillName 
          */
         #CreateSkillBoxes(skillName) {
             const container = document.getElementById(`${skillName}-lvl`);
-            const icon = document.getElementById(`${skillName}-icon-container`);
 
             for (let i = 0; i < this.#maxSkillLevel; i++) {
                 const box = document.createElement("div");
                 box.classList.add("level-box", "level-box--neutral", "level-box--empty");
                 box.id = `${skillName}-level-box-${this.#maxSkillLevel - i}`;
-                container.insertBefore(box, icon);
+                container.appendChild(box);
             }
         }
 
@@ -1023,6 +1038,7 @@ export const ui_manager = (() => {
                     this.#hasSkillLeftForLevelup = false;
                     for (let skill of skills) {
                         this.#InitLevelupButton(skill);
+                        this.#ShowLevelBonuses(skill);
                     }
 
                     if (this.#isLevelupPossible) {
