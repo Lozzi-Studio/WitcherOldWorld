@@ -83,6 +83,13 @@ export const ui_manager = (() => {
                     this.#LoadSkillDecider();
                 }
             };
+
+            let addMoneyButton = document.getElementById("debug-add-money-button");
+            this.HandleAddMoneyClick = () => {
+                if (addMoneyButton.classList.contains("button--inactive") == false) {
+                    this.FindComponent("GameManager").currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(+1));
+                }
+            };
         }
 
 
@@ -112,6 +119,7 @@ export const ui_manager = (() => {
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
             document.getElementById("debug-upgrade-skill-button").addEventListener("click", this.HandleUpgradeSkillClick);
+            document.getElementById("debug-add-money-button").addEventListener("click", this.HandleAddMoneyClick);
         }
 
         /**
@@ -882,16 +890,30 @@ export const ui_manager = (() => {
             let levelupButton = document.getElementById(skillName + "-levelup-button");
             levelupButton.style.display = "block";
 
+            let player = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
+            let skillFromPlayer = player.FindComponent("PlayerSkills").getSkillByName(skill.toIdentifier());
+            let costs = skillFromPlayer.level + 1;
+
+            console.log(skillFromPlayer.level);
+            console.log("costs = " + costs);
+            if (player.FindComponent("MoneyStorage").CanPay(costs)) {
+                console.log("true");
+                this.#UpdateButtonState(levelupButton.id, true);
+            }
+            else {
+                console.log("false");
+                this.#UpdateButtonState(levelupButton.id, false);
+            }
+
             levelupButton.addEventListener("click", () => {
                 if (!levelupButton.classList.contains("button--inactive")) {
-                    let player = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
                     player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase", true));
 
                     for (let buttonID of (["combat-levelup-button", "defense-levelup-button", "alchemy-levelup-button", "special-levelup-button"])) {
-                        document.getElementById(buttonID).classList.add("button--inactive");
+                        this.#UpdateButtonState(buttonID, false);
                     }
 
-                    document.getElementById("skill-levelup-continue-button").classList.remove("button--inactive");
+                    this.#UpdateButtonState("skill-levelup-continue-button", true);
                 }
             });
         }
@@ -909,6 +931,9 @@ export const ui_manager = (() => {
 
             let heading = document.getElementById("skills-header-text");
             heading.innerHTML = "Wähle einen Skill";
+
+            let headingContainer = document.getElementById("skills-header");
+            headingContainer.style.justifyContent = "center";
 
             let expandButton = document.getElementById("expand-skills-button");
             expandButton.style.display = "none";
@@ -940,6 +965,7 @@ export const ui_manager = (() => {
                 skillWindow.classList.add("borders--bottom-right", "position-top-left");
 
                 heading.innerHTML = "Skills";
+                headingContainer.style.justifyContent = "space-between";
 
                 expandButton.style.display = "block";
             });

@@ -35,21 +35,7 @@ export const player_skills = (() => {
          * @param {object} msg 
          */
         #ChangeLevel(msg) {
-            let skill = null;
-            switch(msg.skill.toIdentifier()) {
-                case "Combat":
-                    skill = this.#combat;
-                    break;
-                case "Defense":
-                    skill = this.#defense;
-                    break;
-                case "Alchemy":
-                    skill = this.#alchemy;
-                    break;
-                case "Special":
-                    skill = this.#special;
-                    break;
-            }
+            let skill = this.getSkillByName(msg.skill.toIdentifier());
             switch(msg.mode) {
                 case "Increase":
                     if (msg.payMoney && skill?.maxAmount != skill?.level) {
@@ -92,23 +78,26 @@ export const player_skills = (() => {
         }
 
         #OnMeditate(msg) {
-            switch(msg.skill){
-                case "Combat":
-                    this.#combat.meditated();
-                    break;
-                case "Alchemy":
-                    this.#alchemy.meditated();
-                    break;
-                case "Special":
-                    this.#special.meditated();
-                    break;
-                case "Defense":
-                    this.#defense.meditated();
-                    break;
-            }
+            this.getSkillByName(msg.skill).meditated();
             this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
         }
 
+        /**
+         * 
+         * @param {string} name - Options: "Combat", "Defense", "Alchemy", "Special"
+         */
+        getSkillByName(name) {
+            switch(name){
+                case "Combat":
+                    return this.#combat;
+                case "Defense":
+                    return this.#defense;
+                case "Alchemy":
+                    return this.#alchemy;
+                case "Special":
+                    return this.#special;
+            }
+        }
 
 
 
