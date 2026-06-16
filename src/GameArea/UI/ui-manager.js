@@ -251,7 +251,7 @@ export const ui_manager = (() => {
          */
         #CreateSkillBoxes(skillName) {
             const container = document.getElementById(`${skillName}-lvl`);
-            const icon = document.getElementById(`${skillName}-icon`)
+            const icon = document.getElementById(`${skillName}-icon-container`);
 
             for (let i = 0; i < this.#maxSkillLevel; i++) {
                 const box = document.createElement("div");
@@ -1036,7 +1036,8 @@ export const ui_manager = (() => {
                             levelupImpossibleText.innerHTML = "Du hast nicht genug Geld";
                         }
                     }
-
+                    
+                    this.#ShowSchoolInfo();
                     break;
             }
         }
