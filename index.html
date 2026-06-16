@@ -15,6 +15,10 @@
 </head>
 <body style="margin-top: 0; margin-left: 0;">
     <script type="module" src="./src/main.js"></script>
+    <div id="game-loading-screen" style="display: none;">
+        <div id="loading_tip" class="--fancy-font"></div>
+        <div class="loader"></div>
+    </div>
 
     <div id="placeholder" style="display: none;" > </div>
 
@@ -27,6 +31,7 @@
 		</video>
 
     </div>
+
 
     <div id="game-ui" style="display: none;"> 
         <div class="container container--row container--neutral borders--bottom-right position-top-left" id="player-window">
@@ -88,6 +93,43 @@
             </div>
         </div>
 
+        <div class="container borders--all container--neutral container--row" id="phase-two-options-menu" style="display: none;">
+            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="meditate-option">
+                Meditate
+            </div>   
+            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="fight-monster-option">
+                Fight-monster
+            </div>
+
+            <div class="container container--col container--stretch container container--no-padding container--col" id ="explore-options">
+                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-city-option">
+                    Die Stadt erkunden
+                </div>
+                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-wilderness-option">
+                    Die Wildnis erkunden
+                </div>
+                <div class="textbox textbox--fill button" id="skill-levelup-continue-button">Fortfahren</div>
+            </div>
+        </div>
+
+        <div class="container borders--all container--neutral container--row" id="phase-two-options-menu" style="display: none;">
+            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="meditate-option">
+                Meditate
+            </div>   
+            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="fight-monster-option">
+                Fight-monster
+            </div>
+
+            <div class="container container--col container--stretch container container--no-padding container--col" id ="explore-options">
+                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-city-option">
+                    Die Stadt erkunden
+                </div>
+                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-wilderness-option">
+                    Die Wildnis erkunden
+                </div>
+            </div>
+        </div>
+
         <div class="container container--col container--neutral borders--bottom-left position-top-right" id="phase-window">
             <div class="container container--row container--no-padding" id="avatars-container"></div>
             <div>
@@ -101,10 +143,10 @@
             <div class="container container--row" id="hand-window"></div>
             <div class="container container--row modal-button-row" id="discard-buttons">
                 <div class="textbox textbox--fill button" id="button-discard">
-                    Ausgewählte Karten ablegen
+                    Ablegen & Nachziehen
                 </div>
                 <div class="textbox textbox--fill button" id="button-skip">
-                    Überspringen
+                    Überspringen & Nachziehen
                 </div>
             </div>  
             

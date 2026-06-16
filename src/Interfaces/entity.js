@@ -114,6 +114,15 @@ export const entity = (() => {
         }
 
         /**
+         * 
+         * @param {string} key 
+         * @returns {*}
+         */
+        GetFromCache(key){
+            return this._parent.GetFromCache(key);
+        }
+
+        /**
          * Triggers after specific time intervall
          * @param {float} timeElapsed 
          */
