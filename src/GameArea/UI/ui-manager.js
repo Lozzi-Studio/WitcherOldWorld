@@ -230,12 +230,26 @@ export const ui_manager = (() => {
         }
 
         /**
+         * Returns an array containing the current player's skill objects
+         * @returns {array}
+         */
+        #GetSkillsFromCurrentPlayer() {
+            let player = this.FindComponent("GameManager").currentPlayer;
+            return [
+                player.FindComponent("PlayerSkills").combat,
+                player.FindComponent("PlayerSkills").defense,
+                player.FindComponent("PlayerSkills").alchemy,
+                player.FindComponent("PlayerSkills").special
+            ];
+        }
+
+        /**
          * Initialize skillboxes in UI
          */
         #InitPlayerSkills() {
-            let skills = ["combat", "defense", "alchemy", "special"];
+            let skills = this.#GetSkillsFromCurrentPlayer();
             for (const skill of skills) {
-                this.#CreateSkillBoxes(skill);
+                this.#CreateSkillBoxes(skill.toIdentifier().toLowerCase());
             }
         }
 
@@ -244,12 +258,8 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          */
         #SetPlayerSkills(player) {
-            for (const skill of [
-                player.FindComponent("PlayerSkills").combat,
-                player.FindComponent("PlayerSkills").defense,
-                player.FindComponent("PlayerSkills").alchemy,
-                player.FindComponent("PlayerSkills").special
-            ]) {
+            let skills = this.#GetSkillsFromCurrentPlayer();
+            for (const skill of skills) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
                     let id = `${skillName}-level-box-${i+1}`;
@@ -893,15 +903,10 @@ export const ui_manager = (() => {
             let player = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
             let skillFromPlayer = player.FindComponent("PlayerSkills").getSkillByName(skill.toIdentifier());
             let costs = skillFromPlayer.level + 1;
-
-            console.log(skillFromPlayer.level);
-            console.log("costs = " + costs);
             if (player.FindComponent("MoneyStorage").CanPay(costs)) {
-                console.log("true");
                 this.#UpdateButtonState(levelupButton.id, true);
             }
             else {
-                console.log("false");
                 this.#UpdateButtonState(levelupButton.id, false);
             }
 
@@ -938,12 +943,7 @@ export const ui_manager = (() => {
             let expandButton = document.getElementById("expand-skills-button");
             expandButton.style.display = "none";
 
-            let skills = [
-                player_skills.Skill.Combat(),
-                player_skills.Skill.Defense(),
-                player_skills.Skill.Alchemy(),
-                player_skills.Skill.Special()
-            ]
+            let skills = this.#GetSkillsFromCurrentPlayer();
 
             for (let skill of skills) {
                 this.#InitLevelupButton(skill);
@@ -953,22 +953,31 @@ export const ui_manager = (() => {
             continueButton.style.display = "block";
             continueButton.classList.add("button--inactive");
 
-            continueButton.addEventListener("click", () => {
-                if (!continueButton.classList.contains("button--inactive")) {
-                    for (let skill of skills) {
-                        this.#HideLevelupButton(skill)
-                    }
+            continueButton.addEventListener("click", () => {this.#HideSkillDecider()});
+        }
+
+        #HideSkillDecider() {
+            let skills = this.#GetSkillsFromCurrentPlayer();
+            
+            let continueButton = document.getElementById("skill-levelup-continue-button");
+            if (!continueButton.classList.contains("button--inactive")) {
+                for (let skill of skills) {
+                    this.#HideLevelupButton(skill)
                 }
-                continueButton.style.display = "none";
-
-                skillWindow.classList.remove("borders--all", "position-center");
-                skillWindow.classList.add("borders--bottom-right", "position-top-left");
-
-                heading.innerHTML = "Skills";
-                headingContainer.style.justifyContent = "space-between";
-
-                expandButton.style.display = "block";
-            });
+            }
+            continueButton.style.display = "none";
+            
+            let skillWindow = document.getElementById("player-window");
+            skillWindow.classList.remove("borders--all", "position-center");
+            skillWindow.classList.add("borders--bottom-right", "position-top-left");
+            
+            let heading = document.getElementById("skills-header-text");
+            heading.innerHTML = "Skills";
+            let headingContainer = document.getElementById("skills-header");
+            headingContainer.style.justifyContent = "space-between";
+            
+            let expandButton = document.getElementById("expand-skills-button");
+            expandButton.style.display = "block";
         }
 
         /**
