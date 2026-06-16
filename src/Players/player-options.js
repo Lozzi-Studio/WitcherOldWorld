@@ -75,7 +75,7 @@ export const player_options = (() => {
                 case "Wolfsschule":
                     return {
                         "name": "Schwertkunst",
-                        "info": "Super toller Infotext zu der Fähigkeit Schwertkunst, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
+                        "info": "1x pro Kampf\: In deinem ersten Zug darfst du Karten von deinem Deck ziehen (und ggf. in beliebiger Reihenfolge zurücklegen)",
                         "bonus": "Anzahl an super tollen Sachen der Wolfsschule"
                     };
                 case "Greifenschule":
