@@ -69,8 +69,8 @@ export const ui_manager = (() => {
                 }
             }
 
-            let skipButton = document.getElementById("debug-next-phase-button");
-            this.HandleNextPhaseClick = () => {
+            let skipButton = document.getElementById("end-phase-button");
+            this.HandleEndPhaseClick = () => {
                 if (skipButton.classList.contains("button--inactive") == false) {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
                 }
@@ -117,7 +117,8 @@ export const ui_manager = (() => {
             this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
-            document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
+            document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleEndPhaseClick);
+            document.getElementById("end-phase-button").addEventListener("click", this.HandleEndPhaseClick);
             document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
         }
 
@@ -130,15 +131,6 @@ export const ui_manager = (() => {
          */
         SelectCard(card_slot, card) {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(card_slot, card));
-        }
-
-        /**
-         * End current turn phase
-         */
-        #EndPhaseOne(button) {
-            if (!button.classList.contains("button--inactive")) {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
-            }
         }
 
         /**
@@ -392,13 +384,10 @@ export const ui_manager = (() => {
         #UpdateNextPhaseButton(msg) {
             let button = document.getElementById("end-phase-button");
             if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
-                button.style.display = "flex";
-                button.classList.add("button--inactive");
-                button.addEventListener("click", () => this.#EndPhaseOne(button));
+                button.style.display = "block";
             }
             else {
                 button.style.display = "none";
-                button.removeEventListener("click", () => this.#EndPhaseOne(button));
             }
         }
 
@@ -772,6 +761,7 @@ export const ui_manager = (() => {
             this.#UpdatePlayerStats(msg.player);
             this.#OnNextPhase();
             this.#UpdateHandCards(msg);
+            this.#UpdateButtonState("end-phase-button", false);
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
