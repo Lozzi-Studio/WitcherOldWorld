@@ -19,6 +19,7 @@ export const phase_two_ui_component = (() => {
         #OnPhaseTwoStart(msg){
             document.getElementById("phase-two-options-menu").style.display = "flex";
             this.#activateMeditateOption();
+            this.#activateCombatOption();
         }
 
         #activateMeditateOption(){
@@ -27,10 +28,17 @@ export const phase_two_ui_component = (() => {
 
             for (let key in canMeditate){
                 if(canMeditate[key]){
-                document.getElementById("meditate-option").classList.remove("option--disabled");
+                    document.getElementById("meditate-option").classList.remove("option--disabled");
                 }
             }
             
+        }
+
+        #activateCombatOption(){
+            let monster = this.FindComponent('GameManager').GetLocalMonster();
+            if (monster != null) {
+                document.getElementById("fight-monster-option").classList.remove("option--disabled");
+            }
         }
 
         #exploreCityOption(){
@@ -58,7 +66,10 @@ export const phase_two_ui_component = (() => {
         }
 
         #activateFightMonsterOption(){
-            //TODO implement function to enable monster fight btn
+            this.#onPhaseTwoEnd({});
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let monster = this.FindComponent("GameManager").GetLocalMonster();
+            this.FindEntity("BatteEntity").Broadcast(broadcasts.BroadcastTemplateBattle.StartBattle(player, monster));
         }
 
         #onPhaseTwoEnd(msg){

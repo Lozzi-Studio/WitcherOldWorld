@@ -197,6 +197,15 @@ export const game_manager = (() => {
 
         }
 
+        GetLocalMonster() {
+            for (let monster of this.#currentMonster.values()) {
+                if (monster.town == this.#currentPlayer.town) {
+                    return monster
+                }
+            }
+            return null;
+        }
+
         ValidateCardSelected() {
             return this.#selection.length > 0;
         }
