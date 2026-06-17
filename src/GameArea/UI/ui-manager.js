@@ -73,9 +73,16 @@ export const ui_manager = (() => {
                 }
             }
 
-            let skipButton = document.getElementById("debug-next-phase-button");
-            this.HandleNextPhaseClick = () => {
+            let skipButton = document.getElementById("end-phase-button");
+            this.HandleEndPhaseClick = () => {
                 if (skipButton.classList.contains("button--inactive") == false) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+                }
+            };
+
+            let debugButton = document.getElementById("debug-next-phase-button");
+            this.HandleSkipPhaseClick = () => {
+                if (debugButton.classList.contains("button--inactive") == false) {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
                 }
                 if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 3) {
@@ -85,7 +92,7 @@ export const ui_manager = (() => {
 
             let upgradeSkillButton = document.getElementById("debug-upgrade-skill-button");
             this.HandleUpgradeSkillClick = () => {
-                if (skipButton.classList.contains("button--inactive") == false) {
+                if (upgradeSkillButton.classList.contains("button--inactive") == false) {
                     this.#LoadSkillDecider();
                 }
             };
@@ -143,7 +150,7 @@ export const ui_manager = (() => {
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
-            this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateButtonState("town-button", msg.active)});
+            this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButton(msg)});
             this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateButtonState("button-discard", msg.active);});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
@@ -151,7 +158,8 @@ export const ui_manager = (() => {
             this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
-            document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleNextPhaseClick);
+            document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleSkipPhaseClick);
+            document.getElementById("end-phase-button").addEventListener("click", this.HandleEndPhaseClick);
             document.getElementById("debug-upgrade-skill-button").addEventListener("click", this.HandleUpgradeSkillClick);
             document.getElementById("debug-add-money-button").addEventListener("click", this.HandleAddMoneyClick);
             document.getElementById("skill-levelup-cancel-button").addEventListener("click", this.HandleCancelLevelupClick);
@@ -164,15 +172,6 @@ export const ui_manager = (() => {
          */
         SelectCard(card_slot, card) {
             this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(card_slot, card));
-        }
-
-        /**
-         * End current turn phase
-         */
-        #EndPhaseOne(button) {
-            if (!button.classList.contains("button--inactive")) {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
-            }
         }
 
         /**
@@ -441,13 +440,10 @@ export const ui_manager = (() => {
         #UpdateNextPhaseButton(msg) {
             let button = document.getElementById("end-phase-button");
             if (this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() == 1) {
-                button.style.display = "flex";
-                button.classList.add("button--inactive");
-                button.addEventListener("click", () => this.#EndPhaseOne(button));
+                button.style.display = "block";
             }
             else {
                 button.style.display = "none";
-                button.removeEventListener("click", () => this.#EndPhaseOne(button));
             }
         }
 
@@ -821,6 +817,7 @@ export const ui_manager = (() => {
             this.#UpdatePlayerStats(msg.player);
             this.#OnNextPhase();
             this.#UpdateHandCards(msg);
+            this.#UpdateButtonState("end-phase-button", false);
             this.#UpdatePlayerSchool(msg);
             this.#InitPlayerWindow();
         
@@ -835,6 +832,7 @@ export const ui_manager = (() => {
          */
         #OnNextPhase() {
             this.#SetPhaseOptions();
+            this.#UpdateNextPhaseButton();
     
             const currentPhase = this.FindComponent("GameManager").phase.toIdentifier();
             const discardPanel = document.getElementById("discard-button-area");

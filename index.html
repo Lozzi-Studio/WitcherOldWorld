@@ -47,11 +47,13 @@
                 </div>
                 <div class="container container--row container--no-padding container--justify" id="player-inventory-container">
                     <div class="container container--row container--no-padding">
-                        <div class="material-symbols-outlined filled">toll</div>
+                        <div class="tooltip-icon material-symbols-outlined filled">toll</div>
+                        <div class="tooltip-text tooltip-text--bottom">Gold</div> 
                         <div class="text-single-number --fancy-font" id="money-amount">-</div>
                     </div>
                     <div class="container container--row container--no-padding">
-                        <div class="material-symbols-outlined filled">trophy</div>
+                        <div class="tooltip-icon material-symbols-outlined filled">trophy</div>
+                        <div class="tooltip-text tooltip-text--bottom">Trophäen</div> 
                         <div class="text-single-number --fancy-font" id="trophy-amount">-</div>
                     </div>
                 </div>
@@ -67,7 +69,8 @@
                     <div class="container container--col container--no-padding">
                         <div class="container container--row container--small-gap" id="combat-levelup-bonus">
                             <div>+1x</div>
-                            <div class="material-symbols-outlined filled small">swords</div>
+                            <div class="tooltip-icon material-symbols-outlined filled small">swords</div>
+                            <div class="tooltip-text tooltip-text--bottom">Kampf</div>
                         </div>
                         <div class="textbox textbox--fill button levelup-button" id="combat-levelup-button">+</div>
                         <div class="container container--col inner-borders inner-borders--neutral">
@@ -82,8 +85,9 @@
                                 </div>
                             </div>
                             <div class="container container--row container--no-padding container--small-gap" id="combat-icon-container">
-                                <div class="material-symbols-outlined filled" id="combat-icon">swords</div>
-                                <div class="--fancy-font" id="combat-name">Combat</div>
+                                <div class="tooltip-icon material-symbols-outlined filled" id="combat-icon">swords</div>
+                                <div class="tooltip-text tooltip-text--bottom">Kampf</div>   
+                                <div class="--fancy-font" id="combat-name">Kampf</div>
                             </div>
                             <div class="skill-info" id="combat-info">Anzahl Karten, die du am Ende jeder Kampfrunde ziehst</div>
                         </div>
@@ -91,7 +95,8 @@
                     <div class="container container--col container--no-padding">
                         <div class="container container--row container--small-gap" id="defense-levelup-bonus">
                             <div>+1x</div>
-                            <div class="material-symbols-outlined filled small">shield</div>
+                            <div class="tooltip-icon material-symbols-outlined filled small">shield</div>
+                            <div class="tooltip-text tooltip-text--bottom">Verteidigung</div>
                         </div>
                         <div class="textbox textbox--fill button levelup-button" id="defense-levelup-button">+</div>
                         <div class="container container--col inner-borders inner-borders--neutral">
@@ -106,8 +111,9 @@
                                 </div>
                             </div>
                             <div class="container container--row container--no-padding container--small-gap" id="defense-icon-container">
-                                <div class="material-symbols-outlined filled" id="defense-icon">shield</div>
-                                <div class="--fancy-font" id="defense-name">Defense</div>
+                                <div class="tooltip-icon material-symbols-outlined filled" id="defense-icon">shield</div>
+                                <div class="tooltip-text tooltip-text--bottom">Verteidigung</div>
+                                <div class="--fancy-font" id="defense-name">Verteidigung</div>
                             </div>
                             <div class="skill-info" id="defense-info">Maximaler Schild-Level</div>
                         </div>
@@ -115,7 +121,8 @@
                     <div class="container container--col container--no-padding">
                         <div class="container container--row container--small-gap" id="alchemy-levelup-bonus">
                             <div>+1x</div>
-                            <div class="material-symbols-outlined filled small">air_freshener</div>
+                            <div class="tooltip-icon material-symbols-outlined filled small">air_freshener</div>
+                            <div class="tooltip-text tooltip-text--bottom">Alchemie</div>
                         </div>
                         <div class="textbox textbox--fill button levelup-button" id="alchemy-levelup-button">+</div>
                         <div class="container container--col inner-borders inner-borders--neutral">
@@ -130,8 +137,9 @@
                                 </div>
                             </div>
                             <div class="container container--row container--no-padding container--small-gap" id="alchemy-icon-container">
-                                <div class="material-symbols-outlined filled" id="alchemy-icon">air_freshener</div>
-                                <div class="--fancy-font" id="alchemy-name">Alchemy</div>
+                                <div class="tooltip-icon material-symbols-outlined filled" id="alchemy-icon">air_freshener</div>
+                                <div class="tooltip-text tooltip-text--bottom">Alchemie</div>
+                                <div class="--fancy-font" id="alchemy-name">Alchemie</div>
                             </div>
                             <div class="skill-info" id="alchemy-info">Anzahl Tränke die du im Kampf spielen darfst</div>
                         </div>
@@ -139,7 +147,8 @@
                     <div class="container container--col container--no-padding">
                         <div class="container container--row container--small-gap" id="special-levelup-bonus">
                             <div>+1x</div>
-                            <div class="material-symbols-outlined filled small">star_shine</div>
+                            <div class="tooltip-icon material-symbols-outlined filled small">star_shine</div>
+                            <div class="tooltip-text tooltip-text--bottom">Spezialfähigkeit</div>
                         </div>
                         <div class="textbox textbox--fill button levelup-button" id="special-levelup-button">+</div>
                         <div class="container container--col inner-borders inner-borders--neutral">
@@ -154,8 +163,9 @@
                                 </div>
                             </div>
                             <div class="container container--row container--no-padding container--small-gap" id="special-icon-container">
-                                <div class="material-symbols-outlined filled" id="special-icon">star_shine</div>
-                                <div class="--fancy-font" id="special-name">Special</div>
+                                <div class="tooltip-icon material-symbols-outlined filled" id="special-icon">star_shine</div>
+                                <div class="tooltip-text tooltip-text--bottom">Spezialfähigkeit</div>
+                                <div class="--fancy-font" id="special-name">Spezial</div>
                             </div>
                             <div class="skill-info" id="special-info">SPECIAL INFO</div>
                         </div>
@@ -171,7 +181,8 @@
                 <img id="school-image">
                 <div class="textbox textbox--fill textbox--fancy-font"><p id="school-name">NAME</p></div>
                 <div class="container container--row container--no-padding">
-                    <div class="material-symbols-outlined filled" id="special-icon">star_shine</div>
+                    <div class="tooltip-icon material-symbols-outlined filled" id="special-icon">star_shine</div>
+                    <div class="tooltip-text tooltip-text--bottom">Spezialfähigkeit</div>
                     <div class="--fancy-font" id="school-ability-name">ABILITY</div>
                 </div>
                 <div id="school-ability-info">ABILITY</div>
