@@ -1094,7 +1094,7 @@ export const ui_manager = (() => {
             abilityInfo.innerHTML = msg.player.witcherSchool.ability["info"];
 
             let abilityBonusInfo = document.getElementById("special-info");
-            abilityBonusInfo.innerHTML = msg.player.witcherSchool.ability["bonus"];
+            abilityBonusInfo.innerHTML = msg.player.witcherSchool.ability["levelInfo"];
         }
 
         #ShowSchoolInfo() {

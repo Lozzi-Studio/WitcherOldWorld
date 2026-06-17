@@ -57,32 +57,57 @@ export const player_options = (() => {
                 case "Vipernschule":
                     return {
                         "name": "Vergiftete Waffe",
-                        "info": "Super toller Infotext zu der Fähigkeit Vergiftete Waffe, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
-                        "bonus": "Anzahl an super tollen Sachen der Vipernschule"
+                        "info": "Ein Mal pro Kampf: Nachdem du deinem\
+                                Gegner Schaden zugefügt hast und er\
+                                dadurch 1 oder mehrere Karten abgelegt\
+                                hat, darfst du diese Spezialisierung\
+                                aktivieren, um die obersten Karten im\
+                                Deck deines Gegners anzusehen und in\
+                                beliebiger Reihenfolge zurückzulegen. Ab\
+                                Stufe 2 legst du manche davon ab.",
+                        "levelInfo": "Anzahl Karten, die du ansehen / ablegen darfst"
                     };
                 case "Katzenschule":
                     return {
                         "name": "Schnelligkeit",
-                        "info": "Super toller Infotext zu der Fähigkeit Schnelligkeit, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
-                        "bonus": "Anzahl an super tollen Sachen der Katzenschule"
+                        "info": "Ein Mal pro Kampf, in deinem ersten\
+                                Kampfzug: Du darfst diese Spezialisierung\
+                                aktivieren, um Karten von deinem Deck\
+                                anzusehen und manche davon auf die\
+                                Hand zu nehmen. Die anderen legst du\
+                                in beliebiger Reihenfolge zurück.",
+                        "levelInfo": "Anzahl Karten die du ansehen / ziehen darfst"
                     };
                 case "Baerenschule":
                     return {
                         "name": "Ruestung",
-                        "info": "Super toller Infotext zu der Fähigkeit Ruestung, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
-                        "bonus": "Anzahl an super tollen Sachen der Baerenschule"
+                        "info": "Ein Mal pro Kampf: Falls in deinem\
+                                Kampfzug dein Schildwert 0 ist, wird diese\
+                                Spezialisierung automatisch aktiviert:\
+                                Ziehe Karten von deinem Deck. Ab Stufe\
+                                2 erhöhst du auch deinen Schildwert.",
+                        "levelInfo": "Anzahl Schilde die du bekommst / Karten die du ziehst"
                     };
                 case "Wolfsschule":
                     return {
                         "name": "Schwertkunst",
-                        "info": "1x pro Kampf\: In deinem ersten Zug darfst du Karten von deinem Deck ziehen (und ggf. in beliebiger Reihenfolge zurücklegen)",
-                        "bonus": "Anzahl Karten die du ansehen / ziehen darfst"
+                        "info": "Ein Mal pro Kampf: Wenn du eine Kombo\
+                                aus 3 oder mehr Karten spielst, darfst du\
+                                diese Spezialisierung aktivieren, um zusätz-\
+                                lichen Schaden zuzufügen. Ab Stufe 2 ziehst\
+                                du auch Karten von deinem Deck.",
+                        "levelInfo": "Schaden den du machst / Karten die du ziehst"
                     };
                 case "Greifenschule":
                     return {
                         "name": "Magie",
-                        "info": "Super toller Infotext zu der Fähigkeit Magie, der unter Umständen auch mal sehr lang werden kann, so lang dass ich hier auf jeden Fall ein paar Zeilen Platz brauche",
-                        "bonus": "Anzahl an super tollen Sachen der Greifenschule"
+                        "info": "Ein Mal pro Kampf: Du darfst diese Spezia-\
+                                lisierung aktivieren, um 1 Karte von deinem\
+                                Ablagestapel auf die Hand zu nehmen.\
+                                Stufe 1–2: Oberste Karte nehmen, Karten ablegen\
+                                Stufe 3: Oberste Karte nehmen\
+                                Stufe 4–5: Beliebige Karte nehmen",
+                        "levelInfo": "Keine Ahnung wie ich die Greifenschule beschreiben soll lol"
                     };
             }
         }
