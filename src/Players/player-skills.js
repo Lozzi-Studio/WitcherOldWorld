@@ -35,7 +35,7 @@ export const player_skills = (() => {
          * @param {object} msg 
          */
         #ChangeLevel(msg) {
-            let skill = this.getSkillByName(msg.skill.toIdentifier());
+            let skill = this.GetSkillByName(msg.skill.toIdentifier());
             switch(msg.mode) {
                 case "Increase":
                     if (msg.payMoney && skill?.maxAmount != skill?.level) {
@@ -78,7 +78,7 @@ export const player_skills = (() => {
         }
 
         #OnMeditate(msg) {
-            this.getSkillByName(msg.skill).meditated();
+            this.GetSkillByName(msg.skill).meditated();
             this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
         }
 
@@ -86,7 +86,7 @@ export const player_skills = (() => {
          * 
          * @param {string} name - Options: "Combat", "Defense", "Alchemy", "Special"
          */
-        getSkillByName(name) {
+        GetSkillByName(name) {
             switch(name){
                 case "Combat":
                     return this.#combat;
@@ -99,7 +99,18 @@ export const player_skills = (() => {
             }
         }
 
-
+        /**
+         * Returns an array containing the current player's skill objects
+         * @returns {array}
+         */
+        GetAllSkills() {
+            return [
+                this.#combat,
+                this.#defense,
+                this.#alchemy,
+                this.#special
+            ]
+        }
 
         get combat() {
             return this.#combat;

@@ -284,24 +284,10 @@ export const ui_manager = (() => {
         }
 
         /**
-         * Returns an array containing the current player's skill objects
-         * @returns {array}
-         */
-        #GetSkillsFromCurrentPlayer() {
-            let player = this.FindComponent("GameManager").currentPlayer;
-            return [
-                player.FindComponent("PlayerSkills").combat,
-                player.FindComponent("PlayerSkills").defense,
-                player.FindComponent("PlayerSkills").alchemy,
-                player.FindComponent("PlayerSkills").special
-            ];
-        }
-
-        /**
          * Initialize skillboxes in UI
          */
         #InitPlayerSkills() {
-            let skills = this.#GetSkillsFromCurrentPlayer();
+            let skills = this.FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").GetAllSkills();
             for (const skill of skills) {
                 this.#CreateSkillBoxes(skill.toIdentifier().toLowerCase());
             }
@@ -312,7 +298,7 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          */
         #SetPlayerSkills(player) {
-            let skills = this.#GetSkillsFromCurrentPlayer();
+            let skills = this.FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").GetAllSkills();
             for (const skill of skills) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
@@ -960,7 +946,7 @@ export const ui_manager = (() => {
             levelupButton.style.display = "block";
 
             let player = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
-            let skillFromPlayer = player.FindComponent("PlayerSkills").getSkillByName(skill.toIdentifier());
+            let skillFromPlayer = player.FindComponent("PlayerSkills").GetSkillByName(skill.toIdentifier());
             let costs = skillFromPlayer.level + 1;
             if (player.FindComponent("MoneyStorage").CanPay(costs)) {
                 this.#hasEnoughMoneyForLevelup = true;
@@ -1004,7 +990,7 @@ export const ui_manager = (() => {
             this.#HideSchoolInfo();
             this.#HideSkillInfo();
 
-            let skills = this.#GetSkillsFromCurrentPlayer();
+            let skills = this.FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").GetAllSkills();
 
             for (let skill of skills) {
                 let skillName = skill.toIdentifier().toLowerCase();
@@ -1028,7 +1014,7 @@ export const ui_manager = (() => {
             let cancelButton = document.getElementById("skill-levelup-cancel-button");
             let continueButton = document.getElementById("skill-levelup-continue-button");
             let levelupImpossibleText = document.getElementById("levelup-impossible-text");
-            let skills = this.#GetSkillsFromCurrentPlayer();
+            let skills = this.FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").GetAllSkills();
 
             switch(mode) {
                 case "default":
@@ -1122,7 +1108,7 @@ export const ui_manager = (() => {
         }
 
         #ShowSkillInfo() {
-            let skills = this.#GetSkillsFromCurrentPlayer();
+            let skills = this.FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").GetAllSkills();
             for (let skill of skills) {
                     let skillName = skill.toIdentifier().toLowerCase();
                     document.getElementById(`${skillName}-lvl-bonus`).style.display = "flex";
@@ -1132,7 +1118,7 @@ export const ui_manager = (() => {
         }
 
         #HideSkillInfo() {
-            let skills = this.#GetSkillsFromCurrentPlayer();
+            let skills = this.FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").GetAllSkills();
             for (let skill of skills) {
                     let skillName = skill.toIdentifier().toLowerCase();
                     document.getElementById(`${skillName}-lvl-bonus`).style.display = "none";
