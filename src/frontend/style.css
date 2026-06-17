@@ -226,6 +226,7 @@ p, div {
     gap: 4px;
 
     align-items: center;
+    z-index: 10;
 }
 
 .icon--active {
@@ -510,7 +511,7 @@ p, div {
 
 #discard-modal {
     border-radius: 10px;
-    z-index: 1000;
+    z-index: 9;
     
     display: flex;
     flex-direction: column;
@@ -603,7 +604,7 @@ p, div {
     left: 50% !important;
     transform: translateX(-50%);
     margin-top: 8px;
-    z-index: 100;
+    z-index: 11;
 }
 
 .tooltip:hover + .tooltip-text {
