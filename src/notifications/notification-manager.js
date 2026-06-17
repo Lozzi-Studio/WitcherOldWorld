@@ -34,6 +34,27 @@ export const notifaction_manager = (() => {
             this._RegisterHandler('notification.custom', (msg) => {this.#QueueNotification(msg)});
         }
 
+        /**
+         * Get german identifier of enum
+         * @returns {string}
+         */
+        toGermanIdentifier(skill){
+            switch(skill){
+                case "Combat":
+                    return "Kampf";
+                    break;
+                case "Defense":
+                    return "Verteidigung";
+                    break;
+                case "Alchemy":
+                    return "Alchemie";
+                    break;
+                case "Special":
+                    return "Spezialfähigkeit";
+                    break;
+            } 
+        }
+
         #QueueNotification(msg) {
             var currentPlayer = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
             var currentPhase = this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() + 1;
@@ -55,7 +76,8 @@ export const notifaction_manager = (() => {
                     notificationAdded = true;
                     break;
                 case 'skill.changeLevel':
-                    this.#notificationQueue.push(currentPlayer.playerName + " hat die Fähigkeit " + msg.skill.toGermanIdentifier() + " verbessert.");
+                    const current_skill = msg.skill.toIdentifier()
+                    this.#notificationQueue.push(currentPlayer.playerName + " hat die Fähigkeit " + this.toGermanIdentifier(current_skill) + " verbessert.");
                     notificationAdded = true;
                     break;
                 case 'player.move':
