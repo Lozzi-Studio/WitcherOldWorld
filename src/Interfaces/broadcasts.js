@@ -491,6 +491,10 @@ export const broadcasts = (() => {
         static PlayCombo(card) {
             return {topic: 'battle.playCombo', card: card}
         }
+
+        static StartBattle(player, monster) {
+            return {topic: 'battle.startBattle', player: player, monster: monster}
+        }
     }
 
     return {
