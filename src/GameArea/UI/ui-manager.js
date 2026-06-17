@@ -121,6 +121,10 @@ export const ui_manager = (() => {
             document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
         }
 
+        get phasethreeparttwo() {
+            return this.#phasethreeparttwo;
+        }
+
         /**
          * Triggers Cardslot Selection
          */

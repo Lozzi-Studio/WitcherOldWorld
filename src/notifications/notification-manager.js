@@ -1,3 +1,4 @@
+import { ui_manager } from "../GameArea/UI/ui-manager";
 import { component } from "../Interfaces/component";
 
 export const notifaction_manager = (() => {
@@ -92,8 +93,8 @@ export const notifaction_manager = (() => {
                     }
                     break;
                 case 'card.drawCard':
-                    console.log(currentPhase)
-                    if (msg.mode === "Deck" && currentPhase === 3) {
+                    let is_shop = this.FindEntity("GameArea").FindComponent("UIManager").phasethreeparttwo
+                    if (msg.mode === "Deck" && currentPhase === 3 && !is_shop) {
                         this.#notificationQueue.push(currentPlayer.playerName + " hat " + msg.amount + " Karte/n nachgezogen"); 
                         notificationAdded = true; 
                     }
