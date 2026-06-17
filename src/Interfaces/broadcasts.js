@@ -262,6 +262,14 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @returns {object}
+         */
+        static loadPhaseTwoUi(){
+            return {topic: 'game.phaseTwo'};
+        }
+
+        /**
+         * 
          * @param {player_entity.Player} player
          * @returns {object}
         */
@@ -360,6 +368,14 @@ export const broadcasts = (() => {
          */
         static DiscardSelectedCards() {
             return {topic: 'game.discardSelectedCards'}
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static DrawCardsUntilHandFull(){
+            return {topic: 'game.drawUntilFull'}
         }
 
         /**

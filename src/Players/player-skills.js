@@ -27,6 +27,7 @@ export const player_skills = (() => {
          */
         InitComponent() {
             this._RegisterHandler('skill.changeLevel', (msg) => {this.#ChangeLevel(msg)});
+            this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
         }
 
         /**
@@ -34,21 +35,7 @@ export const player_skills = (() => {
          * @param {object} msg 
          */
         #ChangeLevel(msg) {
-            let skill = null;
-            switch(msg.skill.toIdentifier()) {
-                case "Combat":
-                    skill = this.#combat;
-                    break;
-                case "Defense":
-                    skill = this.#defense;
-                    break;
-                case "Alchemy":
-                    skill = this.#alchemy;
-                    break;
-                case "Special":
-                    skill = this.#special;
-                    break;
-            }
+            let skill = this.GetSkillByName(msg.skill.toIdentifier());
             switch(msg.mode) {
                 case "Increase":
                     if (msg.payMoney && skill?.maxAmount != skill?.level) {
@@ -79,6 +66,9 @@ export const player_skills = (() => {
         }
 
         canMeditate(){
+            if (this.FindComponent("TrophyStorage").amount > 3){
+                return {"error": false}
+            }
             return {
                 "Combat": this.#combat.canMeditate(),
                 "Alchemy" : this.#alchemy.canMeditate(),
@@ -88,20 +78,39 @@ export const player_skills = (() => {
         }
 
         #OnMeditate(msg) {
-            switch(msg){
+            this.GetSkillByName(msg.skill).meditated();
+            this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+        }
+
+        /**
+         * 
+         * @param {string} name - Options: "Combat", "Defense", "Alchemy", "Special"
+         */
+        GetSkillByName(name) {
+            switch(name){
                 case "Combat":
-                    this.#combat.meditated();
-                case "Alchemy":
-                    this.#alchemy.meditated();
-                case "Special":
-                    this.#special.meditated();
+                    return this.#combat;
                 case "Defense":
-                    this.#defense.meditated();
+                    return this.#defense;
+                case "Alchemy":
+                    return this.#alchemy;
+                case "Special":
+                    return this.#special;
             }
         }
 
-
-
+        /**
+         * Returns an array containing the current player's skill objects
+         * @returns {array}
+         */
+        GetAllSkills() {
+            return [
+                this.#combat,
+                this.#defense,
+                this.#alchemy,
+                this.#special
+            ]
+        }
 
         get combat() {
             return this.#combat;
@@ -173,15 +182,14 @@ export const player_skills = (() => {
         }
 
         canMeditate() {
-            return this.#level == this.#maxLevel && !(this.#hasMeditated)
+            return this.#level == this.#maxLevel && !this.#hasMeditated;
         }
 
         meditated() {
             if (!this.#hasMeditated){
             this.#hasMeditated = true;
-            this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy)
             }
-            
+
         }
 
 
@@ -199,7 +207,7 @@ export const player_skills = (() => {
         #amount;
         #maxAmount;
 
-        /**
+        /**  
          * A tracker for player shields
          */
         constructor() {

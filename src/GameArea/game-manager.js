@@ -5,6 +5,9 @@ import { card_options } from "../Cards/card-options";
 import { card } from "../Cards/card";
 import { region } from "./region";
 import { monster_entity } from "../Monster/monster-entity";
+import { player_status } from "../Players/player-status";
+import { status_templates } from "../Players/status-templates";
+import { status_options } from "../Players/status-options";
 
 export const game_manager = (() => {
 
@@ -51,6 +54,7 @@ export const game_manager = (() => {
             this._RegisterHandler('battle.playerTurn', (msg) => {this.#isBattleTurn(msg)});
             this._RegisterHandler('battle.playCombo', (msg) => {this.#OnComboPlay(msg)});
             this._RegisterHandler('game.newMonster', (msg) => {this.#CreateNewMonster(msg)});
+            this._RegisterHandler('game.drawUntilFull',()=> {this.#DrawCardsUntilHandFull()});
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -84,6 +88,11 @@ export const game_manager = (() => {
          */
         #NextTurnPhase(msg){
             const nextPlayer = this.#currentRound.next();
+
+            if ( this.#currentRound.toIdentifier() == 2) {
+                this.Broadcast(broadcasts.BroadcastTemplateGame.loadPhaseTwoUi());
+            }
+            
             if (nextPlayer) {
                 for (let card_slot of this.#selection) {
                     this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
@@ -144,7 +153,7 @@ export const game_manager = (() => {
             for (let card_slot of this.#selection) {
                 selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
             }
-            if (selectedCards.length > 0 && this.#selectedTown) {
+            if (selectedCards.length === 1 && this.#selectedTown) {
                 let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
                 let allowedCard = this.ValidateMove(this.#selectedTown, selectedCards).allowedCard;
                 if (moveAllowed){
@@ -205,6 +214,10 @@ export const game_manager = (() => {
          * @returns {object}
          */
         ValidateMove(){
+            if (this.#selection.length !== 1) {
+                return { moveAllowed: false, allowedCard: null };
+            }
+
             if (this.#selectedTown != null) {
                 var town = this.#selectedTown;
                 for (let card_slot of this.#selection) {
@@ -216,6 +229,24 @@ export const game_manager = (() => {
             }
             return { moveAllowed: false, allowedCard: null };
 
+        }
+
+        /**
+         * Calculates how many cards should be drawn at the end of the round and adds them to the hand deck
+         * @returns
+         */
+        #DrawCardsUntilHandFull(){
+            const deckLength = this.#currentPlayer.FindComponent("Carddeck").hand.length;
+
+            const drawLessStatus = status_templates.StatusTemplates.drawLessCards(status_options.Timing.EndOfTurn());
+            const drawMoreStatus = status_templates.StatusTemplates.drawMoreCards(status_options.Timing.EndOfTurn());
+            const drawLess = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawLessStatus);
+            const drawMore = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawMoreStatus);
+
+            let amountToDraw = 3-deckLength-drawLess+drawMore;
+            if(amountToDraw > 0){ 
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
+            } 
         }
 
         /**
