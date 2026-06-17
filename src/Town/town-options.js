@@ -52,7 +52,7 @@ export const town_options = (() => {
         * @returns {TownAbility}
         */
         static getGeruechte() {
-            return new TownAbility("Bekomme ein Geruecht", "Erhalte 1 Gold und erhalte danach ein Geruecht. Beim Einsammeln dieses erhaelts du noch ein Gold.",
+            return new TownAbility("Bekomme ein Geruecht", "Erhalte 1 Gold und erhalte danach ein Geruecht. Beim Einsammeln dieses erhaeltst du noch ein Gold.",
                 broadcasts.BroadcastTemplateGame.ChooseRegion("Rumor", broadcasts.BroadcastTemplatePlayer.GetRumor),
                 town_options.TownAbilityTarget.Game()
             );
