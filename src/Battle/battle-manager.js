@@ -139,7 +139,11 @@ export const battle_manager = (() => {
         }
 
         #PlayerTurn() {
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn());
+            if (this.#player.FindComponent("Carddeck").hand.length <= 0) {
+                this.#PlayCombo({})
+            } else {
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn());
+            }
         }
 
         #ResolveMonsterWin(){
@@ -200,34 +204,37 @@ export const battle_manager = (() => {
 
 
         #PlayCombo(msg) {
-            let result = card_options.CardEffect.createCardEffect(0,0,0,false,false);
-            let cardsToDiscard = [];
-            for (let effect of msg.card.getEffect([])) {
-                if (effect.bonus != null) {
-                    result.damage += effect.bonus.damage;
-                    result.shield += effect.bonus.shield;
-                    result.drawModifier += effect.bonus.drawModifier;
+            console.log(msg);
+            if (msg.length > 0) {
+                let result = card_options.CardEffect.createCardEffect(0,0,0,false,false);
+                let cardsToDiscard = [];
+                for (let effect of msg.card.getEffect([])) {
+                    if (effect.bonus != null) {
+                        result.damage += effect.bonus.damage;
+                        result.shield += effect.bonus.shield;
+                        result.drawModifier += effect.bonus.drawModifier;
+                    }
+                    result.damage += effect.effects.damage;
+                    result.shield += effect.effects.shield;
+                    result.drawModifier += effect.effects.drawModifier;
+                    if (!(effect.effects.backtohand || effect.bonus ? effect.bonus.backtohand : false)) {
+                       cardsToDiscard.push(effect.card);
+                    }
+                    if (effect.effects.gettopdiscard || effect.bonus ? effect.bonus.gettopdiscard : false) {
+                        this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
+                    }
                 }
-                result.damage += effect.effects.damage;
-                result.shield += effect.effects.shield;
-                result.drawModifier += effect.effects.drawModifier;
-                if (!(effect.effects.backtohand || effect.bonus ? effect.bonus.backtohand : false)) {
-                   cardsToDiscard.push(effect.card);
+                for (let card of cardsToDiscard) {
+                    this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
                 }
-                if (effect.effects.gettopdiscard || effect.bonus ? effect.bonus.gettopdiscard : false) {
-                    this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
-                }
+                
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+                this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage));
+                this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, result.shield));
+            } else {
+                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
             }
-            for (let card of cardsToDiscard) {
-                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
-            }
-            
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
-            this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage));
-            
-            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1] + result.drawModifier)))));
-            this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, result.shield));
-            
+
             if (this.#monster.FindComponent("Carddeck").hand.length <= 0 && this.#monster.FindComponent("Carddeck").deck.length <= 0 ) {
                 if (this.#player.FindComponent("Carddeck").hand.length <= 0 && this.#player.FindComponent("Carddeck").deck.length <= 0 ) {
                     this.#ResolveDraw();
@@ -241,7 +248,7 @@ export const battle_manager = (() => {
 
         #EndBattle() {
             this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
-            console.log("Go Next Phase");
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
         }
     }
 

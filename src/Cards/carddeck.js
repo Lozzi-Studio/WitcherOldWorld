@@ -250,8 +250,6 @@ export const carddeck_component = (() => {
                         this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", discardedCard));
                     }
                 } else {
-                    //TODO
-                    console.log("Tod")
                     break;
                 }
             }
@@ -287,14 +285,14 @@ export const carddeck_component = (() => {
 
         GetZeroCard() {
             if (this.#noUiUpdate) {
-                let zeroCardsHand = this.#cardHand.filter((card) => {card.cost == 0});
+                let zeroCardsHand = this.#cardHand.filter(card => card.cost == 0);
                 if (zeroCardsHand.length > 0) {
                     this.#cardHand.splice(this.#cardHand.indexOf(zeroCardsHand[0]),1);
                     //triggers cardshop update
                     this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DrawCard())
                     return zeroCardsHand[0];
                 } else {
-                    let zeroCardsDeck = this.#cardDeck.filter((card) => {card.cost == 0});
+                    let zeroCardsDeck = this.#cardDeck.filter(card => card.cost == 0);
                     if (zeroCardsDeck.length > 0) {
                         this.#cardDeck.splice(this.#cardDeck.indexOf(zeroCardsDeck[0]),1);
                         return zeroCardsDeck[0]

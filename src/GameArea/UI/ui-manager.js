@@ -890,10 +890,14 @@ export const ui_manager = (() => {
         #ExcludeUIFromRaycasting () {
             const UI = document.getElementById("game-ui");
             UI.addEventListener("mouseenter", () => {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
+                if (this.FindComponent("GameManager").phase.toIdentifier() != 2) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
+                }
             });
             UI.addEventListener("mouseleave", () => {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
+                if (this.FindComponent("GameManager").phase.toIdentifier() != 2) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
+                }
             });
         }
 

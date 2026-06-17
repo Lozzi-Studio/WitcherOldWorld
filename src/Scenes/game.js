@@ -123,7 +123,7 @@ export const game = (() => {
             document.getElementById('game-loading-screen').style.display = 'none';
             document.getElementById('game-ui').style.display = 'block';
 
-            this._entityManager.AddEntity(new battle_entity.BattleEntity(this._entityManager.FindEntity("Player_1"), this._entityManager.FindEntity("Monster_Forest")));
+            this._entityManager.AddEntity(new battle_entity.BattleEntity());
         }
             
 

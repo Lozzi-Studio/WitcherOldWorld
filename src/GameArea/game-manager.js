@@ -88,9 +88,11 @@ export const game_manager = (() => {
          */
         #NextTurnPhase(msg){
             const nextPlayer = this.#currentRound.next();
+            this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting())
 
             if ( this.#currentRound.toIdentifier() == 2) {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.loadPhaseTwoUi());
+                this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting())
             }
             
             if (nextPlayer) {
@@ -343,6 +345,7 @@ export const game_manager = (() => {
             }
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             if (msg.newMonster) {
+                //TODO Remove all Gerüchte
                 for (let player in players) {
                     amount = player.FindComponent("PlayerStatus").GetStatusAmount(tracker);
                     while (amount > 0) {
