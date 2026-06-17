@@ -107,6 +107,7 @@ export const notifaction_manager = (() => {
                     break;
                 case 'notification.custom':
                     this.#notificationQueue.push(currentPlayer.playerName + msg.message);
+                    notificationAdded = true; 
                     break;
             }
             if (notificationAdded) {
