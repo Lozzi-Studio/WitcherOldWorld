@@ -27,6 +27,7 @@ export const player_skills = (() => {
          */
         InitComponent() {
             this._RegisterHandler('skill.changeLevel', (msg) => {this.#ChangeLevel(msg)});
+            this._RegisterHandler('game.meditate', (msg) => {this.#OnMeditate(msg)});
         }
 
         /**
@@ -79,6 +80,9 @@ export const player_skills = (() => {
         }
 
         canMeditate(){
+            if (this.FindComponent("TrophyStorage").amount > 3){
+                return {"error": false}
+            }
             return {
                 "Combat": this.#combat.canMeditate(),
                 "Alchemy" : this.#alchemy.canMeditate(),
@@ -88,16 +92,21 @@ export const player_skills = (() => {
         }
 
         #OnMeditate(msg) {
-            switch(msg){
+            switch(msg.skill){
                 case "Combat":
                     this.#combat.meditated();
+                    break;
                 case "Alchemy":
                     this.#alchemy.meditated();
+                    break;
                 case "Special":
                     this.#special.meditated();
+                    break;
                 case "Defense":
                     this.#defense.meditated();
+                    break;
             }
+            this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
         }
 
 
@@ -173,15 +182,14 @@ export const player_skills = (() => {
         }
 
         canMeditate() {
-            return this.#level == this.#maxLevel && !(this.#hasMeditated)
+            return this.#level == this.#maxLevel && !this.#hasMeditated;
         }
 
         meditated() {
             if (!this.#hasMeditated){
             this.#hasMeditated = true;
-            this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy)
             }
-            
+
         }
 
 
@@ -200,7 +208,7 @@ export const player_skills = (() => {
         #amount;
         #maxAmount;
 
-        /**
+        /**  
          * A tracker for player shields
          */
         constructor() {
