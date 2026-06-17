@@ -184,7 +184,7 @@ export const ui_manager = (() => {
         }
 
         get phasethreeparttwo() {
-            return this.#phasethreeparttwo;
+            return this.#phaseThreePartTwo;
         }
 
         /**
