@@ -355,6 +355,7 @@ export const game_manager = (() => {
         }
 
         #OnComboPlay(msg) {
+            this.#isPlayerBattleTurn = false;
             for (let [i , card] of this.#selection.entries()) {
                 if (i == (this.#selection.length - 1)) {
                     this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo(this.#currentPlayer.GetHandCard(this.#selection[0])));
@@ -398,9 +399,10 @@ export const game_manager = (() => {
             return this.#selectedTown;
         }
 
-        get isBattleTurn() {
-            return this.#isBattleTurn;
+        get isPlayerBattleTurn() {
+            return this.#isPlayerBattleTurn;
         }
+
     };
 
     class Phase {
