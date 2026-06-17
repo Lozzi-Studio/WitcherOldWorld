@@ -32,6 +32,7 @@ export const notifaction_manager = (() => {
             this._RegisterHandler('player.move', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('card.drawCard', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('notification.custom', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('card.addCard', (msg) => {this.#QueueNotification(msg)});
         }
 
         /**
@@ -57,11 +58,12 @@ export const notifaction_manager = (() => {
 
         #QueueNotification(msg) {
             var currentPlayer = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
-            var currentPhase = this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier() + 1;
+            var currentPhase = this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier();
             let notificationAdded = false;
 
             switch(msg.topic) {
                 case 'game.nextPhase':
+                    currentPhase += 1;
                     if(currentPhase != 4){
                         this.#notificationQueue.push(currentPlayer.playerName + " hat Phase " + currentPhase + " gestartet");
                         notificationAdded = true;
@@ -90,9 +92,15 @@ export const notifaction_manager = (() => {
                     }
                     break;
                 case 'card.drawCard':
-                    console.log(currentPhase);
-                    if (msg.mode === "Deck" && currentPhase > 2) {
+                    console.log(currentPhase)
+                    if (msg.mode === "Deck" && currentPhase === 3) {
                         this.#notificationQueue.push(currentPlayer.playerName + " hat " + msg.amount + " Karte/n nachgezogen"); 
+                        notificationAdded = true; 
+                    }
+                    break;
+                case 'card.addCard':
+                    if (currentPhase > 1) {
+                        this.#notificationQueue.push(currentPlayer.playerName + " hat die Karte " + msg.card.name + " bekommen."); 
                         notificationAdded = true; 
                     }
                     break;
