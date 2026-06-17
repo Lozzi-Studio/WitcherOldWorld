@@ -253,6 +253,14 @@ export const broadcasts = (() => {
 
         /**
          * 
+         * @returns {object}
+         */
+        static loadPhaseTwoUi(){
+            return {topic: 'game.phaseTwo'};
+        }
+
+        /**
+         * 
          * @param {player_entity.Player} player
          * @returns {object}
         */
