@@ -12,7 +12,7 @@ export const player_money = (() => {
          */
         constructor(amount) {
             super();
-            this.#amount = amount;
+            this.#amount = parseInt(amount);
         }
 
         /**

@@ -39,6 +39,7 @@ export const carddeck_component = (() => {
             this._RegisterHandler('card.drawCard', (msg) => this.#DrawCard(msg));
             this._RegisterHandler('card.discardCard', (msg) => this.#DiscardCard(msg));
             this._RegisterHandler('card.shuffle', (msg) => this.#Shuffle(msg));
+            this._RegisterHandler('card.discardRandomPotion', (msg) => this.#DiscardRanomPotion(msg));
         }
 
         /**
@@ -184,6 +185,10 @@ export const carddeck_component = (() => {
                     const j = Math.floor(Math.random() * (i + 1));
                     [this.#cardDeck[i], this.#cardDeck[j]] = [this.#cardDeck[j], this.#cardDeck[i]];
             }
+        }
+
+        #DiscardRanomPotion(msg) {
+            this.#cardPotion.splice(this.#cardPotion[Math.floor(Math.random() * this.#cardPotion.length)], 1);
         }
 
         get hand() {

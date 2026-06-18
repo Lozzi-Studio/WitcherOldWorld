@@ -139,6 +139,11 @@ export const broadcasts = (() => {
             return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode, phase: phase};
         }
 
+
+        static DiscardRandomPotion(amount) {
+            return {topic: 'card.discardRandomPotion', amount: amount}
+        }
+
     }
 
     class BroadcastTemplateSkills {

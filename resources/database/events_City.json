@@ -1,13 +1,13 @@
 {
     "events" : [
         {
-            "Text": "Tr&aumlnkebrauen ist nicht einfach, selbst f&uumlr erfahrene Hexer. Vor allem, wenn der lokale Herrscher der gleichzeitig der Vater des kranken Kindes ist, das man heilen soll, st&aumlndig &uumlber die Schulter sieht und. \"Wie lange dauer das denn noch?\"m dr&aumlngt er. \"Mein Sohn geht es sehr schlecht.\" \n Du gibst dein Bestes, hast aber kein gute Gefühl dabei. Die D&aumlpfe, die aus dem Kessel aufsteigen riechen nach Schwefel und F&aumlule.",
+            "Text": "Tränkebrauen ist nicht einfach, selbst für erfahrene Hexer. Vor allem, wenn der lokale Herrscher der gleichzeitig der Vater des kranken Kindes ist, das man heilen soll, ständig über die Schulter sieht und. \"Wie lange dauer das denn noch?\"m drängt er. \"Mein Sohn geht es sehr schlecht.\" \n Du gibst dein Bestes, hast aber kein gute Gefühl dabei. Die Däpfe, die aus dem Kessel aufsteigen riechen nach Schwefel und Fäule.",
             "OptionA": "Ich versuche es weiter.",
-            "OptionB": "Ich r&aumlume ein, dass ich dem Jungen nicht helfen kann. Aber ich versuche das Monster zu t&oumlten, das ihn vergiftet hat.",
-            "ResultTextA": "Die beißenden D&aumlmpfe setzen deiner sensiblen Nase immer mehr zu. Es wird wohl lange dauern, bis dein normlaer Geruchssinn zur&uumlckkehrt, doch am Ende hast du einen wirkungsvollen Trank. ",
-            "ResultTextB": "Der Herrscher ist am Boden zerst&oumlrt und jagt dich vom Hof. Du t&oumltest die Bestie, haupts&aumlchlich um gegen das Gef&uuml der Ohmacht anzuk&aumlmpfen.",
+            "OptionB": "Ich räume ein, dass ich dem Jungen nicht helfen kann. Aber ich versuche das Monster zu töten, das ihn vergiftet hat.",
+            "ResultTextA": "Die beißenden Dämpfe setzen deiner sensiblen Nase immer mehr zu. Es wird wohl lange dauern, bis dein normlaer Geruchssinn zurückkehrt, doch am Ende hast du einen wirkungsvollen Trank. ",
+            "ResultTextB": "Der Herrscher ist am Boden zerstört und jagt dich vom Hof. Du tötest die Bestie, hauptsächlich um gegen das Gefü der Ohmacht anzukämpfen.",
             "ResultA": {
-                "Info": "Deine Alchemiestufe sinkt um 1. Lege 1 Trank ab. Du erh&aumllst 5 Gold.",
+                "Info": "Deine Alchemiestufe sinkt um 1. Lege 1 Trank ab. Du erhälst 5 Gold.",
                 "Alchemy": "-1",
                 "Potion": "-1",
                 "Gold": "5"
@@ -18,48 +18,132 @@
                 "Shield": "-1"
             }
         }, {
-            "Text": "Du wirst angeheurt, um ein Gespenst aus einem stillgelegten Lagerhalle auszutreiben. Beim Auskundschaften des Geb&aumludes stellt sich heraus, dass es keineswegs um ein Gespenst, sondern um einen m&aumlchtigen Katakan handelt. Du z&oumlgerst. Bist du wirklich gut genug vorbereitet, um es mit einem Vampir aufzunehmen?",
+            "Text": "Du wirst angeheurt, um ein Gespenst aus einem stillgelegten Lagerhalle auszutreiben. Beim Auskundschaften des Gebäudes stellt sich heraus, dass es keineswegs um ein Gespenst, sondern um einen mächtigen Katakan handelt. Du zögerst. Bist du wirklich gut genug vorbereitet, um es mit einem Vampir aufzunehmen?",
             "OptionA": "Ich greife den Vampir an. Monster ist Monster.",
-            "OptionB": "Ich kehre zu meinem Auftraggeber zur&uumlck und versichere ihm, dass die Lagerhalle frei von Gespenstern ist.",
-            "ResultTextA": "Es ist ein harter Kampf. Du bist praktisch nicht vorbereitet und nichts l&aumlft wie erhofft. Die Fangz&aumlhne und Klauen des Monsters, setzen dir schwer zu, doch am Ende gehst du als Sieger hervor.",
-            "ResultTextB": "Der Mann ist sichtlich beeindruckt von deiner schnellen Arbeit. Er zahl dir sogar einen Bonus f&uumlr die prompte L&oumlsung des Proböems und du beschließt, das Missverst&aumlndnis nicht aufzukl&aumlren.",
+            "OptionB": "Ich kehre zu meinem Auftraggeber zurück und versichere ihm, dass die Lagerhalle frei von Gespenstern ist.",
+            "ResultTextA": "Es ist ein harter Kampf. Du bist praktisch nicht vorbereitet und nichts läft wie erhofft. Die Fangzähne und Klauen des Monsters, setzen dir schwer zu, doch am Ende gehst du als Sieger hervor.",
+            "ResultTextB": "Der Mann ist sichtlich beeindruckt von deiner schnellen Arbeit. Er zahl dir sogar einen Bonus für die prompte Lösung des Proböems und du beschließt, das Missverständnis nicht aufzuklären.",
             "ResultA": {
-                "Info": "Senke deinen Schildwert um 2. Du erh&aumllst 2 Gold.",
+                "Info": "Senke deinen Schildwert um 2. Du erhälst 2 Gold.",
                 "Shield": "-2",
                 "Gold": "2"
             },
             "ResultB" : {
-                "Info": "Du erh&aumllst 3 Gold.",
+                "Info": "Du erhälst 3 Gold.",
                 "Gold": "3"
             }
         }, {
-            "Text": "Du wirst von der Stadtwache angehalten. \n\"Ihr wurdet beim Anwenden von Magie beobachtet. WIsst ihr denn nicht, dass man daf&uumlr eine Lizenz der Bruderschaft ben&oumlnigt?\" \nKurz darauf findest du dich in einer schmutzigen Kerkerzelle wieder. Als einige Stunden sp&aumlter ein W&aumlrter mit deinem Essen kommt, bist du dir relativ sicher, dass außer euch beiden niemand hier ist.",
-            "OptionA": "Ich greife den W&aumlrter an und k&aumlmpfe mich frei.",
+            "Text": "Du wirst von der Stadtwache angehalten. \n\"Ihr wurdet beim Anwenden von Magie beobachtet. WIsst ihr denn nicht, dass man dafür eine Lizenz der Bruderschaft benönigt?\" \nKurz darauf findest du dich in einer schmutzigen Kerkerzelle wieder. Als einige Stunden später ein Wärter mit deinem Essen kommt, bist du dir relativ sicher, dass außer euch beiden niemand hier ist.",
+            "OptionA": "Ich greife den Wärter an und kämpfe mich frei.",
             "OptionB": "Ich bitte um einen Becher Wasser. Wer weiß, was bis dahin passiert.",
-            "ResultTextA": "Ein kurzer Ausdruck ehrlicher Verbl&uumlffung huscht &uumlber das Gesicht des W&aumlchters, ehe es in der Hafergr&uumltze landet. Du findest zwar deine beide Schwerter, jedoch nicht deine Geldb&oumlrse.",
-            "ResultTextB": "Nach einer Weile betritt ein hochrangiger Beamter deine zelle. Er schaut dich mit den Nasenl&oumlchern an und l&aumlsst durchblicken, dass er Hexer und Zauberinnen f&uumlr gleichermaßen verabscheuungsw&uumlrdig h&aumllt. Trotzdem muss er gestehen, dass die Anschuldigung gegen dich haltlos waren und dir eine Entsch&aumldigung zusteht.",
+            "ResultTextA": "Ein kurzer Ausdruck ehrlicher Verblüffung huscht über das Gesicht des Wächters, ehe es in der Hafergrütze landet. Du findest zwar deine beide Schwerter, jedoch nicht deine Geldbörse.",
+            "ResultTextB": "Nach einer Weile betritt ein hochrangiger Beamter deine zelle. Er schaut dich mit den Nasenlöchern an und lässt durchblicken, dass er Hexer und Zauberinnen für gleichermaßen verabscheuungswürdig hält. Trotzdem muss er gestehen, dass die Anschuldigung gegen dich haltlos waren und dir eine Entschädigung zusteht.",
             "ResultA": {
                 "Info": "Lege 2 Gold ab. Deine Kampfstufe steigt um 1.",
                 "Gold": "-2",
                 "Combat": "1"
             },
             "ResultB": {
-                "Info": "Du erh&aumlst 2 Gold.",
+                "Info": "Du erhäst 2 Gold.",
                 "Gold": "2"
             }
         }, {
-            "Text": "Ein Alchemist aus der Stadt l&aumldt dich in sein Labor ein. Er h&aumlngt f&oumlrmlich an deine Lippen, als du ihm von deinen Erlebnissen erz&aumlhlst un schreibt akribisch alles mit. Nur dann und wann h&aumllt er kurz inne, um zu nicke oder lauf aufzusetzem. Er verspricht sich von deinem Bericht große Fortschritte in seiner Forschung und fragt, wie er sich erkenntlich zeigen kann.",
-            "OptionA": "Ich m&oumlchte etwas von ihm lernen.",
-            "OptionB": "Ich m&oumlchte bezahlt werden.",
-            "ResultTextA": "Mit Vergn&uumlgen l&aumlsst dich der Alchemist an seinem Wissen teilhaben.",
-            "ResultTextB": "Ohne zu z&oumlgern, greift der Alchemist nach seiner Geldb&oumlrse.",
+            "Text": "Ein Alchemist aus der Stadt lädt dich in sein Labor ein. Er hängt förmlich an deine Lippen, als du ihm von deinen Erlebnissen erzählst un schreibt akribisch alles mit. Nur dann und wann hält er kurz inne, um zu nicke oder lauf aufzusetzem. Er verspricht sich von deinem Bericht große Fortschritte in seiner Forschung und fragt, wie er sich erkenntlich zeigen kann.",
+            "OptionA": "Ich möchte etwas von ihm lernen.",
+            "OptionB": "Ich möchte bezahlt werden.",
+            "ResultTextA": "Mit Vergnügen lässt dich der Alchemist an seinem Wissen teilhaben.",
+            "ResultTextB": "Ohne zu zögern, greift der Alchemist nach seiner Geldbörse.",
             "ResultA": {
-                "Info": "Ziehe 2 Tr&aumlnke.",
+                "Info": "Ziehe 2 Tränke.",
                 "Potion": "2"
             },
             "ResultB": {
-                "Info": "Due erh&aumlltst 2 Gold",
+                "Info": "Du erhältst 2 Gold",
                 "Gold": "2"
+            }
+        },
+        {
+            "Text": "Wie eine wankende Horden sie auf dich zu. An ihren langne Bärten, Kapuzen und gelallten Gesängen erkennst du, dass es sich um Angehörige des Klerus handelt. Die betrunkenen Priester bleiben vor dir stehen und ihr Anführer mustert dich mit humorlosen Augen.\n\"Welchem Glauben gehörst du an? Sprich!\"",
+            "OptionA": "\"Ich glaube an Melitele.\"",
+            "OptionB": "\"Ich glaube an die Lehren des Propheten Majoran.\"",
+            "ResultTextA": "\"Guter Mann! Die Jünger Majorans sind so dumm, die glauben auch, Temerische Kronen wären eine Kopfbedeckung, hahaha! Komm mit und trink einen mit uns!\"",
+            "ResultTextB": "Noch während du die Worte aussprichst, wird dir klar, dass das die falsche Antwort war. Die Priester lassen ihre Fäuste sprechen.",
+            "ResultA": {
+                "Info": "In Phase 3 ziehst du 1 zusätzliche Karte von deinem Deck.",
+                "Phase3Draw": "1"
+            },
+            "ResultB": {
+                "Info": "Deine Verteidigungsstufe steigt um 1. In Phase 3 ziehst du 1 Karte weniger von deinem Deck.",
+                "Defense": "1",
+                "Phase3Draw": "-1"
+            }
+        },
+        {
+            "Text": "Ah, was für ein angenehmer Abend! Gutes Bier, leckeres Essen, ein bequemes Bett - was will man mehr? Am Morgen wirst du durch ein Klopfen an deiner Zimmertür geweckt. Vor der Tür stehen zwei Männer. \"Wir sind hier, um mit Euch über den Propheten Majoran zu sprechen.\"",
+            "OptionA": "Ich schlage ihnen die Tür vor der Nase zu und lege mich wieder hin.",
+            "OptionB": "Ein bisschen Philosophie vor dem Frühstück hat noch niemanden geschadet.",
+            "ResultTextA": "Kaum ist dein Kopf wieder aufs Kissen gesunken, da schläfst du acuh schon tief und fest.",
+            "ResultTextB": "Zu spät wird dir klar, dass mit den beiden etwas nicht stimmt. Du hast dein Schwert nicht griffbereit und mit bloßen Händen kommst du nicht gegen das Messer an deiner Kehle an. Der andere Mann beginnt deine Sachen zu durchwühlen.",
+            "ResultA": {
+                "Info": "In Phase 3 ziehst du 2 zusätzliche Karte von deinem Deck.",
+                "Phase3Draw": "2"
+            },
+            "ResultB": {
+                "Info": "Wirf 1 Würfel.",
+                "W6" : [
+                    {
+                        "Info": "Deine Spezialisierungsstufe steigt um 1.",
+                        "InfoText": "Ehe sie reagieren können, schmetterst du die Männer mit einem Zeichen gegen die Wand. Einer wird sofort ohnmächtig, der andere braucht noch etwas Nachthilfe ... von deiner Faust.",
+                        "Special": "1"
+                    }, {
+                        "Info": "Lege 3 Gold ab. Senke deine Alchemiestufe um 1.",
+                        "InfoText": "Die Hochstapler nehmen deine Geldbörse und Teile deiner Alchemie-Utentsilien mit. Beim nächsten Mal solltest du vorsichtiger sein mit unerwartender Besuch.",
+                        "Gold": "-3",
+                        "Alchemy": "-1"
+                    }
+                ]
+            }
+        },
+        {
+            "Text": "Vo den Stadtmauern begegnest du einem Zwerg. Als er seine Kapuze abnimmt, blickst du in ein Gesicht, das aussieht, als hätte man es mit einem Hammer bearbeitet. Jemand hat den armen Kerl übel zugerichtet.\n\"Der Stadrat hat alle Nichtmenschen zu unerwünschten Personen erklärt. Seit Jahren betreibe ich schon die Schmiede hier und dacht, man könnte vielleicht eine Übereinkunft treffen. Pah, einen Scheiß! Jetzt stehe ich vor dem Nichts.",
+            "OptionA": "Ich gebe ihm Heilkräuter für seine Verletzungen.",
+            "OptionB": "Ich frage ihn, ob er irgendwo unterkommen kann.",
+            "ResultTextA": "Dankbar nimmt er die Kräuter entgegen. Es geht jedoch gegen seine Zwergenehre, sie geschenkt anzunehmen.",
+            "ResultTextB": "\"Keine Sorge, ich hab Verwandtschaft in der Gegend. Wir Zwerge passen aufeinander auf. Nur das Hinkommen könnte sich schwierig gestalten. Es heißt, die Straße sei nicht sicher.\"",
+            "ResultA": {
+                "Info": "Du erhälst 1 Gold.",
+                "Gold": "1"
+            },
+            "ResultB": {
+                "Info": "Du erhältst 1 beliebige Spur.",
+                "RandomTrack": "1"
+            }
+        },
+        {
+            "Text": "Seit Tagen schon hast du das Gefühl, dass die Leute seltsam auf dich reagieren - also noch seltsamer als sonst. Mütter bringen ihre Kinder in Sicherheit, wenn sie dich sehen und Fensterläden werden zugeschlagen, wenn du vorbeigehst.\nSchließlich begegnest du einem jungen Mann mit einer Laute, der die Sache erklären kann: \n\"Esgibt da diesen Barden, der Euch zum Thema seiner Dichtungen macht. Nun ... sagen wir, er ist kein großer Freund von Hexern. Jedenfals habt Ihr in seinen Liedern spitze Fangzähne, stehlt Kinder und .. furzt lodernes Feuer.",
+            "OptionA": "Ich frage ihn, wo ich den Barden finden kann.",
+            "OptionB": "Ich erzähle dem jungen Mann von meinen Abenteuern, damit er etwas dichten kann, das auf der Wahrheit beruht.",
+            "ResultTextA": "Höchste Zeit jemanden die Bedeutung des Wortes \"Zensur\" beizubringen.",
+            "ResultTextB": "Der Mann lauscht dir gespannt und hat am Ende schon die ersten Verse im Sinn. Er ist auch gerne bereit dich für deine Geschichten zu bezahlen.",
+            "ResultA": {
+                "Info": "Wirf 1 Würfel.",
+                "W6": [
+                    {
+                        "Info": "Senke deinen Schildwert um 1. Deine niedrigste Attributstufe steigt um 1.",
+                        "InfoText": "Du findest den Barden in einer engen Gasee hinter dem Wirtshaus, wo er gerade seine Notdurft verichtet. Fröhlich pfeifend wippt er auf den Fußballen auf und ab. \nDer Barde ist voll wie zwanzig Zwerge. Trotzdem sorgst du dafür, dass er deine Rezension seiner Balladen nicht so schnell vergisst. Du gibst ihm glatte zwei von zehn: zwei rechte Haken ins Gesicht, gefolgt von zehn Tritten in den Hintern.",
+                        "Shield": "-1",
+                        "LowestSkill": "1"
+                    },{
+                        "Info": "Eine zufällige Attributstufe steigt um 1.",
+                        "InfoText": "Du findest den Barden in einer engen Gasee hinter dem Wirtshaus, wo er gerade seine Notdurft verichtet. Fröhlich pfeifend wippt er auf den Fußballen auf und ab. \nDer Barde ist voll wie zwanzig Zwerge. Trotzdem sorgst du dafür, dass er deine Rezension seiner Balladen nicht so schnell vergisst. Du gibst ihm glatte zwei von zehn: zwei rechte Haken ins Gesicht, gefolgt von zehn Tritten in den Hintern.",
+                        "RngSkill": "1"
+                    }, {
+                        "Info": "Du erhälst 1 Gold und 1 Trank.",
+                        "InfoText": "Du findest den Barden in einer engen Gasee hinter dem Wirtshaus, wo er gerade seine Notdurft verichtet. Fröhlich pfeifend wippt er auf den Fußballen auf und ab. \nDer Barde ist voll wie zwanzig Zwerge. Trotzdem sorgst du dafür, dass er deine Rezension seiner Balladen nicht so schnell vergisst. Du gibst ihm glatte zwei von zehn: zwei rechte Haken ins Gesicht, gefolgt von zehn Tritten in den Hintern.",
+                        "Gold" : "1",
+                        "Potion": "1"
+                    }
+                ]
             }
         }
     ]
