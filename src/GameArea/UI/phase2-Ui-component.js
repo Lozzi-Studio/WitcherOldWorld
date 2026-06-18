@@ -18,6 +18,7 @@ export const phase_two_ui_component = (() => {
         }
 
         #OnPhaseTwoStart(msg){
+            document.getElementById("town-window").style = "none";
             document.getElementById("phase-two-options-menu").style.display = "flex";
             this.#activateMeditateOption();
             this.#activateCombatOption();

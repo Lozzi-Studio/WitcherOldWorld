@@ -354,7 +354,7 @@ export const game_manager = (() => {
                     }
                 }
             }
-
+            this._parent._parent.scene.remove(this.#currentMonster.get(msg.Region).FindComponent("MonsterFigure").mesh);
             const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(region, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
             this.#currentMonster.set(msg.region, newMonster);
             this._parent._parent.AddEntity(newMonster, "Monster_" + region.toIdentifier());
