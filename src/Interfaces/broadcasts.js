@@ -47,8 +47,8 @@ export const broadcasts = (() => {
         /**
          * @returns {object}
          */
-        static UpdateUI() {
-            return {topic: 'player.updateUI'};
+        static UpdateUI(player) {
+            return {topic: 'player.updateUI', player: player};
         }
 
         /**
@@ -69,6 +69,14 @@ export const broadcasts = (() => {
          */
         static AddStatus(status, mode){
             return {topic: 'player.addStatus',status: status, mode:mode}
+        }
+
+        static SelectPlayer(player) {
+            return {topic: 'player.selection', player: player}
+        }
+
+        static DeselectPlayer(currentPlayer) {
+            return {topic: 'player.deselection', currentPlayer: currentPlayer}
         }
     }
 
@@ -184,8 +192,8 @@ export const broadcasts = (() => {
          * 
          * @returns {object}
          */
-        static UpdateUI() {
-            return {topic: 'skill.updateUI'};
+        static UpdateUI(player) {
+            return {topic: 'skill.updateUI', player: player};
         }
     }
 

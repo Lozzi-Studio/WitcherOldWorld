@@ -120,16 +120,21 @@ export const ui_manager = (() => {
             
             let playerInfoButton = document.getElementById("player-info-button");
             this.HandlePlayerInfoClick = () => {
-                if (playerInfoButton.innerHTML == "info") {
+                if (!playerInfoButton.classList.contains("filled")) {
                     this.#ShowSchoolInfo();
                     this.#ShowSkillInfo();
-                    playerInfoButton.innerHTML = "close";
+                    playerInfoButton.classList.add("filled");
                 }
                 else {
                     this.#HideSchoolInfo();
                     this.#HideSkillInfo();
-                    playerInfoButton.innerHTML = "info";
+                    playerInfoButton.classList.remove("filled");
                 }
+            }
+
+            this.HandleClosePlayerClick = () => {
+                let msg = {player: this.FindComponent("GameManager").currentPlayer}
+                this.#UpdatePlayerInfoWindow(msg);
             }
         }
 
@@ -146,6 +151,7 @@ export const ui_manager = (() => {
             this._RegisterHandler('player.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('player.updateHandCardsUI', (msg) => {this.#UpdateHandCards(msg)});
             this._RegisterHandler('card.updateSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
+            this._RegisterHandler('player.selection', (msg) => {this.#UpdatePlayerInfoWindow(msg)});
             
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
 
@@ -165,6 +171,7 @@ export const ui_manager = (() => {
             document.getElementById("skill-levelup-cancel-button").addEventListener("click", this.HandleCancelLevelupClick);
             document.getElementById("skill-levelup-continue-button").addEventListener("click", this.HandleContinueLevelupClick);
             document.getElementById("player-info-button").addEventListener("click", this.HandlePlayerInfoClick);
+            document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
         }
 
         /**
@@ -807,19 +814,44 @@ export const ui_manager = (() => {
             this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextPlayer(playerList[0]));
         }
 
+        #UpdatePlayerInfoWindow(msg) {
+            let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+            let playerWindow = document.getElementById("player-window");
+            let closeButton = document.getElementById("close-player-window-button");
+            if (msg.player != currentPlayer) {
+                playerWindow.classList.add("borders--all");
+                playerWindow.classList.add("position-from-three");
+                playerWindow.classList.remove("position-top-left");
+                playerWindow.classList.remove("borders--bottom-right");
+                closeButton.style.display = "block";
+            }
+            else {
+                playerWindow.classList.remove("borders--all");
+                playerWindow.classList.remove("position-from-three");
+                playerWindow.classList.add("borders--bottom-right");
+                playerWindow.classList.add("position-top-left");
+                playerWindow.style.transform = null;
+                closeButton.style.display = "none";
+
+            }
+            this.#SetPlayerInfo(msg);
+            this.#SetPlayerAvatar(msg);
+            this.#UpdatePlayerStats(msg);
+            this.#UpdatePlayerSchool(msg);
+            this.#InitPlayerWindow();
+
+        }
+
         /**
          * Update UI on player switch
          * @param {object} msg 
          */
         #OnNextPlayer(msg) {
-            this.#SetPlayerInfo(msg);
-            this.#SetPlayerAvatar(msg);
-            this.#UpdatePlayerStats(msg.player);
+            this.#UpdatePlayerInfoWindow(msg)
+
             this.#OnNextPhase();
             this.#UpdateHandCards(msg);
             this.#UpdateButtonState("end-phase-button", false);
-            this.#UpdatePlayerSchool(msg);
-            this.#InitPlayerWindow();
         
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
@@ -860,12 +892,11 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdatePlayerStats(msg) {
-            let player = this.FindComponent("GameManager").currentPlayer;
-            this.#SetPlayerSkills(player);
-            this.#SetPlayerShieldStatus(player);
-            this.#SetWitcherLevel(player);
-            this.#SetPlayerMoney(player);
-            this.#SetPlayerTrophies(player);
+            this.#SetPlayerSkills(msg.player);
+            this.#SetPlayerShieldStatus(msg.player);
+            this.#SetWitcherLevel(msg.player);
+            this.#SetPlayerMoney(msg.player);
+            this.#SetPlayerTrophies(msg.player);
         }
 
         /**
@@ -894,8 +925,8 @@ export const ui_manager = (() => {
             let coordinates = entity.position.clone().project(camera);
 
             let canvas = this._parent._parent.renderer.domElement;
-            const x = (coordinates.x *  .5 + .5) * canvas.clientWidth;
-            const y = (coordinates.y * -.5 + .5) * canvas.clientHeight;
+            const x = (coordinates.x *  0.5 + 0.5) * canvas.clientWidth;
+            const y = (coordinates.y * -0.5 + 0.5) * canvas.clientHeight;
 
             document.getElementById(elementID).style.transform = `translate(-${percentOffsetX}%, -${percentOffsetY}%) translate(${x}px,${y}px)`;
         }
@@ -928,6 +959,10 @@ export const ui_manager = (() => {
             if (document.getElementById("town-window").style.display == "flex") {
                 let townEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedTown;
                 this.#PositionHTMLElementBasedOnEntity("town-window", townEntity, 50, 120);
+            }
+            if (document.getElementById("player-window").classList.contains("position-from-three")) {
+                let playerEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedPlayer;
+                this.#PositionHTMLElementBasedOnEntity("player-window", playerEntity, 50, 130);
             }
         }
 
@@ -997,7 +1032,7 @@ export const ui_manager = (() => {
             }
 
             document.getElementById("player-info-button").style.display = "block";
-            document.getElementById("player-info-button").innerHTML = "info";
+            document.getElementById("player-info-button").classList.remove("filled");
             document.getElementById("skill-levelup-buttons-container").style.display = "none";
             document.getElementById("levelup-impossible-text").style.display = "none";
 
@@ -1023,7 +1058,6 @@ export const ui_manager = (() => {
                     headingContainer.style.justifyContent = "space-between";
 
                     expandButton.style.display = "block";
-                    expandButton.innerHTML = "info";
 
                     buttonsContainer.style.display = "none";
                     levelupImpossibleText.style.display = "none";

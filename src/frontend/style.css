@@ -94,6 +94,10 @@ p, div {
     margin:0px;
 }
 
+.position-from-three {
+    position: fixed;
+}
+
 .position-center {
     position: fixed;
     top: 50%;
@@ -447,6 +451,11 @@ p, div {
 
 #skills-header {
     justify-content: space-between;
+    padding-bottom: 4px;
+}
+
+#skills-content {
+    align-items: flex-start;   
 }
 
 /*Für phase 2 Menü */

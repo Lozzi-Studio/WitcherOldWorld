@@ -57,7 +57,10 @@ export const controls_component = (() => {
                 const intersections = raycaster.intersectObjects(this._parent._parent.scene.children, true);
                 if (intersections.length > 0) {
                     const selectedObject = intersections[0].object;
-                    if (selectedObject.name.includes("Town")) {
+                    if (selectedObject.name.includes("Player")) {
+                        this.Broadcast(broadcasts.BroadcastTemplatePlayer.SelectPlayer(this.FindEntity(selectedObject.name)));
+                    }
+                    else if (selectedObject.name.includes("Town")) {
                         this.Broadcast(broadcasts.BroadcastTemplateTown.SelectTown(this.FindEntity(selectedObject.name)));
                     }
                     else if (selectedObject.name.includes("Button")) {
