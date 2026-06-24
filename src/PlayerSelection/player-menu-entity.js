@@ -20,13 +20,19 @@ export const player_menu_overlay = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponents() {
-            this.AddComponent(new controls_component.Controls());
-            this.AddComponent(new backgrounds.BackgroundPlayerselection());
-            this.AddComponent(new player_picker.PlayerPicker())
+            this.AddComponent("PlayerPicker");
+            
+            let mainMenu = document.getElementById("main-menu");
+            mainMenu.style.display = "none";
 
-            let startButton = new button.Button("Button_Start", 0.3, 0.18, new THREE.TextureLoader().load("resources/assets/background/PlayButton.png") , "Start", () => this.FindComponent("PlayerPicker").SwitchScene());
-            this.AddComponent(startButton, "Button_Start");
-            startButton.SetPosition(new THREE.Vector3(-0.5,-0.5,2));
+            let startButton = document.getElementById("player-selection-start-game-button");
+            startButton.addEventListener("click", () => this.FindComponent("PlayerPicker").SwitchScene());
+
+            let playerSelection = document.getElementById("player-selection");
+            playerSelection.style.display = "block";
+
+            // let startButton = new button.Button("Button_Start", 0.3, 0.18, new THREE.TextureLoader().load("resources/assets/background/PlayButton.png") , "Start", () => this.FindComponent("PlayerPicker").SwitchScene());
+
         }
     }
 

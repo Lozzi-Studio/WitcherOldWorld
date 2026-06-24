@@ -22,17 +22,11 @@ export const main_menu_overlay = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponents() {
-            this.AddComponent(new controls_component.Controls());
-            // this.AddComponent(new backgrounds.BackgroundMainMenu());
-            this.AddComponent(new lights.LightMainMenu());
-            // this.AddComponent(new menu_animation.MenuAnimation());
-            
+            let startButton = document.getElementById("start-game-button");
+            startButton.addEventListener("click", () => this._parent.SwitchScene('PlayerMenu', false));
 
-            // let startButton = new button.Button("Button_Start", 0.3, 0.18, new THREE.TextureLoader().load("resources/assets/background/PlayButton.png") , "Start", () => this.FindComponent("MenuAnimation").startAnimation(new THREE.Vector3(0.5,0.4,0)));
-            let startButton = new button.Button("Button_Start", 0.3, 0.18, new THREE.TextureLoader().load("resources/assets/background/PlayButton.png") , "Start", () => this._parent.SwitchScene('PlayerMenu', false));
-
-            this.AddComponent(startButton, "Button_Start");
-            startButton.SetPosition(new THREE.Vector3(-0.5,0.17,2));
+            let mainMenu = document.getElementById("main-menu");
+            mainMenu.style.display = "block";
         }
     }
 
