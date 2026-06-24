@@ -655,7 +655,10 @@ p, div {
 
 #phase-two-options-menu {
     position: fixed;
-    align-items: stretch;
+    min-height: 420px;
+    align-items:center;
+    justify-content: flex-end;
+    text-align:center;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
