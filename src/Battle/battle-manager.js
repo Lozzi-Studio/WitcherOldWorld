@@ -13,7 +13,7 @@ export const battle_manager = (() => {
         #monster;
         #playerDrawValues;
 
-        constructor(player, monster) {
+        constructor() {
             super();
             this.#player = null;
             this.#monster = null;
