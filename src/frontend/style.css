@@ -560,6 +560,7 @@ p, div {
 #meditate-option {
     background-image: url("../../resources/assets/gen-img/town-action-meditate.webp");
     background-size: cover;
+    filter: brightness(0.95);
     font-size: 24pt;
     font-family: Gwent;
     color: #ffffff;
@@ -571,6 +572,7 @@ p, div {
 #fight-monster-option {
     background-image: url("../../resources/assets/gen-img/town-action-Fight-monster.webp");
     background-size: cover;
+    filter: brightness(0.95);
     font-size: 24pt;
     color: #ffffff;
     font-family: Gwent;
@@ -589,6 +591,7 @@ p, div {
 #explore-city-option {
     background-image: url("../../resources/assets/gen-img/town-action-explore-City.webp");
     background-size: cover;
+    filter: brightness(0.95);
     font-size: 22pt;
     font-family: Gwent;
     width: 300px;
@@ -600,12 +603,20 @@ p, div {
 #explore-wilderness-option {
     background-image: url("../../resources/assets/gen-img/town-action-explore-wildernis.webp");
     background-size: cover;
+    filter: brightness(0.95);
     font-size: 22pt;
     font-family: Gwent;
     width: 300px;
     flex: 1;             
     min-height: 0;
     border-radius: 12px;
+}
+
+#meditate-option:not(.option--disabled):hover,
+#fight-monster-option:not(.option--disabled):hover,
+#explore-city-option:not(.option--disabled):hover,
+#explore-wilderness-option:not(.option--disabled):hover {
+    filter: brightness(1.2);
 }
 
 .card {
