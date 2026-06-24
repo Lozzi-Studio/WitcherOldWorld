@@ -653,6 +653,10 @@ p, div {
     border-radius: 10px;
 }
 
+#phase-two-header {
+    font-size: 36px;
+}
+
 #phase-two-options-menu {
     position: fixed;
     min-height: 420px;
