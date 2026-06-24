@@ -20,7 +20,7 @@ export const player_menu_overlay = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponents() {
-            this.AddComponent("PlayerPicker");
+            this.AddComponent(new player_picker.PlayerPicker())
             
             let mainMenu = document.getElementById("main-menu");
             mainMenu.style.display = "none";
