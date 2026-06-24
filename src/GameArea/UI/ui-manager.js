@@ -818,12 +818,14 @@ export const ui_manager = (() => {
             let currentPlayer = this.FindComponent("GameManager").currentPlayer;
             let playerWindow = document.getElementById("player-window");
             let closeButton = document.getElementById("close-player-window-button");
+            let infoButton = document.getElementById("player-info-button");
             if (msg.player != currentPlayer) {
                 playerWindow.classList.add("borders--all");
                 playerWindow.classList.add("position-from-three");
                 playerWindow.classList.remove("position-top-left");
                 playerWindow.classList.remove("borders--bottom-right");
                 closeButton.style.display = "block";
+                infoButton.style.display = "none";
             }
             else {
                 playerWindow.classList.remove("borders--all");
@@ -832,8 +834,9 @@ export const ui_manager = (() => {
                 playerWindow.classList.add("position-top-left");
                 playerWindow.style.transform = null;
                 closeButton.style.display = "none";
-
+                infoButton.style.display = "block";
             }
+
             this.#SetPlayerInfo(msg);
             this.#SetPlayerAvatar(msg);
             this.#UpdatePlayerStats(msg);
@@ -1031,7 +1034,6 @@ export const ui_manager = (() => {
                 document.getElementById(`${skillName}-levelup-bonus`).style.display = "none";
             }
 
-            document.getElementById("player-info-button").style.display = "block";
             document.getElementById("player-info-button").classList.remove("filled");
             document.getElementById("skill-levelup-buttons-container").style.display = "none";
             document.getElementById("levelup-impossible-text").style.display = "none";
