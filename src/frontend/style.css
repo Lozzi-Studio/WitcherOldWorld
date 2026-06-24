@@ -184,6 +184,10 @@ p, div {
     gap: 0px;
 }
 
+.borders--none {
+    border-width: 0px;
+}
+
 .borders--all {
     border-width: 3px;
     border-radius: 12px;
@@ -202,6 +206,11 @@ p, div {
 .borders--bottom-right {
     border-width: 0px 3px 3px 0px;
     border-radius: 0px 0px 12px 0px;
+}
+
+.borders--left-right {
+    border-width: 0px 3px 0px 3px;
+    border-radius: 0px 0px 0px 12px;
 }
 
 .inner-borders {
@@ -837,11 +846,12 @@ p, div {
     overflow: hidden;
 }
 
+#main-menu > p {
+    margin: 0;
+}
+
 #main-menu-logo {
-    height: 250px;
-    position: fixed;
-    left: 15%;
-    top: 5%;
+    height: 200px;
 }
 
 #background_video {
@@ -849,6 +859,21 @@ p, div {
     width: 177.78vh; /* 100 * 16 / 9 */
     min-width: 100%;
     min-height: 56.25vw; /* 100 * 9 / 16 */
+}
+
+#main-menu-ui {
+    position: fixed;
+    left: 15%;
+    top: 0%;
+    height: 100vh;
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+#start-game-button {
+    font-size: 24px;
+    width: 90%;
+    padding-top: 8px;
 }
 
 @keyframes spin {
