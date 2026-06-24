@@ -23,9 +23,9 @@ export const main_menu_overlay = (() => {
          */
         InitComponents() {
             this.AddComponent(new controls_component.Controls());
-            this.AddComponent(new backgrounds.BackgroundMainMenu());
+            // this.AddComponent(new backgrounds.BackgroundMainMenu());
             this.AddComponent(new lights.LightMainMenu());
-            this.AddComponent(new menu_animation.MenuAnimation());
+            // this.AddComponent(new menu_animation.MenuAnimation());
             
 
             // let startButton = new button.Button("Button_Start", 0.3, 0.18, new THREE.TextureLoader().load("resources/assets/background/PlayButton.png") , "Start", () => this.FindComponent("MenuAnimation").startAnimation(new THREE.Vector3(0.5,0.4,0)));
