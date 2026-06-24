@@ -105,6 +105,10 @@ export const player_entity = (() => {
         get witcherSchool() {
             return this.#witcherSchool
         }
+
+        get id() {
+            return this.#id;
+        }
     }
 
     return {
