@@ -87,7 +87,7 @@ export const card = (() => {
 
             return resolver;
         }
-        
+
         getImagePathFromName() {
             let combo_str = "";
             
@@ -97,6 +97,13 @@ export const card = (() => {
             
             let regionName = this.#region ? this.#region.toIdentifier() : "";
 
+            let returnstring = "../../resources/assets/cards/" + 
+                this.#name.split(" ").join("_") + 
+                "_" + regionName + 
+                combo_str + ".webp";
+
+            console.log(returnstring)
+            
             return "../../resources/assets/cards/" + 
                 this.#name.split(" ").join("_") + 
                 "_" + regionName + 
