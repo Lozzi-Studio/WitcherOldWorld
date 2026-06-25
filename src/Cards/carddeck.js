@@ -3,6 +3,7 @@ import { broadcasts } from "../Interfaces/broadcasts";
 import { card } from "../Cards/card";
 import { cards } from "../Cards/card-templates";
 import { region } from "../GameArea/region";
+import { card_options } from "./card-options";
 
 export const carddeck_component = (() => {
 

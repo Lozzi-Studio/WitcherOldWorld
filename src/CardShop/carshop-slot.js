@@ -104,7 +104,10 @@ export const cardshop_slot = (() => {
             this.#card = newCard;
             try {
                 let texture = this._parent.GetFromCache(newCard.name);
-                this.#cardBox.material = new THREE.MeshBasicMaterial( { map: texture});
+                // console.log(texture);
+                if(texture.isMesh){
+                    this.#cardBox.material = new THREE.MeshBasicMaterial( { map: texture});
+                }
             } catch(error) {
                 this.#cardBox.material = new THREE.MeshBasicMaterial();
                 this.#cardBox.material.color = new THREE.Color('black');
