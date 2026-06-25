@@ -17,3 +17,6 @@ https://i.pinimg.com/736x/9c/60/d0/9c60d0dc7cd2d5e742706073a0623d72.jpg
 
 mountain Assets:
 https://craftpix.net/freebies/free-winter-mountain-3d-low-poly-models/
+
+Ocean texture (screenshot):
+https://azgaar.github.io/Fantasy-Map-Generator/
