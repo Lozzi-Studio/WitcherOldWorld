@@ -87,9 +87,17 @@ export const card = (() => {
 
             return resolver;
         }
-
         getImagePathFromName() {
-            return "../../resources/assets/cards/" + this.#name.split(" ").join("_") + ".webp";
+            let region_str = "";
+            
+            for (let region of this.#region.keys()) {
+                region_str += "_" + region.toIdentifier();
+            }
+            
+            return "../../resources/assets/cards/" + 
+                this.#name.split(" ").join("_") + 
+                "_" + this.#region.toIdentifier() + 
+                region_str + ".webp";
         }
 
         get region() {
