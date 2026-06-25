@@ -89,25 +89,20 @@ export const card = (() => {
         }
 
         getImagePathFromName() {
-            let combo_str = "";
-            
-            for (let combo of this.#combo.keys()) {
-                combo_str += "_" + combo.toIdentifier();
+            const parts = [];
+
+            parts.push(this.#name.split(" ").join("_").toLowerCase());
+
+            if (this.#region) {
+                parts.push(this.#region.toIdentifier().toLowerCase());
             }
-            
-            let regionName = this.#region ? this.#region.toIdentifier() : "";
 
-            let returnstring = "../../resources/assets/cards/" + 
-                this.#name.split(" ").join("_") + 
-                "_" + regionName + 
-                combo_str + ".webp";
-
-            console.log(returnstring)
-            
-            return "../../resources/assets/cards/" + 
-                this.#name.split(" ").join("_") + 
-                "_" + regionName + 
-                combo_str + ".webp";
+            if (this.#combo) {
+                for (let combo of this.#combo.keys()) {
+                    parts.push(combo.toIdentifier().toLowerCase());
+                }
+            }
+            return "../../resources/assets/cards/" + parts.join("_") + ".webp";
         }
 
         get region() {
