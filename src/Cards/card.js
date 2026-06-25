@@ -102,7 +102,7 @@ export const card = (() => {
                     parts.push(combo.toIdentifier().toLowerCase());
                 }
             }
-            return "../../resources/assets/cards/" + parts.join("_") + ".webp";
+            return "./resources/assets/cards/" + parts.join("_") + ".webp";
         }
 
         get region() {
