@@ -66,11 +66,11 @@ export const game = (() => {
             var promises = [];
 
             for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").hand) {
-                let cardName = card.name;
+                let cardName = card.imagePath;
                 promises.push(this.#loadTexture(card.imagePath).then(result => { this.CacheData(cardName, result);}));
             }
             for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").deck) {
-                let cardName = card.name;
+                let cardName = card.imagePath;
                 promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
             }
 

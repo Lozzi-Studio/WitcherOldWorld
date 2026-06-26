@@ -77,16 +77,12 @@ export const carddeck_component = (() => {
                     break;
                 case "Shop":
                     this.#isShop = true;
-                    this.#cardDeck.push(cards.CardTemplates.getDeckung());
+                    this.#cardDeck.push(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]),region.Region.Forest()));
                     this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt());
                     this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen());
                     this.#cardDeck.push(cards.CardTemplates.getSchockwelle());
                     this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard());
                     this.#cardDeck.push(cards.CardTemplates.getDeckung());
-                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt());
-                    this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen());
-                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle());
-                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard());
                     break;
             }
             //TODO
