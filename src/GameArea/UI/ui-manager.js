@@ -171,6 +171,9 @@ export const ui_manager = (() => {
             document.getElementById("skill-levelup-cancel-button").addEventListener("click", this.HandleCancelLevelupClick);
             document.getElementById("skill-levelup-continue-button").addEventListener("click", this.HandleContinueLevelupClick);
             document.getElementById("player-info-button").addEventListener("click", this.HandlePlayerInfoClick);
+            document.getElementById("turn-change-continue-btn").addEventListener("click", () => {
+                document.getElementById("turn-change-overlay").classList.add("overlay--hidden");
+            });
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
         }
 
@@ -855,10 +858,12 @@ export const ui_manager = (() => {
             this.#OnNextPhase();
             this.#UpdateHandCards(msg);
             this.#UpdateButtonState("end-phase-button", false);
-        
+
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
+
+            this.#ShowTurnChangePopup(msg.player);
         }
 
         /**
@@ -1038,6 +1043,34 @@ export const ui_manager = (() => {
             document.getElementById("skill-levelup-buttons-container").style.display = "none";
             document.getElementById("levelup-impossible-text").style.display = "none";
 
+        }
+
+        #ShowTurnChangePopup(player){
+            const overlay = document.getElementById("turn-change-overlay");
+            const modal = document.getElementById("turn-change-modal");
+            const avatar = document.getElementById("turn-change-avatar");
+            const text = document.getElementById("turn-change-text");
+
+            avatar.src = this.#GetAvatarPathFromPlayer(player);
+            
+            let formattedName = this.#ReplaceUmlaute(player.playerName.toUpperCase());
+            text.innerHTML = `${formattedName} IST AN DER REIHE`;
+
+            if (modal) {
+                Array.from(modal.classList).forEach(className => {
+                    if (className.startsWith("theme--")) {
+                        modal.classList.remove(className);
+                    }
+                });
+
+                const schoolName = player.witcherSchool ? player.witcherSchool.name : "";
+                
+                if (schoolName) {
+                    modal.classList.add(`theme--${schoolName}`);
+                }
+            }
+
+            overlay.classList.remove("overlay--hidden");
         }
 
         #SetSkillWindowMode(mode) {
