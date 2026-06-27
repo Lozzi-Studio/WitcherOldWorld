@@ -62,7 +62,7 @@ export const player_skills = (() => {
                     }
                     break;
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI(this.parent));
         }
 
         canMeditate(){
@@ -259,7 +259,7 @@ export const player_skills = (() => {
                     }
                     break;
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI(this.parent));
         }
 
     
