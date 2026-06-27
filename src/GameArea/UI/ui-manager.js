@@ -828,7 +828,7 @@ export const ui_manager = (() => {
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
 
-            this.#ShowTurnChangePopup(msg.player, currentPlayerId);
+            this.#ShowTurnChangePopup(msg.player);
         }
 
         /**
@@ -1008,7 +1008,7 @@ export const ui_manager = (() => {
 
         }
 
-        #ShowTurnChangePopup(player, playerId){
+        #ShowTurnChangePopup(player){
             const overlay = document.getElementById("turn-change-overlay");
             const modal = document.getElementById("turn-change-modal");
             const avatar = document.getElementById("turn-change-avatar");
@@ -1020,8 +1020,17 @@ export const ui_manager = (() => {
             text.innerHTML = `${formattedName} IST AN DER REIHE`;
 
             if (modal) {
-                modal.classList.remove("theme--player1", "theme--player2", "theme--player3");
-                modal.classList.add(`theme--player${playerId}`);
+                Array.from(modal.classList).forEach(className => {
+                    if (className.startsWith("theme--")) {
+                        modal.classList.remove(className);
+                    }
+                });
+
+                const schoolName = player.witcherSchool ? player.witcherSchool.name : "";
+                
+                if (schoolName) {
+                    modal.classList.add(`theme--${schoolName}`);
+                }
             }
 
             overlay.classList.remove("overlay--hidden");
