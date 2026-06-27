@@ -535,6 +535,11 @@ p, div {
 
 #turn-change-modal {
     width: 220px !important;
+    border-color: var(--color-border) !important;
+}
+
+#turn-change-modal .avatar-container {
+    border-color: var(--color-border) !important;
 }
 
 #turn-change-continue-btn {

@@ -1008,7 +1008,7 @@ export const ui_manager = (() => {
 
         }
 
-        #ShowTurnChangePopup(player){
+        #ShowTurnChangePopup(player, playerId){
             const overlay = document.getElementById("turn-change-overlay");
             const modal = document.getElementById("turn-change-modal");
             const avatar = document.getElementById("turn-change-avatar");
@@ -1018,6 +1018,11 @@ export const ui_manager = (() => {
             
             let formattedName = this.#ReplaceUmlaute(player.playerName.toUpperCase());
             text.innerHTML = `${formattedName} IST AN DER REIHE`;
+
+            if (modal) {
+                modal.classList.remove("theme--player1", "theme--player2", "theme--player3");
+                modal.classList.add(`theme--player${playerId}`);
+            }
 
             overlay.classList.remove("overlay--hidden");
         }
