@@ -527,13 +527,14 @@ input {
 #phase-window {
     display: inline-flex;
     width: fit-content;
-    max-width: 200px;
 
     gap: 4px;
 }
 
 #avatars-container {
     width: max-content;
+    max-width: 200px;
+    flex-wrap: wrap;
 }
 
 #phase-text {
@@ -543,7 +544,7 @@ input {
 }
 
 #phase-options-container {
-    max-width: 100%;
+    max-width: 200px;
     min-width: 0;
 
     gap: 4px;
