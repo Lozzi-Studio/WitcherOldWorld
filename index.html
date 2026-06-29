@@ -93,11 +93,14 @@
                 <div class="container container--row container--justify container--no-padding" id="player-shield-container"></div>
             </div>
             <div class="container container--col container--no-padding" id="skills-container">
-                <div class="container container--row" id="skills-header">
+                <div class="container container--row container--no-padding" id="skills-header">
                         <div class="--fancy-font" id="skills-header-text">Skills</div>
-                        <div class="material-symbols-outlined glyph-button" id="player-info-button">info</div>
+                        <div class="container container--row container--no-padding container--small-gap">
+                            <div class="material-symbols-outlined glyph-button" id="player-info-button">info</div>
+                            <div class="material-symbols-outlined glyph-button" id="close-player-window-button">close</div>
+                        </div>
                 </div>
-                <div class="container container--row container--no-padding container--small-gap">
+                <div class="container container--row container--no-padding container--small-gap" id="skills-content">
                     <div class="container container--col container--no-padding">
                         <div class="container container--row container--small-gap" id="combat-levelup-bonus">
                             <div>+1x</div>
@@ -202,6 +205,16 @@
                             <div class="skill-info" id="special-info">SPECIAL INFO</div>
                         </div>
                     </div>
+                    <div class="container container--col" id="school-info">
+                        <img id="school-image">
+                        <div class="textbox textbox--fill textbox--fancy-font"><p id="school-name">NAME</p></div>
+                        <div class="container container--row container--no-padding">
+                            <div class="tooltip-icon material-symbols-outlined filled" id="special-icon">star_shine</div>
+                            <div class="tooltip-text tooltip-text--bottom">Spezialfähigkeit</div>
+                            <div class="--fancy-font" id="school-ability-name">ABILITY</div>
+                        </div>
+                        <div id="school-ability-info">ABILITY</div>
+                    </div>
                 </div>
                 <div id="levelup-impossible-text">Du hast nicht genug Geld</div>
                 <div class="container container--row container--justify-between" id="skill-levelup-buttons-container">
@@ -209,32 +222,28 @@
                     <div class="textbox textbox--fill button" id="skill-levelup-continue-button">Fortfahren</div>
                 </div>
             </div>
-            <div class="container container--col" id="school-info">
-                <img id="school-image">
-                <div class="textbox textbox--fill textbox--fancy-font"><p id="school-name">NAME</p></div>
-                <div class="container container--row container--no-padding">
-                    <div class="tooltip-icon material-symbols-outlined filled" id="special-icon">star_shine</div>
-                    <div class="tooltip-text tooltip-text--bottom">Spezialfähigkeit</div>
-                    <div class="--fancy-font" id="school-ability-name">ABILITY</div>
-                </div>
-                <div id="school-ability-info">ABILITY</div>
-            </div>
         </div>
 
-        <div class="container borders--all container--neutral container--row" id="phase-two-options-menu" style="display: none;">
-            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="meditate-option">
-                Meditate
-            </div>   
-            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="fight-monster-option">
-                Fight-monster
+        <div class="container borders--all container--neutral container--col" id="phase-two-options-menu" style="display: none;">
+            <div class="--fancy-font" id="phase-two-header">
+                Wähle eine Aktion für Phase 2
             </div>
 
-            <div class="container container--col container--stretch container container--no-padding container--col" id ="explore-options">
-                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-city-option">
-                    Die Stadt erkunden
+            <div class="container container--row">
+                <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="meditate-option">
+                    Meditieren
+                </div>   
+                <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="fight-monster-option">
+                    Das Monster Bekämpfen
                 </div>
-                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-wilderness-option">
-                    Die Wildnis erkunden
+    
+                <div class="container container--col container--stretch container container--no-padding container--col" id ="explore-options">
+                    <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-city-option">
+                        Die Stadt erkunden
+                    </div>
+                    <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-wilderness-option">
+                        Die Wildnis erkunden
+                    </div>
                 </div>
             </div>
         </div>
@@ -288,6 +297,20 @@
             <div class="textbox textbox--fill button" id="debug-next-phase-button">Skip Phase</div>
             <div class="textbox textbox--fill button" id="debug-upgrade-skill-button">Upgrade Skill</div>
             <div class="textbox textbox--fill button" id="debug-add-money-button">Add Money</div>
+        </div>
+
+        <div id="turn-change-overlay" class="overlay--hidden">
+            <div id="turn-change-modal" class="container container--col container--neutral borders--all" style="padding: 30px; gap: 20px; width: 280px;">
+                <div class="avatar-container" style="width: 140px; height: 140px;">
+                    <img class="avatar" id="turn-change-avatar" src="" style="width: 100%; height: 100%;">
+                </div>
+                <div class="textbox textbox--fancy-font" style="width: 90%;">
+                    <p id="turn-change-text">NAME IST AN DER REIHE</p>
+                </div>
+                <div class="textbox textbox--fill button --fancy-font" id="turn-change-continue-btn" style="width: 90%;">
+                    Fortfahren
+                </div>
+            </div>
         </div>
     </div>
     
