@@ -921,7 +921,7 @@ export const ui_manager = (() => {
             if (this.FindEntity("BattleEntity") == null) {
                 this.#SetWitcherLevel(msg.player);
             } else if ((this.FindEntity("BattleEntity").FindComponent("BattleManager").player) == null) {
-                this.#SetWitcherLevel(player);
+                this.#SetWitcherLevel(msg.player);
             }
             this.#SetPlayerMoney(msg.player);
             this.#SetPlayerTrophies(msg.player);
@@ -955,7 +955,7 @@ export const ui_manager = (() => {
             let camera = this.FindEntity("Camera").camera;
             camera.updateMatrixWorld(true);
             let coordinates = entity.position.clone().project(camera);
-
+            console.log(coordinates);
             let canvas = this._parent._parent.renderer.domElement;
             const x = (coordinates.x *  0.5 + 0.5) * canvas.clientWidth;
             const y = (coordinates.y * -0.5 + 0.5) * canvas.clientHeight;
@@ -1010,7 +1010,7 @@ export const ui_manager = (() => {
             }
             if (document.getElementById("player-window").classList.contains("position-from-three")) {
                 let playerEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedPlayer;
-                this.#PositionHTMLElementBasedOnEntity("player-window", playerEntity, 50, 130);
+                this.#PositionHTMLElementBasedOnEntity("player-window", playerEntity, 0,0);
             }
         }
 
