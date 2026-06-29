@@ -109,6 +109,10 @@ p, div {
     margin:0px;
 }
 
+input {
+    font-family: "PT Sans", sans-serif;
+}
+
 .position-from-three {
     position: fixed;
 }
