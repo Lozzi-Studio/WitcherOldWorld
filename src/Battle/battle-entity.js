@@ -13,8 +13,8 @@ export const battle_entity = (() => {
         }
 
         InitComponents() {
-            this.AddComponent(new battle_manager.BattleManager());
             this.AddComponent(new battle_ui.BattleUI());
+            this.AddComponent(new battle_manager.BattleManager());
         }
     }
 

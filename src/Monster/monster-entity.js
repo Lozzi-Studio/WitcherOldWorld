@@ -29,6 +29,10 @@ export const monster_entity = (() => {
             this.AddComponent(new monster_property.MonsterProperty(this.#intialHealth, this.#initialRank));
         }
 
+        GetCurrentHealth() {
+            return (this.FindComponent('Carddeck').hand.length + this.FindComponent('Carddeck').deck.length)
+        }
+
         get monsterName() {
             return this.#monsterName;
         }

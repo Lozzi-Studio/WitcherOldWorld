@@ -606,7 +606,7 @@ export const ui_manager = (() => {
 
             if (selectedTown == player.town) {
                 buttonMode = "action";
-                if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
+                if (selectedTown.FindComponent("TownProperties").abilityExecuted || !(selectedTown.FindComponent("TownProperties").canUseAbility()) ) {
                     buttonActive = false;
                 }
                 else {
@@ -879,7 +879,11 @@ export const ui_manager = (() => {
             let player = this.FindComponent("GameManager").currentPlayer;
             this.#SetPlayerSkills(player);
             this.#SetPlayerShieldStatus(player);
-            this.#SetWitcherLevel(player);
+            if (this.FindEntity("BattleEntity") == null) {
+                this.#SetWitcherLevel(player);
+            } else if ((this.FindEntity("BattleEntity").FindComponent("BattleManager").player) == null) {
+                this.#SetWitcherLevel(player);
+            }
             this.#SetPlayerMoney(player);
             this.#SetPlayerTrophies(player);
         }
@@ -941,12 +945,18 @@ export const ui_manager = (() => {
 
         #OnBattlePlayerTurn(msg) {
             document.getElementById("battle-player-window").style.display = "flex";
-            this.#UpdateButtonState("button-play", false);
+            document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
+            if (msg.emptyHand) {
+                document.getElementById("button-play").innerHTML = "Zug Aussetzen"
+                this.#UpdateButtonState("button-play", true);
+            } else {
+                document.getElementById("button-play").innerHTML = "Combo Auspielen"
+                this.#UpdateButtonState("button-play", false);
+            }
         }
 
         #UpdatePlayButton(msg)  {
             this.#UpdateButtonState("button-play", this.FindEntity("GameArea").FindComponent("GameManager").ValidateCardSelected());
-            document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
         }
 
 

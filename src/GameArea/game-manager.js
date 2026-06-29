@@ -151,18 +151,16 @@ export const game_manager = (() => {
          * Discards selected card to move to selected town
          */
         DiscardCardToMove(msg){
-            var selectedCards = [];
-            for (let card_slot of this.#selection) {
-                selectedCards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]);
-            }
-            if (selectedCards.length === 1 && this.#selectedTown) {
-                let moveAllowed = this.ValidateMove(this.#selectedTown, selectedCards).moveAllowed;
-                let allowedCard = this.ValidateMove(this.#selectedTown, selectedCards).allowedCard;
+            if (this.#selection.length === 1 && this.#selectedTown || this.#selection.length == 2) {
+                let moveAllowed = this.ValidateMove().moveAllowed;
+                let allowedCards = this.ValidateMove().allowedCards;
                 if (moveAllowed){
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
                     this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
                     this.#selectedTown.Broadcast(broadcasts.BroadcastTemplateTown.ResetTownAction());
-                    this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(allowedCard, "Discard"));
+                    for (let card of allowedCards) {
+                        this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
+                    }
                     this.#selection = [];
                     this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 }
@@ -225,8 +223,8 @@ export const game_manager = (() => {
          * @returns {object}
          */
         ValidateMove(){
-            if (this.#selection.length !== 1) {
-                return { moveAllowed: false, allowedCard: null };
+            if (this.#selection.length < 1 || this.#selection.length > 2) {
+                return { moveAllowed: false, allowedCards: null };
             }
 
             if (this.#selectedTown != null) {
@@ -234,11 +232,18 @@ export const game_manager = (() => {
                 for (let card_slot of this.#selection) {
                     var card = this.#currentPlayer.FindComponent("Carddeck").hand[card_slot]
                     if (this.#currentPlayer.town.neighboringTowns.includes(town.id) && town != this.#currentPlayer.town && town.FindComponent("TownProperties").canEnter(card)) {
-                        return { moveAllowed: true, allowedCard: card };
+                        return { moveAllowed: true, allowedCards: [card] };
                     }
                 }
+                if (this.#currentPlayer.town.neighboringTowns.includes(town.id) && this.#selection.length == 2 && town != this.#currentPlayer.town){
+                    let cards = []
+                    for (let card_slot of this.#selection) {
+                        cards.push(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot])
+                    }
+                    return { moveAllowed: true, allowedCards: cards };
+                }
             }
-            return { moveAllowed: false, allowedCard: null };
+            return { moveAllowed: false, allowedCards: null };
 
         }
 
@@ -319,7 +324,9 @@ export const game_manager = (() => {
         }
 
         #CreateNewMonster(msg) {
+            console.log(msg.rank);
             let hpPool = [12,15,19];
+            const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             let playerTownPositions = [];
             for (let player of players) {
                 player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
@@ -328,36 +335,35 @@ export const game_manager = (() => {
             for (let monster of this.#currentMonster.values()) {
                 playerTownPositions.push(monster.town);
             }
-            let region = null
+            let newRegion = null;
+            let tracker = null;
             switch(msg.region) {
                 case "Forest":
-                    region = region.Region.Forest();
+                    newRegion = region.Region.Forest();
                     tracker = status_templates.StatusTemplates.forestTracker();
                     break;
                 case "Mountain":
-                    region = region.Region.Mountain();
+                    newRegion = region.Region.Mountain();
                     tracker = status_templates.StatusTemplates.mountainTracker();
                     break;
                 case "River":
-                    region = region.Region.River();
+                    newRegion= region.Region.River();
                     tracker = status_templates.StatusTemplates.riverTracker();
                     break;
             }
-            const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             if (msg.newMonster) {
-                //TODO Remove all Gerüchte
-                for (let player in players) {
-                    amount = player.FindComponent("PlayerStatus").GetStatusAmount(tracker);
+                for (let player of players) {
+                    let amount = player.FindComponent("PlayerStatus").GetStatusAmount(tracker);
                     while (amount > 0) {
                         player.FindComponent("PlayerStatus").RemovePermanentStatus(tracker);
                         amount = player.FindComponent("PlayerStatus").GetStatusAmount(tracker);
                     }
                 }
             }
-            this._parent._parent.scene.remove(this.#currentMonster.get(msg.Region).FindComponent("MonsterFigure").mesh);
-            const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(region, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
-            this.#currentMonster.set(msg.region, newMonster);
-            this._parent._parent.AddEntity(newMonster, "Monster_" + region.toIdentifier());
+            this._parent._parent.scene.remove(this.#currentMonster.get(msg.region).FindComponent("MonsterFigure").mesh);
+            const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(newRegion, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
+            this.#currentMonster.set(newRegion.toIdentifier(), newMonster);
+            this._parent._parent.AddEntity(newMonster, "Monster_" + newRegion.toIdentifier());
         }
 
         #isBattleTurn(msg) {
@@ -368,14 +374,17 @@ export const game_manager = (() => {
 
         #OnComboPlay(msg) {
             this.#isPlayerBattleTurn = false;
-            for (let [i , card] of this.#selection.entries()) {
-                if (i == (this.#selection.length - 1)) {
-                    this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo(this.#currentPlayer.GetHandCard(this.#selection[0])));
-                } else {
-                    this.#currentPlayer.GetHandCard(this.#selection[i]).AddNextComboCard(this.#currentPlayer.GetHandCard(this.#selection[i + 1]));
+            if (this.selection.length == 0) {
+                this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo());
+            }else{
+                for (let [i , card] of this.#selection.entries()) {
+                    if (i == (this.#selection.length - 1)) {
+                        this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo(this.#currentPlayer.GetHandCard(this.#selection[0])));
+                    } else {
+                        this.#currentPlayer.GetHandCard(this.#selection[i]).AddNextComboCard(this.#currentPlayer.GetHandCard(this.#selection[i + 1]));
+                    }
                 }
             }
-
             this.#selection = [];
         }
 

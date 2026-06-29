@@ -80,6 +80,10 @@ export const player_entity = (() => {
             return this.FindComponent('Carddeck').GetHandCard(cardslot);
         }
 
+        GetHealth(){
+            return (this.FindComponent('Carddeck').hand.length + this.FindComponent('Carddeck').deck.length)
+        }
+
         get playerName() {
             return this.#player_name;
         }

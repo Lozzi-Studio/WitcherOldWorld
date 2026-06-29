@@ -126,23 +126,24 @@ export const battle_manager = (() => {
             }
 
             console.log(nextMove);
-            
-            if (this.#player.FindComponent("Carddeck").hand.length <= 0 && this.#player.FindComponent("Carddeck").deck.length <= 0 ) {
-                if (this.#monster.FindComponent("Carddeck").hand.length <= 0 && this.#monster.FindComponent("Carddeck").deck.length <= 1 ) {
+            if (this.#player.GetHealth() <= 0 ) {
+                if (this.#monster.GetCurrentHealth()  <= 1 ) {
                     this.#ResolveDraw();
                 } else {
                     this.#ResolveMonsterWin();
                 }
-            } else {
+            } else if (this.#monster.GetCurrentHealth() <= 1) {
+                this.#ResolvePlayerWin()
+            } else{
                 this.#PlayerTurn();
             }
         }
 
         #PlayerTurn() {
             if (this.#player.FindComponent("Carddeck").hand.length <= 0) {
-                this.#PlayCombo({})
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn(true));
             } else {
-                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn());
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn(false));
             }
         }
 
@@ -185,7 +186,7 @@ export const battle_manager = (() => {
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
-            tthis.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.CreateNewMonster(this.#monster.rank + 1 <= 3 ? this.#monster.rank : 3, this.#monster.name.split("_")[1], true));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.CreateNewMonster(this.#monster.rank + 1 <= 3 ? this.#monster.rank + 1 : 3, this.#monster.name.split("_")[1], true));
             this.#EndBattle();
         } 
         
@@ -205,7 +206,7 @@ export const battle_manager = (() => {
 
         #PlayCombo(msg) {
             console.log(msg);
-            if (msg.length > 0) {
+            if (msg.card != undefined) {
                 let result = card_options.CardEffect.createCardEffect(0,0,0,false,false);
                 let cardsToDiscard = [];
                 for (let effect of msg.card.getEffect([])) {
@@ -227,16 +228,14 @@ export const battle_manager = (() => {
                 for (let card of cardsToDiscard) {
                     this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
                 }
-                
                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage));
                 this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, result.shield));
-            } else {
-                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
-            }
+            } 
+            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
 
-            if (this.#monster.FindComponent("Carddeck").hand.length <= 0 && this.#monster.FindComponent("Carddeck").deck.length <= 0 ) {
-                if (this.#player.FindComponent("Carddeck").hand.length <= 0 && this.#player.FindComponent("Carddeck").deck.length <= 0 ) {
+            if (this.#monster.GetCurrentHealth() <= 0 ) {
+                if (this.#player.GetHealth() <= 0 ) {
                     this.#ResolveDraw();
                 } else {
                     this.#ResolvePlayerWin();
@@ -247,8 +246,15 @@ export const battle_manager = (() => {
         }
 
         #EndBattle() {
+            this.#player = null;
+            this.#monster = null;
+            this.Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
             this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
+        }
+
+        get player() {
+            return this.#player;
         }
     }
 

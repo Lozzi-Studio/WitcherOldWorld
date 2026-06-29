@@ -500,8 +500,8 @@ export const broadcasts = (() => {
 
     class BroadcastTemplateBattle {
 
-        static StartPlayerTurn() {
-            return {topic: 'battle.playerTurn'}
+        static StartPlayerTurn(emptyHand) {
+            return {topic: 'battle.playerTurn', emptyHand: emptyHand}
         }
 
         static PlayCombo(card) {
@@ -510,6 +510,10 @@ export const broadcasts = (() => {
 
         static StartBattle(player, monster) {
             return {topic: 'battle.startBattle', player: player, monster: monster}
+        }
+
+        static EndBattle(){
+            return {topic: 'battle.endBattle'}
         }
     }
 

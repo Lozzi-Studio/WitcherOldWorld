@@ -72,6 +72,16 @@ export const town_properties = (() => {
             return (card.region.equals(this.#region) || this.#region.toIdentifier() == "Joker");
         }
 
+        canUseAbility() {
+            if (this.#ability.trigger.topic == 'skill.changeLevel') {
+                return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").canIncrease(this.#ability.trigger.skill);
+            } 
+            if (this.#ability.trigger.topic == 'card.drawCard') {
+                return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").potion.length < 4;
+            }
+            return true
+        }
+
         /**
          * 
          * @returns {bool}

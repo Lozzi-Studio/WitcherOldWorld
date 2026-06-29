@@ -31,6 +31,7 @@ export const town_manager = (() =>{
         GetRandomTownFromRegionPool(region, excludeFromPool = [this.FindComponent('GameManager').currentPlayer.town], removeFromPool = true) {
             let randomIndex = 0;
             let town = null;
+            console.log(region);
             switch(region.toIdentifier()) {
                 case "Forest":
                     randomIndex = Math.floor(Math.random() * this.#forestTowns.length);
