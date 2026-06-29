@@ -20,3 +20,7 @@ https://craftpix.net/freebies/free-winter-mountain-3d-low-poly-models/
 
 Ocean texture (screenshot):
 https://azgaar.github.io/Fantasy-Map-Generator/
+
+
+Stone mine-model:
+https://www.cgtrader.com/free-3d-models/exterior/industrial-exterior/stone-mine-ad4ea621-f9f1-4eed-a548-bc66165c159e
