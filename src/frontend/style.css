@@ -754,7 +754,16 @@ input {
 #card-select > div:not(.card--selected):hover {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
-    transform: scale(105%, 105%);
+    transform: scale(103%, 103%);
+}
+
+#card-select {
+    max-height: 512px;
+    overflow: auto;
+}
+
+#card-select-window {
+    max-width: 690px;
 }
 
 #phase-two-header {
