@@ -93,7 +93,7 @@ export const card = (() => {
 
             parts.push(this.#name.split(" ").join("_").toLowerCase());
 
-            if (this.#region && this.#region != region.Region.Joker()) {
+            if (this.#region && this.#region.toIdentifier() != region.Region.Joker().toIdentifier()) {
                 parts.push(this.#region.toIdentifier().toLowerCase());
             }
 
