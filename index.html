@@ -51,12 +51,16 @@
     </div>
 
     <div id="player-selection" style="display: none;">
-        <video id="background_video" loop muted playsinline autoplay>
-            <source src="resources/assets/background/main_menu.mp4">
-        </video>
-        <div class="container container--col container--neutral container--justify borders--none" id="main-menu-ui">
-            
-            <div>Spieler auswahl</div>
+        <div class="container container--col container--neutral container--justify position-center borders--all" id="player-selection-window">
+            <div>Spieler auswählen</div>
+            <div class="container container--row">
+                <div class="container container--col container--justify-between">
+                    <div class="container container--row">
+                        <div class="text-single-number --fancy-font">1</div>
+                        <input name="searchTxt" type="text" maxlength="512" id="searchTxt" class="textbox">Spielernamen eingeben</input>
+                    </div>
+                </div>
+            </div>
             <div class="textbox textbox--fill button --fancy-font" id="player-selection-start-game-button">Spiel Starten</div>
         </div>
     </div>
