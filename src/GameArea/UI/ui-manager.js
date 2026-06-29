@@ -275,7 +275,6 @@ export const ui_manager = (() => {
             let path = "./resources/assets/glyphs/"
             let skillName = skill.toIdentifier().toLowerCase();
 
-            console.log(skillName);
             const container = document.getElementById(`${skillName}-lvl-bonus-glyph`);
 
             for (let i = 0; i < this.#maxSkillLevel; i++) {
@@ -955,7 +954,6 @@ export const ui_manager = (() => {
             let camera = this.FindEntity("Camera").camera;
             camera.updateMatrixWorld(true);
             let coordinates = entity.position.clone().project(camera);
-            console.log(coordinates);
             let canvas = this._parent._parent.renderer.domElement;
             const x = (coordinates.x *  0.5 + 0.5) * canvas.clientWidth;
             const y = (coordinates.y * -0.5 + 0.5) * canvas.clientHeight;
