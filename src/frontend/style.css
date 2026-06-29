@@ -109,6 +109,10 @@ p, div {
     margin:0px;
 }
 
+input {
+    font-family: "PT Sans", sans-serif;
+}
+
 .position-from-three {
     position: fixed;
 }
@@ -990,8 +994,12 @@ p, div {
 }
 
 #players-container {
-    gap:16px;
     max-width: 250px;
+}
+
+#player-container {
+    gap:16px;
+    min-height: 48px;
 }
 
 #text-container {
@@ -1030,6 +1038,11 @@ p, div {
     border-radius: 6px;
     font-size: 18px;
     width: 110px;
+}
+
+.invisible {
+    opacity: 0;
+    width: 0;
 }
 
 @keyframes spin {

@@ -166,6 +166,11 @@ export const game = (() => {
          */
         #InitPlayers() {
             let players = this.#GetPlayersFromSetup();
+            //Fisher-Yates_shuffle (src:https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
+            for (let i = players.length - 1; i >= 1; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [players[i], players[j]] = [players[j], players[i]];
+            }
             let count = 1;
             for (let player of players) {
                 let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, count+1);
