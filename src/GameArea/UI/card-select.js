@@ -27,7 +27,6 @@ export const card_select_ui = (() => {
 
         async GetCardSelectionFromPlayerPrompt(cards, selectableCards) {
             const selection = await this.FindComponent("CardSelectUI").PromptCardSelection(cards, selectableCards);
-            console.log("Selected: ", selection);
         }
 
         /**
