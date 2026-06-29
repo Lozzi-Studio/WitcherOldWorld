@@ -74,9 +74,23 @@ export const card_select_ui = (() => {
                     cardSelect.appendChild(cardDIV);
                 }
                 
+                const onCancel = () => {
+                    document.getElementById("card-select-window").remove();
+                    handCards.forEach(el => {
+                        el.style.marginRight = '-100px';
+                    });
+                    confirmButton.removeEventListener("click", onConfirm);
+
+                    resolve(null);
+                }
+                
                 const onConfirm = () => {
                     document.getElementById("card-select-window").remove();
+                    handCards.forEach(el => {
+                        el.style.marginRight = '-100px';
+                    });
                     confirmButton.removeEventListener("click", onConfirm);
+
                     let selectedCards = [];
                     this.#selection.forEach(index => {
                         let card = cards[index];
@@ -85,6 +99,21 @@ export const card_select_ui = (() => {
                     resolve(selectedCards);
                 }
 
+                let buttonsContainer = document.createElement("div");
+                buttonsContainer.classList.add(
+                    "container", "container--row"
+                );
+                cardSelectWindow.appendChild(buttonsContainer);
+
+                let cancelButton = document.createElement("div");
+                cancelButton.classList.add(
+                    "textbox", "textbox--fill", "button"
+                );
+                cancelButton.id = "cancel-button";
+                cancelButton.innerHTML = "Abbrechen";
+                cancelButton.addEventListener("click", onCancel);
+                buttonsContainer.appendChild(cancelButton);
+
                 let confirmButton = document.createElement("div");
                 confirmButton.classList.add(
                     "textbox", "textbox--fill", "button", "button--inactive"
@@ -92,7 +121,7 @@ export const card_select_ui = (() => {
                 confirmButton.id = "confirm-button";
                 confirmButton.innerHTML = "Fortfahren";
                 confirmButton.addEventListener("click", onConfirm);
-                cardSelectWindow.appendChild(confirmButton);
+                buttonsContainer.appendChild(confirmButton);
             });
         }
 

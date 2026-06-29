@@ -1070,3 +1070,23 @@ input {
     100% { transform: rotate(360deg); }
 }
 
+::-webkit-scrollbar {
+      width: 15px;
+}
+
+::-webkit-scrollbar-track {
+      background-color: var(--color-bg);
+} 
+::-webkit-scrollbar-thumb {
+      background-color: var(--color-border);
+      border-radius: 6px;
+      display: flex;
+} 
+::-webkit-scrollbar-button {
+      background-color: rgba(0, 0, 0, 0.281);
+      display: none;
+} 
+::-webkit-scrollbar-corner {
+      background-color: rgba(0, 0, 0, 0.2);
+      display: none;
+} 
