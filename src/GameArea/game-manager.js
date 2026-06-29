@@ -38,7 +38,7 @@ export const game_manager = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponent() {
-            this._RegisterHandler('card.select', (msg) => {this.#OnCardSelect(msg);});
+            this._RegisterHandler('card.select', (msg) => {this.OnCardSelect(msg);});
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
             this._RegisterHandler('player.selection', (msg) => {this.#OnPlayerSelection(msg);});
             this._RegisterHandler('game.nextPhase', (msg) => {this.#NextTurnPhase(msg);});
@@ -90,7 +90,7 @@ export const game_manager = (() => {
             
             if (nextPlayer) {
                 for (let card_slot of this.#selection) {
-                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
                 }
                 this.#selection = [];
                 this.#currentPlayerId += 1;
@@ -109,16 +109,30 @@ export const game_manager = (() => {
          * Add card to selection
          * @param {object} msg 
          */
-        #OnCardSelect(msg){
+        OnCardSelect(msg){
             if (this.#selection.includes(msg.card_slot)){
                 this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                switch (msg.mode) {
+                    case "Hand":
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(msg.card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                        break;
+                    case "CardSelect":
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect", this.#selection));
+                        break;
+                }
                 if (this.#selection.length === 0){
                     this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
                 }
             } else {
                 this.#selection.push(msg.card_slot);
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                switch (msg.mode) {
+                    case "Hand":
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                        break;
+                    case "CardSelect":
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#selection));
+                        break;
+                }
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
             }
         }
@@ -140,7 +154,7 @@ export const game_manager = (() => {
                     this.#selectedTown.Broadcast(broadcasts.BroadcastTemplateTown.ResetTownAction());
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(allowedCard, "Discard"));
                     this.#selection = [];
-                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI());
                 }
             }
         }
@@ -152,7 +166,7 @@ export const game_manager = (() => {
                 }
 
                 this.#selection = [];
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
         }

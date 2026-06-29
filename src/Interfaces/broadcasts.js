@@ -94,11 +94,12 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {int} card_slot 
-         * @param {string} mode - Options: "Hand", "Shop"
+         * @param {card.Card} card
+         * @param {string} mode - Options: "Hand", "Shop", "CardSelect"
          * @returns {object}
          */
-        static SelectCard(card_slot, card, mode) {
-            return {topic: 'card.select', card_slot: card_slot, card:card, mode: mode}
+        static SelectCard(card_slot, card, mode, hand) {
+            return {topic: 'card.select', card_slot: card_slot, card: card, mode: mode}
         }
 
         /**
@@ -143,8 +144,19 @@ export const broadcasts = (() => {
          * @param {int} phase
          * @returns 
          */
-        static UpdateCardSelectionUI(card_slot, mode, phase) {
-            return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode, phase: phase};
+        static UpdateHandCardSelectionUI(card_slot, mode, phase) {
+            return {topic: 'card.updateHandSelectionUI', card_slot: card_slot, mode: mode, phase: phase};
+        }
+
+        /**
+         * 
+         * @param {int} card_slot 
+         * @param {string} mode - Options: "Select", "Deselect"
+         * @param {Array} selection
+         * @returns 
+         */
+        static UpdateCardSelectionUI(card_slot, mode, selection) {
+            return {topic: 'card.updateCardSelectionUI', card_slot: card_slot, mode: mode, selection: selection};
         }
 
     }
