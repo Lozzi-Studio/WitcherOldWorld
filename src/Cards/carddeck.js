@@ -164,17 +164,22 @@ export const carddeck_component = (() => {
                     case "Deck":
                         if (this.#cardDeck.length == 0) {
                             this.#Shuffle({includeDiscard: true});
-                        } 
-                        this.#cardHand.push(this.#cardDeck.pop());
+                            if (this.#cardDeck.length == 0) { 
+                                return;
+                            }
+                        }
+                        let drawnCard = this.#cardDeck.pop();
+                        this.#cardHand.push(drawnCard);
                         if (!this.#noUiUpdate) {
-                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", drawnCard));
                         }
                         break;
                     case "Discard":
                         if (this.#cardDiscard.length != 0) {
-                            this.#cardHand.push(this.#cardDiscard.pop())
+                            let discardedCard = this.#cardDiscard.pop();
+                            this.#cardHand.push(discardedCard)
                             if (!this.#noUiUpdate) {
-                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", discardedCard));
                             }
                         }
                         break;

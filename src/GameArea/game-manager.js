@@ -8,6 +8,7 @@ import { monster_entity } from "../Monster/monster-entity";
 import { player_status } from "../Players/player-status";
 import { status_templates } from "../Players/status-templates";
 import { status_options } from "../Players/status-options";
+import { player_entity } from "../Players/player-entity";
 
 export const game_manager = (() => {
 
@@ -20,6 +21,7 @@ export const game_manager = (() => {
         #currentShopSelection;
         #currentMonster;
         #isPlayerBattleTurn;
+        #selectedPlayer;
         
         /**
          * Manages game stages and game behaviour
@@ -35,6 +37,7 @@ export const game_manager = (() => {
             this.#currentShopSelection = null;
             this.#currentMonster = new Map();
             this.#isPlayerBattleTurn = false;
+            this.#selectedPlayer = null;
         }
 
         /**
@@ -43,6 +46,7 @@ export const game_manager = (() => {
         InitComponent() {
             this._RegisterHandler('card.select', (msg) => {this.#OnCardSelect(msg);});
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
+            this._RegisterHandler('player.selection', (msg) => {this.#OnPlayerSelection(msg);});
             this._RegisterHandler('game.nextPhase', (msg) => {this.#NextTurnPhase(msg);});
             this._RegisterHandler('game.startPoker', (msg) => {this.#StartWuerfelpoker(msg);});
             this._RegisterHandler('game.removeShop', (msg) => {this.#RemoveShopCard(msg);});
@@ -274,6 +278,14 @@ export const game_manager = (() => {
         }
 
         /**
+         * Triggers player UI on click on town
+         * @param {object} msg 
+         */
+        #OnPlayerSelection(msg) {
+            this.#selectedPlayer = msg.player;
+        }
+
+        /**
          * Triggers start of a wuerfelpoker game
          * @param {object} msg 
          */
@@ -424,6 +436,13 @@ export const game_manager = (() => {
             return this.#isPlayerBattleTurn;
         }
 
+
+        /**
+         * @returns {player_entity.Player}
+         */
+        get selectedPlayer() {
+            return this.#selectedPlayer;
+        }
     };
 
     class Phase {

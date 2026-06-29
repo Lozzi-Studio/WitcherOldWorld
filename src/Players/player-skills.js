@@ -64,7 +64,7 @@ export const player_skills = (() => {
                     }
                     break;
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI(this.parent));
         }
 
         canIncrease(skill) {
@@ -276,7 +276,7 @@ export const player_skills = (() => {
                     }
                     break;
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI(this.parent));
         }
 
     
