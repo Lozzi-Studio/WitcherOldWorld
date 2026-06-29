@@ -222,6 +222,10 @@ input {
     border-width: 0px;
 }
 
+.container--wrap {
+    flex-wrap: wrap;
+}
+
 .borders--all {
     border-width: 3px;
     border-radius: 12px;
@@ -739,12 +743,18 @@ input {
 }
 
 #hand-window > div:hover {
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 
 #hand-window > div:not(.card--selected):hover {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
+}
+
+#card-select > div:not(.card--selected):hover {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    transform: scale(105%, 105%);
 }
 
 #phase-two-header {
@@ -838,6 +848,7 @@ input {
     /* aspect-ratio: 0.65; */
 
     background-size: cover;
+    transition: transform 400ms;
 }
 
 .card--selected {
