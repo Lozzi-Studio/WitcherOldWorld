@@ -990,6 +990,11 @@ p, div {
 
 #players-container {
     gap:16px;
+    max-width: 250px;
+}
+
+#text-container {
+    max-width: 350px;
 }
 
 .font-size-large {
