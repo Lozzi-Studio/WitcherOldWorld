@@ -723,6 +723,7 @@ p, div {
 #card-select > div:not(.card--selected):hover {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
+    transform: scale(105%, 105%);
 }
 
 #phase-two-header {
@@ -816,6 +817,7 @@ p, div {
     /* aspect-ratio: 0.65; */
 
     background-size: cover;
+    transition: transform 400ms;
 }
 
 .card--selected {

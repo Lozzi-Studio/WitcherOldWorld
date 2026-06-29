@@ -15,7 +15,7 @@ export const card_select_ui = (() => {
             this.HandleOpenCardsClick = () => {
                 if (openCardsButton.classList.contains("button--inactive") == false) {
                     let handCards = this.FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").hand;
-                    this.ShowCardSelect(handCards, 2);
+                    this.OpenCardSelect(handCards, 2);
                 }
             };
         }
@@ -26,12 +26,18 @@ export const card_select_ui = (() => {
             document.getElementById("open-card-selection-button").addEventListener("click", this.HandleOpenCardsClick);
         }
 
+        GetCardSelectionFromPlayer(cards, selectableCards) {
+            this.OpenCardSelect(cards, selectableCards);
+            return this.#selection;
+        }
+
         /**
          * 
          * @param {Array} cards 
          * @param {int} selectableCards 
          */
-        ShowCardSelect(cards, selectableCards) {
+        OpenCardSelect(cards, selectableCards) {
+            console.log(selectableCards);
             let handWindow = document.getElementById("hand-window");
             const handCards = document.querySelectorAll('#hand-window > div:not(:last-child)');
             handCards.forEach(el => {
@@ -44,6 +50,10 @@ export const card_select_ui = (() => {
             cardSelectWindow.classList.add(
                 "container", "container--col", "container--neutral", "position-center", "borders--all", "borders--neutral"
             );
+            
+            let header = document.createElement("div");
+            
+
             const cardSelect = document.createElement("div");
             cardSelectWindow.appendChild(cardSelect);
             cardSelect.id = "card-select";
@@ -56,14 +66,31 @@ export const card_select_ui = (() => {
                 cardDIV.id = `window-card-${index}`;
                 cardDIV.classList.add("container", "container--col", "card");
                 this.FindComponent("UIManager").UpdateCardContent(card, cardDIV);
-                cardDIV.addEventListener("click", () => this.FindComponent("UIManager").SelectCard(index, card, "CardSelect"));
+                cardDIV.addEventListener("click", () => this.FindComponent("UIManager").SelectCard(index, card, "CardSelect", selectableCards));
                 cardSelect.appendChild(cardDIV);
             }
             
-            confirmButton = document.createElement("div");
+            let confirmButton = document.createElement("div");
+            confirmButton.classList.add(
+                "textbox", "textbox--fill", "button", "button--inactive"
+            );
+            confirmButton.id = "confirm-button";
+            confirmButton.innerHTML = "Fortfahren";
+            confirmButton.addEventListener("click", this.CloseCardSelect);
             cardSelectWindow.appendChild(confirmButton);
         }
 
+        /**
+         * removes cardSelectWindow from DOM
+         */
+        CloseCardSelect() {
+            document.getElementById("card-select-window").remove();
+        }
+
+        /**
+         * 
+         * @param {object} msg 
+         */
         #UpdateCardSelection(msg) {
             if (msg.card_slot !== undefined) {
                 let cardImage = document.getElementById(`window-card-${msg.card_slot}`);
@@ -81,14 +108,18 @@ export const card_select_ui = (() => {
                 }
             }
             this.#selection = msg.selection;
-            console.log(this.#selection);
             this.#UpdateConfirmButton();
         }
 
+        /**
+         * sets button state based on card selection
+         */
         #UpdateConfirmButton() {
-            this.FindComponent("UIManager").UpdateButtonState("continue-button", );
-            let button = document.getElementById("shop-button");
-            button.addEventListener("click", this.handleBuyClick);
+            if (this.#selection.length > 0) {
+                this.FindComponent("UIManager").UpdateButtonState("confirm-button", true);
+            } else {
+                this.FindComponent("UIManager").UpdateButtonState("confirm-button", false);
+            }
         }
     }
     return {

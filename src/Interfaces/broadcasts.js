@@ -96,10 +96,11 @@ export const broadcasts = (() => {
          * @param {int} card_slot 
          * @param {card.Card} card
          * @param {string} mode - Options: "Hand", "Shop", "CardSelect"
+         * @param {string} selectableCards
          * @returns {object}
          */
-        static SelectCard(card_slot, card, mode, hand) {
-            return {topic: 'card.select', card_slot: card_slot, card: card, mode: mode}
+        static SelectCard(card_slot, card, mode, selectableCards) {
+            return {topic: 'card.select', card_slot: card_slot, card: card, mode: mode, selectableCards: selectableCards}
         }
 
         /**

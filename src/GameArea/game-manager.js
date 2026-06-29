@@ -124,16 +124,19 @@ export const game_manager = (() => {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
                 }
             } else {
-                this.#selection.push(msg.card_slot);
                 switch (msg.mode) {
                     case "Hand":
+                        this.#selection.push(msg.card_slot);
                         this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
                         break;
                     case "CardSelect":
-                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#selection));
+                        if (this.#selection.length < msg.selectableCards) {
+                            this.#selection.push(msg.card_slot);
+                            this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#selection));
+                        }
                         break;
-                }
-                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
+                    }
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
             }
         }
 

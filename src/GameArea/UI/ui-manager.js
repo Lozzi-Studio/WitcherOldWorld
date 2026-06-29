@@ -180,8 +180,8 @@ export const ui_manager = (() => {
         /**
          * Triggers Cardslot Selection
          */
-        SelectCard(card_slot, card, mode) {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(card_slot, card, mode));
+        SelectCard(card_slot, card, mode, selectableCards) {
+            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(card_slot, card, mode, selectableCards));
         }
 
         /**
@@ -743,7 +743,7 @@ export const ui_manager = (() => {
                     newCardDIV.id = `card-image-${i}`;
                     newCardDIV.classList.add("container", "container--col", "card");
                     handWindow.appendChild(newCardDIV);
-                    newCardDIV.addEventListener("click", () => this.SelectCard(i, card, "Hand"));
+                    newCardDIV.addEventListener("click", () => this.SelectCard(i, card, "Hand", 1));
                     this.UpdateCardContent(card, newCardDIV);
                 }
             }
