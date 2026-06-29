@@ -194,6 +194,18 @@ p, div {
     border-color: var(--color-border);
 }
 
+.container--fill {
+    width: 100%;
+}
+
+.container--justify-flex-start {
+    justify-content: flex-start;
+}
+
+.container--align-flex-start {
+    align-items: flex-start;
+}
+
 .container--small-gap {
     gap: 4px;
 }
@@ -388,6 +400,10 @@ p, div {
 .glyph-button:hover {
     cursor: var(--cursor-pointer), pointer;
     color: var(--color-hover);
+}
+
+.glyph-button--inactive {
+    color: var(--color-primary-inactive);
 }
 
 #player-name {
@@ -935,7 +951,7 @@ p, div {
     height: 200px;
 }
 
-#background_video {
+#background-video {
     height: 100%;
     width: 177.78vh; /* 100 * 16 / 9 */
     min-width: 100%;
@@ -957,7 +973,6 @@ p, div {
 
 #player-selection-start-game-button {
     font-size: 24px;
-    width: 90%;
     padding-top: 8px;
 }
 
@@ -969,7 +984,46 @@ p, div {
 }
 
 #player-selection-window {
+    gap:24px;
+    padding:8px;
+}
 
+#players-container {
+    gap:16px;
+}
+
+.font-size-large {
+    font-size: 24px;
+}
+
+.font-size-middle {
+    font-size: 18px;
+}
+
+.font-size-body {
+    font-size: 14px;
+}
+
+.font-size-small {
+    font-size: 10px;
+}
+
+.player-number {
+    font-size: 24px;
+    width: 12px;
+    text-align: center;
+}
+
+.name-input__label {
+    font-size: 18px;
+}
+
+.name-input {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    border-radius: 6px;
+    font-size: 18px;
+    width: 110px;
 }
 
 @keyframes spin {

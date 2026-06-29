@@ -4,6 +4,7 @@ import { entity } from "../Interfaces/entity";
 import { backgrounds } from "../Scenes/backgrounds";
 import { player_picker } from "./player-pick-component";
 import { button } from "../MainMenu/button";
+import { player_selection_ui_manager } from '../GameArea/UI/player-selection-ui-manager';
 
 export const player_menu_overlay = (() => {
 
@@ -21,6 +22,7 @@ export const player_menu_overlay = (() => {
          */
         InitComponents() {
             this.AddComponent(new player_picker.PlayerPicker())
+            this.AddComponent(new player_selection_ui_manager.PlayerSelectionUIManager());
             
             let mainMenu = document.getElementById("main-menu");
             mainMenu.style.display = "none";

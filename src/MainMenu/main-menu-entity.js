@@ -27,6 +27,9 @@ export const main_menu_overlay = (() => {
 
             let mainMenu = document.getElementById("main-menu");
             mainMenu.style.display = "block";
+
+            let backgroundVideo = document.getElementById("background-video")
+            backgroundVideo.playbackRate = 0.7;
         }
     }
 
