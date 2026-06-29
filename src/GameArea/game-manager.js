@@ -9,6 +9,7 @@ import { player_status } from "../Players/player-status";
 import { status_templates } from "../Players/status-templates";
 import { status_options } from "../Players/status-options";
 import { player_entity } from "../Players/player-entity";
+import { rewards } from "../GameObjects/rewards";
 
 export const game_manager = (() => {
 
@@ -22,6 +23,7 @@ export const game_manager = (() => {
         #currentMonster;
         #isPlayerBattleTurn;
         #selectedPlayer;
+        #isHuntMusic;
         
         /**
          * Manages game stages and game behaviour
@@ -38,6 +40,7 @@ export const game_manager = (() => {
             this.#currentMonster = new Map();
             this.#isPlayerBattleTurn = false;
             this.#selectedPlayer = null;
+            this.#isHuntMusic = false;
         }
 
         /**
@@ -59,6 +62,7 @@ export const game_manager = (() => {
             this._RegisterHandler('battle.playCombo', (msg) => {this.#OnComboPlay(msg)});
             this._RegisterHandler('game.newMonster', (msg) => {this.#CreateNewMonster(msg)});
             this._RegisterHandler('game.drawUntilFull',()=> {this.#DrawCardsUntilHandFull()});
+            this._RegisterHandler('game.chooseRegion', (msg) => {this.#GetRandomRumor(msg)})
             this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
         }
 
@@ -110,6 +114,13 @@ export const game_manager = (() => {
                     this.#currentPlayerId = 1;
                     this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextRound(this.#currentPlayer));
+                }
+                if (this.#isHuntMusic) {
+                    this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
+                    this.#isHuntMusic = false;
+                } else if (this.#currentPlayer.GetInChase()){
+                    this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateMusic.PlayChaseTheme());
+                    this.#isHuntMusic = true;
                 }
                 this.Broadcast(broadcasts.BroadcastTemplateGame.NextPlayer(this.#currentPlayer));
                 this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
@@ -336,7 +347,6 @@ export const game_manager = (() => {
         }
 
         #CreateNewMonster(msg) {
-            console.log(msg.rank);
             let hpPool = [12,15,19];
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             let playerTownPositions = [];
@@ -398,6 +408,11 @@ export const game_manager = (() => {
                 }
             }
             this.#selection = [];
+        }
+
+        #GetRandomRumor(msg) {
+            let randomRegion = [region.Region.River(), region.Region.Forest(), region.Region.Mountain()][Math.floor(Math.random() * 3)]
+            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.GetRumor(rewards.Reward.GetOneGold(), this.FindComponent('TownManager').GetRandomTownFromRegionPool(randomRegion),  randomRegion));
         }
 
         /**

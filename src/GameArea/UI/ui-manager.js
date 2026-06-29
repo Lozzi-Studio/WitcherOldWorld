@@ -144,6 +144,14 @@ export const ui_manager = (() => {
                 let msg = {player: this.FindComponent("GameManager").currentPlayer}
                 this.#UpdatePlayerInfoWindow(msg);
             }
+
+            this.handleSpecialClick = () => {
+                const btn = document.getElementById("button-special");
+                if (!(btn.classList.contains("button--inactive"))) {
+                    this.#UpdateButtonState("button-special", false);
+                    this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UseSpecial());
+                }
+            }
         }
 
 
@@ -983,6 +991,7 @@ export const ui_manager = (() => {
         #OnBattlePlayerTurn(msg) {
             document.getElementById("battle-player-window").style.display = "flex";
             document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
+            document.getElementById("button-special").addEventListener("click", this.handleSpecialClick);
             if (msg.emptyHand) {
                 document.getElementById("button-play").innerHTML = "Zug Aussetzen"
                 this.#UpdateButtonState("button-play", true);
@@ -990,6 +999,12 @@ export const ui_manager = (() => {
                 document.getElementById("button-play").innerHTML = "Combo Auspielen"
                 this.#UpdateButtonState("button-play", false);
             }
+            if (msg.specialUsed) {
+                this.#UpdateButtonState("button-special", false);
+            } else {
+                this.#UpdateButtonState("button-special", true);
+            }
+            
         }
 
         #UpdatePlayButton(msg)  {
@@ -1008,7 +1023,7 @@ export const ui_manager = (() => {
             }
             if (document.getElementById("player-window").classList.contains("position-from-three")) {
                 let playerEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedPlayer;
-                this.#PositionHTMLElementBasedOnEntity("player-window", playerEntity, 0,0);
+                this.#PositionHTMLElementBasedOnEntity("player-window", playerEntity,  50, 130);
             }
         }
 

@@ -10,6 +10,7 @@ import { player_trophies } from "./player-trophies";
 import { player_figure } from "./player-figure";
 import { player_status } from "./player-status";
 import { hitbox_component } from '../GameArea/hitbox-component';
+import { status_templates } from './status-templates';
 
 export const player_entity = (() => {
 
@@ -90,12 +91,22 @@ export const player_entity = (() => {
             return (this.FindComponent('Carddeck').hand.length + this.FindComponent('Carddeck').deck.length)
         }
 
+        GetInChase() {
+            let amount = 0;
+            amount += this.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.forestTracker());
+            amount += this.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.riverTracker());
+            amount += this.FindComponent("PlayerStatus").GetStatusAmount(status_templates.StatusTemplates.mountainTracker());
+            return amount > 0;
+        }
+
         get playerName() {
             return this.#player_name;
         }
 
         get witcherSpecialAbility() {
-            return this.#witcherSchool.ability;
+            let ability = structuredClone(this.#witcherSchool.ability);
+            ability.value = ability.value[this.FindComponent('PlayerSkills').special.level - 1]
+            return ability;
         }
 
         get position() {

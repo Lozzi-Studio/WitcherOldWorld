@@ -78,6 +78,10 @@ export const broadcasts = (() => {
         static DeselectPlayer(currentPlayer) {
             return {topic: 'player.deselection', currentPlayer: currentPlayer}
         }
+        
+        static ResolveTownLocation(town) {
+            return {topic: 'player.resolveLocation', town: town}
+        }
     }
 
     class BroadcastTemplateCards {
@@ -508,8 +512,8 @@ export const broadcasts = (() => {
 
     class BroadcastTemplateBattle {
 
-        static StartPlayerTurn(emptyHand) {
-            return {topic: 'battle.playerTurn', emptyHand: emptyHand}
+        static StartPlayerTurn(emptyHand, specialUsed) {
+            return {topic: 'battle.playerTurn', emptyHand: emptyHand, specialUsed: specialUsed}
         }
 
         static PlayCombo(card) {
@@ -522,6 +526,10 @@ export const broadcasts = (() => {
 
         static EndBattle(){
             return {topic: 'battle.endBattle'}
+        }
+
+        static UseSpecial(){
+            return {topic: 'battle.special'}
         }
     }
 

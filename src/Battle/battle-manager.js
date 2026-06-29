@@ -12,6 +12,8 @@ export const battle_manager = (() => {
         #player;
         #monster;
         #playerDrawValues;
+        #usedSpecialAbility;
+        #choosenSpecialAbility;
 
         constructor() {
             super();
@@ -19,11 +21,14 @@ export const battle_manager = (() => {
             this.#monster = null;
             
             this.#playerDrawValues = [1, 2, 3, 4, 4];
+            this.#usedSpecialAbility = false;
+            this.#choosenSpecialAbility = {};
         }
 
         InitComponent() {
             this._RegisterHandler('battle.playCombo', (msg) => {this.#PlayCombo(msg)});
             this._RegisterHandler('battle.startBattle', (msg) => {this.#StartBattle(msg)});
+            this._RegisterHandler('battle.special', (msg) => {this.#UsedSpecial(msg)})
         }
 
         #StartBattle(msg) {
@@ -140,10 +145,15 @@ export const battle_manager = (() => {
         }
 
         #PlayerTurn() {
+            if (this.#player.witcherSpecialAbility.name == "Ruestung" && !(this.#usedSpecialAbility) && this.#player.FindComponent("Shield").amount <= 0) {
+                this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, this.#player.witcherSpecialAbility.value[0]));
+                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", this.#player.witcherSpecialAbility.value[1]));
+                this.#usedSpecialAbility = true;
+            }
             if (this.#player.FindComponent("Carddeck").hand.length <= 0) {
-                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn(true));
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn(true, this.GetIsSpecialAbilityUsed()));
             } else {
-                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn(false));
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn(false, this.GetIsSpecialAbilityUsed()));
             }
         }
 
@@ -206,9 +216,10 @@ export const battle_manager = (() => {
 
         #PlayCombo(msg) {
             console.log(msg);
+            let comboCount = 0;
             if (msg.card != undefined) {
-                let result = card_options.CardEffect.createCardEffect(0,0,0,false,false);
                 let cardsToDiscard = [];
+                let result = card_options.CardEffect.createCardEffect(0,0,0,false,false);
                 for (let effect of msg.card.getEffect([])) {
                     if (effect.bonus != null) {
                         result.damage += effect.bonus.damage;
@@ -224,6 +235,7 @@ export const battle_manager = (() => {
                     if (effect.effects.gettopdiscard || effect.bonus ? effect.bonus.gettopdiscard : false) {
                         this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
                     }
+                    comboCount ++;
                 }
                 for (let card of cardsToDiscard) {
                     this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
@@ -233,6 +245,30 @@ export const battle_manager = (() => {
                 this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, result.shield));
             } 
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
+            console.log(this.#choosenSpecialAbility);
+            if ("info" in this.#choosenSpecialAbility) {
+                switch(this.#choosenSpecialAbility.name) {
+                    case "Vergiftete Waffe":
+                        //CardChooser
+                        break;
+                    case "Schnelligkeit":
+                        //CardChooser
+                        break;
+                    case "Schwertkunst":
+                        console.log(comboCount);
+                        if (comboCount >= 3) {
+                            this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(this.#choosenSpecialAbility.value[0]));
+                            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", this.#choosenSpecialAbility.value[1]));
+                        } else {
+                            this.#usedSpecialAbility = false;
+                        }
+                        break;
+                    case "Magie":
+                        //CardChooser
+                        break;
+                }
+            }
+            this.#choosenSpecialAbility = {};
 
             if (this.#monster.GetCurrentHealth() <= 0 ) {
                 if (this.#player.GetHealth() <= 0 ) {
@@ -245,17 +281,29 @@ export const battle_manager = (() => {
             }
         }
 
+        #UsedSpecial(msg) {
+            this.#usedSpecialAbility = true;
+            this.#choosenSpecialAbility = this.#player.witcherSpecialAbility;
+        }
+
         #EndBattle() {
             this.#player = null;
             this.#monster = null;
+            this.#usedSpecialAbility = false;
+            this.#choosenSpecialAbility = {};
             this.Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
             this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
         }
 
+        GetIsSpecialAbilityUsed() {
+            return this.#player.witcherSpecialAbility.info == "Ruestung" ? true : this.#usedSpecialAbility;
+        }
+
         get player() {
             return this.#player;
         }
+
     }
 
     return {
