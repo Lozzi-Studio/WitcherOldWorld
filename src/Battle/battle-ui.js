@@ -24,7 +24,7 @@ export const battle_ui = (() => {
         #StartBattle(msg) { 
             this.#monster = msg.monster;
             this.#player = msg.player;
-            document.getElementById("player-window").style.left = "30%";
+
             document.getElementById("player-window").classList.remove("borders--bottom-right");
             document.getElementById("player-window").classList.add("borders--all");
             document.getElementById("player-inventory-container").style.display = "none";
@@ -38,7 +38,6 @@ export const battle_ui = (() => {
         }
 
         #EndBattle(msg){
-            document.getElementById("player-window").style.left = "0%";
             document.getElementById("player-window").classList.remove("borders--all");
             document.getElementById("player-window").classList.add("borders--bottom-right");
             document.getElementById("player-inventory-container").style.display = "flex";
