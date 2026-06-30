@@ -6,6 +6,7 @@ import { card } from "../Cards/card";
 import { player_status } from "../Players/player-status";
 import { status_templates } from "../Players/status-templates";
 import { status_options } from "../Players/status-options";
+import { player_entity } from "../Players/player-entity";
 
 export const game_manager = (() => {
 
@@ -16,6 +17,7 @@ export const game_manager = (() => {
         #selection;
         #selectedTown;
         #currentShopSelection;
+        #selectedPlayer;
         
         /**
          * Manages game stages and game behaviour
@@ -29,14 +31,16 @@ export const game_manager = (() => {
             this.#selection = [];
             this.#selectedTown = null;
             this.#currentShopSelection = null;
+            this.#selectedPlayer = null;
         }
 
         /**
          * Used to intialize and add any default components/events
          */
         InitComponent() {
-            this._RegisterHandler('card.select', (msg) => {this.#OnCardSelect(msg);});
+            this._RegisterHandler('card.select', (msg) => {this.OnCardSelect(msg);});
             this._RegisterHandler('town.selection', (msg) => {this.#OnTownSelection(msg);});
+            this._RegisterHandler('player.selection', (msg) => {this.#OnPlayerSelection(msg);});
             this._RegisterHandler('game.nextPhase', (msg) => {this.#NextTurnPhase(msg);});
             this._RegisterHandler('game.startPoker', (msg) => {this.#StartWuerfelpoker(msg);});
             this._RegisterHandler('game.removeShop', (msg) => {this.#RemoveShopCard(msg);});
@@ -86,7 +90,7 @@ export const game_manager = (() => {
             
             if (nextPlayer) {
                 for (let card_slot of this.#selection) {
-                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
                 }
                 this.#selection = [];
                 this.#currentPlayerId += 1;
@@ -105,17 +109,34 @@ export const game_manager = (() => {
          * Add card to selection
          * @param {object} msg 
          */
-        #OnCardSelect(msg){
+        OnCardSelect(msg){
             if (this.#selection.includes(msg.card_slot)){
                 this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                switch (msg.mode) {
+                    case "Hand":
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(msg.card_slot, "Deselect", this.#currentRound.toIdentifier()));
+                        break;
+                    case "CardSelect":
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Deselect", this.#selection));
+                        break;
+                }
                 if (this.#selection.length === 0){
                     this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
                 }
             } else {
-                this.#selection.push(msg.card_slot);
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
-                this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
+                switch (msg.mode) {
+                    case "Hand":
+                        this.#selection.push(msg.card_slot);
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                        break;
+                    case "CardSelect":
+                        if (this.#selection.length < msg.selectableCards) {
+                            this.#selection.push(msg.card_slot);
+                            this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#selection));
+                        }
+                        break;
+                    }
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(true));
             }
         }
 
@@ -136,7 +157,7 @@ export const game_manager = (() => {
                     this.#selectedTown.Broadcast(broadcasts.BroadcastTemplateTown.ResetTownAction());
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(allowedCard, "Discard"));
                     this.#selection = [];
-                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI());
                 }
             }
         }
@@ -148,7 +169,7 @@ export const game_manager = (() => {
                 }
 
                 this.#selection = [];
-                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
         }
@@ -228,6 +249,14 @@ export const game_manager = (() => {
         }
 
         /**
+         * Triggers player UI on click on town
+         * @param {object} msg 
+         */
+        #OnPlayerSelection(msg) {
+            this.#selectedPlayer = msg.player;
+        }
+
+        /**
          * Triggers start of a wuerfelpoker game
          * @param {object} msg 
          */
@@ -294,6 +323,13 @@ export const game_manager = (() => {
          */
         get selectedTown() {
             return this.#selectedTown;
+        }
+
+        /**
+         * @returns {player_entity.Player}
+         */
+        get selectedPlayer() {
+            return this.#selectedPlayer;
         }
     };
 

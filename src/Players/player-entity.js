@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { carddeck_component } from "../Cards/carddeck";
 import { entity } from "../Interfaces/entity";
 import { player_destination_tracker } from "./player-destination-tracker";
@@ -8,10 +9,12 @@ import { player_skills } from "./player-skills";
 import { player_trophies } from "./player-trophies";
 import { player_figure } from "./player-figure";
 import { player_status } from "./player-status";
+import { hitbox_component } from '../GameArea/hitbox-component';
 
 export const player_entity = (() => {
 
     class Player extends entity.Entity {
+        #id;
         #player_name;
         #witcherSchool;
         #homeTownPosition;
@@ -20,12 +23,14 @@ export const player_entity = (() => {
         
         /**
          * a wrapper for a player
+         * @param {int} id
          * @param {string} player_name 
          * @param {player_options.WitcherSchool} witcherSchool 
          * @param {int} initialMoney
          */
-        constructor(player_name, witcherSchool, initialMoney) {
+        constructor(id, player_name, witcherSchool, initialMoney) {
             super();
+            this.#id = id;
             this.#player_name = player_name;
             this.#witcherSchool = witcherSchool;
             this.#homeTownPosition = witcherSchool.homeTown;
@@ -69,6 +74,7 @@ export const player_entity = (() => {
             this.AddComponent(new player_trophies.TrophyStorage());
             this.AddComponent(new player_figure.PlayerFigure(this.#witcherSchool.color, this.#homeTownPosition.position));
             this.AddComponent(new player_status.PlayerStatus());
+            this.AddComponent(new hitbox_component.CubicHitbox(this.#homeTownPosition.position, "Player_" + this.#id, new THREE.Vector3(2, 3.4, 2)));
         }
 
         /**
@@ -98,6 +104,10 @@ export const player_entity = (() => {
 
         get witcherSchool() {
             return this.#witcherSchool
+        }
+
+        get id() {
+            return this.#id;
         }
     }
 

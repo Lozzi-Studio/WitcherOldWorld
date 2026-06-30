@@ -32,7 +32,7 @@ export const player_money = (() => {
             } else {
                 this.Subtract(Math.abs(msg.amount));
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateUI());
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateUI(this.parent));
         }
 
         /**
