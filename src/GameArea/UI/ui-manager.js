@@ -157,7 +157,17 @@ export const ui_manager = (() => {
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButton(msg)});
-            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.UpdateButtonState("button-discard", msg.active);});
+            this._RegisterHandler('game.updateDiscardButton', (msg) => {
+                this.UpdateButtonState("button-discard", msg.active);
+                const btn = document.getElementById("button-discard");
+                if (btn) {
+                    if (!msg.active) {
+                        btn.setAttribute("data-tooltip", "Bitte wähle mindestens eine Karte zum abwerfen aus.");
+                    } else {
+                        btn.removeAttribute("data-tooltip");
+                    }
+                }
+            });
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
 
@@ -600,23 +610,30 @@ export const ui_manager = (() => {
             let selectedTown = this.FindComponent("GameManager").selectedTown;
             let buttonActive = true;
             let buttonMode = "";
+            let button = document.getElementById("town-button");
+
+            if (!button) return; 
 
             if (selectedTown == player.town) {
                 buttonMode = "action";
                 if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
                     buttonActive = false;
+                    button.setAttribute("data-tooltip", "Du hast bereits eine Aktion ausgeführt. Bitte reise weiter.");
                 }
                 else {
                     buttonActive = true;
+                    button.removeAttribute("data-tooltip");
                 }
             }
             else {
                 buttonMode = "move";
                 if (this.FindEntity("GameArea").FindComponent("GameManager").ValidateMove().moveAllowed) {
                     buttonActive = true;
+                    button.removeAttribute("data-tooltip");
                 }
                 else {
                     buttonActive = false;
+                    button.setAttribute("data-tooltip", "Du musst eine passende Karte auswählen und in einer benachbarten Stadt sein.");
                 }
             }
 
@@ -886,6 +903,8 @@ export const ui_manager = (() => {
                 skipButton.classList.add("button--inactive");
                 skipButton.addEventListener("click", this.handleSkipClick);
                 this.ShowPhaseThreeButtons(true);
+                discardButton.setAttribute("data-tooltip", "Bitte wähle mindestens eine Karte zum abwerfen aus.");
+                discardButton.addEventListener("click", this.handleDiscardClick);
             }
             else {
                 document.getElementById("shop-window").style.display = "none";
@@ -951,9 +970,19 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateShopButton(msg) {
+            const canBuy = this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard();
             this.UpdateButtonState("shop-button", this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
+
             let button = document.getElementById("shop-button");
-            button.addEventListener("click", this.handleBuyClick);
+            if (button) {
+                if (!canBuy) {
+                    button.setAttribute("data-tooltip", "Bitte wähle genug Karten aus und stelle sicher, dass du die gewünschte Karte angewählt hast.");
+                } else {
+                    button.removeAttribute("data-tooltip");
+                }
+                
+                button.addEventListener("click", this.handleBuyClick);
+            }
         }
 
 
