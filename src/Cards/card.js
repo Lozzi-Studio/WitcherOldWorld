@@ -26,7 +26,7 @@ export const card = (() => {
         constructor(name, color, combo, effects, region, cost){
             this.#name = name;
             this.#color = color;
-            this.#combo = combo;
+            this.#combo = combo || new Map();
             this.#effects = effects;
             this.#nextCardCombo = null;
             this.#comboBonus = null;
@@ -40,8 +40,8 @@ export const card = (() => {
          * @param {card_options.Color} colorNextCard
          * @returns {bool}
          */
-        canCombo (colorNextCard) {
-            for (const i in this.#combo.values()){
+        CanCombo(colorNextCard) {
+            for (let i of this.#combo.keys()){
                 if (i.equals(colorNextCard)){
                     return true;
                 }
@@ -53,19 +53,23 @@ export const card = (() => {
          * Add a card to the current combo
          * @param {card.Card} card
          */
-        addNextComboCard(card) {
-            if (this.canCombo(card.color)) {
-                this.#nextCardCombo = card;
-                this.#nextCardCombo.addBonusComboEffect(this.#combo.get(this.#nextCardCombo.color));
+        AddNextComboCard(card) {
+            if (this.CanCombo(card.color)) {
+                this.#nextCardCombo = card;                
+                card.AddBonusComboEffect(this);
             }
         }
 
         /**
          * Add a bonus effect for the current combo
-         * @param {card_options.CardEffect} effect
+         * @param {card.Card} card
          */
-        addBonusComboEffect(effect) {
-            this.#comboBonus = effect;
+        AddBonusComboEffect(card) {
+            for (let i of card.combo.keys()){
+                if (i.equals(this.#color)){
+                    this.#comboBonus = card.combo.get(i);
+                }
+            }
         }
 
         /**
@@ -74,12 +78,12 @@ export const card = (() => {
          * @returns {object} - Resolve object which contains the card, any effects and any bonus effect on combo
          */
         getEffect(resolver) {
-            resolver.push = {
+            resolver.push({
                 card : this,
                 effects : this.#effects,
                 bonus: this.#comboBonus
-            }
-            this.addBonusComboEffect(null);
+            });
+            this.#comboBonus = null;
 
             if (this.#nextCardCombo != null) {
                 resolver = this.#nextCardCombo.getEffect(resolver);
@@ -89,7 +93,20 @@ export const card = (() => {
         }
 
         getImagePathFromName() {
-            return "../../resources/assets/cards/" + this.#name.split(" ").join("_") + ".webp";
+            const parts = [];
+
+            parts.push(this.#name.split(" ").join("_").toLowerCase());
+
+            if (this.#region && this.#region.toIdentifier() != region.Region.Joker().toIdentifier()) {
+                parts.push(this.#region.toIdentifier().toLowerCase());
+            }
+
+            if (this.#combo) {
+                for (let combo of this.#combo.keys()) {
+                    parts.push(combo.toIdentifier().toLowerCase());
+                }
+            }
+            return "./resources/assets/cards/" + parts.join("_") + ".webp";
         }
 
         get region() {
@@ -110,6 +127,10 @@ export const card = (() => {
 
         get imagePath() {
             return this.#imagePath;
+        }
+
+        get combo() {
+            return this.#combo;
         }
     }
 

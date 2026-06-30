@@ -26,7 +26,10 @@ export const player_trophies = (() => {
          */
         #AddTrophy() {
             this.#amount += 1;
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateUI());
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateUI(this.parent));
+            if (this.#amount >= 4){
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.EndGame(this.parent));
+            }
         }
 
         get amount(){

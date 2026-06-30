@@ -13,6 +13,7 @@ import { region_picker } from "./UI/region-picker";
 import { town_manager } from "./town_manager";
 import { lights } from "../Scenes/lights";
 import { phase_two_ui_component } from "./UI/phase2-Ui-component";
+import { card_select_ui } from "./UI/card-select";
 
 export const game_area_entity = (() => {
 
@@ -32,6 +33,7 @@ export const game_area_entity = (() => {
             this.AddComponent(new lights.LightGameScene());
             this.AddComponent(new game_manager.GameManager());
             this.AddComponent(new ui_manager.UIManager());
+            this.AddComponent(new card_select_ui.CardSelectUI());
             this.AddComponent(new phase_two_ui_component.PhaseTwoUiComponent());
             this.AddComponent(new region_picker.RegionPicker());
             this.AddComponent(new controls_component.Controls());

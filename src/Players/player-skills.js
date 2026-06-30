@@ -35,38 +35,26 @@ export const player_skills = (() => {
          * @param {object} msg 
          */
         #ChangeLevel(msg) {
-            let skill = null;
-            switch(msg.skill.toIdentifier()) {
-                case "Combat":
-                    skill = this.#combat;
-                    break;
-                case "Defense":
-                    skill = this.#defense;
-                    break;
-                case "Alchemy":
-                    skill = this.#alchemy;
-                    break;
-                case "Special":
-                    skill = this.#special;
-                    break;
-            }
+            let skill = this.GetSkillByName(msg.skill.toIdentifier());
             switch(msg.mode) {
                 case "Increase":
-                    if (msg.payMoney && skill?.maxAmount != skill?.level) {
-                        this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(- (skill.level + 1)));
-                    }
-                    skill?.increaseLevel();
-                    if (this.#combat.level > this.#witcher.level && this.#defense.level > this.#witcher.level && this.#alchemy.level > this.#witcher.level && this.#special.level > this.#witcher.level) {
-                        this.#witcher.increaseLevel();
-                        if (this.#witcher.level < 3) {
-                            this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
-                        } else {
-                            this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 2));
+                    if (skill?.maxAmount != skill?.level) {
+                        if (msg.payMoney) {
+                            this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(- (skill.level + 1)));
                         }
-                    } else if (skill.toIdentifier() == "Alchemy") {
-                        this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Potion", 1));
-                    } else if (skill.toIdentifier() == "Defense") {
-                        this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#defense.level, 1))
+                        skill?.increaseLevel();
+                        if (this.#combat.level > this.#witcher.level && this.#defense.level > this.#witcher.level && this.#alchemy.level > this.#witcher.level && this.#special.level > this.#witcher.level) {
+                            this.#witcher.increaseLevel();
+                            if (this.#witcher.level < 3) {
+                                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
+                            } else {
+                                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 2));
+                            }
+                        } else if (skill.toIdentifier() == "Alchemy") {
+                            this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Potion", 1));
+                        } else if (skill.toIdentifier() == "Defense") {
+                            this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#defense.level, 1))
+                        }
                     }
                     break;
                 case "Decrease":
@@ -76,7 +64,22 @@ export const player_skills = (() => {
                     }
                     break;
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI(this.parent));
+        }
+
+        canIncrease(skill) {
+            switch (skill.toIdentifier()) {
+                case "Combat":
+                    return this.#combat.level <= this.#witcher.level;
+                case "Defense":
+                    return this.#defense.level <= this.#witcher.level;
+                case "Alchemy":
+                    return this.#alchemy.level <= this.#witcher.level;
+                case "Special":
+                    return this.#special.level <= this.#witcher.level;
+                default:
+                    return false;
+            }
         }
 
         GetLowestSkill() {
@@ -116,25 +119,39 @@ export const player_skills = (() => {
         }
 
         #OnMeditate(msg) {
-            switch(msg.skill){
-                case "Combat":
-                    this.#combat.meditated();
-                    break;
-                case "Alchemy":
-                    this.#alchemy.meditated();
-                    break;
-                case "Special":
-                    this.#special.meditated();
-                    break;
-                case "Defense":
-                    this.#defense.meditated();
-                    break;
-            }
+            this.GetSkillByName(msg.skill).meditated();
             this.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
         }
 
+        /**
+         * 
+         * @param {string} name - Options: "Combat", "Defense", "Alchemy", "Special"
+         */
+        GetSkillByName(name) {
+            switch(name){
+                case "Combat":
+                    return this.#combat;
+                case "Defense":
+                    return this.#defense;
+                case "Alchemy":
+                    return this.#alchemy;
+                case "Special":
+                    return this.#special;
+            }
+        }
 
-
+        /**
+         * Returns an array containing the current player's skill objects
+         * @returns {array}
+         */
+        GetAllSkills() {
+            return [
+                this.#combat,
+                this.#defense,
+                this.#alchemy,
+                this.#special
+            ]
+        }
 
         get combat() {
             return this.#combat;
@@ -275,7 +292,7 @@ export const player_skills = (() => {
                             this.#amount = this.#maxAmount;
                         }
                     } else if (this.#amount > 0) {
-                        if (this.#amount - msg.amount < 0) {
+                        if ((this.#amount - msg.amount) < 0) {
                             this.#amount = 0;
                         } else {
                             this.#amount -= msg.amount;
@@ -283,7 +300,7 @@ export const player_skills = (() => {
                     }
                     break;
             }
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI());
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI(this.parent));
         }
 
     
