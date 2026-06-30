@@ -288,7 +288,8 @@ export const game_manager = (() => {
             // give start deck to players
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             for (let player of players) {
-                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
+                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player", player.witcherSchool.name));
+                player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 3))
             }
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
         }
