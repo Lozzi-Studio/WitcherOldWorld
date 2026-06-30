@@ -168,9 +168,10 @@ export const ui_manager = (() => {
             this._RegisterHandler('player.updateHandCardsUI', (msg) => {this.#UpdateHandCards(msg)});
             this._RegisterHandler('card.updateHandSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
             this._RegisterHandler('player.selection', (msg) => {this.#UpdatePlayerInfoWindow(msg)});
+            this._RegisterHandler('player.updateDiscardCardsUI', (msg) => {this.#UpdateDiscardStack(msg)});
             
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
-
+            
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButton(msg)});
             this._RegisterHandler('game.updateDiscardButton', (msg) => {this.UpdateButtonState("button-discard", msg.active);});
@@ -761,7 +762,7 @@ export const ui_manager = (() => {
                 else {
                     let newCardDIV = document.createElement("div");
                     newCardDIV.id = `card-image-${i}`;
-                    newCardDIV.classList.add("container", "container--col", "card");
+                    newCardDIV.classList.add("container", "container--col", "card", "card--selectable");
                     handWindow.appendChild(newCardDIV);
                     newCardDIV.addEventListener("click", () => this.SelectCard(i, card, "Hand", 1));
                     this.UpdateCardContent(card, newCardDIV);
@@ -805,6 +806,27 @@ export const ui_manager = (() => {
                     this.#UpdateShopButton(msg);
                     break;
             }   
+        }
+
+        #UpdateDiscardStack(msg) {
+            console.log("updating discard stack");
+            let discardStack = document.getElementById("discard-stack");
+            discardStack.innerHTML = "";
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let discardCards = player.FindComponent("Carddeck").discard;
+            for (let [index, card] of discardCards.entries()) {
+                const cardDIV = document.createElement("div");
+                cardDIV.id = `discard-card-${index}`;
+                cardDIV.classList.add("container", "container--col", "card");
+                this.FindComponent("UIManager").UpdateCardContent(card, cardDIV);
+                cardDIV.style.zIndex = index;
+                if (index > 0) {
+                    let cardWidth = document.getElementById(`discard-card-${index-1}`).offsetWidth;
+                    cardDIV.style.marginLeft = `${-(cardWidth-index*2)}px`
+                }
+                console.log(cardDIV);
+                discardStack.appendChild(cardDIV);
+            }
         }
 
         /**

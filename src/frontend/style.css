@@ -845,10 +845,6 @@ input {
 }
 
 .card {
-    background-color: #3F3F3F;
-    border: 2px solid #868686;
-    border-radius: 8px;
-
     align-items: flex-start;
     justify-content: space-between;
 
@@ -858,6 +854,12 @@ input {
 
     background-size: cover;
     transition: transform 400ms;
+}
+
+.card--selectable {
+    background-color: #3F3F3F;
+    border: 2px solid #868686;
+    border-radius: 8px;
 }
 
 .card--selected {

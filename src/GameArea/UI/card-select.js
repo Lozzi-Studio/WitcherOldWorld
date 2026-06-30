@@ -70,7 +70,7 @@ export const card_select_ui = (() => {
                 for (const [index, card] of cards.entries()) {
                     const cardDIV = document.createElement("div");
                     cardDIV.id = `window-card-${index}`;
-                    cardDIV.classList.add("container", "container--col", "card");
+                    cardDIV.classList.add("container", "container--col", "card", "card--selectable");
                     this.FindComponent("UIManager").UpdateCardContent(card, cardDIV);
                     cardDIV.addEventListener("click", () => { this.#OnCardSelect(index)});
                     cardSelect.appendChild(cardDIV);

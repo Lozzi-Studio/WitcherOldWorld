@@ -259,6 +259,7 @@ export const carddeck_component = (() => {
                     break;
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card));
         }
 
         /**
