@@ -51,17 +51,37 @@ export const card_options = (() => {
          */
         static createCardEffect(damage, shield, drawModifier, backtohand, gettopdiscard) {
             return {
-                damage: damage,
-                shield: shield,
-                drawModifier: drawModifier,
-                backtohand: backtohand,
-                gettopdiscard: gettopdiscard,
+                "damage": damage,
+                "shield": shield,
+                "drawModifier": drawModifier,
+                "backtohand": backtohand,
+                "gettopdiscard": gettopdiscard,
             }
         }
     }
 
+    class MonsterEffect {
+            /**
+             * Create Effect for monster card
+             * @param {int} damage 
+             * @param {string} skill 
+             * @param {Array<int>} level 
+             * @param {bool} discard 
+             * @returns {object}
+             */
+            static createMonsterEffect(damage, skill, level, discard) {
+                return {
+                    "damage": damage,
+                    "skill": skill,
+                    "level": level,
+                    "discard": discard
+                }
+            }
+        }
+
     return {
         Color : Color,
-        CardEffect : CardEffect
+        CardEffect : CardEffect,
+        MonsterEffect : MonsterEffect
     }
 })();

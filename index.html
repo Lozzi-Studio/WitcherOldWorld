@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WitcherOldWorld</title>
     <link rel="stylesheet" type="text/css" href="src/frontend/style.css">
+    <link rel="icon" type="image/png" href="resources/assets/Icons/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -268,6 +269,21 @@
                 </div>
             </div>
         </div>
+        <div class="container container--row position-top-left" id="combat-ui" style="display: none;">
+            <div class="container container--row container--neutral borders--all" id="battle-monster-window">
+                <div class="container container--col">
+                    <div class="container container--col" id="avatar-name-container">
+                        <div class="avatar-container avatar-container--big">
+                            <img class="avatar avatar--big" id="monster-avatar" src="">
+                            <div class="textbox-circle textbox--fill --fancy-font" id="monster-health">5</div>
+                        </div>
+                        <div class="textbox textbox--fill textbox--fancy-font" id="player-name-container">
+                            <p id="monster-name">Monster</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="container borders--all container--neutral container--col" id="phase-two-options-menu" style="display: none;">
             <div class="--fancy-font" id="phase-two-header">
@@ -336,6 +352,17 @@
             <div class="textbox textbox--fill button" id="shop-button">Kaufen</div>
         </div>
 
+        <div id="battle-window" style="display: flex;">
+            <div class="container container--col container--neutral borders--all" id="battle-player-window" style="display: none;">
+                <div class="textbox textbox--fill button" id="button-special">
+                    Special Nutzen
+                </div>
+                <div class="textbox textbox--fill button" id="button-play">
+                    Combo Spielen
+                </div>
+            </div>
+        </div>
+
 
         <div class="container container--col borders--top-right container--neutral position-bottom-left" id="debug-menu">
             <div class="--fancy-font">Debug Menu</div>
@@ -343,6 +370,7 @@
             <div class="textbox textbox--fill button" id="debug-upgrade-skill-button">Upgrade Skill</div>
             <div class="textbox textbox--fill button" id="debug-add-money-button">Add Money</div>
             <div class="textbox textbox--fill button" id="debug-open-card-selection-button">Open Cards</div>
+            <div class="textbox textbox--fill button" id="debug-add-trophy-button">+1 Trophy</div>
         </div>
 
         <div id="turn-change-overlay" class="overlay--hidden">
@@ -355,6 +383,24 @@
                 </div>
                 <div class="textbox textbox--fill button --fancy-font" id="turn-change-continue-btn" style="width: 90%;">
                     Fortfahren
+                </div>
+            </div>
+        </div>
+
+        <div id="end-game-overlay">
+            <div id="end-game-modal" class="container container--col container--neutral borders--all" style="padding: 30px; gap: 20px; width: 280px;">
+                <div class="avatar-container" style="width: 140px; height: 140px;">
+                    <img class="avatar" id="winner-avatar" src="" style="width: 100%; height: 100%;">
+                </div>
+                <div class="textbox textbox--fancy-font" style="width: 90%;">
+                    <p id="end-game-text">NAME HAT GEWONNEN</p>
+                </div>
+
+                <div id="end-game-scoreboard" class="container container--col container--no-padding" style="width: 90%; gap: 10px; margin: 10px 0;">
+                </div>
+
+                <div class="textbox textbox--fill button --fancy-font" id="back-to-menu-btn" style="width: 90%;">
+                    Zurück zum Hauptmenü
                 </div>
             </div>
         </div>

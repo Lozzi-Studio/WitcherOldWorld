@@ -612,6 +612,40 @@ input {
     border-color: var(--green-primary);
 }
 
+#end-game-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; 
+}
+
+#end-game-overlay .textbox {
+    border-style: none !important; 
+}
+
+#end-game-modal {
+    width: 220px !important;
+    border-color: var(--color-border) !important;
+}
+
+#end-game-modal .avatar-container {
+    border-color: var(--color-border) !important;
+}
+
+#back-to-menu-btn {
+    width: 80% !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+
+}
+
 #turn-change-overlay {
     position: fixed;
     top: 0;
@@ -671,7 +705,7 @@ input {
 #shop-window {
     position: fixed;
     right: 5px;
-    bottom: 380px;
+    bottom: 400px;
     min-width: 100px;
     max-width: 300px;
 }
@@ -1013,6 +1047,46 @@ input {
     overflow: hidden;
 }
 
+
+#battle-player-window {
+    position: fixed;
+    right: 0px;
+    bottom: 400px;
+    min-width: 100px;
+    max-width: 300px;
+}
+
+#battle-monster-window {
+    position: fixed;
+    right: 30%;
+    top: 0px;
+    min-width: 100px;
+    max-width: 300px;
+}
+
+#monster-health {
+    position:absolute;
+    top: -3px;
+    right: -3px;
+
+    width: 34px;
+    height: 34px;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#monster-name {
+    font-size: 14pt;
+    margin-bottom: -3px;  /* needed for gwent font */
+
+    white-space: nowrap;
+    min-width: 84%;
+}
+
+#character-windows {
+    padding: 0px;
+}
 #main-menu > p {
     margin: 0;
 }

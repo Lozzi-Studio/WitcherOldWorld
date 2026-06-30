@@ -37,7 +37,7 @@ export const lights = (() => {
         InitComponent() {
             
             const ambientLight = new THREE.AmbientLight('white', 3.5);
-            const directlighting = new THREE.DirectionalLight("orange", 3.5);
+            const directlighting = new THREE.DirectionalLight("orange", 3);
             directlighting.position.set(10, 10, 7);
 
             this._parent._parent.scene.add(ambientLight, directlighting);

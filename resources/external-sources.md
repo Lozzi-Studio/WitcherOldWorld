@@ -17,3 +17,12 @@ https://i.pinimg.com/736x/9c/60/d0/9c60d0dc7cd2d5e742706073a0623d72.jpg
 
 mountain Assets:
 https://craftpix.net/freebies/free-winter-mountain-3d-low-poly-models/
+
+Ocean texture (screenshot):
+https://azgaar.github.io/Fantasy-Map-Generator/
+
+Stone mine-model:
+https://www.cgtrader.com/free-3d-models/exterior/industrial-exterior/stone-mine-ad4ea621-f9f1-4eed-a548-bc66165c159e
+
+city assets and textures:
+https://sketchfab.com/3d-models/modular-lowpoly-medieval-environment-5bf0a1562b7e401e9e6d7758ec54d09c

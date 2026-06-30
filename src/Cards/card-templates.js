@@ -85,7 +85,7 @@ export const cards = (() => {
                 "Praeziser Schnitt",
                 card_options.Color.Blue(),
                 comboOptions,
-                card_options.CardEffect.createCardEffect(),
+                card_options.CardEffect.createCardEffect(1,0,0,false,false),
                 region,
                 0
             )
@@ -177,7 +177,7 @@ export const cards = (() => {
          */
         static getWuchtschlag() {
             return new card.Card(
-                "Wutchschlag",
+                "Wuchtschlag",
                 card_options.Color.Red(),
                 new Map(),
                 card_options.CardEffect.createCardEffect(3,0,-1,false,false),

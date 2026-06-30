@@ -16,6 +16,7 @@ export const town_entity = (() => {
         #region;
         #size;
         #neighboringTowns;
+        #monsterSpot;
 
         /**
          * A wrapper for towns
@@ -27,7 +28,7 @@ export const town_entity = (() => {
          * @param {THREE.Vector3} size 
          * @param {Array<int>} neighboringTowns
          */
-        constructor(id, town_name, ability, position, region, size, neighboringTowns) {
+        constructor(id, town_name, ability, position, region, size, neighboringTowns, monsterSpot) {
             super();
             this.#id = id;
             this.#town_name = town_name;
@@ -36,6 +37,7 @@ export const town_entity = (() => {
             this.#region = region;
             this.#size = size;
             this.#neighboringTowns = neighboringTowns;
+            this.#monsterSpot = monsterSpot;
         }
 
         /**
@@ -68,6 +70,10 @@ export const town_entity = (() => {
 
         get neighboringTowns(){
             return this.#neighboringTowns;
+        }
+
+        get monsterSpot() {
+            return this.#monsterSpot;
         }
 
 

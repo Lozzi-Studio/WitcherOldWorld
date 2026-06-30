@@ -73,6 +73,19 @@ export const player_status = (() => {
         #ClearAllTemporaryStatuses(){
             this.#temporaryStatusList = [];
         }
+
+        /**
+         * Remove the given status from the permanent stati
+         * @param {object} givenStatus 
+         */
+        RemovePermanentStatus(givenStatus) {
+            let status = this.#permanentStatusList.find(status => status.type === givenStatus.type && status.timing.equals(givenStatus.timing));
+            if (status && status.amount > 1) {
+                status.amount -= 1;
+            } else if (status){
+                this.#permanentStatusList.splice(this.#permanentStatusList.indexOf(status), 1);
+            }
+        }
         
     }
     
