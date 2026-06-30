@@ -172,7 +172,6 @@ export const ui_manager = (() => {
             let newGameButton = document.getElementById("back-to-menu-btn");
             newGameButton.addEventListener("click", () => {
                 document.getElementById("end-game-overlay").classList.add("overlay--hidden");
-                this._parent._parent.SwitchScene("MainMenu");
                 location.reload();
             });
 
@@ -1138,7 +1137,7 @@ export const ui_manager = (() => {
 
             }
 
-            overlay.classList.remove("overlay--hidden");
+            overlay.style.display = "flex";
         }
 
         #SetSkillWindowMode(mode) {
