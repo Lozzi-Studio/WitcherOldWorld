@@ -80,6 +80,8 @@ export const town_properties = (() => {
             if (this.#ability.trigger.topic == 'card.drawCard') {
                 return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").potion.length < 4;
             }
+            if (this.#ability.trigger.topic == 'game.swapoutCard')
+                return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").hand > 0;
             return true
         }
 
