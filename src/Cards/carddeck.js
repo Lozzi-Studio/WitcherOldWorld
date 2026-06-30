@@ -255,6 +255,9 @@ export const carddeck_component = (() => {
          */
         #DrawCard(msg){
             for (let i = 0; i < msg.amount; i++) {
+                if (this.#cardHand.length >= this.#handLimit) {
+                    break;
+                }
                 switch (msg.mode) {
                     case "BattleDeck":
                         if (this.#cardDeck.length > 0) {
@@ -381,9 +384,9 @@ export const carddeck_component = (() => {
         }
 
         #ApplyDamage(msg) {
-            if (!(this.#noUiUpdate)) {
+            if (!(this.#noUiUpdate) && msg.amount != 0) {
                 let currentShield = this.FindComponent("Shield").amount;
-                for (let i = 0; (i < currentShield && msg.amount != 0); i++) {
+                for (let i = 0; i < currentShield; i++) {
                     msg.amount -= 1;
                     this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Decrease", this.FindComponent("PlayerSkills").defense, 1));
                 } 
@@ -426,7 +429,6 @@ export const carddeck_component = (() => {
                 this.#cardDeck = this.#cardDeck.concat(this.#cardDiscard);
                 this.#cardDiscard = [];
             }
-            
             //Fisher-Yates_shuffle (src:https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
             for (let i = this.#cardDeck.length - 1; i >= 1; i--) {
                     const j = Math.floor(Math.random() * (i + 1));

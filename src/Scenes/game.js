@@ -177,8 +177,23 @@ export const game = (() => {
                     [players[i], players[j]] = [players[j], players[i]];
             }
             let count = 1;
+            let startGold = [];
+            switch(players.length) {
+                case 5:
+                    startGold = [5,5,5,7,7];
+                    break;
+                case 4:
+                    startGold = [4,5,6,7];
+                    break;
+                case 3:
+                    startGold = [2,4,6];
+                    break;
+                case 2:
+                    startGold = [2,4];
+                    break;
+            }
             for (let player of players) {
-                let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, count+1);
+                let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, startGold[count - 1]);
                 this._entityManager.AddEntity(playerEntity, "Player_" + count);
                 count += 1;
             }
