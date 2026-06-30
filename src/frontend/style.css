@@ -968,7 +968,6 @@ input {
     overflow: hidden;
 }
 
-<<<<<<< HEAD
 
 #battle-player-window {
     position: fixed;
@@ -1009,7 +1008,6 @@ input {
 #character-windows {
     padding: 0px;
 }
-=======
 #main-menu > p {
     margin: 0;
 }
@@ -1132,4 +1130,3 @@ input {
       background-color: rgba(0, 0, 0, 0.2);
       display: none;
 } 
->>>>>>> origin/main
