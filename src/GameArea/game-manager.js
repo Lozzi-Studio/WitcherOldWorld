@@ -135,16 +135,16 @@ export const game_manager = (() => {
             if (this.#isPlayerBattleTurn && this.#currentRound.toIdentifier() == 2) {
                 if (this.#selection.length == 0) {
                     this.#selection.push(msg.card_slot);
-                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
                 } else if (this.#selection.includes(msg.card_slot)){
                     let deselection = this.#selection.splice(this.#selection.indexOf(msg.card_slot),this.#selection.length - this.#selection.indexOf(msg.card_slot));
                     for (let cardSlot of deselection) {
-                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(cardSlot, "Deselect", this.#currentRound.toIdentifier()));
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(cardSlot, "Deselect", this.#currentRound.toIdentifier()));
                     }
                 } else {
                     if (this.#currentPlayer.GetHandCard(this.#selection[this.#selection.length - 1]).CanCombo(this.#currentPlayer.GetHandCard(msg.card_slot).color)) {
                         this.#selection.push(msg.card_slot);
-                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
+                        this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
                     }
                 }
             }else {

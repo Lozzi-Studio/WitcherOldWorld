@@ -246,12 +246,12 @@ export const battle_manager = (() => {
             } 
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
             console.log(this.#choosenSpecialAbility);
+            if (this.#player.witcherSpecialAbility.name == "Schnelligkeit") {
+                this.#usedSpecialAbility = true;
+            }
             if ("info" in this.#choosenSpecialAbility) {
                 switch(this.#choosenSpecialAbility.name) {
                     case "Vergiftete Waffe":
-                        //CardChooser
-                        break;
-                    case "Schnelligkeit":
                         //CardChooser
                         break;
                     case "Schwertkunst":
@@ -262,9 +262,6 @@ export const battle_manager = (() => {
                         } else {
                             this.#usedSpecialAbility = false;
                         }
-                        break;
-                    case "Magie":
-                        //CardChooser
                         break;
                 }
             }
@@ -284,6 +281,56 @@ export const battle_manager = (() => {
         #UsedSpecial(msg) {
             this.#usedSpecialAbility = true;
             this.#choosenSpecialAbility = this.#player.witcherSpecialAbility;
+            if ("info" in this.#choosenSpecialAbility) {
+                switch(this.#choosenSpecialAbility.name) {
+                    case "Schnelligkeit":
+                        let cardsToChoose = []
+                        for (let card of this.#player.FindComponent("Carddeck").deck) {
+                            if (cardsToChoose.length < this.#choosenSpecialAbility.value[0]) {
+                                cardsToChoose.push(card);
+                            } else {
+                                break;
+                            }
+                        }
+                        if (cardsToChoose.length > 0) {
+                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen der Hand").then(
+                                (result) => {   
+                                    for (let card of result) {
+                                        this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", true));
+                                    }
+                                }
+                            );
+                            
+                        }
+                        break;
+                    case "Magie":
+                        if (this.#choosenSpecialAbility.value[1] <= this.#player.FindComponent("Carddeck").hand.length) {
+                            if (this.#choosenSpecialAbility.value[0] == 1) {
+                            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
+                            if (this.#choosenSpecialAbility.value[1] != 0) {
+                                    this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "Abwerfen").then(
+                                    (result) => {   
+                                        for (let card of result) {
+                                            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
+                                        }
+                                    }
+                                );
+                                }
+                            } else {
+                                this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "Hinzufügen der Hand").then(
+                                    (result) => {   
+                                        for (let card of result) {
+                                            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", false,true));
+                                        }
+                                    }
+                                );
+                            }
+                        } else {
+                            this.#usedSpecialAbility = false;
+                        }
+                        break;
+                }
+            }
         }
 
         #EndBattle() {

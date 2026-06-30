@@ -148,7 +148,7 @@ export const ui_manager = (() => {
             this.handleSpecialClick = () => {
                 const btn = document.getElementById("button-special");
                 if (!(btn.classList.contains("button--inactive"))) {
-                    this.#UpdateButtonState("button-special", false);
+                    this.UpdateButtonState("button-special", false);
                     this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UseSpecial());
                 }
             }
@@ -992,21 +992,21 @@ export const ui_manager = (() => {
             document.getElementById("button-special").addEventListener("click", this.handleSpecialClick);
             if (msg.emptyHand) {
                 document.getElementById("button-play").innerHTML = "Zug Aussetzen"
-                this.#UpdateButtonState("button-play", true);
+                this.UpdateButtonState("button-play", true);
             } else {
                 document.getElementById("button-play").innerHTML = "Combo Auspielen"
-                this.#UpdateButtonState("button-play", false);
+                this.UpdateButtonState("button-play", false);
             }
             if (msg.specialUsed) {
-                this.#UpdateButtonState("button-special", false);
+                this.UpdateButtonState("button-special", false);
             } else {
-                this.#UpdateButtonState("button-special", true);
+                this.UpdateButtonState("button-special", true);
             }
             
         }
 
         #UpdatePlayButton(msg)  {
-            this.#UpdateButtonState("button-play", this.FindEntity("GameArea").FindComponent("GameManager").ValidateCardSelected());
+            this.UpdateButtonState("button-play", this.FindEntity("GameArea").FindComponent("GameManager").ValidateCardSelected());
         }
 
 

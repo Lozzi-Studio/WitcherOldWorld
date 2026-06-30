@@ -118,10 +118,11 @@ export const broadcasts = (() => {
         /**
          * @param {card.Card} card
          * @param {string} destination - Options: "Hand", "Deck", "BattleDeck","Discard"
+         * @param {bool} fromDeck
          * @returns {object}
         */
-        static AddCard(card, destination) {
-            return {topic: 'card.addCard', card: card, destination: destination}
+        static AddCard(card, destination, fromDeck = false, fromDiscard = false) {
+            return {topic: 'card.addCard', card: card, destination: destination, fromDeck:fromDeck, fromDiscard: fromDiscard}
         }
 
         /**

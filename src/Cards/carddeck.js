@@ -200,12 +200,30 @@ export const carddeck_component = (() => {
         #AddCard(msg){
             switch(msg.destination) {
                 case "Hand":
-                    if (this.#cardHand.length < this.#handLimit) {
-                        this.#cardHand.push(msg.card);
-                        if (!this.#noUiUpdate) {
-                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                    if (msg.fromDeck) {
+                        if (this.#cardHand.length < this.#handLimit) {
+                            const cardIndex = this.#cardDeck.indexOf(msg.card);
+                            this.#cardHand.push(this.#cardDeck.splice(cardIndex,1)[0]);
+                            if (!this.#noUiUpdate) {
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                            }
                         }
+                    } else if (msg.fromDiscard){
+                        if (this.#cardHand.length < this.#handLimit) {
+                            const cardIndex = this.#cardDiscard.indexOf(msg.card);
+                            this.#cardHand.push(this.#cardDiscard.splice(cardIndex,1)[0]);
+                            if (!this.#noUiUpdate) {
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                            }
                         }
+                    } else {
+                        if (this.#cardHand.length < this.#handLimit) {
+                            this.#cardHand.push(msg.card);
+                            if (!this.#noUiUpdate) {
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                            }
+                        }
+                    }
                     break;
                 case "Discard":
                     this.#cardDiscard.push(msg.card);
