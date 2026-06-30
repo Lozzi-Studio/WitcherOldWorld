@@ -41,8 +41,12 @@ export const phase_two_ui_component = (() => {
 
         #activateCombatOption(){
             let monster = this.FindComponent('GameManager').GetLocalMonster();
+            const btn = document.getElementById("meditate-option");
+
+            btn.setAttribute("data-tooltip", "Kein Monster auf deinem Feld.");
             if (monster != null) {
                 document.getElementById("fight-monster-option").classList.remove("option--disabled");
+                btn.removeAttribute("data-tooltip");
             }
         }
 
