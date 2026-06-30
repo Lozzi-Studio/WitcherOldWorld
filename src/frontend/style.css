@@ -222,6 +222,10 @@ input {
     border-width: 0px;
 }
 
+.container--wrap {
+    flex-wrap: wrap;
+}
+
 .borders--all {
     border-width: 3px;
     border-radius: 12px;
@@ -739,12 +743,27 @@ input {
 }
 
 #hand-window > div:hover {
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 
 #hand-window > div:not(.card--selected):hover {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
+}
+
+#card-select > div:not(.card--selected):hover {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    transform: scale(103%, 103%);
+}
+
+#card-select {
+    max-height: 512px;
+    overflow: auto;
+}
+
+#card-select-window {
+    max-width: 690px;
 }
 
 #phase-two-header {
@@ -838,6 +857,7 @@ input {
     /* aspect-ratio: 0.65; */
 
     background-size: cover;
+    transition: transform 400ms;
 }
 
 .card--selected {
@@ -1050,3 +1070,23 @@ input {
     100% { transform: rotate(360deg); }
 }
 
+::-webkit-scrollbar {
+      width: 15px;
+}
+
+::-webkit-scrollbar-track {
+      background-color: var(--color-bg);
+} 
+::-webkit-scrollbar-thumb {
+      background-color: var(--color-border);
+      border-radius: 6px;
+      display: flex;
+} 
+::-webkit-scrollbar-button {
+      background-color: rgba(0, 0, 0, 0.281);
+      display: none;
+} 
+::-webkit-scrollbar-corner {
+      background-color: rgba(0, 0, 0, 0.2);
+      display: none;
+} 
