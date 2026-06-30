@@ -7,7 +7,6 @@ export const status_templates = (() => {
 
         /**
          * Get status template for status "status name"
-         * @param {string} type
          * @param {Timing} timing
          * @param {amount} int 
          * @returns {object}
@@ -18,7 +17,6 @@ export const status_templates = (() => {
 
         /**
          * Get status template for status "status name"
-         * @param {string} type
          * @param {Timing} timing
          * @param {amount} int 
          * @returns {object}

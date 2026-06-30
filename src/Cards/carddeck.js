@@ -77,12 +77,12 @@ export const carddeck_component = (() => {
                             this.#cardDeck.push(new card.Card("Greif Aard", card_options.Color.Purple(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Greif Aard", card_options.Color.Purple(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]) , card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
                             this.#cardDeck.push(new card.Card("Greif Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.Forest(), 0));
-                            this.#cardDeck.push(new card.Card("Greif Yrden", card_options.Color.Purple(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.Mountain(), 0));
                             break;
                         case "Baerenschule":
                             this.#cardDeck.push(new card.Card("Baer Stoß", card_options.Color.Green(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Mountain(), 0));
                             this.#cardDeck.push(new card.Card("Baer Stoß", card_options.Color.Green(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Forest(), 0));
-                            this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(),  new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(2,0,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(),  undefined, card_options.CardEffect.createCardEffect(2,0,0,false,false), region.Region.Mountain(), 0));
                             this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Baer Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Baer Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.Mountain(), 0));
@@ -279,9 +279,7 @@ export const carddeck_component = (() => {
                         break;
                     case "Discard":
                         if (this.#cardDiscard.length != 0) {
-                            console.log(this.#cardDiscard)
                             let discardedCard = this.#cardDiscard.pop();
-                            console.log(discardedCard)
                             this.#cardHand.push(discardedCard)
                             if (!this.#noUiUpdate) {
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", discardedCard));

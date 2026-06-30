@@ -10,17 +10,17 @@
                 "Info": "Wirf 1 Würfel.",
                 "W6": [
                     {
-                        "Info": "Lege 3 Gold ab. Deine niedrigste Attributstufe steit um 1.",
+                        "Info": "Lege 3 Gold ab. Deine niedrigste Attributstufe steigt um 1.",
                         "Gold": "-3",
                         "LowestSkill": "1"
                     },
                     {
-                        "Info": "Lege 2 Gold ab. Deine niedrigste Attributstufe steit um 1.",
+                        "Info": "Lege 2 Gold ab. Deine niedrigste Attributstufe steigt um 1.",
                         "Gold": "-2",
                         "LowestSkill": "1"
                     },
                     {
-                        "Info": "Wirf 1 Trank ab. Deine niedrigste Attributstufe steit um 1.",
+                        "Info": "Wirf 1 Trank ab. Deine niedrigste Attributstufe steigt um 1.",
                         "Potion": "-1",
                         "LowestSkill": "1"
                     }
@@ -40,7 +40,7 @@
             "ResultA": {
                 "Info": "Senke deinen Schildwert um 1. Eine zufaelliges Attributstufe um 1.",
                 "Shield": "-1",
-                "RngSkill": "-1"
+                "RngSkill": "1"
             },
             "ResultB": {
                 "Info": "Deine Vertidigungsstufe steigt um 1.",
@@ -48,7 +48,7 @@
             }
         },
         {
-            "Text": "Die Blutspur führt geradewegs zu einer Gruft. Die Gegend ist mit Bäumen und dichtem Dornengestrüpp überwuchert, doch die Schleifspuren am Boden lassen keinen Zweifel: Der Vermisste, den du suchen sollst, ist nicht freiwillig hergekommen. \nKaum hast du die Schwelle zur Gruft /uumlberschritten, da beginnt dein Medaillon zu vibrieren.",
+            "Text": "Die Blutspur führt geradewegs zu einer Gruft. Die Gegend ist mit Bäumen und dichtem Dornengestrüpp überwuchert, doch die Schleifspuren am Boden lassen keinen Zweifel: Der Vermisste, den du suchen sollst, ist nicht freiwillig hergekommen. \nKaum hast du die Schwelle zur Gruft überschritten, da beginnt dein Medaillon zu vibrieren.",
             "OptionA": "Ich steige in die Gruft hinab.",
             "OptionB": "Ich kehre um. Für den Vermissten besteht ohnenin keine Hoffnung mehr.",
             "ResultTextA": "Ein riesiger Ghul stürzt sich aus der Dunkelheit auf dich. Ein wilder Kampf entbrennt, und die Narben, die seine Klauen hinterlassen, werden dir bis ans Ende deines Lebends erhalten bleiben.",

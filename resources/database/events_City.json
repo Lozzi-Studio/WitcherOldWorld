@@ -144,6 +144,10 @@
                         "Potion": "1"
                     }
                 ]
+            }, 
+            "ResultB": {
+                "Info": "Du erhälst 2 Gold",
+                "Gold": "2"
             }
         }
     ]

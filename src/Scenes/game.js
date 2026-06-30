@@ -48,9 +48,8 @@ export const game = (() => {
          * Used to intialize and add any default Entities
          */
         InitSceneEntities() {
-
-            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
             document.getElementById('game-loading-screen').style.display = 'flex';
+            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
 
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitShop();
