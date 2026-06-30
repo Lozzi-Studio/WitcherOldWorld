@@ -42,7 +42,7 @@ export const card_select_ui = (() => {
                 let handWindow = document.getElementById("hand-window");
                 const handCards = document.querySelectorAll('#hand-window > div:not(:last-child)');
                 handCards.forEach(el => {
-                    el.style.marginRight = '-120px';
+                    el.style.marginRight = '-140px';
                 });
 
                 const cardSelectWindow = document.createElement("div");

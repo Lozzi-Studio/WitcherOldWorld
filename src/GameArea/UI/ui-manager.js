@@ -809,24 +809,25 @@ export const ui_manager = (() => {
         }
 
         #UpdateDiscardStack(msg) {
-            console.log("updating discard stack");
             let discardStack = document.getElementById("discard-stack");
-            discardStack.innerHTML = "";
             let player = this.FindComponent("GameManager").currentPlayer;
             let discardCards = player.FindComponent("Carddeck").discard;
-            for (let [index, card] of discardCards.entries()) {
-                const cardDIV = document.createElement("div");
-                cardDIV.id = `discard-card-${index}`;
-                cardDIV.classList.add("container", "container--col", "card");
-                this.FindComponent("UIManager").UpdateCardContent(card, cardDIV);
-                cardDIV.style.zIndex = index;
-                if (index > 0) {
-                    let cardWidth = document.getElementById(`discard-card-${index-1}`).offsetWidth;
-                    cardDIV.style.marginLeft = `${-(cardWidth-index*2)}px`
-                }
-                console.log(cardDIV);
-                discardStack.appendChild(cardDIV);
+            let cardDIV = document.getElementById("discard-card");
+            /* if (discardCards.length == 0) {
+                cardDIV.classList.remove("card--selectable");
             }
+            else {
+                cardDIV.classList.add("card--selectable");
+            } */
+            if (discardCards.length < 2) {
+                discardStack.style.backgroundImage = "none";
+            } else {
+                discardStack.style.backgroundImage = "url(./resources/assets/cards/0-backside.png)";
+            }
+
+            this.FindComponent("UIManager").UpdateCardContent(msg.card, cardDIV);
+            cardDIV.style.zIndex = 9;
+            // cardDIV.style.marginLeft = "6px";
         }
 
         /**
