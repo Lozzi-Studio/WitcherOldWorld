@@ -269,8 +269,11 @@ export const battle_manager = (() => {
                     this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, result.shield));
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`${this.#player.playerName} generiert ${result.shield} Schild.`));
                 }
-            } 
-            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));;
+                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1] + result.drawModifier)))));
+            } else {
+                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
+            }
+            
             if (this.#player.witcherSpecialAbility.name == "Schnelligkeit") {
                 this.#usedSpecialAbility = true;
             }
@@ -359,15 +362,15 @@ export const battle_manager = (() => {
                             } else {
                                 this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "Hinzufügen der Hand").then(
                                     (result) => {   
-                                        for (let card of result) {
-                                            if (result != null) {
+                                        if (result != null) {
+                                            for (let card of result) {
                                                 for (let card of result) {
                                                     this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", false,true));
                                                 }    
-                                            } else {
-                                                this.#usedSpecialAbility = false;
-                                                this.FindEntity("GameArea").FindComponent("UIManager").UpdateButtonState("button-special", true);
-                                            }
+                                            } 
+                                        } else {
+                                            this.#usedSpecialAbility = false;
+                                            this.FindEntity("GameArea").FindComponent("UIManager").UpdateButtonState("button-special", true);
                                         }
                                     }
                                 );

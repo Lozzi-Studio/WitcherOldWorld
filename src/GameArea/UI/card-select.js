@@ -2,12 +2,14 @@ import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
 import { ui_manager } from "./ui-manager";
 import { card } from "../../Cards/card";
+import { int } from "three/tsl";
 
 export const card_select_ui = (() => {
 
     class CardSelectUI extends component.Component {
         #selection;
-        #selectionAmount;
+        #selectionMin;
+        #selectionMax;
 
         constructor(){
             super();
@@ -26,7 +28,8 @@ export const card_select_ui = (() => {
         }
 
         async GetCardSelectionFromPlayerPrompt(cards, selectableCards, reason, cancelable = true) {
-            this.#selectionAmount = selectableCards;
+            this.#selectionMin = selectableCards instanceof Array ? selectableCards[0] : selectableCards;
+            this.#selectionMax =  selectableCards instanceof Array ? selectableCards[1] : selectableCards;
             this.#selection = [];
             return await this.#PromptCardSelection(cards, selectableCards, reason, cancelable);
         }
@@ -57,7 +60,11 @@ export const card_select_ui = (() => {
                 header.classList.add(
                     "font-size-large", "--fancy-font"
                 )
-                header.innerHTML = `Wähle ${selectableCards} Karten zum ${reason} aus`
+                if (selectableCards instanceof Array) {
+                    header.innerHTML = `Wähle ${selectableCards[0]} - ${selectableCards[1]} Karten zum ${reason} aus`
+                } else {
+                    header.innerHTML = `Wähle ${selectableCards} Karten zum ${reason} aus`
+                }
                 header.style.paddingTop = "4px";
                 cardSelectWindow.appendChild(header);
 
@@ -157,7 +164,7 @@ export const card_select_ui = (() => {
          * sets button state based on card selection
          */
         #UpdateConfirmButton() {
-            if (this.#selection.length >= this.#selectionAmount) {
+            if (this.#selection.length >= this.#selectionMin) {
                 this.FindComponent("UIManager").UpdateButtonState("confirm-button", true);
             } else {
                 this.FindComponent("UIManager").UpdateButtonState("confirm-button", false);
@@ -174,7 +181,7 @@ export const card_select_ui = (() => {
                 this.#selection.splice(this.#selection.indexOf(slot),1);
                 this.#UpdateCardSelection({"card_slot": slot, "mode": "Deselect"});
             } else {
-                if (this.#selection.length < this.#selectionAmount) {
+                if (this.#selection.length < this.#selectionMax) {
                     this.#selection.push(slot);
                     this.#UpdateCardSelection({"card_slot":slot, "mode":"Select"});
                 }
