@@ -167,8 +167,13 @@ export const ui_manager = (() => {
             this._RegisterHandler('game.updateDiscardButton', (msg) => {this.UpdateButtonState("button-discard", msg.active);});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
+            
             this._RegisterHandler("game.endGame", (msg) => {this.#OnEndGame(msg)});
-
+            let newGameButton = document.getElementById("new-game-btn");
+            newGameButton.addEventListener("click", () => {
+                document.getElementById("end-game-overlay").classList.add("overlay--hidden");
+                this._parent._parent.SwitchScene("MainMenu");
+            });
 
             this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
 
@@ -1094,6 +1099,7 @@ export const ui_manager = (() => {
             const modal = document.getElementById("end-game-modal");
             const avatar = document.getElementById("winner-avatar");
             const text = document.getElementById("end-game-text");
+            const scoreboard = document.getElementById("end-game-scoreboard");
 
             avatar.src = this.#GetAvatarPathFromPlayer(msg.winner);
             
