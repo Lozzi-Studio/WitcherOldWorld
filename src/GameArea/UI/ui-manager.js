@@ -813,12 +813,12 @@ export const ui_manager = (() => {
             let player = this.FindComponent("GameManager").currentPlayer;
             let discardCards = player.FindComponent("Carddeck").discard;
             let cardDIV = document.getElementById("discard-card");
-            /* if (discardCards.length == 0) {
-                cardDIV.classList.remove("card--selectable");
+            if (discardCards.length == 0) {
+                cardDIV.classList.remove("card", "card--small");
             }
             else {
-                cardDIV.classList.add("card--selectable");
-            } */
+                cardDIV.classList.add("card", "card--small");
+            }
             if (discardCards.length < 2) {
                 discardStack.style.backgroundImage = "none";
             } else {
