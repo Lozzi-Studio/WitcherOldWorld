@@ -343,6 +343,7 @@
             <div class="textbox textbox--fill button" id="debug-upgrade-skill-button">Upgrade Skill</div>
             <div class="textbox textbox--fill button" id="debug-add-money-button">Add Money</div>
             <div class="textbox textbox--fill button" id="debug-open-card-selection-button">Open Cards</div>
+            <div class="textbox textbox--fill button" id="debug-add-trophy-button">+1 Trophy</div>
         </div>
 
         <div id="turn-change-overlay" class="overlay--hidden">
@@ -355,6 +356,24 @@
                 </div>
                 <div class="textbox textbox--fill button --fancy-font" id="turn-change-continue-btn" style="width: 90%;">
                     Fortfahren
+                </div>
+            </div>
+        </div>
+
+        <div id="end-game-overlay">
+            <div id="end-game-modal" class="container container--col container--neutral borders--all" style="padding: 30px; gap: 20px; width: 280px;">
+                <div class="avatar-container" style="width: 140px; height: 140px;">
+                    <img class="avatar" id="winner-avatar" src="" style="width: 100%; height: 100%;">
+                </div>
+                <div class="textbox textbox--fancy-font" style="width: 90%;">
+                    <p id="end-game-text">NAME HAT GEWONNEN</p>
+                </div>
+
+                <div id="end-game-scoreboard" class="container container--col container--no-padding" style="width: 90%; gap: 10px; margin: 10px 0;">
+                </div>
+
+                <div class="textbox textbox--fill button --fancy-font" id="back-to-menu-btn" style="width: 90%;">
+                    Zurück zum Hauptmenü
                 </div>
             </div>
         </div>

@@ -399,6 +399,15 @@ export const broadcasts = (() => {
         static UpdateDiscardButtonActive(active) {
             return {topic: 'game.updateDiscardButton', active: active}
         }
+
+        /**
+         * 
+         * @param {Player} winner
+         * @returns {object}
+         */
+        static EndGame(winner){
+            return {topic: 'game.endGame', winner: winner}
+        }
     }
 
     class BroadcastTemplateCamera {
