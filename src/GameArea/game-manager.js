@@ -147,7 +147,7 @@ export const game_manager = (() => {
                         this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(msg.card_slot, "Select", this.#currentRound.toIdentifier()));
                     }
                 }
-            }else {
+            }else if (!(this.#isPlayerBattleTurn) && this.#currentRound.toIdentifier() != 2){
                 if (this.#selection.includes(msg.card_slot)){
                     this.#selection.splice(this.#selection.indexOf(msg.card_slot),1);
                     switch (msg.mode) {
@@ -406,7 +406,7 @@ export const game_manager = (() => {
         }
 
         #isBattleTurn(msg) {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
+            this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI());
             this.#selection = [];
             this.#isPlayerBattleTurn = true;
         }
