@@ -106,6 +106,7 @@ export const game = (() => {
         }
 
         #startGame() {
+            console.log(this._cache);
             this._entityManager.AddEntity(this._parent._currentCamera);
             this._entityManager.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
 
