@@ -17,6 +17,8 @@ import { cards } from '../Cards/card-templates';
 import { cardshop_entity } from '../CardShop/cardshop-entity';
 
 import data from '../../resources/database/loadingScreen_tooltips.json'
+import { monster_entity } from '../Monster/monster-entity';
+import { battle_entity } from '../Battle/battle-entity';
 
 
 export const game = (() => {
@@ -114,6 +116,8 @@ export const game = (() => {
             this.#InitMap();
             document.getElementById('game-loading-screen').style.display = 'none';
             document.getElementById('game-ui').style.display = 'block';
+
+            this._entityManager.AddEntity(new battle_entity.BattleEntity());
         }
             
 
@@ -186,25 +190,25 @@ export const game = (() => {
             const size_x = 2.7;
             const size_y = 0.7;
             const size_z = 2.7;
-            this._entityManager.AddEntity(new town_entity.TownEntity(0, "Behelt Nar", town_options.TownAbility.increaseSkillForMoney(), new Vector3(23.6,0,-2.5), region.Region.Joker(), new Vector3(size_x,size_y,size_z), [4,8,11,15]), "Town_0");
-            this._entityManager.AddEntity(new town_entity.TownEntity(1, "Kaer Seren", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-12,0,-19.3), region.Region.River(), new Vector3(size_x,size_y,size_z), [2,6,5,9]), "Town_1");
-            this._entityManager.AddEntity(new town_entity.TownEntity(2, "Hengfors", town_options.TownAbility.getGeruechte(), new Vector3(5.1,0,-21.6), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[1,3,6,7]), "Town_2");
-            this._entityManager.AddEntity(new town_entity.TownEntity(3, "Kaer Morhen", town_options.TownAbility.increaseSkillForMoney(), new Vector3(21.8,0,-21.7), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[2,7,4]), "Town_3");
-            this._entityManager.AddEntity(new town_entity.TownEntity(4, "Ban Ard", town_options.TownAbility.increaseSkill(player_skills.Skill.Alchemy()), new Vector3(20,0,-15.4), region.Region.River(), new Vector3(size_x,size_y,size_z),[3,7,8,0]), "Town_4");
-            this._entityManager.AddEntity(new town_entity.TownEntity(5, "Cidaris", town_options.TownAbility.increaseSkill(player_skills.Skill.Defense()), new Vector3(-12.5,0,-7), region.Region.River(), new Vector3(size_x,size_y,size_z),[1,6,9]), "Town_5");
-            this._entityManager.AddEntity(new town_entity.TownEntity(6, "Novigrad", town_options.TownAbility.playWuerfelpoker(), new Vector3(-9.1,0,-12.1), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[1,2,5,7]), "Town_6");
-            this._entityManager.AddEntity(new town_entity.TownEntity(7, "Wyzima", town_options.TownAbility.removeShopCards(), new Vector3(-0.8,0,-10.6), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[2,3,4,6,8,9,10,11]), "Town_7");
-            this._entityManager.AddEntity(new town_entity.TownEntity(8, "Vengerberg", town_options.TownAbility.swapoutCard(), new Vector3(15.7,0,-7.5), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[0,4,7,11]), "Town_8");
-            this._entityManager.AddEntity(new town_entity.TownEntity(9, "Cintra", town_options.TownAbility.getPotion(), new Vector3(-11.4,0,-0.4), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[1,5,7,10]), "Town_9");
-            this._entityManager.AddEntity(new town_entity.TownEntity(10, "Haern Caduch", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-1.3,0,3.4), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[7,9,11,12,14]), "Town_10");
-            this._entityManager.AddEntity(new town_entity.TownEntity(11, "Beauclair", town_options.TownAbility.getPotion(), new Vector3(14.4,0,4.6), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[0,7,8,10,14,15]), "Town_11");
-            this._entityManager.AddEntity(new town_entity.TownEntity(12, "Glenmore", town_options.TownAbility.increaseSkill(player_skills.Skill.Special()), new Vector3(-13.3,0,9.8), region.Region.River(), new Vector3(size_x,size_y,size_z),[9,10,13,14]), "Town_12");
-            this._entityManager.AddEntity(new town_entity.TownEntity(13, "Doldeth", town_options.TownAbility.getGeruechte(), new Vector3(-15,0,16), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[12,14,16]), "Town_13");
-            this._entityManager.AddEntity(new town_entity.TownEntity(14, "Loc Ichaer", town_options.TownAbility.playWuerfelpoker(), new Vector3(3.2,0,13.8), region.Region.River(), new Vector3(size_x,size_y,size_z),[10,11,12,13,15,16,17,18]), "Town_14");
-            this._entityManager.AddEntity(new town_entity.TownEntity(15, "Gorthur Guaed", town_options.TownAbility.increaseSkillForMoney(), new Vector3(21.7,0,15.1), region.Region.River(), new Vector3(size_x,size_y,size_z),[0,11,14,18]), "Town_15");
-            this._entityManager.AddEntity(new town_entity.TownEntity(16, "Dhuwod", town_options.TownAbility.getPotion(), new Vector3(-9.9,0,22), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[13,14,18]), "Town_16");
-            this._entityManager.AddEntity(new town_entity.TownEntity(17, "Stygga", town_options.TownAbility.increaseSkillForMoney() , new Vector3(9.3,0,21.5), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[14,16,18]), "Town_17");
-            this._entityManager.AddEntity(new town_entity.TownEntity(18, "Ard Modron", town_options.TownAbility.increaseSkill(player_skills.Skill.Combat()), new Vector3(18.6,0,22.4), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[11,14,15,17]), "Town_18");
+            this._entityManager.AddEntity(new town_entity.TownEntity(0, "Behelt Nar", town_options.TownAbility.increaseSkillForMoney(), new Vector3(23.6,0,-2.5), region.Region.Joker(), new Vector3(size_x,size_y,size_z), [4,8,11,15], new Vector3(22,0,-5)), "Town_0");
+            this._entityManager.AddEntity(new town_entity.TownEntity(1, "Kaer Seren", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-12,0,-19.3), region.Region.River(), new Vector3(size_x,size_y,size_z), [2,6,5,9], new Vector3(-13,0,-22)), "Town_1");
+            this._entityManager.AddEntity(new town_entity.TownEntity(2, "Hengfors", town_options.TownAbility.getGeruechte(), new Vector3(5.1,0,-21.6), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[1,3,6,7], new Vector3(2,0,-22)), "Town_2");
+            this._entityManager.AddEntity(new town_entity.TownEntity(3, "Kaer Morhen", town_options.TownAbility.increaseSkillForMoney(), new Vector3(21.8,0,-21.7), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[2,7,4], new Vector3(19.6,0,-22)), "Town_3");
+            this._entityManager.AddEntity(new town_entity.TownEntity(4, "Ban Ard", town_options.TownAbility.increaseSkill(player_skills.Skill.Alchemy()), new Vector3(20,0,-15.4), region.Region.River(), new Vector3(size_x,size_y,size_z),[3,7,8,0], new Vector3(22.3,0,-14.5)), "Town_4");
+            this._entityManager.AddEntity(new town_entity.TownEntity(5, "Cidaris", town_options.TownAbility.increaseSkill(player_skills.Skill.Defense()), new Vector3(-12.5,0,-7), region.Region.River(), new Vector3(size_x,size_y,size_z),[1,6,9], new Vector3(-10.6,0,-5.6)), "Town_5");
+            this._entityManager.AddEntity(new town_entity.TownEntity(6, "Novigrad", town_options.TownAbility.playWuerfelpoker(), new Vector3(-9.1,0,-12.1), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[1,2,5,7], new Vector3(-7.1,0,-13.9)), "Town_6");
+            this._entityManager.AddEntity(new town_entity.TownEntity(7, "Wyzima", town_options.TownAbility.removeShopCards(), new Vector3(-0.8,0,-10.6), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[2,3,4,6,8,9,10,11], new Vector3(1.6,0,-9.5)), "Town_7");
+            this._entityManager.AddEntity(new town_entity.TownEntity(8, "Vengerberg", town_options.TownAbility.swapoutCard(), new Vector3(15.7,0,-7.5), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[0,4,7,11], new Vector3(13.9,0,-9.5)), "Town_8");
+            this._entityManager.AddEntity(new town_entity.TownEntity(9, "Cintra", town_options.TownAbility.getPotion(), new Vector3(-11.4,0,-0.4), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[1,5,7,10,12], new Vector3(-9.1,0,-0.5)), "Town_9");
+            this._entityManager.AddEntity(new town_entity.TownEntity(10, "Haern Caduch", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-1.3,0,3.4), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[7,9,11,12,14], new Vector3(-3,0,1.4)), "Town_10");
+            this._entityManager.AddEntity(new town_entity.TownEntity(11, "Beauclair", town_options.TownAbility.getPotion(), new Vector3(14.4,0,4.6), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[0,7,8,10,14,15], new Vector3(14.4,0,2.1)), "Town_11");
+            this._entityManager.AddEntity(new town_entity.TownEntity(12, "Glenmore", town_options.TownAbility.increaseSkill(player_skills.Skill.Special()), new Vector3(-13.3,0,9.8), region.Region.River(), new Vector3(size_x,size_y,size_z),[9,10,13,14], new Vector3(-10.7,0,10.3)), "Town_12");
+            this._entityManager.AddEntity(new town_entity.TownEntity(13, "Doldeth", town_options.TownAbility.getGeruechte(), new Vector3(-15,0,16), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[12,14,16], new Vector3(-17.6,0,16.2)), "Town_13");
+            this._entityManager.AddEntity(new town_entity.TownEntity(14, "Loc Ichaer", town_options.TownAbility.playWuerfelpoker(), new Vector3(3.2,0,13.8), region.Region.River(), new Vector3(size_x,size_y,size_z),[10,11,12,13,15,16,17,18], new Vector3(3.2,0,11)), "Town_14");
+            this._entityManager.AddEntity(new town_entity.TownEntity(15, "Gorthur Guaed", town_options.TownAbility.increaseSkillForMoney(), new Vector3(21.7,0,15.1), region.Region.River(), new Vector3(size_x,size_y,size_z),[0,11,14,18], new Vector3(24,0,12.6)), "Town_15");
+            this._entityManager.AddEntity(new town_entity.TownEntity(16, "Dhuwod", town_options.TownAbility.getPotion(), new Vector3(-9.9,0,22), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[13,14,18], new Vector3(-7.8,0,23.8)), "Town_16");
+            this._entityManager.AddEntity(new town_entity.TownEntity(17, "Stygga", town_options.TownAbility.increaseSkillForMoney() , new Vector3(9.3,0,21.5), region.Region.Forest(), new Vector3(size_x,size_y,size_z),[14,16,18], new Vector3(6.9,0,21.5)), "Town_17");
+            this._entityManager.AddEntity(new town_entity.TownEntity(18, "Ard Modron", town_options.TownAbility.increaseSkill(player_skills.Skill.Combat()), new Vector3(18.6,0,22.4), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[11,14,15,17], new Vector3(15.9,0,23.5)), "Town_18");
 
         }
 

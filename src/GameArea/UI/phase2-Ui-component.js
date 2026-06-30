@@ -13,12 +13,15 @@ export const phase_two_ui_component = (() => {
         InitComponent(){
             this._RegisterHandler('game.phaseTwo', (msg) => {this.#OnPhaseTwoStart(msg)});
             document.getElementById("meditate-option").addEventListener("click", () => {this.#onBtnClickMeditate()});
+            document.getElementById("fight-monster-option").addEventListener("click", () => {this.#onBtnClickCombat()})
             
         }
 
         #OnPhaseTwoStart(msg){
+            document.getElementById("town-window").style = "none";
             document.getElementById("phase-two-options-menu").style.display = "flex";
             this.#activateMeditateOption();
+            this.#activateCombatOption();
         }
 
         #activateMeditateOption(){
@@ -27,10 +30,17 @@ export const phase_two_ui_component = (() => {
 
             for (let key in canMeditate){
                 if(canMeditate[key]){
-                document.getElementById("meditate-option").classList.remove("option--disabled");
+                    document.getElementById("meditate-option").classList.remove("option--disabled");
                 }
             }
             
+        }
+
+        #activateCombatOption(){
+            let monster = this.FindComponent('GameManager').GetLocalMonster();
+            if (monster != null) {
+                document.getElementById("fight-monster-option").classList.remove("option--disabled");
+            }
         }
 
         #exploreCityOption(){
@@ -57,13 +67,17 @@ export const phase_two_ui_component = (() => {
             this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
         }
 
-        #activateFightMonsterOption(){
-            //TODO implement function to enable monster fight btn
+        #onBtnClickCombat(){
+            this.#onPhaseTwoEnd({});
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let monster = this.FindComponent("GameManager").GetLocalMonster();
+            this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.StartBattle(player, monster));
         }
 
         #onPhaseTwoEnd(msg){
             document.getElementById("phase-two-options-menu").style.display = "none";
             document.getElementById("meditate-option").classList.add("option--disabled");
+            document.getElementById("fight-monster-option").classList.add("option--disabled");
         }
 
     }

@@ -4,6 +4,7 @@ import { card } from "../Cards/card";
 import { cards } from "../Cards/card-templates";
 import { region } from "../GameArea/region";
 import { card_options } from "./card-options";
+import { player_skills } from "../Players/player-skills";
 
 export const carddeck_component = (() => {
 
@@ -14,7 +15,7 @@ export const carddeck_component = (() => {
         #cardPotion;
         #cardPotionLimit
         #handLimit;
-        #isShop;
+        #noUiUpdate;
 
         /**
          * A component to track player cards
@@ -28,7 +29,7 @@ export const carddeck_component = (() => {
             this.#cardPotion = [];
             this.#cardPotionLimit = 4;
             this.#handLimit = handLimit;
-            this.#isShop = false;
+            this.#noUiUpdate = false;
         }
 
         /**
@@ -40,6 +41,8 @@ export const carddeck_component = (() => {
             this._RegisterHandler('card.drawCard', (msg) => this.#DrawCard(msg));
             this._RegisterHandler('card.discardCard', (msg) => this.#DiscardCard(msg));
             this._RegisterHandler('card.shuffle', (msg) => this.#Shuffle(msg));
+            this._RegisterHandler('card.randomDiscard', (msg) => this.#DiscardRandomCard(msg))
+            this._RegisterHandler('game.applyDamage', (msg) => this.#ApplyDamage(msg))
         }
 
         /**
@@ -47,8 +50,8 @@ export const carddeck_component = (() => {
          * @param {int} cardslot 
          * @returns {card.Card}
          */
-        getHandCard(cardslot) {
-            return this.#cardHand[this.#cardHand.length - 1 - cardslot];
+        GetHandCard(cardslot) {
+            return this.#cardHand[cardslot];
         }
 
         /**
@@ -56,6 +59,10 @@ export const carddeck_component = (() => {
          * @param {object} msg 
          */
         #LoadStartdeck(msg){
+            this.#cardDeck = [];
+            this.#cardDiscard = [];
+            this.#cardHand = [];
+            //TODO Create Defaults
             switch (msg.deck) {
                 case "Player":
                     switch (msg.school) {
@@ -74,7 +81,7 @@ export const carddeck_component = (() => {
                         case "Baerenschule":
                             this.#cardDeck.push(new card.Card("Baer Stoß", card_options.Color.Green(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Mountain(), 0));
                             this.#cardDeck.push(new card.Card("Baer Stoß", card_options.Color.Green(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Forest(), 0));
-                            this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(),  new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(2,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(),  new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(2,0,0,false,false), region.Region.Mountain(), 0));
                             this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Baer Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Baer Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.Mountain(), 0));
@@ -122,7 +129,7 @@ export const carddeck_component = (() => {
                         }
                     break;
                 case "Shop":
-                    this.#isShop = true;
+                    this.#noUiUpdate = true;
                     this.#cardDeck.push(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]),region.Region.Forest()));
                     this.#cardDeck.push(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]),region.Region.Forest()));
                     this.#cardDeck.push(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]),region.Region.Mountain()));
@@ -214,6 +221,28 @@ export const carddeck_component = (() => {
                     this.#cardDeck.push(cards.CardTemplates.getWuchtschlag());
                     this.#cardDeck.push(cards.CardTemplates.getWuchtschlag());
                     break;
+                case "Monster":
+                    this.#noUiUpdate = true;
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0, "", [1,2,3], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(0, "combat", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0,"", [1,2,3], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(3, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(5, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(2, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0, "", [1,2,3], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(2, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(4, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(0, "combat", [0,1,2], true)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0, "", [1,2,3], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(0, "", [3,4,5], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(3, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(5, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(2, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(3, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(4, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(0, "special", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0, "defense", [0,1,2], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(0, "", [3,4,5], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(3, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(0, "defense", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0, "", [1,2,3], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(4, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0, "", [1,2,3], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(3, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(5, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(0, "alchemy", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(4, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(2, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(2, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(0, "alchemy", [0,1,2], true)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(3, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(5, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(3, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(4, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(2, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(4, "", [], false)});
+                    this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0,"", [1,2,3], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(4, "", [], false)});
             }
             this.#Shuffle(broadcasts.BroadcastTemplateCards.ShuffleDeck(false))
             this.#Shuffle(broadcasts.BroadcastTemplateCards.ShuffleDeck(false))
@@ -226,6 +255,14 @@ export const carddeck_component = (() => {
         #DrawCard(msg){
             for (let i = 0; i < msg.amount; i++) {
                 switch (msg.mode) {
+                    case "BattleDeck":
+                        if (this.#cardDeck.length > 0) {
+                            this.#cardHand.push(this.#cardDeck.pop());
+                            if (!this.#noUiUpdate) {
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+                            }
+                        }
+                        break;
                     case "Deck":
                         if (this.#cardDeck.length == 0) {
                             this.#Shuffle({includeDiscard: true});
@@ -235,15 +272,17 @@ export const carddeck_component = (() => {
                         }
                         let drawnCard = this.#cardDeck.pop();
                         this.#cardHand.push(drawnCard);
-                        if (!this.#isShop) {
+                        if (!this.#noUiUpdate) {
                             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", drawnCard));
                         }
                         break;
                     case "Discard":
                         if (this.#cardDiscard.length != 0) {
+                            console.log(this.#cardDiscard)
                             let discardedCard = this.#cardDiscard.pop();
+                            console.log(discardedCard)
                             this.#cardHand.push(discardedCard)
-                            if (!this.#isShop) {
+                            if (!this.#noUiUpdate) {
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", discardedCard));
                             }
                         }
@@ -254,7 +293,6 @@ export const carddeck_component = (() => {
                         }
                 }
             }
-            
         }
 
         /**
@@ -264,12 +302,30 @@ export const carddeck_component = (() => {
         #AddCard(msg){
             switch(msg.destination) {
                 case "Hand":
-                    if (this.#cardHand.length < this.#handLimit) {
-                        this.#cardHand.push(msg.card);
-                        if (!this.#isShop) {
-                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                    if (msg.fromDeck) {
+                        if (this.#cardHand.length < this.#handLimit) {
+                            const cardIndex = this.#cardDeck.indexOf(msg.card);
+                            this.#cardHand.push(this.#cardDeck.splice(cardIndex,1)[0]);
+                            if (!this.#noUiUpdate) {
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                            }
                         }
+                    } else if (msg.fromDiscard){
+                        if (this.#cardHand.length < this.#handLimit) {
+                            const cardIndex = this.#cardDiscard.indexOf(msg.card);
+                            this.#cardHand.push(this.#cardDiscard.splice(cardIndex,1)[0]);
+                            if (!this.#noUiUpdate) {
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                            }
                         }
+                    } else {
+                        if (this.#cardHand.length < this.#handLimit) {
+                            this.#cardHand.push(msg.card);
+                            if (!this.#noUiUpdate) {
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("add", msg.card));
+                            }
+                        }
+                    }
                     break;
                 case "Discard":
                     this.#cardDiscard.push(msg.card);
@@ -308,10 +364,65 @@ export const carddeck_component = (() => {
         }
 
         /**
+         * Discard a random card from hand, if not possible topcard from deck
+         * @param {object} msg 
+         */
+        #DiscardRandomCard(msg){
+            if (this.#cardHand.length > 0) {
+                let index = Math.floor(Math.random() * this.#cardHand.length);
+                let discardedCard = this.#cardHand[index];
+                this.#cardDiscard.push(discardedCard);
+                this.#cardHand.splice(index,1);
+                if (!this.#noUiUpdate) {
+                    this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", discardedCard));
+                }
+            } else if (this.#cardDeck.length > 0){
+                this.#cardDiscard.push(this.#cardDeck.pop());
+            }
+        }
+
+        #ApplyDamage(msg) {
+            if (!(this.#noUiUpdate)) {
+                let currentShield = this.FindComponent("Shield").amount;
+                for (let i = 0; (i < currentShield && msg.amount != 0); i++) {
+                    msg.amount -= 1;
+                    this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Decrease", this.FindComponent("PlayerSkills").defense, 1));
+                } 
+            }
+            for (let i = 0; i < msg.amount; i++) {
+                if (this.#cardDeck.length > 0) {
+                    this.#cardDiscard.push(this.#cardDeck.pop());
+                } else if (this.#cardHand.length > 0) {
+                    let index = Math.floor(Math.random() * this.#cardHand.length);
+                    let discardedCard = this.#cardHand[index];
+                    this.#cardDiscard.push(discardedCard);
+                    this.#cardHand.splice(index,1);
+                    if (!this.#noUiUpdate) {
+                        this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", discardedCard));
+                    }
+                } else {
+                    break;
+                }
+            }
+            this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(0))
+        }
+
+        /**
          * Shuffle up your deck (Optional: Includes discard)
          * @param {object} msg 
          */
         #Shuffle(msg) {
+            if (msg.includeHand) {
+                let oldHand = this.#cardHand;
+                this.#cardDeck = this.#cardDeck.concat(oldHand);
+                this.#cardHand = [];
+                if (!this.#noUiUpdate) {
+                    for (let card of oldHand) {
+                        this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", card));
+                    }
+                }
+            }
+
             if (msg.includeDiscard) {
                 this.#cardDeck = this.#cardDeck.concat(this.#cardDiscard);
                 this.#cardDiscard = [];
@@ -322,6 +433,25 @@ export const carddeck_component = (() => {
                     const j = Math.floor(Math.random() * (i + 1));
                     [this.#cardDeck[i], this.#cardDeck[j]] = [this.#cardDeck[j], this.#cardDeck[i]];
             }
+        }
+
+        GetZeroCard() {
+            if (this.#noUiUpdate) {
+                let zeroCardsHand = this.#cardHand.filter(card => card.cost == 0);
+                if (zeroCardsHand.length > 0) {
+                    this.#cardHand.splice(this.#cardHand.indexOf(zeroCardsHand[0]),1);
+                    //triggers cardshop update
+                    this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DrawCard())
+                    return zeroCardsHand[0];
+                } else {
+                    let zeroCardsDeck = this.#cardDeck.filter(card => card.cost == 0);
+                    if (zeroCardsDeck.length > 0) {
+                        this.#cardDeck.splice(this.#cardDeck.indexOf(zeroCardsDeck[0]),1);
+                        return zeroCardsDeck[0]
+                    }
+                }
+            }
+            return null;
         }
 
         get hand() {
@@ -338,6 +468,10 @@ export const carddeck_component = (() => {
 
         get handLimit() {
             return this.#handLimit;
+        }
+
+        get potion(){
+            return this.#cardPotion;
         }
 
     }

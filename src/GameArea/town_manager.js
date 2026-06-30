@@ -25,9 +25,10 @@ export const town_manager = (() =>{
 
         /**
          * Get a random not blocked town from a region
-         * @param {region.Region} region 
+         * @param {region.Region} region
+         * @param {bool} removeFromPool
          */
-        GetRandomTownFromRegionPool(region) {
+        GetRandomTownFromRegionPool(region, excludeFromPool = [this.FindComponent('GameManager').currentPlayer.town], removeFromPool = true) {
             let randomIndex = 0;
             let town = null;
             switch(region.toIdentifier()) {
@@ -44,20 +45,27 @@ export const town_manager = (() =>{
                     town = this.#riverTowns[randomIndex];
                     break;
             }
-
-            if (town == this.FindComponent('GameManager').currentPlayer.town) {
-                town = this.GetRandomTownFromRegionPool(region);
+            let isValid = true;
+            for (let check of excludeFromPool) {
+                if (check === town) {
+                    isValid = false;
+                }
+            }
+            if (!(isValid)) {
+                town = this.GetRandomTownFromRegionPool(region, excludeFromPool, removeFromPool);
             } else {
-                 switch(region.toIdentifier()) {
-                    case "Forest":
-                        this.#forestTowns.splice(randomIndex, 1);
-                        break;
-                    case "Mountain":
-                        this.#mountainTowns.splice(randomIndex, 1);
-                        break;
-                    case "River":
-                        this.#riverTowns.splice(randomIndex, 1);
-                        break;
+                if (removeFromPool){
+                    switch(region.toIdentifier()) {
+                       case "Forest":
+                           this.#forestTowns.splice(randomIndex, 1);
+                           break;
+                       case "Mountain":
+                           this.#mountainTowns.splice(randomIndex, 1);
+                           break;
+                       case "River":
+                           this.#riverTowns.splice(randomIndex, 1);
+                           break;
+                   }
                 }
             }
             return town;

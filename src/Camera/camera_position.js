@@ -1,3 +1,4 @@
+import { pass } from "three/tsl";
 import { component } from "../Interfaces/component";
 import * as THREE from 'three';
 
@@ -31,6 +32,8 @@ export const camera_position = (() => {
             this._RegisterHandler("camera.focusOnShop", (msg) => {this.#FocusOnShop(msg)});
             this._RegisterHandler("camera.stopFocusShop", (msg) => {this.#StopFocusShop(msg)});
             this._RegisterHandler("camera.stopFocus", (msg) => {this.#StopFocus(msg)});
+            this._RegisterHandler('battle.startBattle', (msg) => {this.#StartBattle(msg)});
+            this._RegisterHandler('battle.endBattle', (msg) => {this.#EndBattle(msg)})
 
             window.addEventListener("keydown", (event) => {this.#onKeyDown(event)});
             window.addEventListener("keyup", (event) => {this.#onKeyUp(event)});
@@ -85,6 +88,14 @@ export const camera_position = (() => {
             this._parent.controls.enableDamping = true;
             this.#target = undefined;
             this._parent.controls.target.set(0,0,0);
+        }
+
+        #StartBattle(msg) {
+            return;
+        }
+
+        #EndBattle(msg) {
+            return;
         }
 
         /**

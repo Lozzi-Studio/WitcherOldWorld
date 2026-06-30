@@ -8,6 +8,7 @@ export const town_options = (() => {
         #tooltip;
         #trigger;
         #target;
+        #condition;
 
         /**
          * @param {player_skills.Skill} skill 

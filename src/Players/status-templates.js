@@ -27,6 +27,18 @@ export const status_templates = (() => {
             return {"type": "drawMoreCards","timing": timing, "amount":amount}
         }
 
+        static forestTracker() {
+            return {"type": "forestTracker","timing": status_options.Timing.InCombat(), "amount":1}
+        }
+
+        static riverTracker() {
+            return {"type": "riverTracker","timing": status_options.Timing.InCombat(), "amount":1}
+        }
+
+        static mountainTracker() {
+            return {"type": "mountainTracker","timing": status_options.Timing.InCombat(), "amount":1}
+        }
+
     }
 
     return {

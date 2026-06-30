@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WitcherOldWorld</title>
     <link rel="stylesheet" type="text/css" href="src/frontend/style.css">
+    <link rel="icon" type="image/png" href="resources/assets/Icons/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -268,6 +269,21 @@
                 </div>
             </div>
         </div>
+        <div class="container container--row position-top-left" id="combat-ui" style="display: none;">
+            <div class="container container--row container--neutral borders--all" id="battle-monster-window">
+                <div class="container container--col">
+                    <div class="container container--col" id="avatar-name-container">
+                        <div class="avatar-container avatar-container--big">
+                            <img class="avatar avatar--big" id="monster-avatar" src="">
+                            <div class="textbox-circle textbox--fill --fancy-font" id="monster-health">5</div>
+                        </div>
+                        <div class="textbox textbox--fill textbox--fancy-font" id="player-name-container">
+                            <p id="monster-name">Monster</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="container borders--all container--neutral container--col" id="phase-two-options-menu" style="display: none;">
             <div class="--fancy-font" id="phase-two-header">
@@ -334,6 +350,17 @@
         
         <div class="container container--col container--neutral borders--all" id="shop-window" style="display: none;">
             <div class="textbox textbox--fill button" id="shop-button">Kaufen</div>
+        </div>
+
+        <div id="battle-window" style="display: flex;">
+            <div class="container container--col container--neutral borders--all" id="battle-player-window" style="display: none;">
+                <div class="textbox textbox--fill button" id="button-special">
+                    Special Nutzen
+                </div>
+                <div class="textbox textbox--fill button" id="button-play">
+                    Combo Spielen
+                </div>
+            </div>
         </div>
 
 

@@ -80,6 +80,14 @@ export const ui_manager = (() => {
                 }
             };
 
+            this.handlePlayClick = () => {
+                const btn = document.getElementById("button-play");
+                if (!(btn.classList.contains("button--inactive"))) {
+                    document.getElementById("battle-player-window").style.display = "none";
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo());
+                }
+            }
+
             let debugButton = document.getElementById("debug-next-phase-button");
             this.HandleSkipPhaseClick = () => {
                 if (debugButton.classList.contains("button--inactive") == false) {
@@ -143,6 +151,14 @@ export const ui_manager = (() => {
                 let msg = {player: this.FindComponent("GameManager").currentPlayer}
                 this.#UpdatePlayerInfoWindow(msg);
             }
+
+            this.handleSpecialClick = () => {
+                const btn = document.getElementById("button-special");
+                if (!(btn.classList.contains("button--inactive"))) {
+                    this.UpdateButtonState("button-special", false);
+                    this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UseSpecial());
+                }
+            }
         }
 
 
@@ -176,6 +192,8 @@ export const ui_manager = (() => {
             });
 
             this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
+
+            this._RegisterHandler('battle.playerTurn', (msg) => {this.#OnBattlePlayerTurn(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleSkipPhaseClick);
@@ -284,7 +302,6 @@ export const ui_manager = (() => {
             let path = "./resources/assets/glyphs/"
             let skillName = skill.toIdentifier().toLowerCase();
 
-            console.log(skillName);
             const container = document.getElementById(`${skillName}-lvl-bonus-glyph`);
 
             for (let i = 0; i < this.#maxSkillLevel; i++) {
@@ -515,6 +532,9 @@ export const ui_manager = (() => {
         #SetPlayerShieldStatus(player) {
             let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
             let shieldPoints = player.FindComponent("Shield").amount;
+             for (let i = 0; i < 5; i++) {
+                document.getElementById(`shield-${i+1}`).classList.remove("filled");
+            }
             for (let i = 0; i < defenseLevel; i++) {
                 document.getElementById(`shield-${i+1}`).classList.remove("icon--inactive");
                 document.getElementById(`shield-${i+1}`).classList.add("icon--active");
@@ -622,7 +642,7 @@ export const ui_manager = (() => {
 
             if (selectedTown == player.town) {
                 buttonMode = "action";
-                if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
+                if (selectedTown.FindComponent("TownProperties").abilityExecuted || !(selectedTown.FindComponent("TownProperties").canUseAbility()) ) {
                     buttonActive = false;
                 }
                 else {
@@ -797,6 +817,9 @@ export const ui_manager = (() => {
                 case 1:
                     this.#UpdateTownButton(msg);
                     break;
+                case 2:
+                    this.#UpdatePlayButton(msg);
+                    break;
                 case 3:
                     this.#UpdateShopButton(msg);
                     break;
@@ -919,7 +942,11 @@ export const ui_manager = (() => {
         #UpdatePlayerStats(msg) {
             this.#SetPlayerSkills(msg.player);
             this.#SetPlayerShieldStatus(msg.player);
-            this.#SetWitcherLevel(msg.player);
+            if (this.FindEntity("BattleEntity") == null) {
+                this.#SetWitcherLevel(msg.player);
+            } else if ((this.FindEntity("BattleEntity").FindComponent("BattleManager").player) == null) {
+                this.#SetWitcherLevel(msg.player);
+            }
             this.#SetPlayerMoney(msg.player);
             this.#SetPlayerTrophies(msg.player);
         }
@@ -930,10 +957,14 @@ export const ui_manager = (() => {
         #ExcludeUIFromRaycasting () {
             const UI = document.getElementById("game-ui");
             UI.addEventListener("mouseenter", () => {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
+                if (this.FindComponent("GameManager").phase.toIdentifier() != 2) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
+                }
             });
             UI.addEventListener("mouseleave", () => {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
+                if (this.FindComponent("GameManager").phase.toIdentifier() != 2) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
+                }
             });
         }
 
@@ -948,7 +979,6 @@ export const ui_manager = (() => {
             let camera = this.FindEntity("Camera").camera;
             camera.updateMatrixWorld(true);
             let coordinates = entity.position.clone().project(camera);
-
             let canvas = this._parent._parent.renderer.domElement;
             const x = (coordinates.x *  0.5 + 0.5) * canvas.clientWidth;
             const y = (coordinates.y * -0.5 + 0.5) * canvas.clientHeight;
@@ -975,6 +1005,29 @@ export const ui_manager = (() => {
             button.addEventListener("click", this.handleBuyClick);
         }
 
+        #OnBattlePlayerTurn(msg) {
+            document.getElementById("battle-player-window").style.display = "flex";
+            document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
+            document.getElementById("button-special").addEventListener("click", this.handleSpecialClick);
+            if (msg.emptyHand) {
+                document.getElementById("button-play").innerHTML = "Zug Aussetzen"
+                this.UpdateButtonState("button-play", true);
+            } else {
+                document.getElementById("button-play").innerHTML = "Combo Auspielen"
+                this.UpdateButtonState("button-play", false);
+            }
+            if (msg.specialUsed) {
+                this.UpdateButtonState("button-special", false);
+            } else {
+                this.UpdateButtonState("button-special", true);
+            }
+            
+        }
+
+        #UpdatePlayButton(msg)  {
+            this.UpdateButtonState("button-play", this.FindEntity("GameArea").FindComponent("GameManager").ValidateCardSelected());
+        }
+
 
         /**
          * Triggers after specific time interval
@@ -987,7 +1040,7 @@ export const ui_manager = (() => {
             }
             if (document.getElementById("player-window").classList.contains("position-from-three")) {
                 let playerEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedPlayer;
-                this.#PositionHTMLElementBasedOnEntity("player-window", playerEntity, 50, 130);
+                this.#PositionHTMLElementBasedOnEntity("player-window", playerEntity,  50, 130);
             }
         }
 
