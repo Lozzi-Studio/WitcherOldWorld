@@ -31,7 +31,7 @@ export const card_select_ui = (() => {
             this.#selectionMin = selectableCards instanceof Array ? selectableCards[0] : selectableCards;
             this.#selectionMax =  selectableCards instanceof Array ? selectableCards[1] : selectableCards;
             this.#selection = [];
-            return await this.#PromptCardSelection(cards, selectableCards, reason, cancelable, topic);
+            return await this.PromptCardSelection(cards, selectableCards, reason, cancelable, topic);
         }
 
         /**
@@ -41,7 +41,7 @@ export const card_select_ui = (() => {
          * @param {string} reason
          * @param {bool} cancelable
          */
-        #PromptCardSelection(cards, selectableCards, reason, cancelable, topic) {
+        PromptCardSelection(cards, selectableCards, reason, cancelable, topic) {
             return new Promise((resolve) => {
                 let handWindow = document.getElementById("hand-window");
                 const handCards = document.querySelectorAll('#hand-window > div:not(:last-child)');

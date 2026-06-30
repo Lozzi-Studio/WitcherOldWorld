@@ -210,7 +210,7 @@ export const phase_two_ui_component = (() => {
         }
 
         #onBtnClickCombat(){
-            if  (!(document.getElementById("combat-option").classList.contains("option--disabled"))) {
+            if  (!(document.getElementById("fight-monster-option").classList.contains("option--disabled"))) {
                 this.#onPhaseTwoEnd({});
                 let player = this.FindComponent("GameManager").currentPlayer;
                 let monster = this.FindComponent("GameManager").GetLocalMonster();
