@@ -388,10 +388,13 @@ input {
 }
 
 .button--inactive {
+    background-color: var(--color-primary-inactive);
+}
+
+.button--inactive, .option--disabled {
     pointer-events: auto !important;
     cursor: default;
     position: relative;
-    background-color: var(--color-primary-inactive);
 }
 
 .button:hover {
@@ -404,10 +407,11 @@ input {
     background-color: var(--color-primary-inactive);
 }
 
-.button--inactive[data-tooltip]:hover::after {
+.button--inactive[data-tooltip]:hover::after,
+.option--disabled[data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
-    top: 130%;
+    top: calc(100% + 10px);
     left: 50%;
     transform: translateX(-50%);
     

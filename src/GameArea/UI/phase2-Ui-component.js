@@ -24,10 +24,13 @@ export const phase_two_ui_component = (() => {
         #activateMeditateOption(){
             const currentPlayer = this.FindComponent('GameManager').currentPlayer;
             const canMeditate = currentPlayer.FindComponent("PlayerSkills").canMeditate();
+            const btn = document.getElementById("meditate-option");
 
+            btn.setAttribute("data-tooltip", "Du kannst nur meditieren, wenn einer deiner Skills Level 4 ist und du weniger als 3 Trophäen hast.");
             for (let key in canMeditate){
                 if(canMeditate[key]){
                 document.getElementById("meditate-option").classList.remove("option--disabled");
+                btn.removeAttribute("data-tooltip");
                 }
             }
             
@@ -64,6 +67,7 @@ export const phase_two_ui_component = (() => {
         #onPhaseTwoEnd(msg){
             document.getElementById("phase-two-options-menu").style.display = "none";
             document.getElementById("meditate-option").classList.add("option--disabled");
+            document.getElementById("meditate-option").removeAttribute("data-tooltip");
         }
 
     }
