@@ -208,7 +208,7 @@ export const game_manager = (() => {
                 }
 
                 this.#selection = [];
-                let discardMessage = " hat " + discardedCards.length + " Karte/n abgeworfen";
+                let discardMessage = this.#currentPlayer.playerName + " hat " + discardedCards.length + " Karte/n abgeworfen";
                 this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(discardMessage));
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));

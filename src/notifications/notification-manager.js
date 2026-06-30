@@ -34,6 +34,9 @@ export const notifaction_manager = (() => {
             this._RegisterHandler('card.drawCard', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('notification.custom', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('card.addCard', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('battle.startBattle', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('battle.playerTurn', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('battle.endBattle', (msg) => {this.#QueueNotification(msg)});
         }
 
         /**
@@ -75,7 +78,7 @@ export const notifaction_manager = (() => {
                     notificationAdded = true;
                     break;
                 case 'game.meditate':
-                    this.#notificationQueue.push(currentPlayer.playerName + " hat für die Fähigkeit " + msg.skill + " meditiert.");
+                    this.#notificationQueue.push(currentPlayer.playerName + " hat für die Fähigkeit " + this.toGermanIdentifier(msg.skill) + " meditiert.");
                     notificationAdded = true;
                     break;
                 case 'skill.changeLevel':
@@ -105,10 +108,30 @@ export const notifaction_manager = (() => {
                         notificationAdded = true; 
                     }
                     break;
-                case 'notification.custom':
-                    this.#notificationQueue.push(currentPlayer.playerName + msg.message);
-                    notificationAdded = true; 
+                case 'battle.startBattle':
+                    let startBattleText = currentPlayer.playerName + " hat einen Kampf gestartet.";
+                    if (this.#notificationQueue[this.#notificationQueue.length - 1] !== startBattleText) {
+                        this.#notificationQueue.push(startBattleText);
+                        notificationAdded = true;
+                    }
                     break;
+                // TODO: braucht es das?? 
+                // case 'battle.playerTurn':
+                //     this.#notificationQueue.push(currentPlayer.playerName + " ist am Zug.");
+                //     notificationAdded = true;
+                //     break;
+                case 'battle.endBattle':
+                    let endBattleText = "Der Kampf wurde beendet."
+                    if (this.#notificationQueue[this.#notificationQueue.length - 1] !== endBattleText) {
+                        this.#notificationQueue.push(endBattleText);
+                        notificationAdded = true;
+                    }
+                    break;
+
+                case 'notification.custom':
+                    this.#notificationQueue.push(msg.message);
+                    notificationAdded = true; 
+                    break;    
             }
             if (notificationAdded) {
                 this.#changeIncomingBanners(1);
