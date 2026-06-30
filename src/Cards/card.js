@@ -26,7 +26,7 @@ export const card = (() => {
         constructor(name, color, combo, effects, region, cost){
             this.#name = name;
             this.#color = color;
-            this.#combo = combo;
+            this.#combo = combo || new Map();
             this.#effects = effects;
             this.#nextCardCombo = null;
             this.#comboBonus = null;
@@ -89,7 +89,20 @@ export const card = (() => {
         }
 
         getImagePathFromName() {
-            return "../../resources/assets/cards/" + this.#name.split(" ").join("_") + ".webp";
+            const parts = [];
+
+            parts.push(this.#name.split(" ").join("_").toLowerCase());
+
+            if (this.#region && this.#region.toIdentifier() != region.Region.Joker().toIdentifier()) {
+                parts.push(this.#region.toIdentifier().toLowerCase());
+            }
+
+            if (this.#combo) {
+                for (let combo of this.#combo.keys()) {
+                    parts.push(combo.toIdentifier().toLowerCase());
+                }
+            }
+            return "./resources/assets/cards/" + parts.join("_") + ".webp";
         }
 
         get region() {

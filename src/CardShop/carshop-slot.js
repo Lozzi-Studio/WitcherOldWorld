@@ -4,6 +4,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import GwentFont from '../../resources/fonts/GWENT_ExtraBold.json';
 import * as THREE from 'three';
+import { Texture } from "three/webgpu";
 
 
 export const cardshop_slot = (() => {
@@ -103,8 +104,10 @@ export const cardshop_slot = (() => {
         UpdateSlot(newCard) {
             this.#card = newCard;
             try {
-                let texture = this._parent.GetFromCache(newCard.name);
-                this.#cardBox.material = new THREE.MeshBasicMaterial( { map: texture});
+                let texture = this._parent.GetFromCache(newCard.imagePath);
+                if(texture instanceof Texture){
+                    this.#cardBox.material = new THREE.MeshBasicMaterial( { map: texture});
+                }
             } catch(error) {
                 this.#cardBox.material = new THREE.MeshBasicMaterial();
                 this.#cardBox.material.color = new THREE.Color('black');
