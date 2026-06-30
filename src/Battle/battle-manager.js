@@ -293,7 +293,7 @@ export const battle_manager = (() => {
                             }
                         }
                         if (cardsToChoose.length > 0) {
-                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen der Hand").then(
+                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen der Hand", "Spezialfähigkeit").then(
                                 (result) => {   
                                     for (let card of result) {
                                         this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", true));
@@ -308,7 +308,7 @@ export const battle_manager = (() => {
                             if (this.#choosenSpecialAbility.value[0] == 1) {
                             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
                             if (this.#choosenSpecialAbility.value[1] != 0) {
-                                    this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "Abwerfen").then(
+                                    this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "Abwerfen", "Spezialfähigkeit").then(
                                     (result) => {   
                                         for (let card of result) {
                                             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
@@ -317,7 +317,7 @@ export const battle_manager = (() => {
                                 );
                                 }
                             } else {
-                                this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "Hinzufügen der Hand").then(
+                                this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "Hinzufügen der Hand", "Spezialfähigkeit").then(
                                     (result) => {   
                                         for (let card of result) {
                                             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", false,true));

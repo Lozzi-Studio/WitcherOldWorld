@@ -25,10 +25,10 @@ export const card_select_ui = (() => {
             document.getElementById("debug-open-card-selection-button").addEventListener("click", this.HandleOpenCardsClick);
         }
 
-        async GetCardSelectionFromPlayerPrompt(cards, selectableCards, reason) {
+        async GetCardSelectionFromPlayerPrompt(cards, selectableCards, reason, topic) {
             this.#selectionAmount = selectableCards;
             this.#selection = [];
-            return await this.PromptCardSelection(cards, selectableCards, reason);
+            return await this.PromptCardSelection(cards, selectableCards, reason, topic);
         }
 
         /**
@@ -37,7 +37,7 @@ export const card_select_ui = (() => {
          * @param {int} selectableCards 
          * @param {string} reason
          */
-        PromptCardSelection(cards, selectableCards, reason) {
+        PromptCardSelection(cards, selectableCards, reason, topic) {
             return new Promise((resolve) => {
                 let handWindow = document.getElementById("hand-window");
                 const handCards = document.querySelectorAll('#hand-window > div:not(:last-child)');
@@ -56,7 +56,12 @@ export const card_select_ui = (() => {
                 header.classList.add(
                     "font-size-large", "--fancy-font"
                 )
-                header.innerHTML = `Wähle ${selectableCards} Karten zum ${reason} aus`
+                if (selectableCards != 0) {
+                    header.innerHTML = `${topic}: Wähle ${selectableCards} Karten zum ${reason} aus`
+                }
+                else {
+                    header.innerHTML = topic;
+                }
                 header.style.paddingTop = "4px";
                 cardSelectWindow.appendChild(header);
 
@@ -70,9 +75,13 @@ export const card_select_ui = (() => {
                 for (const [index, card] of cards.entries()) {
                     const cardDIV = document.createElement("div");
                     cardDIV.id = `window-card-${index}`;
-                    cardDIV.classList.add("container", "container--col", "card", "card--selectable");
+                    if (selectableCards != 0) {
+                        cardDIV.classList.add("container", "container--col", "card", "card--selectable");
+                        cardDIV.addEventListener("click", () => { this.#OnCardSelect(index)});
+                    } else {
+                        cardDIV.classList.add("container", "container--col", "card");
+                    }
                     this.FindComponent("UIManager").UpdateCardContent(card, cardDIV);
-                    cardDIV.addEventListener("click", () => { this.#OnCardSelect(index)});
                     cardSelect.appendChild(cardDIV);
                 }
                 
@@ -113,7 +122,11 @@ export const card_select_ui = (() => {
                     "textbox", "textbox--fill", "button"
                 );
                 cancelButton.id = "cancel-button";
-                cancelButton.innerHTML = "Abbrechen";
+                if (selectableCards != 0) {
+                    cancelButton.innerHTML = "Abbrechen";
+                } else {
+                    cancelButton.innerHTML = "Schlie&szlig;en";
+                }
                 cancelButton.addEventListener("click", onCancel);
                 buttonsContainer.appendChild(cancelButton);
 
@@ -125,6 +138,11 @@ export const card_select_ui = (() => {
                 confirmButton.innerHTML = "Fortfahren";
                 confirmButton.addEventListener("click", onConfirm);
                 buttonsContainer.appendChild(confirmButton);
+                if (selectableCards != 0) {
+                    confirmButton.style.display = "block";
+                } else {
+                    confirmButton.style.display = "none";
+                }
             });
         }
 

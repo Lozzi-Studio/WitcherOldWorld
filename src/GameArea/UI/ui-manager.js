@@ -169,6 +169,7 @@ export const ui_manager = (() => {
             this._RegisterHandler('card.updateHandSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
             this._RegisterHandler('player.selection', (msg) => {this.#UpdatePlayerInfoWindow(msg)});
             this._RegisterHandler('player.updateDiscardCardsUI', (msg) => {this.#UpdateDiscardStack(msg)});
+            this._RegisterHandler('player.updateDeckCardsUI', (msg) => {this.#UpdateDeckStack(msg)});
             
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
             
@@ -194,6 +195,16 @@ export const ui_manager = (() => {
                 document.getElementById("turn-change-overlay").classList.add("overlay--hidden");
             });
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
+            document.getElementById("deck-stack").addEventListener("click", () => {
+                let player = this.FindComponent("GameManager").currentPlayer;
+                let deck = player.FindComponent("Carddeck").deck;
+                this.FindComponent("CardSelectUI").PromptCardSelection(deck, 0, "", "Deck");
+            })
+            document.getElementById("discard-card").addEventListener("click", () => {
+                let player = this.FindComponent("GameManager").currentPlayer;
+                let discard = player.FindComponent("Carddeck").discard;
+                this.FindComponent("CardSelectUI").PromptCardSelection(discard, 0, "", "Ablagestapel");
+            })
         }
 
         /**
@@ -828,6 +839,13 @@ export const ui_manager = (() => {
             this.FindComponent("UIManager").UpdateCardContent(msg.card, cardDIV);
             cardDIV.style.zIndex = 9;
             // cardDIV.style.marginLeft = "6px";
+        }
+
+        #UpdateDeckStack(msg) {
+            let deckNumber = document.getElementById("deck-number");
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let deckSize = player.FindComponent("Carddeck").deck.length;
+            deckNumber.innerHTML = deckSize;
         }
 
         /**

@@ -750,7 +750,7 @@ input {
     border-radius: 10px;
 }
 
-#card-select > div:not(.card--selected):hover {
+#card-select > .card--selectable:hover {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
     transform: scale(103%, 103%);

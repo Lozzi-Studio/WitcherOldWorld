@@ -160,6 +160,7 @@ export const carddeck_component = (() => {
                             this.#cardHand.push(this.#cardDeck.pop());
                             if (!this.#noUiUpdate) {
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
                             }
                         }
                         break;
@@ -174,6 +175,7 @@ export const carddeck_component = (() => {
                         this.#cardHand.push(drawnCard);
                         if (!this.#noUiUpdate) {
                             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", drawnCard));
+                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
                         }
                         break;
                     case "Discard":
@@ -231,6 +233,7 @@ export const carddeck_component = (() => {
                 case "Deck":
                     this.#cardDeck.push(msg.card)
                     this.#Shuffle({includeDiscard: false});
+                    this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
                     break;
             }
         }
@@ -253,6 +256,7 @@ export const carddeck_component = (() => {
                             this.#cardHand.splice(this.#cardHand.indexOf(msg.card),1);
                         } else if (this.#cardDeck.includes(msg.card)) {
                             this.#cardDeck.splice(this.#cardDeck.indexOf(msg.card),1);
+                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
                         }  else if (this.#cardDiscard.includes(msg.card)) {
                             this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
                         }
@@ -277,6 +281,7 @@ export const carddeck_component = (() => {
                 }
             } else if (this.#cardDeck.length > 0){
                 this.#cardDiscard.push(this.#cardDeck.pop());
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
             }
         }
 
@@ -318,6 +323,7 @@ export const carddeck_component = (() => {
                 if (!this.#noUiUpdate) {
                     for (let card of oldHand) {
                         this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", card));
+                        this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
                     }
                 }
             }

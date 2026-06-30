@@ -65,6 +65,10 @@ export const broadcasts = (() => {
             return {topic: 'player.updateDiscardCardsUI', card: card};
         }
 
+        static UpdateDeckCardsUI(card) {
+            return {topic: 'player.updateDeckCardsUI', card: card};
+        }
+
         /**
          * 
          * @param {object} status
