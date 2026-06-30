@@ -421,6 +421,15 @@ export const broadcasts = (() => {
         static CreateNewMonster(rank, region, newMonster) {
             return {topic: 'game.newMonster', rank: rank, region: region, newMonster: newMonster}
         }
+
+        /**
+         * 
+         * @param {Player} winner
+         * @returns {object}
+         */
+        static EndGame(winner){
+            return {topic: 'game.endGame', winner: winner}
+        }
     }
 
     class BroadcastTemplateCamera {
