@@ -109,10 +109,11 @@ export const broadcasts = (() => {
 
         /**
          * @param {string} deck - Options: "Player", "Shop", "Monster"
+         * @param {string} school
          * @returns {object}
         */
-        static LoadCarddeck(deck) {
-            return {topic: 'card.loadDeck', deck: deck}
+        static LoadCarddeck(deck, school = "") {
+            return {topic: 'card.loadDeck', deck: deck,school: school}
         }
 
         /**

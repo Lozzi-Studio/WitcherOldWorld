@@ -65,61 +65,161 @@ export const carddeck_component = (() => {
             //TODO Create Defaults
             switch (msg.deck) {
                 case "Player":
-                    // hier müssen noch die richtigen Karten angegeben werden
-                    /* this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Mountain()), "Hand"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Hand"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRiposte(new Map(), region.Region.Forest()), "Hand")); */
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), region.Region.Forest()), "Hand"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.River()), "Hand"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.River()), "Hand"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Hand"));
-                                        this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Hand"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesAard(null, region.Region.Forest()), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getDeckung(null, region.Region.Forest()), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getPraeziserSchnitt(null, region.Region.River()), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getRuestungSchmelzen(null), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesAard(null, region.Region.Forest()), "Deck"));
-                    this.parent.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(cards.CardTemplates.getVerstaerktesIgni(), "Deck"));
-
+                    switch (msg.school) {
+                        case "Greifenschule":
+                            this.#cardDeck.push(new card.Card("Greif Stoß", card_options.Color.Green(), undefined, card_options.CardEffect.createCardEffect(0,2,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Stoß", card_options.Color.Green(), undefined, card_options.CardEffect.createCardEffect(0,1,1,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Schneller Hieb", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Joker(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Schneller Hieb", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Aard", card_options.Color.Purple(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Aard", card_options.Color.Purple(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]) , card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Yrden", card_options.Color.Purple(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.Mountain(), 0));
+                            break;
+                        case "Baerenschule":
+                            this.#cardDeck.push(new card.Card("Baer Stoß", card_options.Color.Green(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Stoß", card_options.Color.Green(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(),  new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(2,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Schneller Hieb", card_options.Color.Blue(), undefined, card_options.CardEffect.createCardEffect(2,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Schneller Hieb", card_options.Color.Blue(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Joker(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Aard", card_options.Color.Purple(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Aard", card_options.Color.Purple(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
+                            break;
+                        case "Katzenschule":
+                            this.#cardDeck.push(new card.Card("Katze Schneller Hieb", card_options.Color.Blue(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Schneller Hieb", card_options.Color.Blue(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Axii", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,0,false,true), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(2,0,-1,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Aard", card_options.Color.Purple(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Aard", card_options.Color.Purple(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Stoß", card_options.Color.Green(), undefined, card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Joker(), 0));
+                            this.#cardDeck.push(new card.Card("Katze Stoß", card_options.Color.Green(), undefined, card_options.CardEffect.createCardEffect(0,1,1,false,false), region.Region.Forest(), 0));
+                            break;
+                        case "Wolfsschule":
+                            this.#cardDeck.push(new card.Card("Wolf Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Yrden", card_options.Color.Yellow(), undefined, card_options.CardEffect.createCardEffect(0,0,3,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,3,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Aard", card_options.Color.Purple(), new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Aard", card_options.Color.Purple(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]]), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Stoß", card_options.Color.Green(), undefined, card_options.CardEffect.createCardEffect(0,1,1,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Stoß", card_options.Color.Green(), undefined, card_options.CardEffect.createCardEffect(0,1,1,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Schneller Hieb", card_options.Color.Blue(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Wolf Schneller Hieb", card_options.Color.Blue(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Joker(), 0));
+                            break;
+                        case "Vipernschule":
+                            this.#cardDeck.push(new card.Card("Viper Quen", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Joker(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(2,0,2,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Stoß", card_options.Color.Green(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Stoß", card_options.Color.Green(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Schneller Hieb", card_options.Color.Blue(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Schneller Hieb", card_options.Color.Blue(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Aard", card_options.Color.Purple(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Aard", card_options.Color.Purple(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
+                            break;
+                        }
                     break;
                 case "Shop":
                     this.#noUiUpdate = true;
-                    this.#cardDeck.push(cards.CardTemplates.getDeckung());
-                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt());
-                    this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen());
-                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle());
-                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard());
-                    this.#cardDeck.push(cards.CardTemplates.getDeckung());
-                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt());
-                    this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen());
-                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle());
-                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard());
+                    this.#cardDeck.push(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]),region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]),region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]),region.Region.Mountain()));
+                    this.#cardDeck.push(cards.CardTemplates.getDeckung(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]),region.Region.Mountain()));
+                    this.#cardDeck.push(cards.CardTemplates.getRiposte(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]),region.Region.River()))
+                    this.#cardDeck.push(cards.CardTemplates.getRiposte(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]),region.Region.River()))
+                    this.#cardDeck.push(cards.CardTemplates.getRiposte(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]),region.Region.Forest()))
+                    this.#cardDeck.push(cards.CardTemplates.getRiposte(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]),region.Region.Forest()))
+                    this.#cardDeck.push(cards.CardTemplates.getBlitzschnelleReflexe(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getBlitzschnelleReflexe(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getBlitzschnelleReflexe(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getBlitzschnelleReflexe(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getAbwehr(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getAbwehr(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getAbwehr(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getAbwehr(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getAbwehr(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getAbwehr(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,0,0,true,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAxii(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)], [card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAxii(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,0,false,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAxii(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAxii(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesYrden(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesYrden(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesYrden(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesYrden(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesQuen(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesQuen(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesQuen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.Mountain()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesQuen(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.Mountain()));
+                    this.#cardDeck.push(cards.CardTemplates.getMagiefalle(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getMagiefalle(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)], [card_options.Color.Blue(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getExplosiverSchild(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getExplosiverSchild(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getExplosiverSchild(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getExplosiverSchild(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesAard(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesIgni());
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesIgni());
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesIgni());
+                    this.#cardDeck.push(cards.CardTemplates.getVerstaerktesIgni());
+                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,2,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,2,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,0,2,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getSchockwelle(new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,2,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getRuestungSchmelzen(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,1,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getFeuerstrahl());
+                    this.#cardDeck.push(cards.CardTemplates.getFeuerstrahl());
+                    this.#cardDeck.push(cards.CardTemplates.getFeuerstrahl());
+                    this.#cardDeck.push(cards.CardTemplates.getFeuerstrahl());
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchnitt(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getDrehungForest(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getDrehungForest(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getDrehungForest(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getDrehungMountain(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getDrehungMountain(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)], [card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getDrehungMountain(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(0,0,0,false,false)], [card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerchnichtenderSchlag(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)], [card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerchnichtenderSchlag(new Map([[card_options.Color.Yellow(), card_options.CardEffect.createCardEffect(1,0,0,false,false)], [card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerchnichtenderSchlag(new Map([[card_options.Color.Green(), card_options.CardEffect.createCardEffect(1,0,0,false,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getVerchnichtenderSchlag(new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)], [card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]])));
+                    this.#cardDeck.push(cards.CardTemplates.getSchmetterschlag(region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getSchmetterschlag(region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getSchmetterschlag(region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getSchmetterschlag(region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getSchmetterschlag(region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getSchmetterschlag(region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getSchmetterschlag(region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getSchmetterschlag(region.Region.River()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchlag(region.Region.Mountain()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchlag(region.Region.Mountain()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchlag(region.Region.Mountain()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchlag(region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchlag(region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getPraeziserSchlag(region.Region.Forest()));
+                    this.#cardDeck.push(cards.CardTemplates.getWuchtschlag());
+                    this.#cardDeck.push(cards.CardTemplates.getWuchtschlag());
+                    this.#cardDeck.push(cards.CardTemplates.getWuchtschlag());
+                    this.#cardDeck.push(cards.CardTemplates.getWuchtschlag());
                     break;
                 case "Monster":
                     this.#noUiUpdate = true;
@@ -144,8 +244,8 @@ export const carddeck_component = (() => {
                     this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(2, "", [], false), "OptionB": card_options.MonsterEffect.createMonsterEffect(4, "", [], false)});
                     this.#cardDeck.push({"OptionA": card_options.MonsterEffect.createMonsterEffect(0,"", [1,2,3], true), "OptionB": card_options.MonsterEffect.createMonsterEffect(4, "", [], false)});
             }
-            //TODO
-            this.#Shuffle({"includeDiscard" : false});
+            this.#Shuffle(broadcasts.BroadcastTemplateCards.ShuffleDeck(false))
+            this.#Shuffle(broadcasts.BroadcastTemplateCards.ShuffleDeck(false))
         }
 
         /**

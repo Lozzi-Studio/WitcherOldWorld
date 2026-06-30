@@ -346,7 +346,8 @@ export const game_manager = (() => {
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             let playerTownPositions = [];
             for (let player of players) {
-                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
+                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player", player.witcherSchool.name));
+                player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 3))
                 playerTownPositions.push(player.town);
             }
             let regions = [region.Region.Forest(), region.Region.Mountain(), region.Region.River()];
