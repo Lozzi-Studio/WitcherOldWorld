@@ -60,11 +60,11 @@ export const game = (() => {
             var promises = [];
 
             for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").hand) {
-                let cardName = card.name;
-                promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
+                let cardName = card.imagePath;
+                promises.push(this.#loadTexture(card.imagePath).then(result => { this.CacheData(cardName, result);}));
             }
             for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").deck) {
-                let cardName = card.name;
+                let cardName = card.imagePath;
                 promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
             }
 
@@ -83,7 +83,7 @@ export const game = (() => {
 
         #loadTexture(url) {
             return new Promise(resolve => {
-                new THREE.TextureLoader().load(url, resolve);
+                new THREE.TextureLoader().load(url, resolve, resolve, resolve);
             });
         }
 
