@@ -786,6 +786,7 @@ export const ui_manager = (() => {
             for (let [i, card] of playerHand.entries()) {
                 let cardDIV = document.getElementById(`card-image-${i}`);
                 if (cardDIV) {
+                    console.log(card);
                     this.UpdateCardContent(card, cardDIV);
                 }
                 else {
