@@ -102,12 +102,13 @@ export const game_manager = (() => {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.loadPhaseTwoUi());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting())
             }
+            for (let card_slot of this.#selection) {
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
+            }
+            this.#selection = [];
             
             if (nextPlayer) {
-                for (let card_slot of this.#selection) {
-                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
-                }
-                this.#selection = [];
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateGame.NextRound(this.#currentPlayer));
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
                 if (this.#currentPlayer == undefined) {

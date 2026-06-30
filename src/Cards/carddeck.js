@@ -41,6 +41,7 @@ export const carddeck_component = (() => {
             this._RegisterHandler('card.drawCard', (msg) => this.#DrawCard(msg));
             this._RegisterHandler('card.discardCard', (msg) => this.#DiscardCard(msg));
             this._RegisterHandler('card.shuffle', (msg) => this.#Shuffle(msg));
+            this._RegisterHandler('card.discardRandomPotion', (msg) => this.#DiscardRanomPotion(msg));
             this._RegisterHandler('card.randomDiscard', (msg) => this.#DiscardRandomCard(msg))
             this._RegisterHandler('game.applyDamage', (msg) => this.#ApplyDamage(msg))
         }
@@ -76,12 +77,12 @@ export const carddeck_component = (() => {
                             this.#cardDeck.push(new card.Card("Greif Aard", card_options.Color.Purple(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Greif Aard", card_options.Color.Purple(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]) , card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Forest(), 0));
                             this.#cardDeck.push(new card.Card("Greif Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.Forest(), 0));
-                            this.#cardDeck.push(new card.Card("Greif Yrden", card_options.Color.Purple(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Greif Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]) , card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.Mountain(), 0));
                             break;
                         case "Baerenschule":
                             this.#cardDeck.push(new card.Card("Baer Stoß", card_options.Color.Green(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(0,0,0,true,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Mountain(), 0));
                             this.#cardDeck.push(new card.Card("Baer Stoß", card_options.Color.Green(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Forest(), 0));
-                            this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(),  new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,0,false,false)]]), card_options.CardEffect.createCardEffect(2,0,0,false,false), region.Region.Mountain(), 0));
+                            this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(),  undefined, card_options.CardEffect.createCardEffect(2,0,0,false,false), region.Region.Mountain(), 0));
                             this.#cardDeck.push(new card.Card("Baer Spaltschlag", card_options.Color.Red(), undefined, card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Baer Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Red(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Baer Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,1,false,false), region.Region.Mountain(), 0));
@@ -452,6 +453,10 @@ export const carddeck_component = (() => {
                 }
             }
             return null;
+        }
+
+        #DiscardRanomPotion(msg) {
+            this.#cardPotion.splice(this.#cardPotion[Math.floor(Math.random() * this.#cardPotion.length)], 1);
         }
 
         get hand() {

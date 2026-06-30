@@ -48,9 +48,8 @@ export const game = (() => {
          * Used to intialize and add any default Entities
          */
         InitSceneEntities() {
-
-            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
             document.getElementById('game-loading-screen').style.display = 'flex';
+            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
 
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitShop();
@@ -75,6 +74,8 @@ export const game = (() => {
             promises.push(this.#loadMusic("resources/sounds/Battle_Monster.mp3").then(result => {this.CacheData("BattleMonsterTheme", result)}));
             promises.push(this.#loadMusic("resources/sounds/ChaseTheme.mp3").then(result => {this.CacheData("ChaseTheme", result)}));
 
+            promises.push(fetch("resources/database/events_City.json").then(response => response.json()).then(result => {this.CacheData("eventsCity", result)}));
+            promises.push(fetch("resources/database/events_land.json").then(response => response.json()).then(result => {this.CacheData("eventsLand", result)}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
 
