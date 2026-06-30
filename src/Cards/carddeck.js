@@ -178,7 +178,9 @@ export const carddeck_component = (() => {
                         break;
                     case "Discard":
                         if (this.#cardDiscard.length != 0) {
+                            console.log(this.#cardDiscard)
                             let discardedCard = this.#cardDiscard.pop();
+                            console.log(discardedCard)
                             this.#cardHand.push(discardedCard)
                             if (!this.#noUiUpdate) {
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", discardedCard));

@@ -79,7 +79,7 @@ export const game = (() => {
             promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
 
             Promise.all(promises).then(() => {
-                setTimeout(() => { this.#startGame();}, 0);
+                setTimeout(() => { this.#startGame();}, 3000);
             });
         }
 

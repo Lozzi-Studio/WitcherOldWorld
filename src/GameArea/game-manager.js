@@ -417,6 +417,7 @@ export const game_manager = (() => {
                 this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo());
             }else{
                 for (let [i , card] of this.#selection.entries()) {
+                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(card, "Deselect", this.#currentRound.toIdentifier()));
                     if (i == (this.#selection.length - 1)) {
                         this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo(this.#currentPlayer.GetHandCard(this.#selection[0])));
                     } else {

@@ -25,10 +25,10 @@ export const card_select_ui = (() => {
             document.getElementById("debug-open-card-selection-button").addEventListener("click", this.HandleOpenCardsClick);
         }
 
-        async GetCardSelectionFromPlayerPrompt(cards, selectableCards, reason) {
+        async GetCardSelectionFromPlayerPrompt(cards, selectableCards, reason, cancelable = true) {
             this.#selectionAmount = selectableCards;
             this.#selection = [];
-            return await this.PromptCardSelection(cards, selectableCards, reason);
+            return await this.#PromptCardSelection(cards, selectableCards, reason, cancelable);
         }
 
         /**
@@ -36,8 +36,9 @@ export const card_select_ui = (() => {
          * @param {Array} cards 
          * @param {int} selectableCards 
          * @param {string} reason
+         * @param {bool} cancelable
          */
-        PromptCardSelection(cards, selectableCards, reason) {
+        #PromptCardSelection(cards, selectableCards, reason, cancelable) {
             return new Promise((resolve) => {
                 let handWindow = document.getElementById("hand-window");
                 const handCards = document.querySelectorAll('#hand-window > div:not(:last-child)');
@@ -112,10 +113,12 @@ export const card_select_ui = (() => {
                 cancelButton.classList.add(
                     "textbox", "textbox--fill", "button"
                 );
-                cancelButton.id = "cancel-button";
-                cancelButton.innerHTML = "Abbrechen";
-                cancelButton.addEventListener("click", onCancel);
-                buttonsContainer.appendChild(cancelButton);
+                if (cancelable) {
+                    cancelButton.id = "cancel-button";
+                    cancelButton.innerHTML = "Abbrechen";
+                    cancelButton.addEventListener("click", onCancel);
+                    buttonsContainer.appendChild(cancelButton);
+                }
 
                 let confirmButton = document.createElement("div");
                 confirmButton.classList.add(

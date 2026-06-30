@@ -24,7 +24,19 @@ export const monster_entity = (() => {
 
         InitComponents() {
             this.AddComponent(new carddeck_component.Carddeck(1));
-            this.AddComponent(new monster_figure.MonsterFigure("FFFF00", this.#town.monsterSpot));
+            let color = "c47bc6";
+            switch(this.#initialRank ) {
+                case 1:
+                    color = "c47bc6";
+                    break;
+                case 2:
+                    color = "854587";
+                    break;
+                case 3:
+                    color = "482848";
+                    break;
+            }
+            this.AddComponent(new monster_figure.MonsterFigure(color, this.#town.monsterSpot));
             this.AddComponent(new monster_ai.MonsterAi());
             this.AddComponent(new monster_property.MonsterProperty(this.#intialHealth, this.#initialRank));
         }

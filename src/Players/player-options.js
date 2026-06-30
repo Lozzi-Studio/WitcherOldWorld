@@ -61,12 +61,11 @@ export const player_options = (() => {
                                 Gegner Schaden zugefügt hast und er\
                                 dadurch 1 oder mehrere Karten abgelegt\
                                 hat, darfst du diese Spezialisierung\
-                                aktivieren, um die obersten Karten im\
-                                Deck deines Gegners anzusehen und in\
-                                beliebiger Reihenfolge zurückzulegen. Ab\
-                                Stufe 2 legst du manche davon ab.",
-                        "levelInfo": "Anzahl Karten, die du ansehen / ablegen darfst",
-                        "value": [[3,0], [2,1], [4,1], [4,2], [4,2]]
+                                aktivieren, um den Gegner zu vergiften.\
+                                In den nächsten Runden bekommt dein\
+                                Gegner 1 Schaden nach seinem Zug.",
+                        "levelInfo": "Anzahl an Runden / Schaden",
+                        "value": [[1,1], [2,1], [3,1], [4,1], [4,1]]
                         
                     };
                 case "Katzenschule":
