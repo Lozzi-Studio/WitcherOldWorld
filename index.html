@@ -27,12 +27,89 @@
     </div>
 
     <div id="main-menu" style="display: none;">
-        <video id="background_video" loop muted crossOrigin="anonymous" playsinline style="display:none">
-			<source src="resources/assets/background/main_menu.webm">
-		</video>
-
+        <video id="background-video" loop muted playsinline autoplay>
+            <source src="resources/assets/background/main_menu.mp4">
+        </video>
+        <div class="container container--col container--neutral container--justify borders--none" id="main-menu-ui">
+            <img src="resources/assets/background/the-witcher-old-world-eng-logo.webp" id="main-menu-logo">
+            <div class="textbox textbox--fill button --fancy-font" id="start-game-button">Spiel Starten</div>
+            <div class="container container--col">
+                <div class="container container--col container--no-gap">
+                    <div class="--fancy-font" style="margin-bottom: 4px;">Credits</div>
+                    <div>Tim Förster</div>
+                    <div>Luca Illgen</div>
+                    <div>Janik Kusch</div>
+                    <div>Lana Michler</div>
+                </div>
+                <div class="container container--col container--no-gap">
+                    <div class="--fancy-font" style="margin-bottom: 4px;">Projektrahmen</div>
+                    <div>Hochschule München</div>
+                    <div>Informatik & Design</div>
+                    <div>Projektmodul Interaktion</div>
+                    <div>Gruppe 6</div>
+                </div>
+                 <div class="container container--col container--no-gap">
+                    <div class="--fancy-font" style="margin-bottom: 4px;">Copyright</div>
+                    <div>Spiel, Bilder und Ton</div>
+                    <div>&copy; CD Projekt RED</div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <div id="player-selection" style="display: none;">
+        <div class="container container--col container--neutral container--justify position-center borders--all" id="player-selection-window">
+            <div class="--fancy-font font-size-large">Spieler auswählen</div>
+            <div class="container container--row container--align-flex-start">
+                <div class="container container--col container--justify-between" id="players-container">
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">1</div>
+                        <label for="name-player-1" id="label-player-1" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-1" value="Spieler 1" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-1">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-1">close</div>
+                    </div>
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">2</div>
+                        <label for="name-player-2" id="label-player-2" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-2" value="Spieler 2" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-2">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-2">close</div>
+                    </div>
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">3</div>
+                        <label for="name-player-3" id="label-player-3" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-3" value="Spieler 3" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-3">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-3">close</div>
+                    </div>
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">4</div>
+                        <label for="name-player-4" id="label-player-4" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-4" value="Spieler 4" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-4">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-4">close</div>
+                    </div>
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">5</div>
+                        <label for="name-player-5" id="label-player-5" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-5" value="Spieler 5" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-5">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-5">close</div>
+                    </div>
+                </div>
+                <div class="container container--col" id="text-container">
+                    <div class="container inner-borders inner-borders--neutral">
+                        Zum Spielen sind mindestens zwei und höchstens fünf Spieler erforderlich.
+                    </div>
+                    <div class="container inner-borders inner-borders--neutral">
+                        Nach Spielstart wird jedem Spieler zufällig eine Hexerschule zugeteilt, die seine Anfangskarten und Spezialfähigkeit bestimmt.
+                    </div>
+                </div>
+            </div>
+            <div class="textbox textbox--fill button --fancy-font" id="player-selection-start-game-button">Spiel Starten</div>
+        </div>
+    </div>
 
     <div id="game-ui" style="display: none;"> 
         <div class="container container--row container--neutral borders--bottom-right position-top-left" id="player-window">
@@ -292,6 +369,7 @@
             <div class="textbox textbox--fill button" id="debug-next-phase-button">Skip Phase</div>
             <div class="textbox textbox--fill button" id="debug-upgrade-skill-button">Upgrade Skill</div>
             <div class="textbox textbox--fill button" id="debug-add-money-button">Add Money</div>
+            <div class="textbox textbox--fill button" id="debug-open-card-selection-button">Open Cards</div>
         </div>
 
         <div id="turn-change-overlay" class="overlay--hidden">

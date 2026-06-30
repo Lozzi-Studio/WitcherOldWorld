@@ -24,18 +24,12 @@ import { battle_entity } from '../Battle/battle-entity';
 export const game = (() => {
 
     class GameScene extends scene.Scene{
-        #players;
 
         /**
          * Main Scene for Game
          */
         constructor() {
             super();
-            this.#players = [
-                {name: "Geralt", witcherschool: player_options.WitcherSchool.Wolf(), money: 2},
-                {name: "Vesemir", witcherschool: player_options.WitcherSchool.Bear(), money: 3},
-                {name: "Lambert", witcherschool: player_options.WitcherSchool.Cat(), money: 4}
-            ];
         }
 
         /**
@@ -141,13 +135,49 @@ export const game = (() => {
             this._parent.SetCamera(new camera_entity.Camera(newCamera, this._controls));
         }
 
+        #GetPlayersFromSetup() {
+            let playerInputFields = [];
+            for (let i = 1; i < 6; i++) {
+                playerInputFields.push(document.getElementById(`name-player-${i}`));
+            }
+            
+            let witcherSchools = [
+                player_options.WitcherSchool.Bear(),
+                player_options.WitcherSchool.Cat(),
+                player_options.WitcherSchool.Griffin(),
+                player_options.WitcherSchool.Viper(),
+                player_options.WitcherSchool.Wolf()
+            ];
+
+            //Fisher-Yates_shuffle (src:https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
+            for (let i = witcherSchools.length - 1; i >= 1; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [witcherSchools[i], witcherSchools[j]] = [witcherSchools[j], witcherSchools[i]];
+            }
+
+            let players = [];
+            for (var i = 0; i < playerInputFields.length; i++) {
+                let input = playerInputFields[i];
+                if (getComputedStyle(input).display != "none") {
+                    players.push({name: input.value, witcherschool: witcherSchools[i]});
+                }
+            }
+            return players;
+        }
+
         /**
          * Initialize player entities
          */
         #InitPlayers() {
+            let players = this.#GetPlayersFromSetup();
+            //Fisher-Yates_shuffle (src:https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
+            for (let i = players.length - 1; i >= 1; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [players[i], players[j]] = [players[j], players[i]];
+            }
             let count = 1;
-            for (let player of this.#players) {
-                let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, player.money);
+            for (let player of players) {
+                let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, count+1);
                 this._entityManager.AddEntity(playerEntity, "Player_" + count);
                 count += 1;
             }
@@ -218,10 +248,6 @@ export const game = (() => {
             displayModifier.position.set(0,8,-38.5);
             this._scene.add(displayModifier);
             this._entityManager.AddEntity(new cardshop_entity.Cardshop());
-        }
-
-        set players(players) {
-            this.#players = players;
         }
     }
 
