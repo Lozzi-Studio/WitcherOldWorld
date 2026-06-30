@@ -756,18 +756,6 @@ input {
     transform: scale(103%, 103%);
 }
 
-#discard-stack > div:not(.card--selected):hover {
-    border: 2px solid var(--color-primary);
-    border-radius: 10px;
-    transform: scale(102%, 102%);
-}
-
-#deck-stack:hover {
-    border: 2px solid var(--color-primary);
-    border-radius: 10px;
-    transform: scale(102%, 102%);
-}
-
 #card-select {
     max-height: 512px;
     overflow: auto;
@@ -1163,6 +1151,12 @@ input {
     padding-left: 8px;
 }
 
+#discard-stack > div:not(.card--selected):hover {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    transform: scale(102%, 102%);
+}
+
 #discard-card {
     border: 2px solid rgba(0, 0, 0, 0);
 }
@@ -1175,6 +1169,12 @@ input {
     border: 2px solid rgba(0, 0, 0, 0);
     justify-content: center;
     align-items: center;
+}
+
+#deck-stack:hover {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    transform: scale(102%, 102%);
 }
 
 #deck-number {
