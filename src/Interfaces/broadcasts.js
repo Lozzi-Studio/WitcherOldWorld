@@ -47,8 +47,8 @@ export const broadcasts = (() => {
         /**
          * @returns {object}
          */
-        static UpdateUI() {
-            return {topic: 'player.updateUI'};
+        static UpdateUI(player) {
+            return {topic: 'player.updateUI', player: player};
         }
 
         /**
@@ -70,6 +70,18 @@ export const broadcasts = (() => {
         static AddStatus(status, mode){
             return {topic: 'player.addStatus',status: status, mode:mode}
         }
+
+        static SelectPlayer(player) {
+            return {topic: 'player.selection', player: player}
+        }
+
+        static DeselectPlayer(currentPlayer) {
+            return {topic: 'player.deselection', currentPlayer: currentPlayer}
+        }
+        
+        static ResolveTownLocation(town) {
+            return {topic: 'player.resolveLocation', town: town}
+        }
     }
 
     class BroadcastTemplateCards {
@@ -86,28 +98,32 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {int} card_slot 
-         * @param {string} mode - Options: "Hand", "Shop"
+         * @param {card.Card} card
+         * @param {string} mode - Options: "Hand", "Shop", "CardSelect"
+         * @param {string} selectableCards
          * @returns {object}
          */
-        static SelectCard(card_slot, card, mode) {
-            return {topic: 'card.select', card_slot: card_slot, card:card, mode: mode}
+        static SelectCard(card_slot, card, mode, selectableCards) {
+            return {topic: 'card.select', card_slot: card_slot, card: card, mode: mode, selectableCards: selectableCards}
         }
 
         /**
-         * @param {string} deck - Options: "Player", "Shop"
+         * @param {string} deck - Options: "Player", "Shop", "Monster"
+         * @param {string} school
          * @returns {object}
         */
-        static LoadCarddeck(deck) {
-            return {topic: 'card.loadDeck', deck: deck}
+        static LoadCarddeck(deck, school = "") {
+            return {topic: 'card.loadDeck', deck: deck,school: school}
         }
 
         /**
          * @param {card.Card} card
-         * @param {string} destination - Options: "Hand", "Deck", "Discard"
+         * @param {string} destination - Options: "Hand", "Deck", "BattleDeck","Discard"
+         * @param {bool} fromDeck
          * @returns {object}
         */
-        static AddCard(card, destination) {
-            return {topic: 'card.addCard', card: card, destination: destination}
+        static AddCard(card, destination, fromDeck = false, fromDiscard = false) {
+            return {topic: 'card.addCard', card: card, destination: destination, fromDeck:fromDeck, fromDiscard: fromDiscard}
         }
 
         /**
@@ -122,10 +138,11 @@ export const broadcasts = (() => {
         /**
          * 
          * @param {bool} includeDiscard 
+         * @param {bool} includeHand
          * @returns {object}
          */
-        static ShuffleDeck(includeDiscard) {
-            return {topic: 'card.shuffle', includeDiscard: includeDiscard}
+        static ShuffleDeck(includeDiscard, includeHand) {
+            return {topic: 'card.shuffle', includeDiscard: includeDiscard, includeHand: includeHand}
         }
 
         /**
@@ -133,10 +150,29 @@ export const broadcasts = (() => {
          * @param {int} card_slot 
          * @param {string} mode - Options: "Select", "Deselect" 
          * @param {int} phase
+         * @returns {object}
+         */
+        static UpdateHandCardSelectionUI(card_slot, mode, phase) {
+            return {topic: 'card.updateHandSelectionUI', card_slot: card_slot, mode: mode, phase: phase};
+        }
+
+        /**
+         * 
+         * @param {int} card_slot 
+         * @param {string} mode - Options: "Select", "Deselect"
+         * @param {Array} selection
          * @returns 
          */
-        static UpdateCardSelectionUI(card_slot, mode, phase) {
-            return {topic: 'card.updateSelectionUI', card_slot: card_slot, mode: mode, phase: phase};
+        static UpdateCardSelectionUI(card_slot, mode, selection) {
+            return {topic: 'card.updateCardSelectionUI', card_slot: card_slot, mode: mode, selection: selection};
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static DiscardRandomCard() {
+            return {topic: 'card.randomDiscard'}
         }
 
     }
@@ -184,8 +220,8 @@ export const broadcasts = (() => {
          * 
          * @returns {object}
          */
-        static UpdateUI() {
-            return {topic: 'skill.updateUI'};
+        static UpdateUI(player) {
+            return {topic: 'skill.updateUI', player: player};
         }
     }
 
@@ -377,6 +413,23 @@ export const broadcasts = (() => {
         static UpdateDiscardButtonActive(active) {
             return {topic: 'game.updateDiscardButton', active: active}
         }
+
+        static ApplyDamage(amount) {
+            return {topic: 'game.applyDamage', amount: amount}
+        }
+
+        static CreateNewMonster(rank, region, newMonster) {
+            return {topic: 'game.newMonster', rank: rank, region: region, newMonster: newMonster}
+        }
+
+        /**
+         * 
+         * @param {Player} winner
+         * @returns {object}
+         */
+        static EndGame(winner){
+            return {topic: 'game.endGame', winner: winner}
+        }
     }
 
     class BroadcastTemplateCamera {
@@ -491,6 +544,29 @@ export const broadcasts = (() => {
         }
     }
 
+    class BroadcastTemplateBattle {
+
+        static StartPlayerTurn(emptyHand, specialUsed) {
+            return {topic: 'battle.playerTurn', emptyHand: emptyHand, specialUsed: specialUsed}
+        }
+
+        static PlayCombo(card) {
+            return {topic: 'battle.playCombo', card: card}
+        }
+
+        static StartBattle(player, monster) {
+            return {topic: 'battle.startBattle', player: player, monster: monster}
+        }
+
+        static EndBattle(){
+            return {topic: 'battle.endBattle'}
+        }
+
+        static UseSpecial(){
+            return {topic: 'battle.special'}
+        }
+    }
+
     return {
         BroadcastTemplatePlayer : BroadcastTemplatePlayer,
         BroadcastTemplateSkills : BroadcastTemplateSkills,
@@ -500,6 +576,7 @@ export const broadcasts = (() => {
         BroadcastTemplateCamera : BroadcastTemplateCamera,
         BroadcastTemplateMusic: BroadcastTemplateMusic,
         BroadcastTemplateCardShop: BroadcastTemplateCardShop,
+        BroadcastTemplateBattle: BroadcastTemplateBattle,
         BroadcastTemplateNotification : BroadcastTemplateNotification
     }
 })();

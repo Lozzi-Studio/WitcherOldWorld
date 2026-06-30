@@ -1,3 +1,4 @@
+import { broadcasts } from "../Interfaces/broadcasts";
 import { component } from "../Interfaces/component";
 
 
@@ -32,6 +33,7 @@ export const player_position = (() => {
         #PlayerMove(msg) {
             this.#currentTown = msg.town;
             this.#currentPosition = msg.position;
+            this.Broadcast(broadcasts.BroadcastTemplatePlayer.ResolveTownLocation(msg.town));
         }
 
         get currentTown() {

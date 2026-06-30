@@ -61,11 +61,12 @@ export const player_options = (() => {
                                 Gegner Schaden zugefügt hast und er\
                                 dadurch 1 oder mehrere Karten abgelegt\
                                 hat, darfst du diese Spezialisierung\
-                                aktivieren, um die obersten Karten im\
-                                Deck deines Gegners anzusehen und in\
-                                beliebiger Reihenfolge zurückzulegen. Ab\
-                                Stufe 2 legst du manche davon ab.",
-                        "levelInfo": "Anzahl Karten, die du ansehen / ablegen darfst"
+                                aktivieren, um den Gegner zu vergiften.\
+                                In den nächsten Runden bekommt dein\
+                                Gegner 1 Schaden nach seinem Zug.",
+                        "levelInfo": "Anzahl an Runden / Schaden",
+                        "value": [[1,1], [2,1], [3,1], [4,1], [4,1]]
+                        
                     };
                 case "Katzenschule":
                     return {
@@ -76,7 +77,8 @@ export const player_options = (() => {
                                 anzusehen und manche davon auf die\
                                 Hand zu nehmen. Die anderen legst du\
                                 in beliebiger Reihenfolge zurück.",
-                        "levelInfo": "Anzahl Karten die du ansehen / ziehen darfst"
+                        "levelInfo": "Anzahl Karten die du ansehen / ziehen darfst",
+                        "value": [[1,1], [3,1], [3,2], [3,3], [3,3]]
                     };
                 case "Baerenschule":
                     return {
@@ -86,7 +88,8 @@ export const player_options = (() => {
                                 Spezialisierung automatisch aktiviert:\
                                 Ziehe Karten von deinem Deck. Ab Stufe\
                                 2 erhöhst du auch deinen Schildwert.",
-                        "levelInfo": "Anzahl Schilde die du bekommst / Karten die du ziehst"
+                        "levelInfo": "Anzahl Schilde die du bekommst / Karten die du ziehst",
+                        "value": [[0,1], [1,1], [1,2], [2,2], [2,2]]
                     };
                 case "Wolfsschule":
                     return {
@@ -96,7 +99,8 @@ export const player_options = (() => {
                                 diese Spezialisierung aktivieren, um zusätz-\
                                 lichen Schaden zuzufügen. Ab Stufe 2 ziehst\
                                 du auch Karten von deinem Deck.",
-                        "levelInfo": "Schaden den du machst / Karten die du ziehst"
+                        "levelInfo": "Schaden den du machst / Karten die du ziehst",
+                        "value": [[1,0], [1,1], [1,2], [2,2], [2,2]]
                     };
                 case "Greifenschule":
                     return {
@@ -107,7 +111,8 @@ export const player_options = (() => {
                                 Stufe 1–2: Oberste Karte nehmen, Karten ablegen\
                                 Stufe 3: Oberste Karte nehmen\
                                 Stufe 4–5: Beliebige Karte nehmen",
-                        "levelInfo": "Keine Ahnung wie ich die Greifenschule beschreiben soll lol"
+                        "levelInfo": "Mehr Kontrolle über deine Karten.",
+                        "value": [[1,2], [1,1], [1,0], [-1,0], [-1,0]]
                     };
             }
         }

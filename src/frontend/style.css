@@ -8,6 +8,7 @@ body {
     cursor: var(--cursor-default), auto;
     overflow-y: hidden; /* Hide vertical scrollbar */
     overflow-x: hidden; /* Hide horizontal scrollbar */
+    margin:0;
 }
 
 .none {
@@ -40,25 +41,39 @@ body {
     --color-primary-inactive: rgba(219, 218, 213, 0.40);
 } */
 
-.theme--player1 {
-  --color-bg: rgba(66, 46, 14, 0.70);
-  --color-border: rgba(170, 141, 94, 1.00);
-  --color-primary: rgba(240, 210, 164, 1.00);
-  --color-secondary: rgba(61, 47, 22, 1.00);
-}
-
-.theme--player2 {
+.theme--Katzenschule { 
   --color-bg: rgba(16, 52, 63, 0.70);
   --color-border: rgba(122, 207, 233, 1.00);
   --color-primary: rgba(205, 235, 244, 1.00);
   --color-secondary: rgba(29, 62, 70, 1.00);
 }
 
-.theme--player3 {
+.theme--Vipernschule {
   --color-bg: rgba(18, 54, 21, 0.70);
   --color-border: rgba(43, 164, 52, 1.00);
   --color-primary: rgba(193, 227, 195, 1.00);
   --color-secondary: rgba(19, 54, 21, 1.00);
+}
+
+.theme--Baerenschule {
+  --color-bg: rgba(78, 21, 6, 0.70);
+  --color-border: rgb(166, 40, 8);
+  --color-primary: rgb(239, 138, 113);
+  --color-secondary: rgba(78, 21, 6, 1.00);
+}
+
+.theme--Wolfsschule {
+  --color-bg: rgba(20, 14, 4, 0.788);
+  --color-border: rgb(88, 58, 9);
+  --color-primary: rgb(165, 111, 30);
+  --color-secondary: rgb(20, 15, 7);
+}
+
+.theme--Greifenschule {
+  --color-bg: rgba(82, 77, 8, 0.70);
+  --color-border: rgba(197, 185, 12, 0.7);
+  --color-primary: rgba(240, 233, 142, 0.7);
+  --color-secondary: rgba(58, 54, 7, 0.7);
 }
 
 .theme--enemy {
@@ -92,6 +107,14 @@ p, div {
     font-style: normal; */
 
     margin:0px;
+}
+
+input {
+    font-family: "PT Sans", sans-serif;
+}
+
+.position-from-three {
+    position: fixed;
 }
 
 .position-center {
@@ -175,12 +198,32 @@ p, div {
     border-color: var(--color-border);
 }
 
+.container--fill {
+    width: 100%;
+}
+
+.container--justify-flex-start {
+    justify-content: flex-start;
+}
+
+.container--align-flex-start {
+    align-items: flex-start;
+}
+
 .container--small-gap {
     gap: 4px;
 }
 
 .container--no-gap {
     gap: 0px;
+}
+
+.borders--none {
+    border-width: 0px;
+}
+
+.container--wrap {
+    flex-wrap: wrap;
 }
 
 .borders--all {
@@ -208,6 +251,11 @@ p, div {
     border-radius: 0px 12px 12px 0px;
 }
 
+.borders--left-right {
+    border-width: 0px 3px 0px 3px;
+    border-radius: 0px 0px 0px 12px;
+}
+
 .inner-borders {
     border-width: 2px;
     border-radius: 6px;
@@ -231,6 +279,7 @@ p, div {
     gap: 4px;
 
     align-items: center;
+    z-index: 10;
 }
 
 .icon--active {
@@ -366,6 +415,10 @@ p, div {
     color: var(--color-hover);
 }
 
+.glyph-button--inactive {
+    color: var(--color-primary-inactive);
+}
+
 #player-name {
     font-size: 14pt;
     margin-bottom: -3px;  /* needed for gwent font */
@@ -451,6 +504,11 @@ p, div {
 
 #skills-header {
     justify-content: space-between;
+    padding-bottom: 4px;
+}
+
+#skills-content {
+    align-items: flex-start;   
 }
 
 /*Für phase 2 Menü */
@@ -478,13 +536,14 @@ p, div {
 #phase-window {
     display: inline-flex;
     width: fit-content;
-    max-width: 200px;
 
     gap: 4px;
 }
 
 #avatars-container {
     width: max-content;
+    max-width: 200px;
+    flex-wrap: wrap;
 }
 
 #phase-text {
@@ -494,7 +553,7 @@ p, div {
 }
 
 #phase-options-container {
-    max-width: 100%;
+    max-width: 200px;
     min-width: 0;
 
     gap: 4px;
@@ -513,9 +572,83 @@ p, div {
     border-color: var(--green-primary);
 }
 
+#end-game-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; 
+}
+
+#end-game-overlay .textbox {
+    border-style: none !important; 
+}
+
+#end-game-modal {
+    width: 220px !important;
+    border-color: var(--color-border) !important;
+}
+
+#end-game-modal .avatar-container {
+    border-color: var(--color-border) !important;
+}
+
+#back-to-menu-btn {
+    width: 80% !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+
+}
+
+#turn-change-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Über dem restlichen Spielfeld */
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+#turn-change-overlay.overlay--hidden {
+    display: none;
+    opacity: 0;
+}
+
+#turn-change-overlay .textbox{
+    border-style: None !important; 
+}
+
+#turn-change-modal {
+    width: 220px !important;
+    border-color: var(--color-border) !important;
+}
+
+#turn-change-modal .avatar-container {
+    border-color: var(--color-border) !important;
+}
+
+#turn-change-continue-btn {
+    width: 50% !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+
+}
+
 #discard-modal {
     border-radius: 10px;
-    z-index: 1000;
+    z-index: 9;
     
     display: flex;
     flex-direction: column;
@@ -532,7 +665,7 @@ p, div {
 #shop-window {
     position: fixed;
     right: 5px;
-    bottom: 380px;
+    bottom: 400px;
     min-width: 100px;
     max-width: 300px;
 }
@@ -608,7 +741,7 @@ p, div {
     left: 50% !important;
     transform: translateX(-50%);
     margin-top: 8px;
-    z-index: 100;
+    z-index: 11;
 }
 
 .tooltip:hover + .tooltip-text {
@@ -649,7 +782,7 @@ p, div {
 }
 
 #hand-window > div:hover {
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 
 #hand-window > div:not(.card--selected):hover {
@@ -657,9 +790,31 @@ p, div {
     border-radius: 10px;
 }
 
+#card-select > div:not(.card--selected):hover {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    transform: scale(103%, 103%);
+}
+
+#card-select {
+    max-height: 512px;
+    overflow: auto;
+}
+
+#card-select-window {
+    max-width: 690px;
+}
+
+#phase-two-header {
+    font-size: 36px;
+}
+
 #phase-two-options-menu {
     position: fixed;
-    align-items: stretch;
+    min-height: 420px;
+    align-items:center;
+    justify-content: flex-end;
+    text-align:center;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -669,6 +824,7 @@ p, div {
 #meditate-option {
     background-image: url("../../resources/assets/gen-img/town-action-meditate.webp");
     background-size: cover;
+    filter: brightness(0.95);
     font-size: 24pt;
     font-family: Gwent;
     color: #ffffff;
@@ -680,6 +836,7 @@ p, div {
 #fight-monster-option {
     background-image: url("../../resources/assets/gen-img/town-action-Fight-monster.webp");
     background-size: cover;
+    filter: brightness(0.95);
     font-size: 24pt;
     color: #ffffff;
     font-family: Gwent;
@@ -698,6 +855,7 @@ p, div {
 #explore-city-option {
     background-image: url("../../resources/assets/gen-img/town-action-explore-City.webp");
     background-size: cover;
+    filter: brightness(0.95);
     font-size: 22pt;
     font-family: Gwent;
     width: 300px;
@@ -709,12 +867,20 @@ p, div {
 #explore-wilderness-option {
     background-image: url("../../resources/assets/gen-img/town-action-explore-wildernis.webp");
     background-size: cover;
+    filter: brightness(0.95);
     font-size: 22pt;
     font-family: Gwent;
     width: 300px;
     flex: 1;             
     min-height: 0;
     border-radius: 12px;
+}
+
+#meditate-option:not(.option--disabled):hover,
+#fight-monster-option:not(.option--disabled):hover,
+#explore-city-option:not(.option--disabled):hover,
+#explore-wilderness-option:not(.option--disabled):hover {
+    filter: brightness(1.2);
 }
 
 .card {
@@ -730,6 +896,7 @@ p, div {
     /* aspect-ratio: 0.65; */
 
     background-size: cover;
+    transition: transform 400ms;
 }
 
 .card--selected {
@@ -836,9 +1003,150 @@ p, div {
     left: 90%;
 }
 
+#main-menu {
+    overflow: hidden;
+}
+
+
+#battle-player-window {
+    position: fixed;
+    right: 0px;
+    bottom: 400px;
+    min-width: 100px;
+    max-width: 300px;
+}
+
+#battle-monster-window {
+    position: fixed;
+    right: 30%;
+    top: 0px;
+    min-width: 100px;
+    max-width: 300px;
+}
+
+#monster-health {
+    position:absolute;
+    top: -3px;
+    right: -3px;
+
+    width: 34px;
+    height: 34px;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#monster-name {
+    font-size: 14pt;
+    margin-bottom: -3px;  /* needed for gwent font */
+
+    white-space: nowrap;
+    min-width: 84%;
+}
+
+#character-windows {
+    padding: 0px;
+}
+#main-menu > p {
+    margin: 0;
+}
+
+#main-menu-logo {
+    height: 200px;
+}
+
+#background-video {
+    height: 100%;
+    width: 177.78vh; /* 100 * 16 / 9 */
+    min-width: 100%;
+    min-height: 56.25vw; /* 100 * 9 / 16 */
+}
+
+#main-menu-ui {
+    position: fixed;
+    left: 15%;
+    top: 0%;
+    height: 100vh;
+}
+
+#start-game-button {
+    font-size: 24px;
+    width: 90%;
+    padding-top: 8px;
+}
+
+#player-selection-start-game-button {
+    font-size: 24px;
+    padding-top: 8px;
+}
+
+#player-selection {
+    height: 100vh;
+    width: 100vw;
+    background-image: url(/resources/assets/background/player_selection.png);
+    background-size: cover;
+}
+
+#player-selection-window {
+    gap:24px;
+    padding:8px;
+}
+
+#players-container {
+    max-width: 250px;
+}
+
+#player-container {
+    gap:16px;
+    min-height: 48px;
+}
+
+#text-container {
+    max-width: 350px;
+}
+
+.font-size-large {
+    font-size: 24px;
+}
+
+.font-size-middle {
+    font-size: 18px;
+}
+
+.font-size-body {
+    font-size: 14px;
+}
+
+.font-size-small {
+    font-size: 10px;
+}
+
+.player-number {
+    font-size: 24px;
+    width: 12px;
+    text-align: center;
+}
+
+.name-input__label {
+    font-size: 18px;
+}
+
+.name-input {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    border-radius: 6px;
+    font-size: 18px;
+    width: 110px;
+}
+
+.invisible {
+    opacity: 0;
+    width: 0;
+}
+
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 #notification-box {
@@ -960,6 +1268,28 @@ p, div {
     width: 100%;
     padding: 0px 5px 0px 0px;
 }
+
+::-webkit-scrollbar {
+      width: 15px;
+}
+
+::-webkit-scrollbar-track {
+      background-color: var(--color-bg);
+} 
+::-webkit-scrollbar-thumb {
+      background-color: var(--color-border);
+      border-radius: 6px;
+      display: flex;
+} 
+::-webkit-scrollbar-button {
+      background-color: rgba(0, 0, 0, 0.281);
+      display: none;
+} 
+::-webkit-scrollbar-corner {
+      background-color: rgba(0, 0, 0, 0.2);
+      display: none;
+} 
+
 
 ::-webkit-scrollbar {
       width: 15px;

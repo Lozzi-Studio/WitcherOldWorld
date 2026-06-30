@@ -95,6 +95,14 @@ export const ui_manager = (() => {
                 }
             }
 
+            this.handlePlayClick = () => {
+                const btn = document.getElementById("button-play");
+                if (!(btn.classList.contains("button--inactive"))) {
+                    document.getElementById("battle-player-window").style.display = "none";
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.PlayCombo());
+                }
+            }
+
             let debugButton = document.getElementById("debug-next-phase-button");
             this.HandleSkipPhaseClick = () => {
                 if (debugButton.classList.contains("button--inactive") == false) {
@@ -119,6 +127,13 @@ export const ui_manager = (() => {
                 }
             };
 
+            let addTrophyButton = document.getElementById("debug-add-trophy-button");
+            this.HandleAddTrophyClick = () => {
+                if (addTrophyButton.classList.contains("button--inactive") == false) {
+                    this.FindComponent("GameManager").currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+                }
+            };
+
             let cancelButton = document.getElementById("skill-levelup-cancel-button");
             this.HandleCancelLevelupClick = () => {
                 if (cancelButton.classList.contains("button--inactive") == false) {
@@ -135,15 +150,28 @@ export const ui_manager = (() => {
             
             let playerInfoButton = document.getElementById("player-info-button");
             this.HandlePlayerInfoClick = () => {
-                if (playerInfoButton.innerHTML == "info") {
+                if (!playerInfoButton.classList.contains("filled")) {
                     this.#ShowSchoolInfo();
                     this.#ShowSkillInfo();
-                    playerInfoButton.innerHTML = "close";
+                    playerInfoButton.classList.add("filled");
                 }
                 else {
                     this.#HideSchoolInfo();
                     this.#HideSkillInfo();
-                    playerInfoButton.innerHTML = "info";
+                    playerInfoButton.classList.remove("filled");
+                }
+            }
+
+            this.HandleClosePlayerClick = () => {
+                let msg = {player: this.FindComponent("GameManager").currentPlayer}
+                this.#UpdatePlayerInfoWindow(msg);
+            }
+
+            this.handleSpecialClick = () => {
+                const btn = document.getElementById("button-special");
+                if (!(btn.classList.contains("button--inactive"))) {
+                    this.UpdateButtonState("button-special", false);
+                    this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UseSpecial());
                 }
             }
         }
@@ -155,31 +183,50 @@ export const ui_manager = (() => {
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => {this.#OnGameStart(msg)});
             this._RegisterHandler("game.nextPlayer", (msg) => {this.#OnNextPlayer(msg)});
-            this._RegisterHandler("player.move", (msg) => {this.#UpdateButtonState("end-phase-button", true)});
+            this._RegisterHandler("player.move", (msg) => {this.UpdateButtonState("end-phase-button", true)});
 
             this._RegisterHandler('skill.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('player.updateUI', (msg) => {this.#UpdatePlayerStats(msg)});
             this._RegisterHandler('player.updateHandCardsUI', (msg) => {this.#UpdateHandCards(msg)});
-            this._RegisterHandler('card.updateSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
+            this._RegisterHandler('card.updateHandSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
+            this._RegisterHandler('player.selection', (msg) => {this.#UpdatePlayerInfoWindow(msg)});
             
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
 
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButton(msg)});
-            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.#UpdateButtonState("button-discard", msg.active);});
+            this._RegisterHandler('game.updateDiscardButton', (msg) => {this.UpdateButtonState("button-discard", msg.active);});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
+            
+            this._RegisterHandler("game.endGame", (msg) => {this.#OnEndGame(msg)});
+            let newGameButton = document.getElementById("back-to-menu-btn");
+            newGameButton.addEventListener("click", () => {
+                document.getElementById("end-game-overlay").classList.add("overlay--hidden");
+                location.reload();
+            });
 
             this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
+
+            this._RegisterHandler('battle.playerTurn', (msg) => {this.#OnBattlePlayerTurn(msg)});
 
             document.getElementById("close-town-window-button").addEventListener("click", this.#HideTownInfo);
             document.getElementById("debug-next-phase-button").addEventListener("click", this.HandleSkipPhaseClick);
             document.getElementById("end-phase-button").addEventListener("click", this.HandleEndPhaseClick);
             document.getElementById("debug-upgrade-skill-button").addEventListener("click", this.HandleUpgradeSkillClick);
             document.getElementById("debug-add-money-button").addEventListener("click", this.HandleAddMoneyClick);
+            document.getElementById("debug-add-trophy-button").addEventListener("click", this.HandleAddTrophyClick);
+            
             document.getElementById("skill-levelup-cancel-button").addEventListener("click", this.HandleCancelLevelupClick);
             document.getElementById("skill-levelup-continue-button").addEventListener("click", this.HandleContinueLevelupClick);
             document.getElementById("player-info-button").addEventListener("click", this.HandlePlayerInfoClick);
+            
+            document.getElementById("turn-change-continue-btn").addEventListener("click", () => {
+                document.getElementById("turn-change-overlay").classList.add("overlay--hidden");
+            });
+
+            document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
+
             document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
         }
 
@@ -190,8 +237,8 @@ export const ui_manager = (() => {
         /**
          * Triggers Cardslot Selection
          */
-        SelectCard(card_slot, card) {
-            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(card_slot, card));
+        SelectCard(card_slot, card, mode, selectableCards) {
+            this.Broadcast(broadcasts.BroadcastTemplateCards.SelectCard(card_slot, card, mode, selectableCards));
         }
 
         /**
@@ -275,7 +322,6 @@ export const ui_manager = (() => {
             let path = "./resources/assets/glyphs/"
             let skillName = skill.toIdentifier().toLowerCase();
 
-            console.log(skillName);
             const container = document.getElementById(`${skillName}-lvl-bonus-glyph`);
 
             for (let i = 0; i < this.#maxSkillLevel; i++) {
@@ -475,7 +521,7 @@ export const ui_manager = (() => {
             if(active){
                 if (discardButtons) discardButtons.style.display = "flex";
                 skipButton.style.display = "flex";
-                this.#UpdateButtonState("button-skip", true);
+                this.UpdateButtonState("button-skip", true);
                 if (handWindow) handWindow.style.position = "relative";
             }
             else{
@@ -506,6 +552,9 @@ export const ui_manager = (() => {
         #SetPlayerShieldStatus(player) {
             let defenseLevel = player.FindComponent("PlayerSkills").defense.level;
             let shieldPoints = player.FindComponent("Shield").amount;
+             for (let i = 0; i < 5; i++) {
+                document.getElementById(`shield-${i+1}`).classList.remove("filled");
+            }
             for (let i = 0; i < defenseLevel; i++) {
                 document.getElementById(`shield-${i+1}`).classList.remove("icon--inactive");
                 document.getElementById(`shield-${i+1}`).classList.add("icon--active");
@@ -571,7 +620,7 @@ export const ui_manager = (() => {
          * @param {string} buttonID
          * @param {bool} buttonActive 
          */
-        #UpdateButtonState(buttonID, buttonActive) {
+        UpdateButtonState(buttonID, buttonActive) {
             let button = document.getElementById(buttonID);
             if (buttonActive) {
                 button.classList.remove("button--inactive");
@@ -613,7 +662,7 @@ export const ui_manager = (() => {
 
             if (selectedTown == player.town) {
                 buttonMode = "action";
-                if (selectedTown.FindComponent("TownProperties").abilityExecuted) {
+                if (selectedTown.FindComponent("TownProperties").abilityExecuted || !(selectedTown.FindComponent("TownProperties").canUseAbility()) ) {
                     buttonActive = false;
                 }
                 else {
@@ -630,7 +679,7 @@ export const ui_manager = (() => {
                 }
             }
 
-            this.#UpdateButtonState("town-button", buttonActive);
+            this.UpdateButtonState("town-button", buttonActive);
             this.#UpdateTownButtonMode(buttonMode, buttonActive);
         }
 
@@ -722,7 +771,7 @@ export const ui_manager = (() => {
          * @param {cards.Card} card 
          * @param {HTMLElement} cardDIV 
          */
-        #UpdateCardContent(card, cardDIV) {
+        UpdateCardContent(card, cardDIV) {
             const img = new Image();
             img.onload = () => {
                 cardDIV.style.backgroundImage = `url(${card.imagePath})`;
@@ -746,15 +795,15 @@ export const ui_manager = (() => {
             for (let [i, card] of playerHand.entries()) {
                 let cardDIV = document.getElementById(`card-image-${i}`);
                 if (cardDIV) {
-                    this.#UpdateCardContent(card, cardDIV);
+                    this.UpdateCardContent(card, cardDIV);
                 }
                 else {
                     let newCardDIV = document.createElement("div");
                     newCardDIV.id = `card-image-${i}`;
                     newCardDIV.classList.add("container", "container--col", "card");
                     handWindow.appendChild(newCardDIV);
-                    newCardDIV.addEventListener("click", () => this.SelectCard(i, card));
-                    this.#UpdateCardContent(card, newCardDIV);
+                    newCardDIV.addEventListener("click", () => this.SelectCard(i, card, "Hand", 1));
+                    this.UpdateCardContent(card, newCardDIV);
                 }
             }
             for (let [i, child] of Array.from(handWindow.children).entries()) {
@@ -779,8 +828,6 @@ export const ui_manager = (() => {
                 }
             }
             else {
-                let player = this.FindComponent("GameManager").currentPlayer;
-                let playerHand = player.FindComponent("Carddeck").hand;
                 let handWindow = document.getElementById("hand-window");
                 for (let [i, child] of Array.from(handWindow.children).entries()) {
                     document.getElementById(`card-image-${i}`).classList.remove("card--selected");
@@ -789,6 +836,9 @@ export const ui_manager = (() => {
             switch(msg.phase) {
                 case 1:
                     this.#UpdateTownButton(msg);
+                    break;
+                case 2:
+                    this.#UpdatePlayButton(msg);
                     break;
                 case 3:
                     this.#UpdateShopButton(msg);
@@ -827,23 +877,53 @@ export const ui_manager = (() => {
             this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextPlayer(playerList[0]));
         }
 
+        #UpdatePlayerInfoWindow(msg) {
+            let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+            let playerWindow = document.getElementById("player-window");
+            let closeButton = document.getElementById("close-player-window-button");
+            let infoButton = document.getElementById("player-info-button");
+            if (msg.player != currentPlayer) {
+                playerWindow.classList.add("borders--all");
+                playerWindow.classList.add("position-from-three");
+                playerWindow.classList.remove("position-top-left");
+                playerWindow.classList.remove("borders--bottom-right");
+                closeButton.style.display = "block";
+                infoButton.style.display = "none";
+            }
+            else {
+                playerWindow.classList.remove("borders--all");
+                playerWindow.classList.remove("position-from-three");
+                playerWindow.classList.add("borders--bottom-right");
+                playerWindow.classList.add("position-top-left");
+                playerWindow.style.transform = null;
+                closeButton.style.display = "none";
+                infoButton.style.display = "block";
+            }
+
+            this.#SetPlayerInfo(msg);
+            this.#SetPlayerAvatar(msg);
+            this.#UpdatePlayerStats(msg);
+            this.#UpdatePlayerSchool(msg);
+            this.#InitPlayerWindow();
+
+        }
+
         /**
          * Update UI on player switch
          * @param {object} msg 
          */
         #OnNextPlayer(msg) {
-            this.#SetPlayerInfo(msg);
-            this.#SetPlayerAvatar(msg);
-            this.#UpdatePlayerStats(msg.player);
+            this.#UpdatePlayerInfoWindow(msg)
+
             this.#OnNextPhase();
             this.#UpdateHandCards(msg);
-            this.#UpdateButtonState("end-phase-button", false);
-            this.#UpdatePlayerSchool(msg);
-            this.#InitPlayerWindow();
-        
+            this.UpdateButtonState("end-phase-button", false);
+
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
+
+            this.#ShowTurnChangePopup(msg.player);
         }
 
         /**
@@ -880,12 +960,15 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdatePlayerStats(msg) {
-            let player = this.FindComponent("GameManager").currentPlayer;
-            this.#SetPlayerSkills(player);
-            this.#SetPlayerShieldStatus(player);
-            this.#SetWitcherLevel(player);
-            this.#SetPlayerMoney(player);
-            this.#SetPlayerTrophies(player);
+            this.#SetPlayerSkills(msg.player);
+            this.#SetPlayerShieldStatus(msg.player);
+            if (this.FindEntity("BattleEntity") == null) {
+                this.#SetWitcherLevel(msg.player);
+            } else if ((this.FindEntity("BattleEntity").FindComponent("BattleManager").player) == null) {
+                this.#SetWitcherLevel(msg.player);
+            }
+            this.#SetPlayerMoney(msg.player);
+            this.#SetPlayerTrophies(msg.player);
         }
 
         /**
@@ -894,10 +977,14 @@ export const ui_manager = (() => {
         #ExcludeUIFromRaycasting () {
             const UI = document.getElementById("game-ui");
             UI.addEventListener("mouseenter", () => {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
+                if (this.FindComponent("GameManager").phase.toIdentifier() != 2) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting());
+                }
             });
             UI.addEventListener("mouseleave", () => {
-                this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
+                if (this.FindComponent("GameManager").phase.toIdentifier() != 2) {
+                    this.Broadcast(broadcasts.BroadcastTemplateGame.EnableRaycasting());
+                }
             });
         }
 
@@ -912,10 +999,9 @@ export const ui_manager = (() => {
             let camera = this.FindEntity("Camera").camera;
             camera.updateMatrixWorld(true);
             let coordinates = entity.position.clone().project(camera);
-
             let canvas = this._parent._parent.renderer.domElement;
-            const x = (coordinates.x *  .5 + .5) * canvas.clientWidth;
-            const y = (coordinates.y * -.5 + .5) * canvas.clientHeight;
+            const x = (coordinates.x *  0.5 + 0.5) * canvas.clientWidth;
+            const y = (coordinates.y * -0.5 + 0.5) * canvas.clientHeight;
 
             document.getElementById(elementID).style.transform = `translate(-${percentOffsetX}%, -${percentOffsetY}%) translate(${x}px,${y}px)`;
         }
@@ -934,9 +1020,32 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateShopButton(msg) {
-            this.#UpdateButtonState("shop-button", this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
+            this.UpdateButtonState("shop-button", this.FindEntity("GameArea").FindComponent("GameManager").ValidateBuyCard());
             let button = document.getElementById("shop-button");
             button.addEventListener("click", this.handleBuyClick);
+        }
+
+        #OnBattlePlayerTurn(msg) {
+            document.getElementById("battle-player-window").style.display = "flex";
+            document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
+            document.getElementById("button-special").addEventListener("click", this.handleSpecialClick);
+            if (msg.emptyHand) {
+                document.getElementById("button-play").innerHTML = "Zug Aussetzen"
+                this.UpdateButtonState("button-play", true);
+            } else {
+                document.getElementById("button-play").innerHTML = "Combo Auspielen"
+                this.UpdateButtonState("button-play", false);
+            }
+            if (msg.specialUsed) {
+                this.UpdateButtonState("button-special", false);
+            } else {
+                this.UpdateButtonState("button-special", true);
+            }
+            
+        }
+
+        #UpdatePlayButton(msg)  {
+            this.UpdateButtonState("button-play", this.FindEntity("GameArea").FindComponent("GameManager").ValidateCardSelected());
         }
 
 
@@ -948,6 +1057,10 @@ export const ui_manager = (() => {
             if (document.getElementById("town-window").style.display == "flex") {
                 let townEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedTown;
                 this.#PositionHTMLElementBasedOnEntity("town-window", townEntity, 50, 120);
+            }
+            if (document.getElementById("player-window").classList.contains("position-from-three")) {
+                let playerEntity = this.FindEntity("GameArea").FindComponent("GameManager").selectedPlayer;
+                this.#PositionHTMLElementBasedOnEntity("player-window", playerEntity,  50, 130);
             }
         }
 
@@ -974,11 +1087,11 @@ export const ui_manager = (() => {
             }
 
             if (this.#hasEnoughMoneyForLevelup && this.#hasSkillLeftForLevelup) {
-                this.#UpdateButtonState(levelupButton.id, true);
+                this.UpdateButtonState(levelupButton.id, true);
                 this.#isLevelupPossible = true;
             }
             else {
-                this.#UpdateButtonState(levelupButton.id, false);
+                this.UpdateButtonState(levelupButton.id, false);
             }
 
             levelupButton.addEventListener("click", () => {
@@ -986,11 +1099,11 @@ export const ui_manager = (() => {
                     player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase", true));
 
                     for (let buttonID of (["combat-levelup-button", "defense-levelup-button", "alchemy-levelup-button", "special-levelup-button"])) {
-                        this.#UpdateButtonState(buttonID, false);
+                        this.UpdateButtonState(buttonID, false);
                     }
 
-                    this.#UpdateButtonState("skill-levelup-continue-button", true);
-                    this.#UpdateButtonState("skill-levelup-cancel-button", false);
+                    this.UpdateButtonState("skill-levelup-continue-button", true);
+                    this.UpdateButtonState("skill-levelup-cancel-button", false);
                 }
             });
         }
@@ -1016,11 +1129,88 @@ export const ui_manager = (() => {
                 document.getElementById(`${skillName}-levelup-bonus`).style.display = "none";
             }
 
-            document.getElementById("player-info-button").style.display = "block";
-            document.getElementById("player-info-button").innerHTML = "info";
+            document.getElementById("player-info-button").classList.remove("filled");
             document.getElementById("skill-levelup-buttons-container").style.display = "none";
             document.getElementById("levelup-impossible-text").style.display = "none";
 
+        }
+
+        #ShowTurnChangePopup(player){
+            const overlay = document.getElementById("turn-change-overlay");
+            const modal = document.getElementById("turn-change-modal");
+            const avatar = document.getElementById("turn-change-avatar");
+            const text = document.getElementById("turn-change-text");
+
+            avatar.src = this.#GetAvatarPathFromPlayer(player);
+            
+            let formattedName = this.#ReplaceUmlaute(player.playerName.toUpperCase());
+            text.innerHTML = `${formattedName} IST AN DER REIHE`;
+
+            if (modal) {
+                Array.from(modal.classList).forEach(className => {
+                    if (className.startsWith("theme--")) {
+                        modal.classList.remove(className);
+                    }
+                });
+
+                const schoolName = player.witcherSchool ? player.witcherSchool.name : "";
+                
+                if (schoolName) {
+                    modal.classList.add(`theme--${schoolName}`);
+                }
+            }
+
+            overlay.classList.remove("overlay--hidden");
+        }
+
+        /**
+         * Opens overlay that shows winner and scoreboard
+         * @param {object} msg 
+         */
+        #OnEndGame(msg){
+            const overlay = document.getElementById("end-game-overlay");
+            const modal = document.getElementById("end-game-modal");
+            const avatar = document.getElementById("winner-avatar");
+            const text = document.getElementById("end-game-text");
+            const scoreboard = document.getElementById("end-game-scoreboard");
+
+            avatar.src = this.#GetAvatarPathFromPlayer(msg.winner);
+            
+            let formattedName = this.#ReplaceUmlaute(msg.winner.playerName.toUpperCase());
+            text.innerHTML = `${formattedName} HAT GEWONNEN`;
+
+            if (scoreboard) {
+                scoreboard.innerHTML = "";
+
+                const sortedPlayers = this._parent._parent.Filter(x => x.name.includes("Player")).sort((a, b) => {
+                    const trophiesA = a.FindComponent("TrophyStorage").amount;
+                    const trophiesB = b.FindComponent("TrophyStorage").amount;
+                    return trophiesB - trophiesA;
+                });
+
+                sortedPlayers.forEach(player => {
+                    const trophies = player.FindComponent("TrophyStorage").amount;
+                    const name = this.#ReplaceUmlaute(player.playerName);
+
+                    const row = document.createElement("div");
+                    row.className = "container container--row container--justify-between container--no-padding";
+                    row.style.width = "100%";
+                    row.style.paddingBottom = "4px";
+
+                    row.innerHTML = `
+                        <div class="--fancy-font" style="font-size: 16px;">${name}</div>
+                        <div class="container container--row container--no-padding" style="gap: 6px;">
+                            <div class="material-symbols-outlined filled small">trophy</div>
+                            <div class="--fancy-font text-single-number" style="font-size: 16px; margin-bottom: -3px;">${trophies}</div>
+                        </div>
+                    `;
+
+                    scoreboard.appendChild(row);
+                });
+
+            }
+
+            overlay.style.display = "flex";
         }
 
         #SetSkillWindowMode(mode) {
@@ -1043,7 +1233,6 @@ export const ui_manager = (() => {
                     headingContainer.style.justifyContent = "space-between";
 
                     expandButton.style.display = "block";
-                    expandButton.innerHTML = "info";
 
                     buttonsContainer.style.display = "none";
                     levelupImpossibleText.style.display = "none";

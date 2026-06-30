@@ -3,6 +3,7 @@ import { town_options } from "./town-options";
 import { card_options } from "../Cards/card-options";
 import * as THREE from 'three';
 import { broadcasts } from "../Interfaces/broadcasts";
+import { region } from "../GameArea/region";
 
 
 export const town_properties = (() => {
@@ -69,7 +70,17 @@ export const town_properties = (() => {
          * @returns {bool} 
          */
         canEnter(card) {
-            return (card.region.equals(this.#region) || this.#region.toIdentifier() == "Joker");
+            return (card.region.equals(this.#region) || this.#region.toIdentifier() == region.Region.Joker().toIdentifier() || card.region.toIdentifier() == region.Region.Joker().toIdentifier());
+        }
+
+        canUseAbility() {
+            if (this.#ability.trigger.topic == 'skill.changeLevel') {
+                return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").canIncrease(this.#ability.trigger.skill);
+            } 
+            if (this.#ability.trigger.topic == 'card.drawCard') {
+                return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").potion.length < 4;
+            }
+            return true
         }
 
         /**
