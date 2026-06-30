@@ -169,7 +169,7 @@ export const ui_manager = (() => {
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
             
             this._RegisterHandler("game.endGame", (msg) => {this.#OnEndGame(msg)});
-            let newGameButton = document.getElementById("new-game-btn");
+            let newGameButton = document.getElementById("back-to-menu-btn");
             newGameButton.addEventListener("click", () => {
                 document.getElementById("end-game-overlay").classList.add("overlay--hidden");
                 this._parent._parent.SwitchScene("MainMenu");
@@ -1105,6 +1105,37 @@ export const ui_manager = (() => {
             
             let formattedName = this.#ReplaceUmlaute(msg.winner.playerName.toUpperCase());
             text.innerHTML = `${formattedName} HAT GEWONNEN`;
+
+            if (scoreboard) {
+                scoreboard.innerHTML = "";
+
+                const sortedPlayers = this._parent._parent.Filter(x => x.name.includes("Player")).sort((a, b) => {
+                    const trophiesA = a.FindComponent("TrophyStorage").amount;
+                    const trophiesB = b.FindComponent("TrophyStorage").amount;
+                    return trophiesB - trophiesA;
+                });
+
+                sortedPlayers.forEach(player => {
+                    const trophies = player.FindComponent("TrophyStorage").amount;
+                    const name = this.#ReplaceUmlaute(player.playerName);
+
+                    const row = document.createElement("div");
+                    row.className = "container container--row container--justify-between container--no-padding";
+                    row.style.width = "100%";
+                    row.style.paddingBottom = "4px";
+
+                    row.innerHTML = `
+                        <div class="--fancy-font" style="font-size: 16px;">${name}</div>
+                        <div class="container container--row container--no-padding" style="gap: 6px;">
+                            <div class="material-symbols-outlined filled small">trophy</div>
+                            <div class="--fancy-font text-single-number" style="font-size: 16px; margin-bottom: -3px;">${trophies}</div>
+                        </div>
+                    `;
+
+                    scoreboard.appendChild(row);
+                });
+
+            }
 
             overlay.classList.remove("overlay--hidden");
         }

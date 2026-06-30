@@ -600,8 +600,8 @@ input {
     border-color: var(--color-border) !important;
 }
 
-#new-game-btn {
-    width: 50% !important;
+#back-to-menu-btn {
+    width: 80% !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 
