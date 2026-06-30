@@ -177,7 +177,7 @@ export const cards = (() => {
          */
         static getWuchtschlag() {
             return new card.Card(
-                "Wutchschlag",
+                "Wuchtschlag",
                 card_options.Color.Red(),
                 new Map(),
                 card_options.CardEffect.createCardEffect(3,0,-1,false,false),
