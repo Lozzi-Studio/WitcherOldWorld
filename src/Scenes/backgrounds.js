@@ -21,7 +21,7 @@ export const backgrounds = (() => {
         InitComponent() {
 
             const video = document.getElementById( 'background_video' );
-            video.playbackRate = 0.35;
+            video.playbackRate = 0.7;
             video.play();
 
             const texture = new THREE.VideoTexture( video );
@@ -47,7 +47,6 @@ export const backgrounds = (() => {
             logoMesh.position.copy(new THREE.Vector3(-0.5,0.6,0))
 
             this._parent._parent.scene.add(logoMesh);
-            
         }
 
         get background() {

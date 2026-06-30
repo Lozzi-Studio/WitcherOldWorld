@@ -26,12 +26,89 @@
     </div>
 
     <div id="main-menu" style="display: none;">
-        <video id="background_video" loop muted crossOrigin="anonymous" playsinline style="display:none">
-			<source src="resources/assets/background/main_menu.webm">
-		</video>
-
+        <video id="background-video" loop muted playsinline autoplay>
+            <source src="resources/assets/background/main_menu.mp4">
+        </video>
+        <div class="container container--col container--neutral container--justify borders--none" id="main-menu-ui">
+            <img src="resources/assets/background/the-witcher-old-world-eng-logo.webp" id="main-menu-logo">
+            <div class="textbox textbox--fill button --fancy-font" id="start-game-button">Spiel Starten</div>
+            <div class="container container--col">
+                <div class="container container--col container--no-gap">
+                    <div class="--fancy-font" style="margin-bottom: 4px;">Credits</div>
+                    <div>Tim Förster</div>
+                    <div>Luca Illgen</div>
+                    <div>Janik Kusch</div>
+                    <div>Lana Michler</div>
+                </div>
+                <div class="container container--col container--no-gap">
+                    <div class="--fancy-font" style="margin-bottom: 4px;">Projektrahmen</div>
+                    <div>Hochschule München</div>
+                    <div>Informatik & Design</div>
+                    <div>Projektmodul Interaktion</div>
+                    <div>Gruppe 6</div>
+                </div>
+                 <div class="container container--col container--no-gap">
+                    <div class="--fancy-font" style="margin-bottom: 4px;">Copyright</div>
+                    <div>Spiel, Bilder und Ton</div>
+                    <div>&copy; CD Projekt RED</div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <div id="player-selection" style="display: none;">
+        <div class="container container--col container--neutral container--justify position-center borders--all" id="player-selection-window">
+            <div class="--fancy-font font-size-large">Spieler auswählen</div>
+            <div class="container container--row container--align-flex-start">
+                <div class="container container--col container--justify-between" id="players-container">
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">1</div>
+                        <label for="name-player-1" id="label-player-1" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-1" value="Spieler 1" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-1">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-1">close</div>
+                    </div>
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">2</div>
+                        <label for="name-player-2" id="label-player-2" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-2" value="Spieler 2" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-2">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-2">close</div>
+                    </div>
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">3</div>
+                        <label for="name-player-3" id="label-player-3" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-3" value="Spieler 3" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-3">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-3">close</div>
+                    </div>
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">4</div>
+                        <label for="name-player-4" id="label-player-4" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-4" value="Spieler 4" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-4">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-4">close</div>
+                    </div>
+                    <div class="container container--row container--fill container--justify-flex-start" id="player-container">
+                        <div class="player-number --fancy-font">5</div>
+                        <label for="name-player-5" id="label-player-5" class="name-input__label">Name: </label>
+                        <input name="searchTxt" type="text" maxlength="10" id="name-player-5" value="Spieler 5" class="name-input">
+                        <div class="textbox textbox--fill button font-size-middle" id="add-player-button-5">Spieler hinzufügen</div>
+                        <div class="material-symbols-outlined glyph-button" id="remove-player-button-5">close</div>
+                    </div>
+                </div>
+                <div class="container container--col" id="text-container">
+                    <div class="container inner-borders inner-borders--neutral">
+                        Zum Spielen sind mindestens zwei und höchstens fünf Spieler erforderlich.
+                    </div>
+                    <div class="container inner-borders inner-borders--neutral">
+                        Nach Spielstart wird jedem Spieler zufällig eine Hexerschule zugeteilt, die seine Anfangskarten und Spezialfähigkeit bestimmt.
+                    </div>
+                </div>
+            </div>
+            <div class="textbox textbox--fill button --fancy-font" id="player-selection-start-game-button">Spiel Starten</div>
+        </div>
+    </div>
 
     <div id="game-ui" style="display: none;"> 
         <div class="container container--row container--neutral borders--bottom-right position-top-left" id="player-window">
@@ -61,11 +138,14 @@
                 <div class="container container--row container--justify container--no-padding" id="player-shield-container"></div>
             </div>
             <div class="container container--col container--no-padding" id="skills-container">
-                <div class="container container--row" id="skills-header">
+                <div class="container container--row container--no-padding" id="skills-header">
                         <div class="--fancy-font" id="skills-header-text">Skills</div>
-                        <div class="material-symbols-outlined glyph-button" id="player-info-button">info</div>
+                        <div class="container container--row container--no-padding container--small-gap">
+                            <div class="material-symbols-outlined glyph-button" id="player-info-button">info</div>
+                            <div class="material-symbols-outlined glyph-button" id="close-player-window-button">close</div>
+                        </div>
                 </div>
-                <div class="container container--row container--no-padding container--small-gap">
+                <div class="container container--row container--no-padding container--small-gap" id="skills-content">
                     <div class="container container--col container--no-padding">
                         <div class="container container--row container--small-gap" id="combat-levelup-bonus">
                             <div>+1x</div>
@@ -170,6 +250,16 @@
                             <div class="skill-info" id="special-info">SPECIAL INFO</div>
                         </div>
                     </div>
+                    <div class="container container--col" id="school-info">
+                        <img id="school-image">
+                        <div class="textbox textbox--fill textbox--fancy-font"><p id="school-name">NAME</p></div>
+                        <div class="container container--row container--no-padding">
+                            <div class="tooltip-icon material-symbols-outlined filled" id="special-icon">star_shine</div>
+                            <div class="tooltip-text tooltip-text--bottom">Spezialfähigkeit</div>
+                            <div class="--fancy-font" id="school-ability-name">ABILITY</div>
+                        </div>
+                        <div id="school-ability-info">ABILITY</div>
+                    </div>
                 </div>
                 <div id="levelup-impossible-text">Du hast nicht genug Geld</div>
                 <div class="container container--row container--justify-between" id="skill-levelup-buttons-container">
@@ -177,32 +267,28 @@
                     <div class="textbox textbox--fill button" id="skill-levelup-continue-button">Fortfahren</div>
                 </div>
             </div>
-            <div class="container container--col" id="school-info">
-                <img id="school-image">
-                <div class="textbox textbox--fill textbox--fancy-font"><p id="school-name">NAME</p></div>
-                <div class="container container--row container--no-padding">
-                    <div class="tooltip-icon material-symbols-outlined filled" id="special-icon">star_shine</div>
-                    <div class="tooltip-text tooltip-text--bottom">Spezialfähigkeit</div>
-                    <div class="--fancy-font" id="school-ability-name">ABILITY</div>
-                </div>
-                <div id="school-ability-info">ABILITY</div>
-            </div>
         </div>
 
-        <div class="container borders--all container--neutral container--row" id="phase-two-options-menu" style="display: none;">
-            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="meditate-option">
-                Meditate
-            </div>   
-            <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="fight-monster-option">
-                Fight-monster
+        <div class="container borders--all container--neutral container--col" id="phase-two-options-menu" style="display: none;">
+            <div class="--fancy-font" id="phase-two-header">
+                Wähle eine Aktion für Phase 2
             </div>
 
-            <div class="container container--col container--stretch container container--no-padding container--col" id ="explore-options">
-                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-city-option">
-                    Die Stadt erkunden
+            <div class="container container--row">
+                <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="meditate-option">
+                    Meditieren
+                </div>   
+                <div class= "container container--col textbox textbox--fill button option--disabled inner-borders" id="fight-monster-option">
+                    Das Monster Bekämpfen
                 </div>
-                <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-wilderness-option">
-                    Die Wildnis erkunden
+    
+                <div class="container container--col container--stretch container container--no-padding container--col" id ="explore-options">
+                    <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-city-option">
+                        Die Stadt erkunden
+                    </div>
+                    <div class= "container container--col button inner-borders inner-borders--neutral" id="explore-wilderness-option">
+                        Die Wildnis erkunden
+                    </div>
                 </div>
             </div>
         </div>
@@ -256,6 +342,21 @@
             <div class="textbox textbox--fill button" id="debug-next-phase-button">Skip Phase</div>
             <div class="textbox textbox--fill button" id="debug-upgrade-skill-button">Upgrade Skill</div>
             <div class="textbox textbox--fill button" id="debug-add-money-button">Add Money</div>
+            <div class="textbox textbox--fill button" id="debug-open-card-selection-button">Open Cards</div>
+        </div>
+
+        <div id="turn-change-overlay" class="overlay--hidden">
+            <div id="turn-change-modal" class="container container--col container--neutral borders--all" style="padding: 30px; gap: 20px; width: 280px;">
+                <div class="avatar-container" style="width: 140px; height: 140px;">
+                    <img class="avatar" id="turn-change-avatar" src="" style="width: 100%; height: 100%;">
+                </div>
+                <div class="textbox textbox--fancy-font" style="width: 90%;">
+                    <p id="turn-change-text">NAME IST AN DER REIHE</p>
+                </div>
+                <div class="textbox textbox--fill button --fancy-font" id="turn-change-continue-btn" style="width: 90%;">
+                    Fortfahren
+                </div>
+            </div>
         </div>
     </div>
     
