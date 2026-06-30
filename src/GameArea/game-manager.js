@@ -292,6 +292,11 @@ export const game_manager = (() => {
             const drawMore = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawMoreStatus);
 
             let amountToDraw = 3-deckLength-drawLess+drawMore;
+            if (amountToDraw == 0) {
+                if (this.#currentPlayer.FindComponent("Carddeck").hand.length == 0) {
+                    amountToDraw = 1;
+                }
+            }
             if(amountToDraw > 0){ 
                 this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
             } 
@@ -345,10 +350,28 @@ export const game_manager = (() => {
             // give start deck to players
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             let playerTownPositions = [];
+            let startCards = [];
+            switch(players.length) {
+                case 5:
+                    startCards = [2,3,4,4,5];
+                    break;
+                case 4:
+                    startCards = [2,3,4,5];
+                    break;
+                case 3:
+                    startCards = [3,4,5];
+                    break;
+                case 2:
+                    startCards = [3,5];
+                    break;
+            }
+            let index = 0;
             for (let player of players) {
                 player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player", player.witcherSchool.name));
-                player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 3))
+                player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", startCards[index]))
+                //
                 playerTownPositions.push(player.town);
+                index ++;
             }
             let regions = [region.Region.Forest(), region.Region.Mountain(), region.Region.River()];
             let i = 0;
@@ -368,10 +391,6 @@ export const game_manager = (() => {
             let hpPool = [12,15,19];
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             let playerTownPositions = [];
-            for (let player of players) {
-                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
-                playerTownPositions.push(player.town);
-            }
             for (let monster of this.#currentMonster.values()) {
                 playerTownPositions.push(monster.town);
             }

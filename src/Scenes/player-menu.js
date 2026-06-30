@@ -19,7 +19,7 @@ export const player_menu = (() => {
         InitSceneEntities() {
             this._entityManager.AddEntity(this._parent._currentCamera, undefined, false);
 
-            document.getElementById('player-selector').style.display = 'block';
+            
 
             this.#InitMenu();
         }
