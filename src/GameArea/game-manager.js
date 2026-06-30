@@ -103,7 +103,7 @@ export const game_manager = (() => {
                     if (result != null) {
                         this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(result[0], "Delete"));
                         removedCard = result[0];
-                        let shopCards = this.FindEntity("Cardshop").FindComponent("Carddeck").hand.filter(card => card.cost  == removedCard.cost || card.cost == removedCard.cost + 1)
+                        let shopCards = this.FindEntity("Cardshop").FindComponent("Carddeck").hand.filter(card => card.cost <= removedCard.cost + 1)
                         if (shopCards.length > 0) {
                             this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(shopCards,1, "Erhalten auf deine Hand", false).then(
                                 (result) => {   
