@@ -175,6 +175,11 @@ export const broadcasts = (() => {
             return {topic: 'card.randomDiscard'}
         }
 
+
+        static DiscardRandomPotion(amount) {
+            return {topic: 'card.discardRandomPotion', amount: amount}
+        }
+
     }
 
     class BroadcastTemplateSkills {
