@@ -63,7 +63,7 @@
             }
         },
         {
-            "Text": "Wie eine wankende Horden sie auf dich zu. An ihren langne Bärten, Kapuzen und gelallten Gesängen erkennst du, dass es sich um Angehörige des Klerus handelt. Die betrunkenen Priester bleiben vor dir stehen und ihr Anführer mustert dich mit humorlosen Augen.\n\"Welchem Glauben gehörst du an? Sprich!\"",
+            "Text": "Wie eine wankende Horden torkeln sie auf dich zu. An ihren langen Bärten, Kapuzen und gelallten Gesängen erkennst du, dass es sich um Angehörige des Klerus handelt. Die betrunkenen Priester bleiben vor dir stehen und ihr Anführer mustert dich mit humorlosen Augen.\n\"Welchem Glauben gehörst du an? Sprich!\"",
             "OptionA": "\"Ich glaube an Melitele.\"",
             "OptionB": "\"Ich glaube an die Lehren des Propheten Majoran.\"",
             "ResultTextA": "\"Guter Mann! Die Jünger Majorans sind so dumm, die glauben auch, Temerische Kronen wären eine Kopfbedeckung, hahaha! Komm mit und trink einen mit uns!\"",
@@ -105,7 +105,7 @@
             }
         },
         {
-            "Text": "Vo den Stadtmauern begegnest du einem Zwerg. Als er seine Kapuze abnimmt, blickst du in ein Gesicht, das aussieht, als hätte man es mit einem Hammer bearbeitet. Jemand hat den armen Kerl übel zugerichtet.\n\"Der Stadrat hat alle Nichtmenschen zu unerwünschten Personen erklärt. Seit Jahren betreibe ich schon die Schmiede hier und dacht, man könnte vielleicht eine Übereinkunft treffen. Pah, einen Scheiß! Jetzt stehe ich vor dem Nichts.",
+            "Text": "Vor den Stadtmauern begegnest du einem Zwerg. Als er seine Kapuze abnimmt, blickst du in ein Gesicht, das aussieht, als hätte man es mit einem Hammer bearbeitet. Jemand hat den armen Kerl übel zugerichtet.\n\"Der Stadrat hat alle Nichtmenschen zu unerwünschten Personen erklärt. Seit Jahren betreibe ich schon die Schmiede hier und dacht, man könnte vielleicht eine Übereinkunft treffen. Pah, einen Scheiß! Jetzt stehe ich vor dem Nichts.",
             "OptionA": "Ich gebe ihm Heilkräuter für seine Verletzungen.",
             "OptionB": "Ich frage ihn, ob er irgendwo unterkommen kann.",
             "ResultTextA": "Dankbar nimmt er die Kräuter entgegen. Es geht jedoch gegen seine Zwergenehre, sie geschenkt anzunehmen.",
