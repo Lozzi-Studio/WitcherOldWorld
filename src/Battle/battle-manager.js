@@ -86,6 +86,7 @@ export const battle_manager = (() => {
         }
 
         #MonsterTurn() {
+            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Das Monster ist am Zug."))
             let nextMove = this.#monster.FindComponent("MonsterAi").ChooseNextMove();
             if (nextMove.damage > 0) {
                 this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.damage));

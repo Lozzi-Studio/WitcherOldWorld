@@ -115,11 +115,10 @@ export const notifaction_manager = (() => {
                         notificationAdded = true;
                     }
                     break;
-                // TODO: braucht es das?? 
-                // case 'battle.playerTurn':
-                //     this.#notificationQueue.push(currentPlayer.playerName + " ist am Zug.");
-                //     notificationAdded = true;
-                //     break;
+                case 'battle.playerTurn':
+                    this.#notificationQueue.push(currentPlayer.playerName + " ist am Zug.");
+                    notificationAdded = true;
+                    break;
                 case 'battle.endBattle':
                     let endBattleText = "Der Kampf wurde beendet."
                     if (this.#notificationQueue[this.#notificationQueue.length - 1] !== endBattleText) {
