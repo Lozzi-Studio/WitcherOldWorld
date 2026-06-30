@@ -7,6 +7,7 @@ export const card_select_ui = (() => {
 
     class CardSelectUI extends component.Component {
         #selection;
+        #selectionAmount;
 
         constructor(){
             super();
@@ -14,27 +15,29 @@ export const card_select_ui = (() => {
             let openCardsButton = document.getElementById("debug-open-card-selection-button");
             this.HandleOpenCardsClick = () => {
                 if (openCardsButton.classList.contains("button--inactive") == false) {
-                    let handCards = this.FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").hand;
-                    this.GetCardSelectionFromPlayerPrompt(handCards, 2);
+                    let handCards = this.FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").deck;
+                    this.GetCardSelectionFromPlayerPrompt(handCards, 2, "Abwerfen").then((result) => {console.log(result)});
                 }
             };
         }
 
         InitComponent(){
-            this._RegisterHandler('card.updateCardSelectionUI', (msg) => {this.#UpdateCardSelection(msg)});
             document.getElementById("debug-open-card-selection-button").addEventListener("click", this.HandleOpenCardsClick);
         }
 
-        async GetCardSelectionFromPlayerPrompt(cards, selectableCards) {
-            const selection = await this.FindComponent("CardSelectUI").PromptCardSelection(cards, selectableCards);
+        async GetCardSelectionFromPlayerPrompt(cards, selectableCards, reason) {
+            this.#selectionAmount = selectableCards;
+            this.#selection = [];
+            return await this.PromptCardSelection(cards, selectableCards, reason);
         }
 
         /**
          * 
          * @param {Array} cards 
          * @param {int} selectableCards 
+         * @param {string} reason
          */
-        PromptCardSelection(cards, selectableCards) {
+        PromptCardSelection(cards, selectableCards, reason) {
             return new Promise((resolve) => {
                 let handWindow = document.getElementById("hand-window");
                 const handCards = document.querySelectorAll('#hand-window > div:not(:last-child)');
@@ -53,7 +56,7 @@ export const card_select_ui = (() => {
                 header.classList.add(
                     "font-size-large", "--fancy-font"
                 )
-                header.innerHTML = `Wähle ${selectableCards} Karten aus`
+                header.innerHTML = `Wähle ${selectableCards} Karten zum ${reason} aus`
                 header.style.paddingTop = "4px";
                 cardSelectWindow.appendChild(header);
 
@@ -69,7 +72,7 @@ export const card_select_ui = (() => {
                     cardDIV.id = `window-card-${index}`;
                     cardDIV.classList.add("container", "container--col", "card");
                     this.FindComponent("UIManager").UpdateCardContent(card, cardDIV);
-                    cardDIV.addEventListener("click", () => this.FindComponent("UIManager").SelectCard(index, card, "CardSelect", selectableCards));
+                    cardDIV.addEventListener("click", () => { this.#OnCardSelect(index)});
                     cardSelect.appendChild(cardDIV);
                 }
                 
@@ -89,12 +92,13 @@ export const card_select_ui = (() => {
                         el.style.marginRight = '-100px';
                     });
                     confirmButton.removeEventListener("click", onConfirm);
-
+                    
                     let selectedCards = [];
                     this.#selection.forEach(index => {
                         let card = cards[index];
                         selectedCards.push(card);
                     });
+                    this.#selection = [];
                     resolve(selectedCards);
                 }
 
@@ -137,14 +141,12 @@ export const card_select_ui = (() => {
                 else {
                     cardImage.classList.remove("card--selected");
                 }
-            }
-            else {
+            } else {
                 let cardSelectWindow = document.getElementById("card-select-window");
                 for (let [i, child] of Array.from(cardSelectWindow.children).entries()) {
                     document.getElementById(`window-card-${i}`).classList.remove("card--selected");
                 }
             }
-            this.#selection = msg.selection;
             this.#UpdateConfirmButton();
         }
 
@@ -152,10 +154,27 @@ export const card_select_ui = (() => {
          * sets button state based on card selection
          */
         #UpdateConfirmButton() {
-            if (this.#selection.length > 0) {
+            if (this.#selection.length >= this.#selectionAmount) {
                 this.FindComponent("UIManager").UpdateButtonState("confirm-button", true);
             } else {
                 this.FindComponent("UIManager").UpdateButtonState("confirm-button", false);
+            }
+        }
+
+        /**
+         * Add card to selection
+         * @param {card} card
+         * @param {int} slot
+         */
+        #OnCardSelect(slot){
+            if (this.#selection.includes(slot)){
+                this.#selection.splice(this.#selection.indexOf(slot),1);
+                this.#UpdateCardSelection({"card_slot": slot, "mode": "Deselect"});
+            } else {
+                if (this.#selection.length < this.#selectionAmount) {
+                    this.#selection.push(slot);
+                    this.#UpdateCardSelection({"card_slot":slot, "mode":"Select"});
+                }
             }
         }
     }
