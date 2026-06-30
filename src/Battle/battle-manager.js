@@ -14,6 +14,8 @@ export const battle_manager = (() => {
         #playerDrawValues;
         #usedSpecialAbility;
         #choosenSpecialAbility;
+        #monsterAttackDelay;
+        #poisened;
 
         constructor() {
             super();
@@ -23,6 +25,9 @@ export const battle_manager = (() => {
             this.#playerDrawValues = [1, 2, 3, 4, 4];
             this.#usedSpecialAbility = false;
             this.#choosenSpecialAbility = {};
+            this.#monsterAttackDelay = 2000;
+
+            this.#poisened = 0;
         }
 
         InitComponent() {
@@ -54,7 +59,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.riverTracker());
                         this.#PlayerTurn();
                     } else {
-                        this.#MonsterTurn();
+                        setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
                 case "Forest":
@@ -63,7 +68,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.forestTracker());
                         this.#PlayerTurn();
                     } else {
-                        this.#MonsterTurn();
+                        setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
                 case "Mountain":
@@ -72,7 +77,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.mountainTracker());
                         this.#PlayerTurn();
                     } else {
-                        this.#MonsterTurn();
+                        setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
                 default:
@@ -129,6 +134,12 @@ export const battle_manager = (() => {
             } else {
                 this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(2));
             }
+
+            if (this.#poisened > 0) {
+                this.#poisened -= 1;
+                this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(1));
+            }
+
 
             console.log(nextMove);
             if (this.#player.GetHealth() <= 0 ) {
@@ -243,19 +254,20 @@ export const battle_manager = (() => {
                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage));
                 this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, result.shield));
-            } 
-            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
-            console.log(this.#choosenSpecialAbility);
+                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1] + result.drawModifier)))));
+            } else {
+                this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
+            }
+            
             if (this.#player.witcherSpecialAbility.name == "Schnelligkeit") {
                 this.#usedSpecialAbility = true;
             }
             if ("info" in this.#choosenSpecialAbility) {
                 switch(this.#choosenSpecialAbility.name) {
                     case "Vergiftete Waffe":
-                        //CardChooser
+                        this.#poisened = this.#choosenSpecialAbility.value[0];
                         break;
                     case "Schwertkunst":
-                        console.log(comboCount);
                         if (comboCount >= 3) {
                             this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(this.#choosenSpecialAbility.value[0]));
                             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", this.#choosenSpecialAbility.value[1]));
@@ -274,7 +286,7 @@ export const battle_manager = (() => {
                     this.#ResolvePlayerWin();
                 }
             } else {
-                this.#MonsterTurn();
+                setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
             }
         }
 
@@ -293,10 +305,12 @@ export const battle_manager = (() => {
                             }
                         }
                         if (cardsToChoose.length > 0) {
-                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen der Hand", "Spezialfähigkeit").then(
+                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen der Hand", false, "Spezialfähigkeit").then(
                                 (result) => {   
-                                    for (let card of result) {
-                                        this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", true));
+                                    if (result != null) {
+                                        for (let card of result) {
+                                            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", true));
+                                        }
                                     }
                                 }
                             );
@@ -306,31 +320,51 @@ export const battle_manager = (() => {
                     case "Magie":
                         if (this.#choosenSpecialAbility.value[1] <= this.#player.FindComponent("Carddeck").hand.length) {
                             if (this.#choosenSpecialAbility.value[0] == 1) {
-                            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
-                            if (this.#choosenSpecialAbility.value[1] != 0) {
-                                    this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "Abwerfen", "Spezialfähigkeit").then(
-                                    (result) => {   
-                                        for (let card of result) {
-                                            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
-                                        }
+                                let topDiscard = this.#player.FindComponent("Carddeck").discard[0];
+                                if (topDiscard) {
+                                    this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
+                                    if (this.#choosenSpecialAbility.value[1] != 0) {
+                                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "Abwerfen", "Spezialfähigkeit").then(
+                                            (result) => {   
+                                                if (result != null) {
+                                                    for (let card of result) {
+                                                        this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Discard"));
+                                                    }
+                                                } else {
+                                                    this.#usedSpecialAbility = false;
+                                                    this.FindEntity("GameArea").FindComponent("UIManager").UpdateButtonState("button-special", true);
+                                                    this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(topDiscard, "Discard"));
+                                                }
+                                            }
+                                        );
                                     }
-                                );
+                                } else {
+                                    this.#usedSpecialAbility = false;
+                                    this.FindEntity("GameArea").FindComponent("UIManager").UpdateButtonState("button-special", true);
                                 }
                             } else {
                                 this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "Hinzufügen der Hand", "Spezialfähigkeit").then(
                                     (result) => {   
-                                        for (let card of result) {
-                                            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", false,true));
+                                        if (result != null) {
+                                            for (let card of result) {
+                                                for (let card of result) {
+                                                    this.#player.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand", false,true));
+                                                }    
+                                            } 
+                                        } else {
+                                            this.#usedSpecialAbility = false;
+                                            this.FindEntity("GameArea").FindComponent("UIManager").UpdateButtonState("button-special", true);
                                         }
                                     }
                                 );
                             }
                         } else {
                             this.#usedSpecialAbility = false;
+                            this.FindEntity("GameArea").FindComponent("UIManager").UpdateButtonState("button-special", true);
                         }
                         break;
                 }
-            }
+            }           
         }
 
         #EndBattle() {

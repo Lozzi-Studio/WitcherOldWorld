@@ -48,9 +48,8 @@ export const game = (() => {
          * Used to intialize and add any default Entities
          */
         InitSceneEntities() {
-
-            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
             document.getElementById('game-loading-screen').style.display = 'flex';
+            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
 
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitShop();
@@ -62,11 +61,11 @@ export const game = (() => {
             var promises = [];
 
             for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").hand) {
-                let cardName = card.name;
-                promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
+                let cardName = card.imagePath;
+                promises.push(this.#loadTexture(card.imagePath).then(result => { this.CacheData(cardName, result);}));
             }
             for (var card of this._entityManager.FindEntity("Cardshop").FindComponent("Carddeck").deck) {
-                let cardName = card.name;
+                let cardName = card.imagePath;
                 promises.push(this.#loadTexture(card.imagePath).then(result => {  this.CacheData(cardName, result);}));
             }
 
@@ -75,17 +74,19 @@ export const game = (() => {
             promises.push(this.#loadMusic("resources/sounds/Battle_Monster.mp3").then(result => {this.CacheData("BattleMonsterTheme", result)}));
             promises.push(this.#loadMusic("resources/sounds/ChaseTheme.mp3").then(result => {this.CacheData("ChaseTheme", result)}));
 
+            promises.push(fetch("resources/database/events_City.json").then(response => response.json()).then(result => {this.CacheData("eventsCity", result)}));
+            promises.push(fetch("resources/database/events_land.json").then(response => response.json()).then(result => {this.CacheData("eventsLand", result)}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
 
             Promise.all(promises).then(() => {
-                setTimeout(() => { this.#startGame();}, 0);
+                setTimeout(() => { this.#startGame();}, 3000);
             });
         }
 
         #loadTexture(url) {
             return new Promise(resolve => {
-                new THREE.TextureLoader().load(url, resolve);
+                new THREE.TextureLoader().load(url, resolve, resolve, resolve);
             });
         }
 
@@ -176,8 +177,23 @@ export const game = (() => {
                     [players[i], players[j]] = [players[j], players[i]];
             }
             let count = 1;
+            let startGold = [];
+            switch(players.length) {
+                case 5:
+                    startGold = [5,5,5,7,7];
+                    break;
+                case 4:
+                    startGold = [4,5,6,7];
+                    break;
+                case 3:
+                    startGold = [2,4,6];
+                    break;
+                case 2:
+                    startGold = [2,4];
+                    break;
+            }
             for (let player of players) {
-                let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, count+1);
+                let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, startGold[count - 1]);
                 this._entityManager.AddEntity(playerEntity, "Player_" + count);
                 count += 1;
             }

@@ -567,6 +567,40 @@ input {
     border-color: var(--green-primary);
 }
 
+#end-game-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; 
+}
+
+#end-game-overlay .textbox {
+    border-style: none !important; 
+}
+
+#end-game-modal {
+    width: 220px !important;
+    border-color: var(--color-border) !important;
+}
+
+#end-game-modal .avatar-container {
+    border-color: var(--color-border) !important;
+}
+
+#back-to-menu-btn {
+    width: 80% !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+
+}
+
 #turn-change-overlay {
     position: fixed;
     top: 0;
@@ -780,6 +814,32 @@ input {
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
+}
+
+#explorartion-window {
+    position: fixed;
+    align-items: stretch;
+    max-width: 512px;
+    text-align: center;
+    align-items: center;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+}
+
+#explorartion-window .button {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    text-align: center;
+}
+
+#eplore-header{
+    font-size: 24pt;
+    font-family: Gwent;
+    color: #ffffff;
 }
 
 #meditate-option {

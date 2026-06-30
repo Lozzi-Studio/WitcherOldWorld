@@ -112,6 +112,13 @@ export const ui_manager = (() => {
                 }
             };
 
+            let addTrophyButton = document.getElementById("debug-add-trophy-button");
+            this.HandleAddTrophyClick = () => {
+                if (addTrophyButton.classList.contains("button--inactive") == false) {
+                    this.FindComponent("GameManager").currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
+                }
+            };
+
             let cancelButton = document.getElementById("skill-levelup-cancel-button");
             this.HandleCancelLevelupClick = () => {
                 if (cancelButton.classList.contains("button--inactive") == false) {
@@ -178,6 +185,13 @@ export const ui_manager = (() => {
             this._RegisterHandler('game.updateDiscardButton', (msg) => {this.UpdateButtonState("button-discard", msg.active);});
             this._RegisterHandler('game.changeMouseCursor', (msg) => {this.#ChangeMouseCursor(msg)});
             this._RegisterHandler("game.nextPhase", (msg) => {this.#OnNextPhase(msg)});
+            
+            this._RegisterHandler("game.endGame", (msg) => {this.#OnEndGame(msg)});
+            let newGameButton = document.getElementById("back-to-menu-btn");
+            newGameButton.addEventListener("click", () => {
+                document.getElementById("end-game-overlay").classList.add("overlay--hidden");
+                location.reload();
+            });
 
             this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
 
@@ -188,22 +202,26 @@ export const ui_manager = (() => {
             document.getElementById("end-phase-button").addEventListener("click", this.HandleEndPhaseClick);
             document.getElementById("debug-upgrade-skill-button").addEventListener("click", this.HandleUpgradeSkillClick);
             document.getElementById("debug-add-money-button").addEventListener("click", this.HandleAddMoneyClick);
+            document.getElementById("debug-add-trophy-button").addEventListener("click", this.HandleAddTrophyClick);
+            
             document.getElementById("skill-levelup-cancel-button").addEventListener("click", this.HandleCancelLevelupClick);
             document.getElementById("skill-levelup-continue-button").addEventListener("click", this.HandleContinueLevelupClick);
             document.getElementById("player-info-button").addEventListener("click", this.HandlePlayerInfoClick);
+            
             document.getElementById("turn-change-continue-btn").addEventListener("click", () => {
                 document.getElementById("turn-change-overlay").classList.add("overlay--hidden");
             });
+
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
             document.getElementById("deck-stack").addEventListener("click", () => {
                 let player = this.FindComponent("GameManager").currentPlayer;
                 let deck = player.FindComponent("Carddeck").deck;
-                this.FindComponent("CardSelectUI").PromptCardSelection(deck, 0, "", "Deck");
+                this.FindComponent("CardSelectUI").PromptCardSelection(deck, 0, "", true, "Deck");
             })
             document.getElementById("discard-card").addEventListener("click", () => {
                 let player = this.FindComponent("GameManager").currentPlayer;
                 let discard = player.FindComponent("Carddeck").discard;
-                this.FindComponent("CardSelectUI").PromptCardSelection(discard, 0, "", "Ablagestapel");
+                this.FindComponent("CardSelectUI").PromptCardSelection(discard, 0, "", true, "Ablagestapel");
             })
         }
 
@@ -1165,6 +1183,56 @@ export const ui_manager = (() => {
             }
 
             overlay.classList.remove("overlay--hidden");
+        }
+
+        /**
+         * Opens overlay that shows winner and scoreboard
+         * @param {object} msg 
+         */
+        #OnEndGame(msg){
+            const overlay = document.getElementById("end-game-overlay");
+            const modal = document.getElementById("end-game-modal");
+            const avatar = document.getElementById("winner-avatar");
+            const text = document.getElementById("end-game-text");
+            const scoreboard = document.getElementById("end-game-scoreboard");
+
+            avatar.src = this.#GetAvatarPathFromPlayer(msg.winner);
+            
+            let formattedName = this.#ReplaceUmlaute(msg.winner.playerName.toUpperCase());
+            text.innerHTML = `${formattedName} HAT GEWONNEN`;
+
+            if (scoreboard) {
+                scoreboard.innerHTML = "";
+
+                const sortedPlayers = this._parent._parent.Filter(x => x.name.includes("Player")).sort((a, b) => {
+                    const trophiesA = a.FindComponent("TrophyStorage").amount;
+                    const trophiesB = b.FindComponent("TrophyStorage").amount;
+                    return trophiesB - trophiesA;
+                });
+
+                sortedPlayers.forEach(player => {
+                    const trophies = player.FindComponent("TrophyStorage").amount;
+                    const name = this.#ReplaceUmlaute(player.playerName);
+
+                    const row = document.createElement("div");
+                    row.className = "container container--row container--justify-between container--no-padding";
+                    row.style.width = "100%";
+                    row.style.paddingBottom = "4px";
+
+                    row.innerHTML = `
+                        <div class="--fancy-font" style="font-size: 16px;">${name}</div>
+                        <div class="container container--row container--no-padding" style="gap: 6px;">
+                            <div class="material-symbols-outlined filled small">trophy</div>
+                            <div class="--fancy-font text-single-number" style="font-size: 16px; margin-bottom: -3px;">${trophies}</div>
+                        </div>
+                    `;
+
+                    scoreboard.appendChild(row);
+                });
+
+            }
+
+            overlay.style.display = "flex";
         }
 
         #SetSkillWindowMode(mode) {

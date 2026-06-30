@@ -2,12 +2,14 @@ import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
 import { ui_manager } from "./ui-manager";
 import { card } from "../../Cards/card";
+import { int } from "three/tsl";
 
 export const card_select_ui = (() => {
 
     class CardSelectUI extends component.Component {
         #selection;
-        #selectionAmount;
+        #selectionMin;
+        #selectionMax;
 
         constructor(){
             super();
@@ -25,10 +27,11 @@ export const card_select_ui = (() => {
             document.getElementById("debug-open-card-selection-button").addEventListener("click", this.HandleOpenCardsClick);
         }
 
-        async GetCardSelectionFromPlayerPrompt(cards, selectableCards, reason, topic) {
-            this.#selectionAmount = selectableCards;
+        async GetCardSelectionFromPlayerPrompt(cards, selectableCards, reason, cancelable = true, topic) {
+            this.#selectionMin = selectableCards instanceof Array ? selectableCards[0] : selectableCards;
+            this.#selectionMax =  selectableCards instanceof Array ? selectableCards[1] : selectableCards;
             this.#selection = [];
-            return await this.PromptCardSelection(cards, selectableCards, reason, topic);
+            return await this.#PromptCardSelection(cards, selectableCards, reason, cancelable, topic);
         }
 
         /**
@@ -36,8 +39,9 @@ export const card_select_ui = (() => {
          * @param {Array} cards 
          * @param {int} selectableCards 
          * @param {string} reason
+         * @param {bool} cancelable
          */
-        PromptCardSelection(cards, selectableCards, reason, topic) {
+        #PromptCardSelection(cards, selectableCards, reason, cancelable, topic) {
             return new Promise((resolve) => {
                 let handWindow = document.getElementById("hand-window");
                 const handCards = document.querySelectorAll('#hand-window > div:not(:last-child)');
@@ -126,14 +130,16 @@ export const card_select_ui = (() => {
                 cancelButton.classList.add(
                     "textbox", "textbox--fill", "button"
                 );
-                cancelButton.id = "cancel-button";
-                if (selectableCards != 0) {
-                    cancelButton.innerHTML = "Abbrechen";
-                } else {
-                    cancelButton.innerHTML = "Schlie&szlig;en";
+                if (cancelable) {
+                    cancelButton.id = "cancel-button";
+                    if (selectableCards != 0) {
+                            cancelButton.innerHTML = "Abbrechen";
+                    } else {
+                        cancelButton.innerHTML = "Schlie&szlig;en";
+                    }
+                    cancelButton.addEventListener("click", onCancel);
+                    buttonsContainer.appendChild(cancelButton);
                 }
-                cancelButton.addEventListener("click", onCancel);
-                buttonsContainer.appendChild(cancelButton);
 
                 let confirmButton = document.createElement("div");
                 confirmButton.classList.add(
@@ -177,7 +183,7 @@ export const card_select_ui = (() => {
          * sets button state based on card selection
          */
         #UpdateConfirmButton() {
-            if (this.#selection.length >= this.#selectionAmount) {
+            if (this.#selection.length >= this.#selectionMin) {
                 this.FindComponent("UIManager").UpdateButtonState("confirm-button", true);
             } else {
                 this.FindComponent("UIManager").UpdateButtonState("confirm-button", false);
@@ -194,7 +200,7 @@ export const card_select_ui = (() => {
                 this.#selection.splice(this.#selection.indexOf(slot),1);
                 this.#UpdateCardSelection({"card_slot": slot, "mode": "Deselect"});
             } else {
-                if (this.#selection.length < this.#selectionAmount) {
+                if (this.#selection.length < this.#selectionMax) {
                     this.#selection.push(slot);
                     this.#UpdateCardSelection({"card_slot":slot, "mode":"Select"});
                 }

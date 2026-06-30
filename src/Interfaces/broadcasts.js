@@ -117,10 +117,11 @@ export const broadcasts = (() => {
 
         /**
          * @param {string} deck - Options: "Player", "Shop", "Monster"
+         * @param {string} school
          * @returns {object}
         */
-        static LoadCarddeck(deck) {
-            return {topic: 'card.loadDeck', deck: deck}
+        static LoadCarddeck(deck, school = "") {
+            return {topic: 'card.loadDeck', deck: deck,school: school}
         }
 
         /**
@@ -180,6 +181,11 @@ export const broadcasts = (() => {
          */
         static DiscardRandomCard() {
             return {topic: 'card.randomDiscard'}
+        }
+
+
+        static DiscardRandomPotion(amount) {
+            return {topic: 'card.discardRandomPotion', amount: amount}
         }
 
     }
@@ -428,6 +434,15 @@ export const broadcasts = (() => {
         static CreateNewMonster(rank, region, newMonster) {
             return {topic: 'game.newMonster', rank: rank, region: region, newMonster: newMonster}
         }
+
+        /**
+         * 
+         * @param {Player} winner
+         * @returns {object}
+         */
+        static EndGame(winner){
+            return {topic: 'game.endGame', winner: winner}
+        }
     }
 
     class BroadcastTemplateCamera {
@@ -529,6 +544,14 @@ export const broadcasts = (() => {
          */
         static BuyCardFromShop(slot, cost) {
             return {topic: 'cardshop.buy', slot: slot, cost: cost}
+        }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static UpdateCardShop() {
+            return {topic: 'cardshop.update'}
         }
     }
 
