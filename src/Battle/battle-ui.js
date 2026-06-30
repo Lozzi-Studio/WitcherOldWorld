@@ -32,8 +32,10 @@ export const battle_ui = (() => {
             document.getElementById("combat-ui").style.display = "flex";
             document.getElementById("phase-window").style.display = "none";
             document.getElementById("monster-avatar").src = this.#GetPathForMonsterAvatar(msg.monster);
-            document.getElementById("witcher-level").innerHTML = msg.player.GetHealth()
-            document.getElementById("monster-health").innerHTML = msg.monster.health
+            document.getElementById("hp-amount").innerHTML = msg.player.GetHealth();
+            document.getElementById("monster-health").innerHTML = msg.monster.health;
+            document.getElementById("hp-separator").style.display = "flex";
+            document.getElementById("hp-container").style.display = "flex";
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.StartBattle(msg.player, msg.monster));
         }
 
@@ -45,7 +47,8 @@ export const battle_ui = (() => {
             document.getElementById("skills-container").style.display = "flex";
             document.getElementById("combat-ui").style.display = "none";
             document.getElementById("phase-window").style.display = "flex";
-            document.getElementById("witcher-level").innerHTML = this.#player.FindComponent("PlayerSkills").witcher.level
+            document.getElementById("hp-separator").style.display = "none";
+            document.getElementById("hp-container").style.display = "none";
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
         }
 
@@ -68,7 +71,7 @@ export const battle_ui = (() => {
 
         #UpdateHealth(msg) {
             if (this.#player) {
-                document.getElementById("witcher-level").innerHTML = this.#player.GetHealth()
+                document.getElementById("hp-amount").innerHTML = this.#player.GetHealth()
             }
             if (this.#monster) {
                 document.getElementById("monster-health").innerHTML = this.#monster.GetCurrentHealth()

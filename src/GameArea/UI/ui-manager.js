@@ -1134,6 +1134,8 @@ export const ui_manager = (() => {
             document.getElementById("player-info-button").classList.remove("filled");
             document.getElementById("skill-levelup-buttons-container").style.display = "none";
             document.getElementById("levelup-impossible-text").style.display = "none";
+            document.getElementById("hp-separator").style.display = "none";
+            document.getElementById("hp-container").style.display = "none";
 
         }
 
