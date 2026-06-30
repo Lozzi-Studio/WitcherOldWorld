@@ -173,6 +173,7 @@ export const ui_manager = (() => {
             newGameButton.addEventListener("click", () => {
                 document.getElementById("end-game-overlay").classList.add("overlay--hidden");
                 this._parent._parent.SwitchScene("MainMenu");
+                location.reload();
             });
 
             this._RegisterHandler('cardshop.select', (msg) => {this.#ShowShopConfirm(msg)});
