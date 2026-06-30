@@ -567,6 +567,46 @@ input {
     border-color: var(--green-primary);
 }
 
+#end-game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Über dem restlichen Spielfeld */
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+#end-game-overlay.overlay--hidden {
+    display: none;
+    opacity: 0;
+}
+
+#end-game-overlay .textbox{
+    border-style: None !important; 
+}
+
+#end-game-modal {
+    width: 220px !important;
+    border-color: var(--color-border) !important;
+}
+
+#end-game-modal .avatar-container {
+    border-color: var(--color-border) !important;
+}
+
+#new-game-btn {
+    width: 50% !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+
+}
+
 #turn-change-overlay {
     position: fixed;
     top: 0;
