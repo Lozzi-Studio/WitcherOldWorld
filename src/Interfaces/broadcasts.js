@@ -537,6 +537,14 @@ export const broadcasts = (() => {
         static BuyCardFromShop(slot, cost) {
             return {topic: 'cardshop.buy', slot: slot, cost: cost}
         }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static UpdateCardShop() {
+            return {topic: 'cardshop.update'}
+        }
     }
 
     class BroadcastTemplateBattle {

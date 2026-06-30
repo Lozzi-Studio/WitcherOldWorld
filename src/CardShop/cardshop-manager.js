@@ -22,6 +22,7 @@ export const cardshop_manager = (() => {
          */
         InitComponent() {
             this._RegisterHandler('game.start', (msg) => { this.#UpdateShopSlots(msg)});
+            this._RegisterHandler('cardshop.update', (msg) => {this.#UpdateShopSlots(msg)});
             this._RegisterHandler('cardshop.select', (msg) => {this.#SelectSlot(msg)});
             this._RegisterHandler('cardshop.buy', (msg) => {this.#BuySlot(msg)});
             this._RegisterHandler('card.drawCard', (msg) => {this.#UpdateShopSlots(msg)})
