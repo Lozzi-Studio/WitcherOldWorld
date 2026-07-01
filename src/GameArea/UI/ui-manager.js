@@ -402,6 +402,27 @@ export const ui_manager = (() => {
             return avatarContainer;
         }
 
+        #CreateResetCameraButton() {
+            let resetButton = document.createElement("div");
+            resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
+            resetButton.id = "reset-camera-button";
+            resetButton.innerHTML = "Zurück zu meinem Spieler";
+            document.getElementById("game-ui").appendChild(resetButton);
+
+            let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+            resetButton.addEventListener("click", () => {
+                this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(currentPlayer));
+                let msg = {player: currentPlayer}
+                this.#UpdatePlayerInfoWindow(msg);
+                this.#DeleteResetCameraButton();
+            })
+        }
+
+        #DeleteResetCameraButton() {
+            let resetButton = document.getElementById("reset-camera-button");
+            resetButton.remove()
+        }
+
         /**
          * Initialize player avatar
          * @param {int} playerId 
@@ -413,6 +434,8 @@ export const ui_manager = (() => {
                 avatarContainer.classList.add(`theme--${player.witcherSchool.name}`)
                 avatarContainer.addEventListener("click", () => {
                     this.Broadcast(broadcasts.BroadcastTemplatePlayer.SelectPlayer(this.FindEntity(player.name)));
+                    this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(player));
+                    this.#CreateResetCameraButton();
                 })
                 document.getElementById("avatars-container").appendChild(avatarContainer);
                 const tooltip = document.createElement("div");
