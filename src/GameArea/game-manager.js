@@ -340,7 +340,6 @@ export const game_manager = (() => {
             if(amountToDraw > 0){ 
                 this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
             } 
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(this.#currentPlayer.playerName + " hat " + Math.max(0, amountToDraw) + " Karte/n nachgezogen."))
         }
 
         /**

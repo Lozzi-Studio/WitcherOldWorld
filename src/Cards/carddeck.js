@@ -63,7 +63,6 @@ export const carddeck_component = (() => {
             this.#cardDeck = [];
             this.#cardDiscard = [];
             this.#cardHand = [];
-            //TODO Create Defaults
             switch (msg.deck) {
                 case "Player":
                     switch (msg.school) {
@@ -387,8 +386,10 @@ export const carddeck_component = (() => {
                 let discardedCard = this.#cardDeck.pop()
                 this.#cardDiscard.push(discardedCard);
                 
-                let cardText = discardedCard.name ? "die Karte " + discardedCard.name : "eine Karte";
-                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(displayName + " hat " + cardText + " abgeworfen."));
+                if (!(this.#noUiUpdate)) {
+                    let cardText = discardedCard.name ? "die Karte " + discardedCard.name : "eine Karte";
+                    this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(displayName + " hat " + cardText + " abgeworfen."));
+                }
             }
         }
 

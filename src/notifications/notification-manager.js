@@ -76,11 +76,11 @@ export const notifaction_manager = (() => {
 
             switch(msg.topic) {
                 case 'game.nextPhase':
-                    let phaseText = currentPlayer.playerName + " hat Phase " + currentPhase + " gestartet";
-                    if(currentPhase === 1){
+                    let phaseText = currentPlayer.playerName + " hat Phase " + (currentPhase + 1) + " gestartet";
+                    if((currentPhase + 1) === 1){
                         break;
                     }
-                    if(currentPhase != 4 && this.#notificationQueue[this.#notificationQueue.length - 1] !== phaseText) {
+                    if((currentPhase + 1) < 4 && this.#notificationQueue[this.#notificationQueue.length - 1] !== phaseText) {
                         this.#notificationQueue.push(phaseText);
                         notificationAdded = true;
                     }
