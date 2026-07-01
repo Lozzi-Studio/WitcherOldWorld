@@ -69,24 +69,6 @@ export const notifaction_manager = (() => {
             } 
         }
 
-        #getStatusGermanText(type, amount, mode) {
-            let suffix = mode === "temporary" ? " (temporär)" : " (permanent)";
-            switch(type) {
-                case "drawLessCards":
-                    return `muss ${amount} Karte(n) weniger ziehen` + suffix;
-                case "drawMoreCards":
-                    return `darf ${amount} Karte(n) mehr ziehen` + suffix;
-                case "forestTracker":
-                    return "wurde im Wald überrascht (Monster greift im nächsten Kampf zuerst an)";
-                case "riverTracker":
-                    return "wurde am Fluss überrascht (Monster greift im nächsten Kampf zuerst an)";
-                case "mountainTracker":
-                    return "wurde im Gebirge überrascht (Monster greift im nächsten Kampf zuerst an)";
-                default:
-                    return `erhält den Effekt '${type}'`;
-            }
-        }
-
         #QueueNotification(msg) {
             var currentPlayer = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
             var currentPhase = this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier();
