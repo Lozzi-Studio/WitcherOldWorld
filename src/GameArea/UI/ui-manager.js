@@ -364,7 +364,7 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          */
         #SetPlayerSkills(player) {
-            let skills = this.FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").GetAllSkills();
+            let skills = player.FindComponent("PlayerSkills").GetAllSkills();
             for (const skill of skills) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
