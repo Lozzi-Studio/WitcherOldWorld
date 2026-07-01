@@ -25,11 +25,17 @@ export const battle_ui = (() => {
             this.#monster = msg.monster;
             this.#player = msg.player;
 
-            document.getElementById("player-window").classList.remove("borders--bottom-right");
-            document.getElementById("player-window").classList.add("borders--all");
+            let playerWindow = document.getElementById("player-window");
+            playerWindow.classList.remove("borders--bottom-right");
+            playerWindow.classList.add("borders--all");
+            playerWindow.classList.remove("position-top-left");
+            
+            let combatUI = document.getElementById("combat-ui");
+            combatUI.style.display = "flex";
+            combatUI.insertBefore(playerWindow, document.getElementById("battle-monster-window"));
+
             document.getElementById("player-inventory-container").style.display = "none";
             document.getElementById("skills-container").style.display = "none";
-            document.getElementById("combat-ui").style.display = "flex";
             document.getElementById("phase-window").style.display = "none";
             document.getElementById("monster-avatar").src = this.#GetPathForMonsterAvatar(msg.monster);
             document.getElementById("hp-amount").innerHTML = msg.player.GetHealth();
@@ -48,11 +54,16 @@ export const battle_ui = (() => {
         }
 
         #EndBattle(msg){
-            document.getElementById("player-window").classList.remove("borders--all");
-            document.getElementById("player-window").classList.add("borders--bottom-right");
+            let playerWindow = document.getElementById("player-window");
+            playerWindow.classList.remove("borders--all");
+            playerWindow.classList.add("borders--bottom-right");
+            playerWindow.classList.add("position-top-left");
+
+            document.getElementById("game-ui").appendChild(playerWindow);
+
+            document.getElementById("combat-ui").style.display = "none";
             document.getElementById("player-inventory-container").style.display = "flex";
             document.getElementById("skills-container").style.display = "flex";
-            document.getElementById("combat-ui").style.display = "none";
             document.getElementById("phase-window").style.display = "flex";
             document.getElementById("hp-separator").style.display = "none";
             document.getElementById("hp-container").style.display = "none";

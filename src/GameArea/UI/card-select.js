@@ -18,7 +18,7 @@ export const card_select_ui = (() => {
             this.HandleOpenCardsClick = () => {
                 if (openCardsButton.classList.contains("button--inactive") == false) {
                     let handCards = this.FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").deck;
-                    this.GetCardSelectionFromPlayerPrompt(handCards, 2, "Abwerfen").then((result) => {console.log(result)});
+                    this.GetCardSelectionFromPlayerPrompt(handCards, 2, "Abwerfen", true, "Debug").then((result) => {console.log(result)});
                 }
             };
         }

@@ -1038,6 +1038,11 @@ input {
     overflow: hidden;
 }
 
+#combat-ui {
+    left: 50%;
+    transform: translate(-50%, 0);
+    align-items: flex-start;
+}
 
 #battle-player-window {
     position: fixed;
@@ -1048,9 +1053,6 @@ input {
 }
 
 #battle-monster-window {
-    position: fixed;
-    right: 30%;
-    top: 0px;
     min-width: 100px;
     max-width: 300px;
 }

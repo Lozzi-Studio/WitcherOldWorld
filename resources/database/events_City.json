@@ -21,7 +21,7 @@
             "Text": "Du wirst angeheurt, um ein Gespenst aus einem stillgelegten Lagerhalle auszutreiben. Beim Auskundschaften des Gebäudes stellt sich heraus, dass es keineswegs um ein Gespenst, sondern um einen mächtigen Katakan handelt. Du zögerst. Bist du wirklich gut genug vorbereitet, um es mit einem Vampir aufzunehmen?",
             "OptionA": "Ich greife den Vampir an. Monster ist Monster.",
             "OptionB": "Ich kehre zu meinem Auftraggeber zurück und versichere ihm, dass die Lagerhalle frei von Gespenstern ist.",
-            "ResultTextA": "Es ist ein harter Kampf. Du bist praktisch nicht vorbereitet und nichts läft wie erhofft. Die Fangzähne und Klauen des Monsters, setzen dir schwer zu, doch am Ende gehst du als Sieger hervor.",
+            "ResultTextA": "Es ist ein harter Kampf. Du bist praktisch nicht vorbereitet und nichts läuft wie erhofft. Die Fangzähne und Klauen des Monsters, setzen dir schwer zu, doch am Ende gehst du als Sieger hervor.",
             "ResultTextB": "Der Mann ist sichtlich beeindruckt von deiner schnellen Arbeit. Er zahl dir sogar einen Bonus für die prompte Lösung des Proböems und du beschließt, das Missverständnis nicht aufzuklären.",
             "ResultA": {
                 "Info": "Senke deinen Schildwert um 2. Du erhälst 2 Gold.",
