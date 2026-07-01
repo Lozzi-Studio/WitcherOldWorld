@@ -1055,7 +1055,7 @@ input {
     max-width: 300px;
 }
 
-#monster-health {
+#monster-level {
     position:absolute;
     top: -3px;
     right: -3px;

@@ -139,10 +139,10 @@
                 <div class="container container--row container--justify container--no-padding" id="player-shield-container"></div>
                 <div class="line line--neutral" id="hp-separator"></div>
                 <div class="container container--row container--no-padding" id="hp-container">
-                        <div class="tooltip-icon material-symbols-outlined filled">favorite</div>
-                        <div class="tooltip-text tooltip-text--bottom">Lebenspunkte (HP)</div> 
-                        <div class="text-single-number --fancy-font" id="hp-amount">-</div>
-                    </div>
+                    <div class="tooltip-icon material-symbols-outlined filled">favorite</div>
+                    <div class="tooltip-text tooltip-text--bottom">Lebenspunkte (HP)</div> 
+                    <div class="text-single-number --fancy-font" id="hp-amount">-</div>
+                </div>
             </div>
             <div class="container container--col container--no-padding" id="skills-container">
                 <div class="container container--row container--no-padding" id="skills-header">
@@ -282,11 +282,17 @@
                     <div class="container container--col" id="avatar-name-container">
                         <div class="avatar-container avatar-container--big">
                             <img class="avatar avatar--big" id="monster-avatar" src="">
-                            <div class="textbox-circle textbox--fill --fancy-font" id="monster-health">5</div>
+                            <div class="textbox-circle textbox--fill --fancy-font" id="monster-level">-</div>
                         </div>
                         <div class="textbox textbox--fill textbox--fancy-font" id="player-name-container">
                             <p id="monster-name">Monster</p>
                         </div>
+                    </div>
+                    <div class="line line--neutral" id="monster-hp-separator"></div>
+                    <div class="container container--row container--no-padding">
+                        <div class="tooltip-icon material-symbols-outlined filled">favorite</div>
+                        <div class="tooltip-text tooltip-text--bottom">Lebenspunkte (HP)</div> 
+                        <div class="text-single-number --fancy-font" id="monster-hp-amount">-</div>
                     </div>
                 </div>
             </div>

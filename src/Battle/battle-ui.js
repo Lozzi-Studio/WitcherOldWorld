@@ -33,7 +33,15 @@ export const battle_ui = (() => {
             document.getElementById("phase-window").style.display = "none";
             document.getElementById("monster-avatar").src = this.#GetPathForMonsterAvatar(msg.monster);
             document.getElementById("hp-amount").innerHTML = msg.player.GetHealth();
-            document.getElementById("monster-health").innerHTML = msg.monster.health;
+            document.getElementById("monster-hp-amount").innerHTML = msg.monster.health;
+            let monsterLevel;
+            switch (msg.monster.rank) {
+                case 1: monsterLevel = "I";
+                case 2: monsterLevel = "II";
+                case 3: monsterLevel = "III";
+
+            }
+            document.getElementById("monster-level").innerHTML = monsterLevel;
             document.getElementById("hp-separator").style.display = "flex";
             document.getElementById("hp-container").style.display = "flex";
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.StartBattle(msg.player, msg.monster));
@@ -73,7 +81,7 @@ export const battle_ui = (() => {
                 document.getElementById("hp-amount").innerHTML = this.#player.GetHealth()
             }
             if (this.#monster) {
-                document.getElementById("monster-health").innerHTML = this.#monster.GetCurrentHealth()
+                document.getElementById("monster-hp-amount").innerHTML = this.#monster.GetCurrentHealth()
             }
         }
     }
