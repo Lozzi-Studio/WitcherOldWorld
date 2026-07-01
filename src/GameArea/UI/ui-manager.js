@@ -927,6 +927,8 @@ export const ui_manager = (() => {
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
 
             this.#ShowTurnChangePopup(msg.player);
+
+            document.documentElement.dataset["theme"] = msg.player.witcherSchool.name;
         }
 
         /**
