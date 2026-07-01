@@ -857,9 +857,7 @@ export const ui_manager = (() => {
                 discardStack.style.backgroundImage = "url(./resources/assets/cards/0-backside.png)";
             }
 
-            console.log(msg.card);
-            console.log(msg.card.OptionA);
-            if (msg.card instanceof card.Card) {
+            if (msg.card instanceof card.Card && msg.noUIUpdate == false) {
                 this.FindComponent("UIManager").UpdateCardContent(msg.card, cardDIV);
             }
             cardDIV.style.zIndex = 9;
@@ -871,6 +869,9 @@ export const ui_manager = (() => {
             let player = this.FindComponent("GameManager").currentPlayer;
             let deckSize = player.FindComponent("Carddeck").deck.length;
             deckNumber.innerHTML = deckSize;
+            /* console.log("deck:", player.FindComponent("Carddeck").deck);
+            console.log("deck length:", player.FindComponent("Carddeck").deck.length); */
+            console.log("updating deck number");
         }
 
         /**

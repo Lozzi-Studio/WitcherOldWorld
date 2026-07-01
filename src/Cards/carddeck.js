@@ -263,8 +263,9 @@ export const carddeck_component = (() => {
                         if (this.#cardDeck.length > 0) {
                             this.#cardHand.push(this.#cardDeck.pop());
                             if (!this.#noUiUpdate) {
+                                console.log("drawcard: deck length ", this.#cardDeck.length);
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
-                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                             }
                         }
                         break;
@@ -279,7 +280,7 @@ export const carddeck_component = (() => {
                         this.#cardHand.push(drawnCard);
                         if (!this.#noUiUpdate) {
                             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", drawnCard));
-                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
+                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                         }
                         break;
                     case "Discard":
@@ -288,6 +289,7 @@ export const carddeck_component = (() => {
                             this.#cardHand.push(discardedCard)
                             if (!this.#noUiUpdate) {
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", discardedCard));
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
                             }
                         }
                         break;
@@ -333,11 +335,12 @@ export const carddeck_component = (() => {
                     break;
                 case "Discard":
                     this.#cardDiscard.push(msg.card);
+                    this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
                     break;
                 case "Deck":
                     this.#cardDeck.push(msg.card)
                     this.#Shuffle({includeDiscard: false});
-                    this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
+                    this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                     break;
             }
         }
@@ -360,14 +363,14 @@ export const carddeck_component = (() => {
                             this.#cardHand.splice(this.#cardHand.indexOf(msg.card),1);
                         } else if (this.#cardDeck.includes(msg.card)) {
                             this.#cardDeck.splice(this.#cardDeck.indexOf(msg.card),1);
-                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
+                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                         }  else if (this.#cardDiscard.includes(msg.card)) {
                             this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
                         }
                     break;
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
         }
 
         /**
@@ -385,8 +388,9 @@ export const carddeck_component = (() => {
                 }
             } else if (this.#cardDeck.length > 0){
                 this.#cardDiscard.push(this.#cardDeck.pop());
-                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
         }
 
         #ApplyDamage(msg) {
@@ -427,19 +431,21 @@ export const carddeck_component = (() => {
                 if (!this.#noUiUpdate) {
                     for (let card of oldHand) {
                         this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", card));
-                        this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card));
+                        this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                     }
                 }
             }
-
+            
             if (msg.includeDiscard) {
                 this.#cardDeck = this.#cardDeck.concat(this.#cardDiscard);
                 this.#cardDiscard = [];
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
             }
             //Fisher-Yates_shuffle (src:https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
             for (let i = this.#cardDeck.length - 1; i >= 1; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [this.#cardDeck[i], this.#cardDeck[j]] = [this.#cardDeck[j], this.#cardDeck[i]];
+                const j = Math.floor(Math.random() * (i + 1));
+                [this.#cardDeck[i], this.#cardDeck[j]] = [this.#cardDeck[j], this.#cardDeck[i]];
             }
         }
 

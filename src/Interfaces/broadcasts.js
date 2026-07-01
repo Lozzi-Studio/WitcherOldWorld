@@ -61,12 +61,12 @@ export const broadcasts = (() => {
             return {topic: 'player.updateHandCardsUI', mode: mode, card: card};
         }
 
-        static UpdateDiscardCardsUI(card) {
-            return {topic: 'player.updateDiscardCardsUI', card: card};
+        static UpdateDiscardCardsUI(card, noUIUpdate) {
+            return {topic: 'player.updateDiscardCardsUI', card: card, noUIUpdate: noUIUpdate};
         }
 
-        static UpdateDeckCardsUI(card) {
-            return {topic: 'player.updateDeckCardsUI', card: card};
+        static UpdateDeckCardsUI(card, noUIUpdate) {
+            return {topic: 'player.updateDeckCardsUI', card: card, noUIUpdate: noUIUpdate};
         }
 
         /**

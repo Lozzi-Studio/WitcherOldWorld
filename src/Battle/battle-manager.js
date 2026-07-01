@@ -141,7 +141,7 @@ export const battle_manager = (() => {
             }
 
 
-            console.log(nextMove);
+            console.log("monster next move", nextMove);
             if (this.#player.GetHealth() <= 0 ) {
                 if (this.#monster.GetCurrentHealth()  <= 1 ) {
                     this.#ResolveDraw();
@@ -226,7 +226,7 @@ export const battle_manager = (() => {
 
 
         #PlayCombo(msg) {
-            console.log(msg);
+            console.log("combo msg", msg);
             let comboCount = 0;
             if (msg.card != undefined) {
                 let cardsToDiscard = [];
@@ -254,7 +254,9 @@ export const battle_manager = (() => {
                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage));
                 this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, result.shield));
+                console.log("before draw");
                 this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1] + result.drawModifier)))));
+                console.log("after draw");
             } else {
                 this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("BattleDeck", (Math.max(0 ,(this.#playerDrawValues[this.#player.FindComponent("PlayerSkills").combat.level - 1])))));
             }
