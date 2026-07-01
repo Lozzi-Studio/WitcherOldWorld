@@ -398,8 +398,37 @@ export const ui_manager = (() => {
         #CreateAvatarContainer(id) {
             var avatarContainer = document.createElement("div");
             avatarContainer.id = `avatar-container-${id}`;
-            avatarContainer.classList.add("avatar-container", "avatar-container--small");
-            return avatarContainer
+            avatarContainer.classList.add("avatar-container", "avatar-container--small", "tooltip-icon");
+            return avatarContainer;
+        }
+
+        /**
+         * creates button in HTML to reset camera to focus current player
+         */
+        #CreateResetCameraButton() {
+            if (!document.getElementById("reset-camera-button")) {
+                let resetButton = document.createElement("div");
+                resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
+                resetButton.id = "reset-camera-button";
+                resetButton.innerHTML = "Zurück zu meiner Spielfigur";
+                document.getElementById("game-ui").appendChild(resetButton);
+    
+                let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+                resetButton.addEventListener("click", () => {
+                    this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(currentPlayer));
+                    let msg = {player: currentPlayer}
+                    this.#UpdatePlayerInfoWindow(msg);
+                    this.#DeleteResetCameraButton();
+                })
+            }
+        }
+
+        /**
+         * removes reset camera button from DOM
+         */
+        #DeleteResetCameraButton() {
+            let resetButton = document.getElementById("reset-camera-button");
+            resetButton.remove()
         }
 
         /**
@@ -410,8 +439,23 @@ export const ui_manager = (() => {
         #InitPlayerAvatars(playerList) {
             for (const [i, player] of playerList.entries()) {
                 var avatarContainer = this.#CreateAvatarContainer(i+1);
-                avatarContainer.classList.add(`theme--player${i+1}`)
+                avatarContainer.classList.add(`theme--${player.witcherSchool.name}`)
+                avatarContainer.addEventListener("click", () => {
+                    this.Broadcast(broadcasts.BroadcastTemplatePlayer.SelectPlayer(this.FindEntity(player.name)));
+                    this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(player));
+                    this.#CreateResetCameraButton();
+                    
+                    let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+                    if (player == currentPlayer) {
+                        this.#DeleteResetCameraButton();
+                    }
+                    
+                })
                 document.getElementById("avatars-container").appendChild(avatarContainer);
+                const tooltip = document.createElement("div");
+                tooltip.classList.add("tooltip-text", "tooltip-text--bottom");
+                tooltip.innerHTML = player.playerName;
+                document.getElementById("avatars-container").appendChild(tooltip);
 
                 var avatar = document.createElement("img");
                 avatar.classList.add("avatar", "avatar--small");
@@ -880,6 +924,10 @@ export const ui_manager = (() => {
             this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextPlayer(playerList[0]));
         }
 
+        /**
+         * Update all stats in player window from input player in msg.player
+         * @param {object} msg 
+         */
         #UpdatePlayerInfoWindow(msg) {
             let currentPlayer = this.FindComponent("GameManager").currentPlayer;
             let playerWindow = document.getElementById("player-window");

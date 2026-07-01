@@ -64,6 +64,7 @@ body {
   --color-primary: rgb(215, 213, 206);
   --color-secondary: rgba(61, 59, 55, 1.00);
   --color-primary-inactive: rgba(219, 218, 213, 0.5);
+  --color-button-border: rgba(132, 126, 116, 1.00);
 }
 
 [data-theme="Katzenschule"] { 
@@ -72,6 +73,7 @@ body {
   --color-primary: rgba(205, 235, 244, 1.00);
   --color-primary-inactive: rgba(205, 235, 244, 0.5);
   --color-secondary: rgba(29, 62, 70, 1.00);
+  --color-button-border: rgb(116, 128, 132);
 }
 
 [data-theme="Vipernschule"] {
@@ -80,6 +82,7 @@ body {
   --color-primary: rgb(163, 223, 167);
   --color-primary-inactive: rgba(163, 223, 167, 0.5);
   --color-secondary: rgba(19, 54, 21, 1.00);
+  --color-button-border: rgb(116, 132, 117);
 }
 
 [data-theme="Baerenschule"] {
@@ -88,6 +91,7 @@ body {
   --color-primary: rgba(239, 138, 113, 1.00);
   --color-primary-inactive: rgba(239, 138, 113, 0.5);
   --color-secondary: rgba(78, 21, 6, 1.00);
+  --color-button-border: rgb(132, 120, 116);
 }
 
 [data-theme="Wolfsschule"] {
@@ -96,6 +100,7 @@ body {
   --color-primary: rgb(201, 143, 55);
   --color-primary-inactive: rgba(201, 143, 55, 0.5);
   --color-secondary: rgb(20, 15, 7);
+  --color-button-border: rgb(132, 123, 116);
 }
 
 [data-theme="Greifenschule"] {
@@ -104,6 +109,7 @@ body {
   --color-primary: rgba(240, 233, 142, 1);
   --color-primary-inactive: rgba(240, 233, 142, 0.5);
   --color-secondary: rgba(50, 47, 6, 1);
+  --color-button-border: rgb(132, 131, 116);
 }
 
 [data-theme="Monster"] {
@@ -112,6 +118,7 @@ body {
   --color-primary: rgb(233, 153, 153);
   --color-primary-inactive: rgba(233, 153, 153, 0.5);
   --color-secondary: rgba(65, 34, 32, 1.00);
+  --color-button-border: rgb(132, 116, 116);
 }
 
 p, div {
@@ -160,6 +167,13 @@ input {
     position: fixed;
     bottom: 0;
     right: 0;
+}
+
+.position-bottom-center{
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 .container {
@@ -1331,24 +1345,6 @@ input {
       display: none;
 } 
 
-
-::-webkit-scrollbar {
-      width: 15px;
+#reset-camera-button {
+    bottom: 16px;
 }
-
-::-webkit-scrollbar-track {
-      background-color: var(--color-bg);
-} 
-::-webkit-scrollbar-thumb {
-      background-color: var(--color-border);
-      border-radius: 6px;
-      display: flex;
-} 
-::-webkit-scrollbar-button {
-      background-color: rgba(0, 0, 0, 0.281);
-      display: none;
-} 
-::-webkit-scrollbar-corner {
-      background-color: rgba(0, 0, 0, 0.2);
-      display: none;
-} 
