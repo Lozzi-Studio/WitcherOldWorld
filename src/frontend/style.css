@@ -654,10 +654,6 @@ input {
     opacity: 0;
 }
 
-#turn-change-overlay .textbox{
-    border-style: None !important; 
-}
-
 #turn-change-modal {
     width: 220px !important;
     border-color: var(--color-border) !important;
