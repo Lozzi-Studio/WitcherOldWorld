@@ -410,7 +410,7 @@ export const ui_manager = (() => {
                 let resetButton = document.createElement("div");
                 resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
                 resetButton.id = "reset-camera-button";
-                resetButton.innerHTML = "Zurück zu meinem Spieler";
+                resetButton.innerHTML = "Zurück zu meiner Spielfigur";
                 document.getElementById("game-ui").appendChild(resetButton);
     
                 let currentPlayer = this.FindComponent("GameManager").currentPlayer;
