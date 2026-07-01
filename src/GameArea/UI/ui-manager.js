@@ -909,6 +909,7 @@ export const ui_manager = (() => {
             this.#UpdatePlayerSchool(msg);
             this.#InitPlayerWindow();
 
+            document.getElementById("player-window").dataset["theme"] = msg.player.witcherSchool.name;
         }
 
         /**
@@ -927,6 +928,8 @@ export const ui_manager = (() => {
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
 
             this.#ShowTurnChangePopup(msg.player);
+
+            document.documentElement.dataset["theme"] = msg.player.witcherSchool.name;
         }
 
         /**
