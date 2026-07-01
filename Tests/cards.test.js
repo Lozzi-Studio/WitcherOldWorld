@@ -6,8 +6,6 @@ import { cards } from "../src/Cards/card-templates";
 let player1 = new player_entity.Player("Janik", player_options.WitcherSchool.Cat());
 let card = cards.CardTemplates.getVerchnichtenderSchlag();
 
-//TODO
-
 describe(
     'Init Cards', () => {
         test(

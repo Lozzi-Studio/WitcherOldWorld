@@ -17,6 +17,7 @@ import { cards } from '../Cards/card-templates';
 import { cardshop_entity } from '../CardShop/cardshop-entity';
 
 import data from '../../resources/database/loadingScreen_tooltips.json'
+import { notification_entity } from '../notifications/notification-entity';
 import { monster_entity } from '../Monster/monster-entity';
 import { battle_entity } from '../Battle/battle-entity';
 
@@ -50,7 +51,7 @@ export const game = (() => {
         InitSceneEntities() {
             document.getElementById('game-loading-screen').style.display = 'flex';
             document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
-
+            this._entityManager.AddEntity(new notification_entity.NotificationEntity(), "NotificationEntity", true);
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitShop();
             this.#CacheGameData();
@@ -203,9 +204,9 @@ export const game = (() => {
          * Initialize town entities
          */
         #InitTowns() {
-            const size_x = 2.7;
-            const size_y = 0.7;
-            const size_z = 2.7;
+            const size_x = 5;
+            const size_y = 1;
+            const size_z = 5;
             this._entityManager.AddEntity(new town_entity.TownEntity(0, "Behelt Nar", town_options.TownAbility.increaseSkillForMoney(), new Vector3(23.6,0,-2.5), region.Region.Joker(), new Vector3(size_x,size_y,size_z), [4,8,11,15], new Vector3(22,0,-5)), "Town_0");
             this._entityManager.AddEntity(new town_entity.TownEntity(1, "Kaer Seren", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-12,0,-19.3), region.Region.River(), new Vector3(size_x,size_y,size_z), [2,6,5,9], new Vector3(-13,0,-22)), "Town_1");
             this._entityManager.AddEntity(new town_entity.TownEntity(2, "Hengfors", town_options.TownAbility.getGeruechte(), new Vector3(5.1,0,-21.6), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[1,3,6,7], new Vector3(2,0,-22)), "Town_2");

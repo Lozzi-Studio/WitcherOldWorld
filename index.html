@@ -285,6 +285,22 @@
             </div>
         </div>
 
+        <div id="notification-box">
+            <div class="container container--row container--neutral" id="notification-banner">
+                NOTIFICATION
+            </div>
+            <div class="textbox-circle textbox--fill" id="notifications">0</div>
+        </div>
+        <div class="container container--col container--neutral" id="log-window"> 
+            <div id="log-toggle-btn">
+                <span class="material-symbols-outlined" id="log-toggle-icon">arrow_forward_ios</span>
+            </div>
+            
+            <ul class="scroallable-log" id="logger">
+                <li class="log-element --fancy-font">|-------------- GAME START --------------|</li>
+            </ul>
+        </div>
+
         <div class="container borders--all container--neutral container--col" id="phase-two-options-menu" style="display: none;">
             <div class="--fancy-font" id="phase-two-header">
                 Wähle eine Aktion für Phase 2
@@ -384,7 +400,7 @@
         </div>
 
 
-        <div class="container container--col borders--top-right container--neutral position-bottom-left" id="debug-menu">
+        <div class="container container--col borders--top-right container--neutral position-bottom-left" id="debug-menu" style="display: none;">
             <div class="--fancy-font">Debug Menu</div>
             <div class="textbox textbox--fill button" id="debug-next-phase-button">Skip Phase</div>
             <div class="textbox textbox--fill button" id="debug-upgrade-skill-button">Upgrade Skill</div>

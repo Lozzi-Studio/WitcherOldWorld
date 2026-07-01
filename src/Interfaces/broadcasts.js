@@ -547,6 +547,16 @@ export const broadcasts = (() => {
         }
     }
 
+    class BroadcastTemplateNotification {
+        /**
+         * @param {string} message
+         * @returns {object}
+         */
+        static CustomNotification(message) {
+            return {topic: 'notification.custom', message: message}
+        }
+    }
+
     class BroadcastTemplateBattle {
 
         static StartPlayerTurn(emptyHand, specialUsed) {
@@ -579,6 +589,7 @@ export const broadcasts = (() => {
         BroadcastTemplateCamera : BroadcastTemplateCamera,
         BroadcastTemplateMusic: BroadcastTemplateMusic,
         BroadcastTemplateCardShop: BroadcastTemplateCardShop,
-        BroadcastTemplateBattle: BroadcastTemplateBattle
+        BroadcastTemplateBattle: BroadcastTemplateBattle,
+        BroadcastTemplateNotification : BroadcastTemplateNotification
     }
 })();

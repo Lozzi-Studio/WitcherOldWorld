@@ -80,6 +80,21 @@ export const ui_manager = (() => {
                 }
             };
 
+            this.handleLogToggleClick = () => {
+                const logWindow = document.getElementById("log-window");
+                const logToggleIcon = document.getElementById("log-toggle-icon");
+                const logger = document.getElementById("logger");
+
+                logWindow.classList.toggle("log-window--open");
+                
+                if (logWindow.classList.contains("log-window--open")) {
+                    logToggleIcon.innerText = "arrow_back_ios"; 
+                    logger.scrollTop = logger.scrollHeight;
+                } else {
+                    logToggleIcon.innerText = "arrow_forward_ios"; 
+                }
+            }
+
             this.handlePlayClick = () => {
                 const btn = document.getElementById("button-play");
                 if (!(btn.classList.contains("button--inactive"))) {
@@ -212,6 +227,11 @@ export const ui_manager = (() => {
 
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
 
+            document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
+        }
+
+        get phasethreeparttwo() {
+            return this.#phaseThreePartTwo;
         }
 
         /**
@@ -635,32 +655,34 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateTownButton(msg) {
-            let player = this.FindComponent("GameManager").currentPlayer;
-            let selectedTown = this.FindComponent("GameManager").selectedTown;
-            let buttonActive = true;
-            let buttonMode = "";
+            if (this.FindComponent("GameManager").phase.toIdentifier() == 1) {
+                let player = this.FindComponent("GameManager").currentPlayer;
+                let selectedTown = this.FindComponent("GameManager").selectedTown;
+                let buttonActive = true;
+                let buttonMode = "";
 
-            if (selectedTown == player.town) {
-                buttonMode = "action";
-                if (selectedTown.FindComponent("TownProperties").abilityExecuted || !(selectedTown.FindComponent("TownProperties").canUseAbility()) ) {
-                    buttonActive = false;
+                if (selectedTown == player.town) {
+                    buttonMode = "action";
+                    if (selectedTown.FindComponent("TownProperties").abilityExecuted || !(selectedTown.FindComponent("TownProperties").canUseAbility()) ) {
+                        buttonActive = false;
+                    }
+                    else {
+                        buttonActive = true;
+                    }
                 }
                 else {
-                    buttonActive = true;
+                    buttonMode = "move";
+                    if (this.FindEntity("GameArea").FindComponent("GameManager").ValidateMove().moveAllowed) {
+                        buttonActive = true;
+                    }
+                    else {
+                        buttonActive = false;
+                    }
                 }
-            }
-            else {
-                buttonMode = "move";
-                if (this.FindEntity("GameArea").FindComponent("GameManager").ValidateMove().moveAllowed) {
-                    buttonActive = true;
-                }
-                else {
-                    buttonActive = false;
-                }
-            }
 
-            this.UpdateButtonState("town-button", buttonActive);
-            this.#UpdateTownButtonMode(buttonMode, buttonActive);
+                this.UpdateButtonState("town-button", buttonActive);
+                this.#UpdateTownButtonMode(buttonMode, buttonActive);
+            }
         }
 
         /**
@@ -918,6 +940,10 @@ export const ui_manager = (() => {
             const discardPanel = document.getElementById("discard-button-area");
             const discardButton = document.getElementById("button-discard");
             const skipButton = document.getElementById("button-skip");
+
+            if (currentPhase != 1) {
+                this.UpdateButtonState("town-button", false);
+            }
             if (currentPhase == 3) {
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Player";
                 discardButton.style.display = "flex";

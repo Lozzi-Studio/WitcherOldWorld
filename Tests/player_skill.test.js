@@ -79,8 +79,6 @@ describe(
                 expect(player1.FindComponent('PlayerSkills').witcher.level).toBe(2);
             }
         )
-
-        //TODO ALCHEMY POTION TEST
     }
 )
 
