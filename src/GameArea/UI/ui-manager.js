@@ -410,7 +410,7 @@ export const ui_manager = (() => {
         #InitPlayerAvatars(playerList) {
             for (const [i, player] of playerList.entries()) {
                 var avatarContainer = this.#CreateAvatarContainer(i+1);
-                avatarContainer.classList.add(`theme--player${i+1}`)
+                avatarContainer.classList.add(`theme--${player.witcherSchool.name}`)
                 avatarContainer.addEventListener("click", () => {
                     this.Broadcast(broadcasts.BroadcastTemplatePlayer.SelectPlayer(this.FindEntity(player.name)));
                 })
