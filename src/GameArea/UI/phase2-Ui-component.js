@@ -59,11 +59,15 @@ export const phase_two_ui_component = (() => {
         }
 
         #onBtnClickExploreCity(){
+            const currentPlayer = this.FindComponent('GameManager').currentPlayer;
             this.#openExploreWindow("Du erkundest die Stadt", "explore--city", "eventsCity");
+            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(currentPlayer.playerName + ' erkundet die Stadt.'));
         }
 
         #onBtnClickExploreWilderness(){
+            const currentPlayer = this.FindComponent('GameManager').currentPlayer;
             this.#openExploreWindow("Du erkundest die Wildnis", "explore--wilderness", "eventsLand");
+            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(currentPlayer.playerName + ' erkundet die Wilnis.'));
         }
         #openExploreWindow(header, cssClass, key){
             document.getElementById("phase-two-options-menu").style.display = "none";
