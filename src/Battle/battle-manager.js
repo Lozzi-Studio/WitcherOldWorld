@@ -124,7 +124,7 @@ export const battle_manager = (() => {
                             break;
                     }
                     this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(dmg));
-                    this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die ${formattedSkill}-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
+                    this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die ${nextMove.skill}-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
                 }
             } else if (nextMove.level != undefined){
                 if (nextMove.discard) {

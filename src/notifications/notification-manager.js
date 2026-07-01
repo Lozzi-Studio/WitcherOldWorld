@@ -23,7 +23,7 @@ export const notifaction_manager = (() => {
 
             //die beiden relevanten werte für finetuning
             this.#maxFadeDuration = 1;
-            this.#showTime = 1;
+            this.#showTime = 0.5;
 
 
             this.#selectedTown = undefined;
