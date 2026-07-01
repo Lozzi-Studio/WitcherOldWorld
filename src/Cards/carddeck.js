@@ -370,11 +370,15 @@ export const carddeck_component = (() => {
          * @param {object} msg 
          */
         #DiscardRandomCard(msg){
+            const displayName = this._parent.playerName || this._parent.name.split("_")[0];
             if (this.#cardHand.length > 0) {
                 let index = Math.floor(Math.random() * this.#cardHand.length);
                 let discardedCard = this.#cardHand[index];
                 this.#cardDiscard.push(discardedCard);
-                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(this._parent.playerName + " hat die Karte " + discardedCard.name + " abgeworfen."));
+
+                let cardText = discardedCard.name ? "die Karte " + discardedCard.name : "eine Karte";
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(displayName + " hat " + cardText + " abgeworfen."));
+
                 this.#cardHand.splice(index,1);
                 if (!this.#noUiUpdate) {
                     this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", discardedCard));
@@ -382,7 +386,9 @@ export const carddeck_component = (() => {
             } else if (this.#cardDeck.length > 0){
                 let discardedCard = this.#cardDeck.pop()
                 this.#cardDiscard.push(discardedCard);
-                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(this._parent.playerName + " hat die Karte " + discardedCard.name + " abgeworfen."));
+                
+                let cardText = discardedCard.name ? "die Karte " + discardedCard.name : "eine Karte";
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(displayName + " hat " + cardText + " abgeworfen."));
             }
         }
 

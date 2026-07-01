@@ -23,7 +23,7 @@ export const notifaction_manager = (() => {
 
             //die beiden relevanten werte für finetuning
             this.#maxFadeDuration = 1;
-            this.#showTime = 0.5;
+            this.#showTime = 0.3;
 
 
             this.#selectedTown = undefined;
@@ -77,7 +77,9 @@ export const notifaction_manager = (() => {
             switch(msg.topic) {
                 case 'game.nextPhase':
                     let phaseText = currentPlayer.playerName + " hat Phase " + currentPhase + " gestartet";
-                    currentPhase += 1;
+                    if(currentPhase === 1){
+                        break;
+                    }
                     if(currentPhase != 4 && this.#notificationQueue[this.#notificationQueue.length - 1] !== phaseText) {
                         this.#notificationQueue.push(phaseText);
                         notificationAdded = true;
