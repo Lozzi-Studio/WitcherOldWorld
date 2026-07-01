@@ -887,6 +887,10 @@ export const ui_manager = (() => {
             this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextPlayer(playerList[0]));
         }
 
+        /**
+         * Update all stats in player window from input player in msg.player
+         * @param {object} msg 
+         */
         #UpdatePlayerInfoWindow(msg) {
             let currentPlayer = this.FindComponent("GameManager").currentPlayer;
             let playerWindow = document.getElementById("player-window");
