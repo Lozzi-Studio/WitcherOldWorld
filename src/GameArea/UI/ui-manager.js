@@ -1201,8 +1201,8 @@ export const ui_manager = (() => {
 
             avatar.src = this.#GetAvatarPathFromPlayer(player);
             
-            let formattedName = this.#ReplaceUmlaute(player.playerName.toUpperCase());
-            text.innerHTML = `${formattedName} IST AN DER REIHE`;
+            let formattedName = this.#ReplaceUmlaute(player.playerName);
+            text.innerHTML = `${formattedName} ist an der Reihe`;
 
             if (modal) {
                 Array.from(modal.classList).forEach(className => {
