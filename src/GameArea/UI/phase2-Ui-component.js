@@ -25,8 +25,8 @@ export const phase_two_ui_component = (() => {
             document.getElementById("fight-monster-option").addEventListener("click", () => {this.#onBtnClickCombat();});
             document.getElementById("explore-city-option").addEventListener("click", () => {this.#onBtnClickExploreCity();});
             document.getElementById("explore-wilderness-option").addEventListener("click", () => {this.#onBtnClickExploreWilderness();});
-            document.getElementById("explore-option-One").addEventListener("click", () => {this.#onBtnClickOptionA();});
-            document.getElementById("explore-option-Two").addEventListener("click", () => {this.#onBtnClickOptionB();});
+            document.getElementById("explore-option-one").addEventListener("click", () => {this.#onBtnClickOptionA();});
+            document.getElementById("explore-option-two").addEventListener("click", () => {this.#onBtnClickOptionB();});
             document.getElementById("explore-confirm-btn").addEventListener("click", () => {this.#onBtnClickConfirm();});
             
         }
@@ -71,9 +71,9 @@ export const phase_two_ui_component = (() => {
         }
         #openExploreWindow(header, cssClass, key){
             document.getElementById("phase-two-options-menu").style.display = "none";
-            document.getElementById("explorartion-window").style.display = "flex";
-            document.getElementById("eplore-header").innerText = header;
-            document.getElementById("explorartion-window").classList.add(cssClass);
+            document.getElementById("explore-window").style.display = "flex";
+            document.getElementById("explore-header").innerText = header;
+            document.getElementById("explore-window").classList.add(cssClass);
             this.#loadExploreEvent(key);
         }
 
@@ -82,8 +82,8 @@ export const phase_two_ui_component = (() => {
             this.#currentEvent = data.events[Math.floor(Math.random() * data.events.length)];
 
             document.getElementById("explore-txt").innerHTML = "<br>" + this.#currentEvent.Text + "<br><br>";
-            document.getElementById("explore-option-One").innerText = this.#currentEvent.OptionA;
-            document.getElementById("explore-option-Two").innerText = this.#currentEvent.OptionB;
+            document.getElementById("explore-option-one").innerText = this.#currentEvent.OptionA;
+            document.getElementById("explore-option-two").innerText = this.#currentEvent.OptionB;
         }
 
         #onBtnClickOptionA(){
@@ -94,7 +94,7 @@ export const phase_two_ui_component = (() => {
                 this.#currentResult = this.#currentEvent.ResultA;
             }
             document.getElementById("explore-txt").innerHTML = "<br>" + this.#currentEvent.ResultTextA + "<br>" + (("InfoText" in this.#currentResult) ? this.#currentResult.InfoText : "") + "<br>";
-            document.getElementById("explore-Options-Btn").style.display = "none";
+            document.getElementById("explore-options-btn").style.display = "none";
             document.getElementById("explore-confirm-btn").style.display = "flex";
             document.getElementById("explore-confirm-btn").innerHTML = this.#currentEvent.ResultA.Info;
         }
@@ -107,7 +107,7 @@ export const phase_two_ui_component = (() => {
                 this.#currentResult = this.#currentEvent.ResultB;
             }
             document.getElementById("explore-txt").innerHTML = "<br>" + this.#currentEvent.ResultTextB + "<br>" + (("InfoText" in this.#currentResult) ? this.#currentResult.InfoText : "") + "<br>";
-            document.getElementById("explore-Options-Btn").style.display = "none";
+            document.getElementById("explore-options-btn").style.display = "none";
             document.getElementById("explore-confirm-btn").style.display = "flex";
             document.getElementById("explore-confirm-btn").innerHTML = this.#currentEvent.ResultB.Info
         }
@@ -223,11 +223,11 @@ export const phase_two_ui_component = (() => {
         }
 
         #onPhaseTwoEnd(){
-            document.getElementById("explorartion-window").style.display = "none";
+            document.getElementById("explore-window").style.display = "none";
             document.getElementById("phase-two-options-menu").style.display = "none";
             document.getElementById("explore-confirm-btn").style.display = "none";
-            document.getElementById("explore-Options-Btn").style.display = "flex";
-            document.getElementById("explorartion-window").classList.remove("explore--city", "explore--wilderness");
+            document.getElementById("explore-options-btn").style.display = "flex";
+            document.getElementById("explore-window").classList.remove("explore--city", "explore--wilderness");
             document.getElementById("meditate-option").classList.add("option--disabled");
             document.getElementById("fight-monster-option").classList.add("option--disabled");
         }

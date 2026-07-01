@@ -100,7 +100,7 @@ body {
   --color-primary: rgb(201, 143, 55);
   --color-primary-inactive: rgba(201, 143, 55, 0.5);
   --color-secondary: rgb(20, 15, 7);
-  --color-button-border: rgb(132, 123, 116);
+  --color-button-border: rgb(76, 70, 65);
 }
 
 [data-theme="Greifenschule"] {
@@ -845,7 +845,7 @@ input {
     z-index: 10;
 }
 
-#explorartion-window {
+#explore-window {
     position: fixed;
     align-items: stretch;
     max-width: 512px;
@@ -857,7 +857,7 @@ input {
     z-index: 1001;
 }
 
-#explorartion-window .button {
+#explore-window .button {
     max-width: 100%;
     width: 100%;
     box-sizing: border-box;
@@ -865,7 +865,7 @@ input {
     text-align: center;
 }
 
-#eplore-header{
+#explore-header{
     font-size: 24pt;
     font-family: Gwent;
     color: #ffffff;
