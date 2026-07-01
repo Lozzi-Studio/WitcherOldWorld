@@ -69,6 +69,24 @@ export const notifaction_manager = (() => {
             } 
         }
 
+        #getStatusGermanText(type, amount, mode) {
+            let suffix = mode === "temporary" ? " (temporär)" : " (permanent)";
+            switch(type) {
+                case "drawLessCards":
+                    return `muss ${amount} Karte(n) weniger ziehen` + suffix;
+                case "drawMoreCards":
+                    return `darf ${amount} Karte(n) mehr ziehen` + suffix;
+                case "forestTracker":
+                    return "wurde im Wald überrascht (Monster greift im nächsten Kampf zuerst an)";
+                case "riverTracker":
+                    return "wurde am Fluss überrascht (Monster greift im nächsten Kampf zuerst an)";
+                case "mountainTracker":
+                    return "wurde im Gebirge überrascht (Monster greift im nächsten Kampf zuerst an)";
+                default:
+                    return `erhält den Effekt '${type}'`;
+            }
+        }
+
         #QueueNotification(msg) {
             var currentPlayer = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
             var currentPhase = this.FindEntity("GameArea").FindComponent("GameManager").phase.toIdentifier();
@@ -162,6 +180,10 @@ export const notifaction_manager = (() => {
                 case 'town.action':
                     let townActionText = currentPlayer.playerName + " hat in " + this.#selectedTown.town_name + " die Action " + this.#selectedTown.ability.name + " genutzt"
                     this.#notificationQueue.push(townActionText);
+                    notificationAdded = true;
+                    break;
+                case 'player.addStatus':
+                    this.#notificationQueue.push(currentPlayer.playerName + " hat den Status ");
                     notificationAdded = true;
                     break;
 
