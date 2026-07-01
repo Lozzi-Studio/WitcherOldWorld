@@ -62,10 +62,10 @@ export const card_select_ui = (() => {
                 )
 
                 if (selectableCards instanceof Array) {
-                    header.innerHTML = `Wähle ${selectableCards[0]} - ${selectableCards[1]} Karten zum ${reason} aus`
+                    header.innerHTML = `${topic}: Wähle ${selectableCards[0]} - ${selectableCards[1]} Karten zum ${reason} aus`
                 } 
                 else if (selectableCards != 0) {
-                    header.innerHTML = `Wähle ${selectableCards} Karten zum ${reason} aus`
+                    header.innerHTML = `${topic}: Wähle ${selectableCards} Karten zum ${reason} aus`
                 }
                 else {
                     header.innerHTML = topic;

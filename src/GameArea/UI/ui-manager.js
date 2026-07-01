@@ -30,6 +30,7 @@ export const ui_manager = (() => {
                     this.FindEntity("GameArea")
                         .FindComponent("GameManager")
                         .DiscardCardToMove();
+                    this.#UpdateTownButton();
                 }
             };
 
