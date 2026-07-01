@@ -7,10 +7,11 @@ export const notifaction_manager = (() => {
         #notificationQueue;
         #duration;
         #maxFadeDuration;
-        #reverse
-        #showTime
+        #reverse;
+        #showTime;
         #log;
         #countIncomingBanner;
+        #selectedTown;
 
         constructor() {
             super();
@@ -23,6 +24,9 @@ export const notifaction_manager = (() => {
             //die beiden relevanten werte für finetuning
             this.#maxFadeDuration = 1;
             this.#showTime = 1;
+
+
+            this.#selectedTown = undefined;
         }
 
         InitComponent() {
@@ -31,14 +35,19 @@ export const notifaction_manager = (() => {
             this._RegisterHandler('game.meditate', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('skill.changeLevel', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('player.move', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('player.changeMoney', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('card.drawCard', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('notification.custom', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('card.addCard', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('battle.startBattle', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('battle.playerTurn', (msg) => {this.#QueueNotification(msg)});
             this._RegisterHandler('battle.endBattle', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('town.selection', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('town.action', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('player.addTrophy', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('card.discardCard', (msg) => {this.#QueueNotification(msg)});
+            this._RegisterHandler('player.rumor', (msg) => {this.#QueueNotification(msg)});
         }
-
         /**
          * Get german identifier of enum
          * @returns {string}
@@ -67,9 +76,10 @@ export const notifaction_manager = (() => {
 
             switch(msg.topic) {
                 case 'game.nextPhase':
+                    let phaseText = currentPlayer.playerName + " hat Phase " + currentPhase + " gestartet";
                     currentPhase += 1;
-                    if(currentPhase != 4){
-                        this.#notificationQueue.push(currentPlayer.playerName + " hat Phase " + currentPhase + " gestartet");
+                    if(currentPhase != 4 && this.#notificationQueue[this.#notificationQueue.length - 1] !== phaseText) {
+                        this.#notificationQueue.push(phaseText);
                         notificationAdded = true;
                     }
                     break;
@@ -95,6 +105,20 @@ export const notifaction_manager = (() => {
                         notificationAdded = true; 
                     }
                     break;
+                case 'player.rumor': 
+                    this.#notificationQueue.push(currentPlayer.playerName + " hat ein Gerücht über Spuren in der Stadt " + msg.destination.town_name + " aufgeschnappt."); 
+                    notificationAdded = true; 
+                    break;
+                case 'player.changeMoney':
+                    let moneyText = currentPlayer.playerName + " hat " + Math.abs(msg.amount) + " Gold " + (msg.amount > 0 ? "bekommen." : "verloren.");
+                    this.#notificationQueue.push(moneyText);
+                    notificationAdded = true; 
+                    break;
+                case 'player.addTrophy':
+                    let trophyText = currentPlayer.playerName + " hat eine Trophäe bekommen.";
+                    this.#notificationQueue.push(trophyText);
+                    notificationAdded = true; 
+                    break;
                 case 'card.drawCard':
                     let is_shop = this.FindEntity("GameArea").FindComponent("UIManager").phasethreeparttwo
                     if (msg.mode === "Deck" && currentPhase === 3 && !is_shop) {
@@ -106,6 +130,12 @@ export const notifaction_manager = (() => {
                     if (currentPhase > 1) {
                         this.#notificationQueue.push(currentPlayer.playerName + " hat die Karte " + msg.card.name + " bekommen."); 
                         notificationAdded = true; 
+                    }
+                    break;
+                case 'card.discardCard':
+                    if (msg.mode == "Delete") {
+                        this.#notificationQueue.push(currentPlayer.playerName + " hat die Karte " + msg.card.name + " entfernt."); 
+                        notificationAdded = true;
                     }
                     break;
                 case 'battle.startBattle':
@@ -126,10 +156,21 @@ export const notifaction_manager = (() => {
                         notificationAdded = true;
                     }
                     break;
+                case 'town.selection':
+                    this.#selectedTown = msg.town;
+                    break;
+                case 'town.action':
+                    let townActionText = currentPlayer.playerName + " hat in " + this.#selectedTown.town_name + " die Action " + this.#selectedTown.ability.name + " genutzt"
+                    this.#notificationQueue.push(townActionText);
+                    notificationAdded = true;
+                    break;
 
                 case 'notification.custom':
-                    this.#notificationQueue.push(msg.message);
-                    notificationAdded = true; 
+                    let message = msg.message
+                    if(this.#notificationQueue[this.#notificationQueue.length - 1] !== message) {
+                        this.#notificationQueue.push(msg.message);
+                        notificationAdded = true; 
+                    }
                     break;    
             }
             if (notificationAdded) {

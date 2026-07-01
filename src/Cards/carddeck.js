@@ -374,12 +374,15 @@ export const carddeck_component = (() => {
                 let index = Math.floor(Math.random() * this.#cardHand.length);
                 let discardedCard = this.#cardHand[index];
                 this.#cardDiscard.push(discardedCard);
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(this._parent.playerName + " hat die Karte " + discardedCard.name + " abgeworfen."));
                 this.#cardHand.splice(index,1);
                 if (!this.#noUiUpdate) {
                     this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", discardedCard));
                 }
             } else if (this.#cardDeck.length > 0){
-                this.#cardDiscard.push(this.#cardDeck.pop());
+                let discardedCard = this.#cardDeck.pop()
+                this.#cardDiscard.push(discardedCard);
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(this._parent.playerName + " hat die Karte " + discardedCard.name + " abgeworfen."));
             }
         }
 
