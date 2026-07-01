@@ -25,7 +25,7 @@ export const town_properties = (() => {
             this.#ability = ability;
             this.#region = region;
             this.#neighboringTowns = neighboringTowns;
-            this.#abilityExecuted = false;
+            this.#abilityExecuted = true;
         }
 
         /**
@@ -91,6 +91,10 @@ export const town_properties = (() => {
          */
         get abilityExecuted() {
             return this.#abilityExecuted;
+        }
+
+        get ability(){
+            return this.#ability;
         }
     }
 

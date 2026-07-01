@@ -63,7 +63,6 @@ export const carddeck_component = (() => {
             this.#cardDeck = [];
             this.#cardDiscard = [];
             this.#cardHand = [];
-            //TODO Create Defaults
             switch (msg.deck) {
                 case "Player":
                     switch (msg.school) {
@@ -378,16 +377,27 @@ export const carddeck_component = (() => {
          * @param {object} msg 
          */
         #DiscardRandomCard(msg){
+            const displayName = this._parent.playerName || this._parent.name.split("_")[0];
             if (this.#cardHand.length > 0) {
                 let index = Math.floor(Math.random() * this.#cardHand.length);
                 let discardedCard = this.#cardHand[index];
                 this.#cardDiscard.push(discardedCard);
+
+                let cardText = discardedCard.name ? "die Karte " + discardedCard.name : "eine Karte";
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(displayName + " hat " + cardText + " abgeworfen."));
+
                 this.#cardHand.splice(index,1);
                 if (!this.#noUiUpdate) {
                     this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", discardedCard));
                 }
             } else if (this.#cardDeck.length > 0){
-                this.#cardDiscard.push(this.#cardDeck.pop());
+                let discardedCard = this.#cardDeck.pop()
+                this.#cardDiscard.push(discardedCard);
+                
+                if (!(this.#noUiUpdate)) {
+                    let cardText = discardedCard.name ? "die Karte " + discardedCard.name : "eine Karte";
+                    this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(displayName + " hat " + cardText + " abgeworfen."));
+                }
                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));

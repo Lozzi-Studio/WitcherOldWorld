@@ -29,6 +29,17 @@ export const player_trophies = (() => {
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateUI(this.parent));
             if (this.#amount >= 4){
                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.EndGame(this.parent));
+            } else {
+                this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.FindComponent("Carddeck").hand.concat(this.FindComponent("Carddeck").deck.concat(this.FindComponent("Carddeck").discard)),this.#amount, "Entfernen aus deinem Deck", false).then(
+                    (result) => {   
+                        if (result != null) {
+                            for (let card of result) {
+                                this.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Delete"));
+                                this.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true,true));
+                            }
+                        }
+                    }
+                );
             }
         }
 

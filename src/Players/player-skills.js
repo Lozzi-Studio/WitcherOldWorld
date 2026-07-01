@@ -242,6 +242,7 @@ export const player_skills = (() => {
         toIdentifier() {
             return this.#name;
         }
+
     }
 
     class Shield extends component.Component {

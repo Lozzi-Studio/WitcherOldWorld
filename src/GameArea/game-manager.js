@@ -235,13 +235,17 @@ export const game_manager = (() => {
             }
         }
 
-        DiscardSelectedCards(msg){
+        DiscardSelectedCards(){
+            let discardedCards = []
             if (!(this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3)){
                 for (let card_slot of this.#selection) {
+                    discardedCards.push(card_slot)
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot], "Discard"));
                 }
 
                 this.#selection = [];
+                let discardMessage = this.#currentPlayer.playerName + " hat " + discardedCards.length + " Karte/n abgeworfen";
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(discardMessage));
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
@@ -457,6 +461,7 @@ export const game_manager = (() => {
             }
             this._parent._parent.scene.remove(this.#currentMonster.get(msg.region).FindComponent("MonsterFigure").mesh);
             const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(newRegion, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
+            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Ein neues Monster der Stufe " + newMonster.rank + " ist in " + newMonster.town.town_name + " erschienen."));
             this.#currentMonster.set(newRegion.toIdentifier(), newMonster);
             this._parent._parent.AddEntity(newMonster, "Monster_" + newRegion.toIdentifier());
         }

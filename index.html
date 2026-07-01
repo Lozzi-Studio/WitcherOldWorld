@@ -277,7 +277,7 @@
         </div>
 
         <div class="container container--row position-top-left" id="combat-ui" style="display: none;">
-            <div class="container container--row container--neutral borders--all" id="battle-monster-window">
+            <div class="container container--row container--neutral borders--all" id="battle-monster-window" data-theme="Monster">
                 <div class="container container--col">
                     <div class="container container--col" id="avatar-name-container">
                         <div class="avatar-container avatar-container--big">
@@ -296,6 +296,22 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="notification-box">
+            <div class="container container--row container--neutral" id="notification-banner">
+                NOTIFICATION
+            </div>
+            <div class="textbox-circle textbox--fill" id="notifications">0</div>
+        </div>
+        <div class="container container--col container--neutral" id="log-window"> 
+            <div id="log-toggle-btn">
+                <span class="material-symbols-outlined" id="log-toggle-icon">arrow_forward_ios</span>
+            </div>
+            
+            <ul class="scroallable-log" id="logger">
+                <li class="log-element --fancy-font">|-------------- GAME START --------------|</li>
+            </ul>
         </div>
 
         <div class="container borders--all container--neutral container--col" id="phase-two-options-menu" style="display: none;">
@@ -322,22 +338,12 @@
             </div>
         </div>
 
-        <div class="container borders--all container--neutral container--col" id="explorartion-window" style="display: none;">
-            <span id ="eplore-header">Explore-header</span>
+        <div class="container borders--all container--neutral container--col" id="explore-window" style="display: none;">
+            <span id ="explore-header">Explore-header</span>
             <span id="explore-txt">Explore-Txt</span>
-            <div class= "container container--col" id="explore-Options-Btn">
-                <div class= "textbox textbox--fill button" id="explore-option-One">Explor-Option-A</div>
-                <div class= "textbox textbox--fill button" id="explore-option-Two">Explor-Option-B</div>
-            </div>
-            <div class="textbox textbox--fill button" id="explore-confirm-btn" style="display: none;">Du ziehst weiter</div>
-        </div>
-
-        <div class="container borders--all container--neutral container--col" id="explorartion-window" style="display: none;">
-            <span id ="eplore-header">Explore-header</span>
-            <span id="explore-txt">Explore-Txt</span>
-            <div class= "container container--col" id="explore-Options-Btn">
-                <div class= "textbox textbox--fill button" id="explore-option-One">Explor-Option-A</div>
-                <div class= "textbox textbox--fill button" id="explore-option-Two">Explor-Option-B</div>
+            <div class= "container container--col" id="explore-options-btn">
+                <div class= "textbox textbox--fill button" id="explore-option-one">Explore-Option-A</div>
+                <div class= "textbox textbox--fill button" id="explore-option-two">Explore-Option-B</div>
             </div>
             <div class="textbox textbox--fill button" id="explore-confirm-btn" style="display: none;">Du ziehst weiter</div>
         </div>
@@ -418,9 +424,7 @@
                 <div class="avatar-container" style="width: 140px; height: 140px;">
                     <img class="avatar" id="turn-change-avatar" src="" style="width: 100%; height: 100%;">
                 </div>
-                <div class="textbox textbox--fancy-font" style="width: 90%;">
-                    <p id="turn-change-text">NAME IST AN DER REIHE</p>
-                </div>
+                <div class="--fancy-font" id="turn-change-text">NAME IST AN DER REIHE</div>
                 <div class="textbox textbox--fill button --fancy-font" id="turn-change-continue-btn" style="width: 90%;">
                     Fortfahren
                 </div>
