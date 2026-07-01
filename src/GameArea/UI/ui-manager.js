@@ -399,7 +399,7 @@ export const ui_manager = (() => {
             var avatarContainer = document.createElement("div");
             avatarContainer.id = `avatar-container-${id}`;
             avatarContainer.classList.add("avatar-container", "avatar-container--small");
-            return avatarContainer
+            return avatarContainer;
         }
 
         /**
@@ -411,6 +411,9 @@ export const ui_manager = (() => {
             for (const [i, player] of playerList.entries()) {
                 var avatarContainer = this.#CreateAvatarContainer(i+1);
                 avatarContainer.classList.add(`theme--player${i+1}`)
+                avatarContainer.addEventListener("click", () => {
+                    this.Broadcast(broadcasts.BroadcastTemplatePlayer.SelectPlayer(this.FindEntity(player.name)));
+                })
                 document.getElementById("avatars-container").appendChild(avatarContainer);
 
                 var avatar = document.createElement("img");
