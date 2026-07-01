@@ -406,19 +406,21 @@ export const ui_manager = (() => {
          * creates button in HTML to reset camera to focus current player
          */
         #CreateResetCameraButton() {
-            let resetButton = document.createElement("div");
-            resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
-            resetButton.id = "reset-camera-button";
-            resetButton.innerHTML = "Zurück zu meinem Spieler";
-            document.getElementById("game-ui").appendChild(resetButton);
-
-            let currentPlayer = this.FindComponent("GameManager").currentPlayer;
-            resetButton.addEventListener("click", () => {
-                this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(currentPlayer));
-                let msg = {player: currentPlayer}
-                this.#UpdatePlayerInfoWindow(msg);
-                this.#DeleteResetCameraButton();
-            })
+            if (!document.getElementById("reset-camera-button")) {
+                let resetButton = document.createElement("div");
+                resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
+                resetButton.id = "reset-camera-button";
+                resetButton.innerHTML = "Zurück zu meinem Spieler";
+                document.getElementById("game-ui").appendChild(resetButton);
+    
+                let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+                resetButton.addEventListener("click", () => {
+                    this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(currentPlayer));
+                    let msg = {player: currentPlayer}
+                    this.#UpdatePlayerInfoWindow(msg);
+                    this.#DeleteResetCameraButton();
+                })
+            }
         }
 
         /**
@@ -442,6 +444,12 @@ export const ui_manager = (() => {
                     this.Broadcast(broadcasts.BroadcastTemplatePlayer.SelectPlayer(this.FindEntity(player.name)));
                     this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(player));
                     this.#CreateResetCameraButton();
+                    
+                    let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+                    if (player == currentPlayer) {
+                        this.#DeleteResetCameraButton();
+                    }
+                    
                 })
                 document.getElementById("avatars-container").appendChild(avatarContainer);
                 const tooltip = document.createElement("div");
