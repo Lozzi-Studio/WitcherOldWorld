@@ -398,7 +398,7 @@ export const ui_manager = (() => {
         #CreateAvatarContainer(id) {
             var avatarContainer = document.createElement("div");
             avatarContainer.id = `avatar-container-${id}`;
-            avatarContainer.classList.add("avatar-container", "avatar-container--small");
+            avatarContainer.classList.add("avatar-container", "avatar-container--small", "tooltip-icon");
             return avatarContainer;
         }
 
@@ -415,6 +415,10 @@ export const ui_manager = (() => {
                     this.Broadcast(broadcasts.BroadcastTemplatePlayer.SelectPlayer(this.FindEntity(player.name)));
                 })
                 document.getElementById("avatars-container").appendChild(avatarContainer);
+                const tooltip = document.createElement("div");
+                tooltip.classList.add("tooltip-text", "tooltip-text--bottom");
+                tooltip.innerHTML = player.playerName;
+                document.getElementById("avatars-container").appendChild(tooltip);
 
                 var avatar = document.createElement("img");
                 avatar.classList.add("avatar", "avatar--small");
