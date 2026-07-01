@@ -42,9 +42,9 @@ export const battle_ui = (() => {
             document.getElementById("monster-hp-amount").innerHTML = msg.monster.health;
             let monsterLevel;
             switch (msg.monster.rank) {
-                case 1: monsterLevel = "I";
-                case 2: monsterLevel = "II";
-                case 3: monsterLevel = "III";
+                case 1: monsterLevel = "I"; break;
+                case 2: monsterLevel = "II"; break;
+                case 3: monsterLevel = "III"; break;
 
             }
             document.getElementById("monster-level").innerHTML = monsterLevel;

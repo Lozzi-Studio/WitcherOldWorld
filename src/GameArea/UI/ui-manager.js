@@ -2,6 +2,8 @@ import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
 import { shiftLeft } from "three/tsl";
 import { player_skills } from "../../Players/player-skills";
+import { cards } from "../../Cards/card-templates";
+import { card } from "../../Cards/card";
 
 export const ui_manager = (() => {
 
@@ -786,7 +788,6 @@ export const ui_manager = (() => {
             for (let [i, card] of playerHand.entries()) {
                 let cardDIV = document.getElementById(`card-image-${i}`);
                 if (cardDIV) {
-                    console.log(card);
                     this.UpdateCardContent(card, cardDIV);
                 }
                 else {
@@ -855,7 +856,11 @@ export const ui_manager = (() => {
                 discardStack.style.backgroundImage = "url(./resources/assets/cards/0-backside.png)";
             }
 
-            this.FindComponent("UIManager").UpdateCardContent(msg.card, cardDIV);
+            console.log(msg.card);
+            console.log(msg.card.OptionA);
+            if (msg.card instanceof card.Card) {
+                this.FindComponent("UIManager").UpdateCardContent(msg.card, cardDIV);
+            }
             cardDIV.style.zIndex = 9;
             // cardDIV.style.marginLeft = "6px";
         }
