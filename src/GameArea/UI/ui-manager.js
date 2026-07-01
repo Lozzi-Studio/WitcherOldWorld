@@ -909,6 +909,7 @@ export const ui_manager = (() => {
             this.#UpdatePlayerSchool(msg);
             this.#InitPlayerWindow();
 
+            document.getElementById("player-window").dataset["theme"] = msg.player.witcherSchool.name;
         }
 
         /**
