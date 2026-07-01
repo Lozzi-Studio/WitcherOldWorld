@@ -402,6 +402,9 @@ export const ui_manager = (() => {
             return avatarContainer;
         }
 
+        /**
+         * creates button in HTML to reset camera to focus current player
+         */
         #CreateResetCameraButton() {
             let resetButton = document.createElement("div");
             resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
@@ -418,6 +421,9 @@ export const ui_manager = (() => {
             })
         }
 
+        /**
+         * removes reset camera button from DOM
+         */
         #DeleteResetCameraButton() {
             let resetButton = document.getElementById("reset-camera-button");
             resetButton.remove()
