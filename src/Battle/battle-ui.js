@@ -47,7 +47,7 @@ export const battle_ui = (() => {
             document.getElementById("skills-container").style.display = "none";
             document.getElementById("phase-window").style.display = "none";
             document.getElementById("monster-avatar").src = this.#GetPathForMonsterAvatar(msg.monster);
-            document.getElementById("hp-amount").innerHTML = msg.player.GetHealth();
+            document.getElementById("player-hp-amount").innerHTML = msg.player.GetHealth();
             document.getElementById("monster-hp-amount").innerHTML = msg.monster.health;
             document.getElementById("monster-deck-number").innerHTML = msg.monster.health;
             let monsterLevel;
@@ -111,57 +111,62 @@ export const battle_ui = (() => {
          * @param {string} side 
          * @param {int} offset 
          */
-        AppendElementToElementById(element, id, side, offset) {
+        AttachElementToElementById(element, id, side, offset) {
             element.style.position = "absolute";
-            let pos = document.getElementById(id).getBoundingClientRect()
-            let width = document.getElementById(id).offsetWidth;
-            let height = document.getElementById(id).offsetHeight;
+            document.getElementsByTagName("body")[0].appendChild(element);
+            let rect = document.getElementById(id).getBoundingClientRect();
+            console.log(rect);
             switch (side) {
                 case "bottom":
-                    element.style.top = pos.bottom + offset;
-                    element.style.left = pos.left + width/2;
+                    element.style.top = `${rect.bottom + offset}px`;
+                    element.style.left = `${rect.left + rect.width/2 - element.offsetWidth/2}px`;
                     break;
+
                 case "top":
-                    element.style.bottom = pos.top + offset;
-                    element.style.left = pos.left + width/2;
+                    element.style.bottom = `${rect.top + offset}px`;
+                    element.style.left = `${rect.left + rect.width/2 - element.offsetWidth/2}px`;
                     break;
+
                 case "left":
-                    element.style.right = pos.left + offset;
-                    element.style.top = pos.top + height/2;
+                    element.style.right = `${rect.left + offset}px`;
+                    element.style.top = `${rect.top + rect.height/2 - element.offsetHeight/2}px`;
                     break;
+
                 case "right":
-                    element.style.left = pos.right + offset;
-                    element.style.top = pos.top + height/2;
+                    element.style.left = `${rect.right + offset}px`;
+                    element.style.top = `${rect.top + rect.height/2 - element.offsetHeight/2}px`;
                     break;
             }
+            console.log(element);
         }
 
-        #ShowDamageHint(msg) {
-            let dmgHint = document.getElementById(`${msg.victim}-dmg-hint`);
+        #CreateDamageHint(msg) {
+            let dmgHint = document.createElement("div");
+            dmgHint.classList.add("dmg-hint", "--fancy-font");
             dmgHint.style.display = "block";
+            dmgHint.innerHTML = `-${msg.damageAmount}`;
             requestAnimationFrame(() => {
                 dmgHint.style.opacity = 1;
             });
             console.log("-", msg.damageAmount);
-            dmgHint.innerHTML = `-${msg.damageAmount}`;
-            document.getElementById(`${msg.victim}-hp-container`).appendChild(dmgHint);
-            setTimeout(() => {this.#HideDamageHint(msg)}, 2250);
+            this.AttachElementToElementById(dmgHint, `${msg.victim}-hp-amount`, "right", 8);
+            setTimeout(() => {this.#RemoveDamageHint(dmgHint)}, 2250);
         }
 
-        #HideDamageHint(msg) {
-            document.getElementById(`${msg.victim}-dmg-hint`).style.opacity = 0;
+        #RemoveDamageHint(element) {
+            element.style.opacity = 0;
             setTimeout(() => {
-                document.getElementById(`${msg.victim}-dmg-hint`).style.display = "none";
+                element.remove();
             }, 400);
         }
 
         #UpdateHealth(msg) {
             console.log("UpdateHealth(), amount: ", msg.damageAmount);
             if (msg.victim == "player") {
-                document.getElementById("hp-amount").innerHTML = this.#player.GetHealth();
+                document.getElementById("player-hp-amount").innerHTML = this.#player.GetHealth();
                 if (msg.damageAmount > 0) {
                     console.log("show dmg hint player");
-                    this.#ShowDamageHint(msg);
+                    this.#CreateDamageHint(msg);
                 }
             }
             if (msg.victim == "monster") {
@@ -169,7 +174,7 @@ export const battle_ui = (() => {
                 document.getElementById("monster-deck-number").innerHTML = this.#monster.GetCurrentHealth();
                 if (msg.damageAmount > 0) {
                     console.log("show dmg hint monster");
-                    this.#ShowDamageHint(msg);
+                    this.#CreateDamageHint(msg);
                 }
             }
         }

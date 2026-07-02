@@ -140,17 +140,17 @@ export const notifaction_manager = (() => {
                         notificationAdded = true;
                     }
                     break;
-                case 'battle.startBattle':
+                /* case 'battle.startBattle':
                     let startBattleText = currentPlayer.playerName + " hat einen Kampf gestartet.";
                     if (this.#notificationQueue[this.#notificationQueue.length - 1] !== startBattleText) {
                         this.#notificationQueue.push(startBattleText);
                         notificationAdded = true;
                     }
-                    break;
-                case 'battle.playerTurn':
+                    break; */
+                /* case 'battle.playerTurn':
                     this.#notificationQueue.push(currentPlayer.playerName + " ist am Zug.");
                     notificationAdded = true;
-                    break;
+                    break; */
                 case 'battle.endBattle':
                     let endBattleText = "Der Kampf wurde beendet."
                     if (this.#notificationQueue[this.#notificationQueue.length - 1] !== endBattleText) {
