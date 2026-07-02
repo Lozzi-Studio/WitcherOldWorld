@@ -26,12 +26,14 @@ Das Spiel wird komplett mit der Maus gesteuert. Die Kamera kann durch Klicken un
 3. Führe im Terminal den Befehl `npm install` aus, um alle erforderlichen Pakete zu installieren.
 4. Führe im Terminal den Befehl `npx vite` aus, um den lokalen Server zu starten.
 5. Kopiere den Localhost-Link (normalerweise http://localhost:5173/) in deinen Browser, um das Spiel zu spielen.
-[!NOTE] Hinweis: Das Spiel wurde primär für Google Chrome getestet. In anderen Browsern kann es teilweise zu Problemen bei der visuellen Darstellung kommen.
+> **Hinweis:**
+> Das Spiel wurde primär für Google Chrome getestet. In anderen Browsern kann es teilweise zu Problemen bei der visuellen Darstellung kommen.
 
 ## Fehlende Features / Bekannte Einschränkungen
-* Tränke: Können im Spielverlauf eingesammelt, aktuell jedoch noch nicht im Kampf eingesetzt werden.
-* Würfelpoker: Die Würfelpoker-Stadtaktion ist im Hintergrund vorhanden, die visuelle Umsetzung der UI fehlt jedoch.
-* Witcher-Kämpfe & Quests: Kämpfe gegen andere Hexer sind zwar möglich, komplexe Questreihen inklusive einer Questverfolgung wurden jedoch noch nicht implementiert.
+* **Tränke:** Können im Spielverlauf eingesammelt, aktuell jedoch noch nicht im Kampf eingesetzt werden.
+* **Würfelpoker:** Die Würfelpoker-Stadtaktion ist im Hintergrund vorhanden, die visuelle Umsetzung der UI fehlt jedoch.
+* **Witcher-Kämpfe** Kämpfe gegen andere Hexer sind nicht möglich.
+* **Quests:** Komplexe Questreihen inklusive einer Questverfolgung wurden nicht implementiert.
 
 ## Das Team: Gruppe 06
 - Janik Kusch
