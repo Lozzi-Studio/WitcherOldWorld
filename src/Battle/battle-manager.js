@@ -166,10 +166,14 @@ export const battle_manager = (() => {
                 if (this.#monster.GetCurrentHealth()  <= 1 ) {
                     this.#ResolveDraw();
                 } else {
-                    this.#ResolveMonsterWin();
+                    setTimeout(() => {
+                        this.#ResolveMonsterWin();
+                    }, this.#monsterAttackDelay);
                 }
             } else if (this.#monster.GetCurrentHealth() <= 1) {
-                this.#ResolvePlayerWin()
+                setTimeout(() => {
+                        this.#ResolvePlayerWin();
+                    }, this.#monsterAttackDelay);
             } else{
                 this.#PlayerTurn();
             }
