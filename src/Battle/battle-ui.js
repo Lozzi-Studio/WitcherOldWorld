@@ -84,8 +84,6 @@ export const battle_ui = (() => {
             document.getElementById("hp-separator").style.display = "none";
             document.getElementById("player-hp-container").style.display = "none";
 
-            document.getElementById("monster-turn-indicator").remove();
-
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
         }
 
@@ -198,7 +196,7 @@ export const battle_ui = (() => {
             turnIndicator.innerHTML = "clock_loader_40";
             turnIndicator.dataset["theme"] = "Monster";
             setTimeout(() => {turnIndicator.innerHTML = "clock_loader_60";}, 1000);
-            setTimeout(() => {turnIndicator.innerHTML = "clock_loader_90";}, 1000);
+            setTimeout(() => {turnIndicator.innerHTML = "clock_loader_90";}, 2000);
             this.AttachElementToElementById(turnIndicator, "battle-monster-window", "bottom", 8);
         }
 

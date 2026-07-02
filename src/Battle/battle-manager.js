@@ -166,11 +166,13 @@ export const battle_manager = (() => {
                 if (this.#monster.GetCurrentHealth()  <= 1 ) {
                     this.#ResolveDraw();
                 } else {
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
                     setTimeout(() => {
                         this.#ResolveMonsterWin();
                     }, this.#monsterAttackDelay);
                 }
             } else if (this.#monster.GetCurrentHealth() <= 1) {
+                this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
                 setTimeout(() => {
                         this.#ResolvePlayerWin();
                     }, this.#monsterAttackDelay);
