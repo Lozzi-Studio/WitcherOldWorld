@@ -5,7 +5,7 @@
             "OptionA": "Ich versuche es weiter.",
             "OptionB": "Ich räume ein, dass ich dem Jungen nicht helfen kann. Aber ich versuche das Monster zu töten, das ihn vergiftet hat.",
             "ResultTextA": "Die beißenden Dämpfe setzen deiner sensiblen Nase immer mehr zu. Es wird wohl lange dauern, bis dein normlaer Geruchssinn zurückkehrt, doch am Ende hast du einen wirkungsvollen Trank. ",
-            "ResultTextB": "Der Herrscher ist am Boden zerstört und jagt dich vom Hof. Du tötest die Bestie, hauptsächlich um gegen das Gefü der Ohmacht anzukämpfen.",
+            "ResultTextB": "Der Herrscher ist am Boden zerstört und jagt dich vom Hof. Du tötest die Bestie, hauptsächlich um gegen das Gefühl der Ohmacht anzukämpfen.",
             "ResultA": {
                 "Info": "Deine Alchemiestufe sinkt um 1. Lege 1 Trank ab. Du erhälst 5 Gold.",
                 "Alchemy": "-1",
@@ -33,7 +33,7 @@
                 "Gold": "3"
             }
         }, {
-            "Text": "Du wirst von der Stadtwache angehalten. \n\"Ihr wurdet beim Anwenden von Magie beobachtet. WIsst ihr denn nicht, dass man dafür eine Lizenz der Bruderschaft benönigt?\" \nKurz darauf findest du dich in einer schmutzigen Kerkerzelle wieder. Als einige Stunden später ein Wärter mit deinem Essen kommt, bist du dir relativ sicher, dass außer euch beiden niemand hier ist.",
+            "Text": "Du wirst von der Stadtwache angehalten. \n\"Ihr wurdet beim Anwenden von Magie beobachtet. Wisst ihr denn nicht, dass man dafür eine Lizenz der Bruderschaft benönigt?\" \nKurz darauf findest du dich in einer schmutzigen Kerkerzelle wieder. Als einige Stunden später ein Wärter mit deinem Essen kommt, bist du dir relativ sicher, dass außer euch beiden niemand hier ist.",
             "OptionA": "Ich greife den Wärter an und kämpfe mich frei.",
             "OptionB": "Ich bitte um einen Becher Wasser. Wer weiß, was bis dahin passiert.",
             "ResultTextA": "Ein kurzer Ausdruck ehrlicher Verblüffung huscht über das Gesicht des Wächters, ehe es in der Hafergrütze landet. Du findest zwar deine beide Schwerter, jedoch nicht deine Geldbörse.",
