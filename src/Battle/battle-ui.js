@@ -72,7 +72,6 @@ export const battle_ui = (() => {
             playerWindow.remove("window--inactive");
             document.getElementById("game-ui").appendChild(playerWindow);
 
-
             let playerCardStacks = document.getElementById("player-card-stacks");
             playerCardStacks.classList.add("position-bottom-left");
             document.getElementById("game-ui").appendChild(playerCardStacks);
@@ -84,6 +83,9 @@ export const battle_ui = (() => {
             document.getElementById("phase-window").style.display = "flex";
             document.getElementById("hp-separator").style.display = "none";
             document.getElementById("player-hp-container").style.display = "none";
+
+            document.getElementById("monster-turn-indicator").remove();
+
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
         }
 
@@ -165,15 +167,11 @@ export const battle_ui = (() => {
             if (msg.victim == "player") {
                 document.getElementById("player-hp-amount").innerHTML = this.#player.GetHealth();
                 if (msg.damageAmount > 0) {
-                    console.log("show dmg hint player");
                     this.#CreateDamageHint(msg);
                 }
             }
             if (msg.victim == "monster") {
-                document.getElementById("monster-hp-amount").innerHTML = this.#monster.GetCurrentHealth();
-                document.getElementById("monster-deck-number").innerHTML = this.#monster.GetCurrentHealth();
                 if (msg.damageAmount > 0) {
-                    console.log("show dmg hint monster");
                     this.#CreateDamageHint(msg);
                 }
             }
@@ -188,13 +186,30 @@ export const battle_ui = (() => {
         }
 
         #HighlightMonsterTurn(msg) {
+            document.getElementById("monster-hp-amount").innerHTML = this.#monster.GetCurrentHealth();
+            document.getElementById("monster-deck-number").innerHTML = this.#monster.GetCurrentHealth();
+            
             this.#SetWindowActiveById("battle-monster-window");
             this.#SetWindowInactiveById("player-window");
+            
+            let turnIndicator = document.createElement("div");
+            turnIndicator.id = "monster-turn-indicator";
+            turnIndicator.classList.add("material-symbols-outlined", "filled", "container", "container--set-colors", "borders--all");
+            turnIndicator.innerHTML = "clock_loader_40";
+            turnIndicator.dataset["theme"] = "Monster";
+            setTimeout(() => {turnIndicator.innerHTML = "clock_loader_60";}, 1000);
+            setTimeout(() => {turnIndicator.innerHTML = "clock_loader_90";}, 1000);
+            this.AttachElementToElementById(turnIndicator, "battle-monster-window", "bottom", 8);
         }
 
         #HighlightPlayerTurn(msg) {
+            document.getElementById("monster-hp-amount").innerHTML = this.#monster.GetCurrentHealth();
+            document.getElementById("monster-deck-number").innerHTML = this.#monster.GetCurrentHealth();
+            
             this.#SetWindowActiveById("player-window");
             this.#SetWindowInactiveById("battle-monster-window");
+
+            document.getElementById("monster-turn-indicator").remove();
         }
     }
 
