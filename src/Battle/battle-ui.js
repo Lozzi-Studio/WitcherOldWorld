@@ -107,16 +107,20 @@ export const battle_ui = (() => {
         #ShowDamageHint(msg) {
             let dmgHint = document.getElementById(`${msg.victim}-dmg-hint`);
             dmgHint.style.display = "block";
+            requestAnimationFrame(() => {
+                dmgHint.style.opacity = 1;
+            });
             console.log("-", msg.damageAmount);
             dmgHint.innerHTML = `-${msg.damageAmount}`;
             document.getElementById(`${msg.victim}-hp-container`).appendChild(dmgHint);
-            dmgHint.style.opacity = 1;
-            setTimeout(() => { this.#HideDamageHint(msg)}, 1500);
+            setTimeout(() => {this.#HideDamageHint(msg)}, 2250);
         }
 
         #HideDamageHint(msg) {
             document.getElementById(`${msg.victim}-dmg-hint`).style.opacity = 0;
-            document.getElementById(`${msg.victim}-dmg-hint`).style.display = "none";
+            setTimeout(() => {
+                document.getElementById(`${msg.victim}-dmg-hint`).style.display = "none";
+            }, 400);
         }
 
         #UpdateHealth(msg) {

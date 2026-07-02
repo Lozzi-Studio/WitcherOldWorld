@@ -1416,13 +1416,12 @@ input {
 }
 
 .window--inactive {
-    opacity: 0.5;
+    opacity: 0.7;
 }
 
 .dmg-hint {
     opacity: 0;
     display: none;
-    transition: opacity 200ms;
-    transition-behavior: allow-discrete;
+    transition: opacity 400ms;
     color: var(--color-hover);
 }
