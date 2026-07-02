@@ -17,8 +17,11 @@
 <body style="margin-top: 0; margin-left: 0;">
     <script type="module" src="./src/main.js"></script>
     <div id="game-loading-screen" style="display: none;">
-        <div id="loading_tip" class="--fancy-font"></div>
-        <div class="loader"></div>
+        <div id="loading_screen_info" class="container--cols"> 
+
+            <div id="loading_tip" class="--fancy-font"></div>
+        </div>
+        <div class="loader" id="spinner"></div>
     </div>
 
     <div id="placeholder" style="display: none;" > </div>
@@ -336,14 +339,23 @@
             <div class="textbox textbox--fill button" id="explore-confirm-btn" style="display: none;">Du ziehst weiter</div>
         </div>
 
-        <div class="container container--col container--neutral borders--bottom-left position-top-right" id="phase-window">
-            <div class="container container--row container--no-padding" id="avatars-container"></div>
-            <div>
-                <div class="container container--row"><p id="phase-text">PHASE ID</p></div>
+        <div class=" container--row position-top-right" id="top-right-ui"> 
+            <div class="container container--col container--neutral borders--all --fancy-font" id="glossar-window">
+                <div class="" id="glossar-window-icon"> 
+                    ?
+                </div>
             </div>
-            <div class="container container--col container--no-padding" id="phase-options-container"></div>
-            <div class="textbox textbox--fill button" id="end-phase-button">Phase beenden</div>
-        </div>
+    
+            <div class="container container--col container--neutral borders--bottom-left" id="phase-window">
+                <div class="container container--row container--no-padding" id="avatars-container"></div>
+                <div>
+                    <div class="container container--row"><p id="phase-text">PHASE ID</p></div>
+                </div>
+                <div class="container container--col container--no-padding" id="phase-options-container"></div>
+                <div class="textbox textbox--fill button" id="end-phase-button">Phase beenden</div>
+            </div>
+        </div> 
+            
 
         <div class="container container--cols position-bottom-right" id="discard-modal">
             <div class="container container--row" id="hand-window"></div>

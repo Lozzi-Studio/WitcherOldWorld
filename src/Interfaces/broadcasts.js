@@ -435,6 +435,14 @@ export const broadcasts = (() => {
         static EndGame(winner){
             return {topic: 'game.endGame', winner: winner}
         }
+
+        static LoadTutorial(){
+            return {topic: 'game.loadTutorial'}
+        }
+
+        static CloseTutorial(){
+            return {topic: 'game.closeTutorial'}
+        }
     }
 
     class BroadcastTemplateCamera {
