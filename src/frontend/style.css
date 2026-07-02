@@ -112,13 +112,22 @@ body {
   --color-button-border: rgb(132, 131, 116);
 }
 
-[data-theme="Monster"] {
+/* [data-theme="Monster"] {
   --color-bg: rgba(66, 14, 14, 0.70);
   --color-border: rgba(170, 94, 94, 1.00);
   --color-primary: rgb(233, 153, 153);
   --color-primary-inactive: rgba(233, 153, 153, 0.5);
   --color-secondary: rgba(65, 34, 32, 1.00);
   --color-button-border: rgb(132, 116, 116);
+} */
+
+[data-theme="Monster"] {
+    --color-bg: rgba(47, 12, 105, 0.70);
+    --color-border: rgba(111, 31, 226, 1);
+    --color-primary: rgba(195, 177, 255, 1);
+    --color-primary-inactive: rgba(233, 153, 153, 0.5);
+    --color-secondary: rgba(77, 23, 155, 1);
+    --color-button-border: rgba(132, 116, 116, 1);
 }
 
 p, div {
@@ -219,7 +228,7 @@ input {
     flex-direction: column;
 }
 
-.container--neutral {
+.container--set-colors {
     border-style: solid;
 
     background-color: var(--color-bg);
@@ -519,7 +528,7 @@ input {
     padding-right: 8px;
 }
 
-#player-name-container {
+.name-container {
     margin-top: -20px;
     margin-bottom: -6px;
     z-index: 1;
@@ -804,6 +813,10 @@ input {
     margin-right: -100px;
 }
 
+#hand-window > div:last-child {
+    margin-right: 0 !important;
+}
+
 #hand-window > div:hover {
     margin-right: 0 !important;
 }
@@ -866,7 +879,7 @@ input {
 #explore-header{
     font-size: 24pt;
     font-family: Gwent;
-    color: #ffffff;
+    color: var(--color-primary);
 }
 
 #meditate-option {
@@ -875,7 +888,7 @@ input {
     filter: brightness(0.95);
     font-size: 24pt;
     font-family: Gwent;
-    color: #ffffff;
+    color: var(--color-primary);
     width: 250px;
     height: 350px;
     border-radius: 12px;
@@ -886,7 +899,7 @@ input {
     background-size: cover;
     filter: brightness(0.95);
     font-size: 24pt;
-    color: #ffffff;
+    color: var(--color-primary);
     font-family: Gwent;
     width: 250px;
     height: 350px;
@@ -1354,7 +1367,7 @@ input {
     bottom: 16px;
 }
 
-#card-stacks {
+.card-stacks-container {
     padding-left: 4px;
     padding-bottom: 4px;
     gap: 0px;
@@ -1375,28 +1388,42 @@ input {
     border: 2px solid rgba(0, 0, 0, 0);
 }
 
-#deck-stack {
+.deck-stack {
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url("/resources/assets/cards/0-backside.png");
-    transition: transform 400ms;
-    border: 2px solid rgba(0, 0, 0, 0);
     justify-content: center;
     align-items: center;
 }
 
-#deck-stack:hover {
+.deck-stack--selectable {
+    transition: transform 400ms;
+    border: 2px solid rgba(0, 0, 0, 0);
+}
+
+.deck-stack--selectable:hover {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
     transform: scale(102%, 102%);
 }
 
-#deck-number {
+#player-deck-stack {
+    background-image: url("/resources/assets/cards/0-backside.png");
+}
+
+#monster-deck-stack {
+    background-image: url("/resources/assets/cards/0-monster-card-back.png");
+}
+
+.deck-number {
     padding: 8px;
 }
 
 #debug-menu {
-    bottom: 40%;
+    bottom: 15%;
     border-width: 3px 3px 3px 0px;
     border-radius: 0px 12px 12px 0px;
+}
+
+.window--inactive {
+    opacity: 0.5;
 }

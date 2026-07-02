@@ -231,7 +231,7 @@ export const ui_manager = (() => {
             });
 
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
-            document.getElementById("deck-stack").addEventListener("click", () => {
+            document.getElementById("player-deck-stack").addEventListener("click", () => {
                 let player = this.FindComponent("GameManager").currentPlayer;
                 let deck = player.FindComponent("Carddeck").deck;
                 this.FindComponent("CardSelectUI").PromptCardSelection(deck, 0, "", true, "Deck");
@@ -931,7 +931,7 @@ export const ui_manager = (() => {
         }
 
         #UpdateDeckStack(msg) {
-            let deckNumber = document.getElementById("deck-number");
+            let deckNumber = document.getElementById("player-deck-number");
             let player = this.FindComponent("GameManager").currentPlayer;
             let deckSize = player.FindComponent("Carddeck").deck.length;
             deckNumber.innerHTML = deckSize;

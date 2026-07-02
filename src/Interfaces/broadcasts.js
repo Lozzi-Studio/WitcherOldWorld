@@ -579,12 +579,20 @@ export const broadcasts = (() => {
             return {topic: 'battle.startBattle', player: player, monster: monster}
         }
 
-        static EndBattle(){
-            return {topic: 'battle.endBattle'}
+        static EndBattle(player){
+            return {topic: 'battle.endBattle', player: player}
         }
 
         static UseSpecial(){
             return {topic: 'battle.special'}
+        }
+
+        static HighlightMonster() {
+            return {topic: 'battle.highlightMonster'};
+        }
+
+        static HighlightPlayer() {
+            return {topic: 'battle.highlightPlayer'};
         }
     }
 

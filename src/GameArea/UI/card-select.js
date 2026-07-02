@@ -53,7 +53,7 @@ export const card_select_ui = (() => {
                 document.getElementById("game-ui").appendChild(cardSelectWindow);
                 cardSelectWindow.id = "card-select-window";
                 cardSelectWindow.classList.add(
-                    "container", "container--col", "container--neutral", "position-center", "borders--all", "borders--neutral"
+                    "container", "container--col", "container--set-colors", "position-center", "borders--all", "borders--neutral"
                 );
                 
                 let header = document.createElement("div");

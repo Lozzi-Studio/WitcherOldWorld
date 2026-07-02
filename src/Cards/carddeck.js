@@ -362,14 +362,14 @@ export const carddeck_component = (() => {
                             this.#cardHand.splice(this.#cardHand.indexOf(msg.card),1);
                         } else if (this.#cardDeck.includes(msg.card)) {
                             this.#cardDeck.splice(this.#cardDeck.indexOf(msg.card),1);
-                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                         }  else if (this.#cardDiscard.includes(msg.card)) {
                             this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
                         }
-                    break;
-            }
+                        break;
+                    }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
         }
 
         /**
@@ -420,12 +420,15 @@ export const carddeck_component = (() => {
                     this.#cardDiscard.push(discardedCard);
                     this.#cardHand.splice(index,1);
                     if (!this.#noUiUpdate) {
+                        console.log("update discard stack in apply dmg func");
                         this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", discardedCard));
                     }
                 } else {
                     break;
                 }
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
             this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(0))
         }
 

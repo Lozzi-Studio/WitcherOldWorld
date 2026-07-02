@@ -25,7 +25,7 @@ export const battle_manager = (() => {
             this.#playerDrawValues = [1, 2, 3, 4, 4];
             this.#usedSpecialAbility = false;
             this.#choosenSpecialAbility = {};
-            this.#monsterAttackDelay = 2000;
+            this.#monsterAttackDelay = 3000;
 
             this.#poisened = 0;
         }
@@ -59,6 +59,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.riverTracker());
                         this.#PlayerTurn();
                     } else {
+                        this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
                         setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
@@ -68,6 +69,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.forestTracker());
                         this.#PlayerTurn();
                     } else {
+                        this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
                         setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
@@ -77,6 +79,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.mountainTracker());
                         this.#PlayerTurn();
                     } else {
+                        this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
                         setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
@@ -86,7 +89,7 @@ export const battle_manager = (() => {
         }
 
         #MonsterTurn() {
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Das Monster ist am Zug."))
+            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Das Monster ist am Zug."));
             let nextMove = this.#monster.FindComponent("MonsterAi").ChooseNextMove();
             if (nextMove.damage > 0) {
                 this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.damage));
@@ -112,19 +115,22 @@ export const battle_manager = (() => {
                     switch (nextMove.skill) {
                         case "combat":
                             dmg = this.#player.FindComponent("PlayerSkills").combat;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Angriffs-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
                             break;
                         case "defense":
                             dmg = this.#player.FindComponent("PlayerSkills").defense;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Verteidigungs-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
                             break;
                         case "alchemy":
                             dmg = this.#player.FindComponent("PlayerSkills").alchemy;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Alchemie-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
                             break;
                         case "special":
                             dmg = this.#player.FindComponent("PlayerSkills").special;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Spezial-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
                             break;
                     }
                     this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(dmg));
-                    this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die ${nextMove.skill}-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
                 }
             } else if (nextMove.level != undefined){
                 if (nextMove.discard) {
@@ -163,6 +169,7 @@ export const battle_manager = (() => {
         }
 
         #PlayerTurn() {
+            this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
             if (this.#player.witcherSpecialAbility.name == "Ruestung" && !(this.#usedSpecialAbility) && this.#player.FindComponent("Shield").amount <= 0) {
                 this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, this.#player.witcherSpecialAbility.value[0]));
                 this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", this.#player.witcherSpecialAbility.value[1]));
@@ -307,6 +314,7 @@ export const battle_manager = (() => {
                     this.#ResolvePlayerWin();
                 }
             } else {
+                this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
                 setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
             }
         }
@@ -389,11 +397,11 @@ export const battle_manager = (() => {
         }
 
         #EndBattle() {
-            this.#player = null;
             this.#monster = null;
             this.#usedSpecialAbility = false;
             this.#choosenSpecialAbility = {};
-            this.Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
+            this.Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle(this.#player));
+            this.#player = null;
             this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
         }
