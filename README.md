@@ -1,20 +1,39 @@
-# Projektmodul Interaktion
+# The Witcher: Old World — Projektmodul Interaktion
+Witcher: Old World ist ein Abenteuer-Brettspiel, das die Spieler auf eine Reise durch eine fantastische Welt voller Gefahren, mysteriöser Magie, dunkler Geheimnisse und ungewöhnlicher Orte mitnimmt, die nur darauf warten, entdeckt zu werden.
 
-## The Witcher: Old World
+## Spielprinzip
+Jeder Spieler übernimmt die Rolle eines professionellen Monstertöters. Auf seiner Reise durch die weiten Länder des Kontinents entdeckt er Geheimnisse, trainiert den Kampf und sammelt Erfahrung. Wer als Erster vier Trophäengesammelt hat, gewinnt das Spiel und bringt seiner Hexerschule damit die höchste Ehre und den größten Ruhm ein.
 
-![alt text](resources\README\image-1.png)
+## Phasenablauf
+### Phase 1
+In Phase eins des Spiels kann der Spieler frei herumreisen, um diverse Stadtaktionen auszuführen. Die Reise erfolgt, indem eine Handkarte der jeweiligen Region (z. B. Wald) abgeworfen wird.
 
-Witcher: Old World ist ein Abenteuer-Brettspiel, das die Spieler auf eine Reise durch eine fantastische Welt voller Gefahren, mysteriöser Magie, dunkler Geheimnisse und ungewöhnlicher Orte mitnimmt, die nur darauf warten, entdeckt zu werden. Die Handlung des Spiels spielt im beliebten Witcher-Universum, viele Jahre vor den Ereignissen der Saga von Geralt von Rivia, zu einer Zeit, als eine Monsterplage den Kontinent heimsuchte. Nur die Hexer - professionelle Assassinen, die für den Kampf gegen menschenfeindliche Kreaturen ausgebildet sind - waren in der Lage, dagegen vorzugehen.
+### Phase 2
+In Phase zwei kann der Spieler zwischen verschiedenen Hauptaktionen wählen:
+* Meditieren: Wenn eines der Attribute das höchste Level erreicht hat, kann der Spieler meditieren, um eine Trophäe zu erhalten. Dies ist jedoch nur für die ersten drei Trophäen möglich.
+* Kämpfen: Steht der Spieler auf einem Feld, auf dem sich ein Monster befindet, kann er versuchen, dieses zu bekämpfen. Der Kampf läuft Zug um Zug ab. Hat der Spieler auf seiner vorherigen Erkundung eine Fährte gefunden, erhält er den ersten Zug – andernfalls beginnt das Monster. Der Spieler spielt Karten aus, um anzugreifen oder sich zu verteidigen, und kann die Spezialfähigkeit seiner Schule einsetzen. Ein Sieg bringt eine Trophäe.
+* Erkunden: Der Spieler kann die Stadt oder die Wildnis in der Umgebung erkunden. Dabei muss er Entscheidungen treffen, die ihm nützliche Boni oder Abzüge einbringen können.
 
-### Spielprinzip
+### Phase 3
+In Phase drei kann der Spieler so viele Karten abwerfen, wie er möchte. Anschließend zieht er seine Hand wieder auf drei Karten nach (außer ein aktiver Statuseffekt besagt, dass er weniger ziehen muss). Daraufhin kann er im Karten-Shop eine neue Karte erwerben, die mit den eigenen Handkarten bezahlt wird.
 
-In Witcher: Old World wählt jeder Spieler eine von fünf Hexer-Schulen aus und übernimmt die Rolle eines professionellen Monstertöters. Auf seiner Reise durch die weiten Länder des Kontinents entdeckt er ihre Geheimnisse, trainiert den Kampf und sammelt Erfahrung. Je nach Länge des Spiels, die zu Beginn des Spiels festgelegt wird, wetteifern die Spieler darum, zwischen 4 und 6 Trophäen zu sammeln. Derjenige, der als Erster die erforderliche Anzahl von Trophäen gesammelt hat, gewinnt und bringt seiner Schule damit die höchste Ehre und den größten Ruhm ein.
+## Steuerung
+Das Spiel wird komplett mit der Maus gesteuert. Die Kamera kann durch Klicken und Ziehen der Maus in die gewünschte Richtung gedreht werden.
 
-Trophäen können auf verschiedene Weise verdient werden. Die Grundmethode ist, wie es sich für einen Hexer gehört, das Töten von Monstern. Die Spieler können sie aber auch verdienen, indem sie in Tavernen mit anderen Hexern um die Ehre ihrer Schule kämpfen, ihre Attribute auf die maximale Stufe steigern oder auf ihren Reisen durch den Kontinent bestimmte Aufgaben erfüllen.
+## Starten des Projekts
+1. Lade dir das Repository herunter.
+2. Navigiere im Terminal zu dem Ordner projektrepo-gruppe6 oder öffne den Ordner direkt in VS Code.
+3. Führe im Terminal den Befehl `npm install` aus, um alle erforderlichen Pakete zu installieren.
+4. Führe im Terminal den Befehl `npx vite` aus, um den lokalen Server zu starten.
+5. Kopiere den Localhost-Link (normalerweise http://localhost:5173/) in deinen Browser, um das Spiel zu spielen.
+[!NOTE] Hinweis: Das Spiel wurde primär für Google Chrome getestet. In anderen Browsern kann es teilweise zu Problemen bei der visuellen Darstellung kommen.
 
-Während des Spiels erstellen die Spieler ein einzigartiges Kartenspiel und wählen aus einem Pool von verfügbaren Fähigkeiten: Angriffe, Ausweichmanöver und Hexermarken. Die Spieler setzen das Deck im Kampf ein, wo sie die Karten zu mächtigen Angriffskombinationen kombinieren und die Spezialfähigkeiten der Hexerschule nutzen, der sie angehören. Im Gegenzug können sie durch Quests, Scharmützel und sogar Würfelpoker neue Gegenstände und Geld gewinnen und ihre Fähigkeiten weiterentwickeln.
+## Fehlende Features / Bekannte Einschränkungen
+* Tränke: Können im Spielverlauf eingesammelt, aktuell jedoch noch nicht im Kampf eingesetzt werden.
+* Würfelpoker: Die Würfelpoker-Stadtaktion ist im Hintergrund vorhanden, die visuelle Umsetzung der UI fehlt jedoch.
+* Witcher-Kämpfe & Quests: Kämpfe gegen andere Hexer sind zwar möglich, komplexe Questreihen inklusive einer Questverfolgung wurden jedoch noch nicht implementiert.
 
-### Gruppe - 06
+## Das Team: Gruppe 06
 - Janik Kusch
 - Lana Michler
 - Tim Förster
