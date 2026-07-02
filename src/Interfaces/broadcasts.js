@@ -427,8 +427,9 @@ export const broadcasts = (() => {
             return {topic: 'game.updateDiscardButton', active: active}
         }
 
-        static ApplyDamage(amount) {
-            return {topic: 'game.applyDamage', amount: amount}
+        static ApplyDamage(amount, victim) {
+            console.log(amount, "ApplyDamage Broadcast");
+            return {topic: 'game.applyDamage', amount: amount, victim: victim}
         }
 
         static CreateNewMonster(rank, region, newMonster) {
@@ -593,6 +594,10 @@ export const broadcasts = (() => {
 
         static HighlightPlayer() {
             return {topic: 'battle.highlightPlayer'};
+        }
+
+        static UpdateHealth(damageAmount, victim) {
+            return {topic: 'battle.updateHealth', damageAmount: damageAmount, victim: victim}
         }
     }
 

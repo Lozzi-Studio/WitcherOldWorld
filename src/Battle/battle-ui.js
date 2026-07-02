@@ -18,7 +18,7 @@ export const battle_ui = (() => {
 
         InitComponent() {
             this._RegisterHandler('battle.startBattle', (msg) => {this.#StartBattle(msg)});
-            this._RegisterHandler('game.applyDamage', (msg) => {this.#UpdateHealth(msg)});
+            this._RegisterHandler('battle.updateHealth', (msg) => {this.#UpdateHealth(msg)});
             this._RegisterHandler('battle.endBattle', (msg) => {this.#EndBattle(msg)})
             this._RegisterHandler('battle.highlightMonster', (msg) => {this.#HighlightMonsterTurn(msg)});
             this._RegisterHandler('battle.highlightPlayer', (msg) => {this.#HighlightPlayerTurn(msg)});
@@ -59,7 +59,7 @@ export const battle_ui = (() => {
             }
             document.getElementById("monster-level").innerHTML = monsterLevel;
             document.getElementById("hp-separator").style.display = "flex";
-            document.getElementById("hp-container").style.display = "flex";
+            document.getElementById("player-hp-container").style.display = "flex";
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.StartBattle(msg.player, msg.monster));
         }
 
@@ -69,7 +69,9 @@ export const battle_ui = (() => {
             playerWindow.classList.remove("borders--all");
             playerWindow.classList.add("borders--bottom-right");
             playerWindow.classList.add("position-top-left");
+            playerWindow.remove("window--inactive");
             document.getElementById("game-ui").appendChild(playerWindow);
+
 
             let playerCardStacks = document.getElementById("player-card-stacks");
             playerCardStacks.classList.add("position-bottom-left");
@@ -81,7 +83,7 @@ export const battle_ui = (() => {
             document.getElementById("skills-container").style.display = "flex";
             document.getElementById("phase-window").style.display = "flex";
             document.getElementById("hp-separator").style.display = "none";
-            document.getElementById("hp-container").style.display = "none";
+            document.getElementById("player-hp-container").style.display = "none";
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
         }
 
@@ -102,13 +104,37 @@ export const battle_ui = (() => {
             }
         }
 
+        #ShowDamageHint(msg) {
+            let dmgHint = document.getElementById(`${msg.victim}-dmg-hint`);
+            dmgHint.style.display = "block";
+            console.log("-", msg.damageAmount);
+            dmgHint.innerHTML = `-${msg.damageAmount}`;
+            document.getElementById(`${msg.victim}-hp-container`).appendChild(dmgHint);
+            dmgHint.style.opacity = 1;
+            setTimeout(() => { this.#HideDamageHint(msg)}, 1500);
+        }
+
+        #HideDamageHint(msg) {
+            document.getElementById(`${msg.victim}-dmg-hint`).style.opacity = 0;
+            document.getElementById(`${msg.victim}-dmg-hint`).style.display = "none";
+        }
+
         #UpdateHealth(msg) {
-            if (this.#player) {
+            console.log("UpdateHealth(), amount: ", msg.damageAmount);
+            if (msg.victim == "player") {
                 document.getElementById("hp-amount").innerHTML = this.#player.GetHealth();
+                if (msg.damageAmount > 0) {
+                    console.log("show dmg hint player");
+                    this.#ShowDamageHint(msg);
+                }
             }
-            if (this.#monster) {
+            if (msg.victim == "monster") {
                 document.getElementById("monster-hp-amount").innerHTML = this.#monster.GetCurrentHealth();
                 document.getElementById("monster-deck-number").innerHTML = this.#monster.GetCurrentHealth();
+                if (msg.damageAmount > 0) {
+                    console.log("show dmg hint monster");
+                    this.#ShowDamageHint(msg);
+                }
             }
         }
 

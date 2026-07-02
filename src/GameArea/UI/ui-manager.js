@@ -935,9 +935,6 @@ export const ui_manager = (() => {
             let player = this.FindComponent("GameManager").currentPlayer;
             let deckSize = player.FindComponent("Carddeck").deck.length;
             deckNumber.innerHTML = deckSize;
-            /* console.log("deck:", player.FindComponent("Carddeck").deck);
-            console.log("deck length:", player.FindComponent("Carddeck").deck.length); */
-            console.log("updating deck number");
         }
 
         /**
@@ -1238,7 +1235,7 @@ export const ui_manager = (() => {
             document.getElementById("skill-levelup-buttons-container").style.display = "none";
             document.getElementById("levelup-impossible-text").style.display = "none";
             document.getElementById("hp-separator").style.display = "none";
-            document.getElementById("hp-container").style.display = "none";
+            document.getElementById("player-hp-container").style.display = "none";
 
         }
 

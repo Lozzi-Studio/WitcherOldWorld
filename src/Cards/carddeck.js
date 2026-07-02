@@ -262,7 +262,6 @@ export const carddeck_component = (() => {
                         if (this.#cardDeck.length > 0) {
                             this.#cardHand.push(this.#cardDeck.pop());
                             if (!this.#noUiUpdate) {
-                                console.log("drawcard: deck length ", this.#cardDeck.length);
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                             }
@@ -420,7 +419,6 @@ export const carddeck_component = (() => {
                     this.#cardDiscard.push(discardedCard);
                     this.#cardHand.splice(index,1);
                     if (!this.#noUiUpdate) {
-                        console.log("update discard stack in apply dmg func");
                         this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", discardedCard));
                     }
                 } else {
@@ -429,7 +427,7 @@ export const carddeck_component = (() => {
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
-            this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(0))
+            this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UpdateHealth(msg.amount, msg.victim));
         }
 
         /**
