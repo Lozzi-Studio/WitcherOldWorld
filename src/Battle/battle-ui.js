@@ -104,6 +104,38 @@ export const battle_ui = (() => {
             }
         }
 
+        /**
+         * Attaches DOM element to another element using absolute positioning
+         * @param {Element} element 
+         * @param {int} id 
+         * @param {string} side 
+         * @param {int} offset 
+         */
+        AppendElementToElementById(element, id, side, offset) {
+            element.style.position = "absolute";
+            let pos = document.getElementById(id).getBoundingClientRect()
+            let width = document.getElementById(id).offsetWidth;
+            let height = document.getElementById(id).offsetHeight;
+            switch (side) {
+                case "bottom":
+                    element.style.top = pos.bottom + offset;
+                    element.style.left = pos.left + width/2;
+                    break;
+                case "top":
+                    element.style.bottom = pos.top + offset;
+                    element.style.left = pos.left + width/2;
+                    break;
+                case "left":
+                    element.style.right = pos.left + offset;
+                    element.style.top = pos.top + height/2;
+                    break;
+                case "right":
+                    element.style.left = pos.right + offset;
+                    element.style.top = pos.top + height/2;
+                    break;
+            }
+        }
+
         #ShowDamageHint(msg) {
             let dmgHint = document.getElementById(`${msg.victim}-dmg-hint`);
             dmgHint.style.display = "block";

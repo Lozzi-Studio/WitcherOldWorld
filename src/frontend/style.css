@@ -50,8 +50,10 @@ body {
   --color-button-border: rgba(132, 126, 116, 1.00);
   --color-hover: #ffffff;
   --color-selected: rgba(255, 225, 123, 1.00);
+  --color-warning: #ff4242;
   --cursor-default: url("../../resources/assets/cursor/sword-48.png");
   --cursor-pointer: url("../../resources/assets/cursor/pointer-48.png");
+  
 
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -1185,6 +1187,10 @@ input {
     font-size: 10px;
 }
 
+.font-size-single-numbers {
+    font-size: 20px;
+}
+
 .player-number {
     font-size: 24px;
     width: 12px;
@@ -1424,4 +1430,6 @@ input {
     display: none;
     transition: opacity 400ms;
     color: var(--color-hover);
+    font-size: 20px;
+    color: var(--color-warning);
 }

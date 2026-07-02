@@ -89,7 +89,7 @@ export const battle_manager = (() => {
         }
 
         #MonsterTurn() {
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Das Monster ist am Zug."));
+            // this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Das Monster ist am Zug."));
             let nextMove = this.#monster.FindComponent("MonsterAi").ChooseNextMove();
             if (nextMove.damage > 0) {
                 console.log(nextMove.damage, "MonsterTurn()");
@@ -116,20 +116,20 @@ export const battle_manager = (() => {
                     let dmg = 0;
                     switch (nextMove.skill) {
                         case "combat":
-                            dmg = this.#player.FindComponent("PlayerSkills").combat;
-                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Angriffs-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
+                            dmg = this.#player.FindComponent("PlayerSkills").combat.level;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Angriffs-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                         case "defense":
-                            dmg = this.#player.FindComponent("PlayerSkills").defense;
-                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Verteidigungs-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
+                            dmg = this.#player.FindComponent("PlayerSkills").defense.level;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Verteidigungs-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                         case "alchemy":
-                            dmg = this.#player.FindComponent("PlayerSkills").alchemy;
-                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Alchemie-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
+                            dmg = this.#player.FindComponent("PlayerSkills").alchemy.level;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Alchemie-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                         case "special":
-                            dmg = this.#player.FindComponent("PlayerSkills").special;
-                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Spezial-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
+                            dmg = this.#player.FindComponent("PlayerSkills").special.level;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Spezial-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                     }
                     console.log(dmg, "MonsterTurn()");
@@ -141,6 +141,7 @@ export const battle_manager = (() => {
                         this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardRandomCard());
                     }
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster zwingt ${this.#player.playerName} ${nextMove.level} Karte(n) abzuwerfen.`));
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.UpdateHealth(nextMove.level, "player"));
                 } else {
                     console.log(nextMove.level, "MonsterTurn()");
                     this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level, "player"));

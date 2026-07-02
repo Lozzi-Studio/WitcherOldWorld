@@ -597,7 +597,7 @@ export const broadcasts = (() => {
         }
 
         static UpdateHealth(damageAmount, victim) {
-            return {topic: 'battle.updateHealth', damageAmount: damageAmount, victim: victim}
+            return {topic: 'battle.updateHealth', damageAmount: damageAmount, victim: victim};
         }
     }
 
