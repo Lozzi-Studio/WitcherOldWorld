@@ -98,14 +98,14 @@ export const game_manager = (() => {
          */
         #SwapoutCard(msg){
             let removedCard = null;
-             this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#currentPlayer.FindComponent("Carddeck").hand,1, "Entfernen aus deiner Hand", false).then(
+             this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#currentPlayer.FindComponent("Carddeck").hand,1, "Entfernen aus deiner Hand", true).then(
                 (result) => {   
                     if (result != null) {
                         this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(result[0], "Delete"));
                         removedCard = result[0];
                         let shopCards = this.FindEntity("Cardshop").FindComponent("Carddeck").hand.filter(card => card.cost <= removedCard.cost + 1)
                         if (shopCards.length > 0) {
-                            this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(shopCards,1, "Erhalten auf deine Hand", false).then(
+                            this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(shopCards,1, "Erhalten auf deine Hand", true).then(
                                 (result) => {   
                                     if (result != null) {
                                         for (let card of result) {
@@ -113,11 +113,17 @@ export const game_manager = (() => {
                                             this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand"));
                                         }
                                         this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCardShop.UpdateCardShop());
+                                    } else {
+                                        if (removedCard != null) {
+                                            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(removedCard, "Hand"));
+                                        }
                                     }
                                 }
                             );
                         } else {
-                            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(removedCard, "Hand"));
+                            if (removedCard != null) {
+                                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(removedCard, "Hand"));
+                            }
                         }
                     }
                 }
