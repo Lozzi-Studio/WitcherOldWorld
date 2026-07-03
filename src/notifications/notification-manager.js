@@ -140,32 +140,21 @@ export const notifaction_manager = (() => {
                         notificationAdded = true;
                     }
                     break;
-                case 'battle.startBattle':
-                    let startBattleText = currentPlayer.playerName + " hat einen Kampf gestartet.";
-                    if (this.#notificationQueue[this.#notificationQueue.length - 1] !== startBattleText) {
-                        this.#notificationQueue.push(startBattleText);
-                        notificationAdded = true;
-                    }
-                    break;
-                case 'battle.playerTurn':
-                    this.#notificationQueue.push(currentPlayer.playerName + " ist am Zug.");
-                    notificationAdded = true;
-                    break;
-                case 'battle.endBattle':
+                /* case 'battle.endBattle':
                     let endBattleText = "Der Kampf wurde beendet."
                     if (this.#notificationQueue[this.#notificationQueue.length - 1] !== endBattleText) {
                         this.#notificationQueue.push(endBattleText);
                         notificationAdded = true;
                     }
-                    break;
+                    break; */
                 case 'town.selection':
                     this.#selectedTown = msg.town;
                     break;
-                case 'town.action':
-                    let townActionText = currentPlayer.playerName + " hat in " + this.#selectedTown.town_name + " die Action " + this.#selectedTown.ability.name + " genutzt"
+                /* case 'town.action':
+                    let townActionText = currentPlayer.playerName + " hat in " + this.#selectedTown.town_name + " die Aktion " + this.#selectedTown.ability.name + " genutzt"
                     this.#notificationQueue.push(townActionText);
                     notificationAdded = true;
-                    break;
+                    break; */
                 case 'player.addStatus':
                     this.#notificationQueue.push(currentPlayer.playerName + " hat den Status ");
                     notificationAdded = true;

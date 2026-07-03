@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { component } from "../Interfaces/component";
 import { broadcasts } from "../Interfaces/broadcasts";
+import { directionToColor } from 'three/tsl';
 
 
 export const battle_ui = (() => {
@@ -17,38 +18,87 @@ export const battle_ui = (() => {
 
         InitComponent() {
             this._RegisterHandler('battle.startBattle', (msg) => {this.#StartBattle(msg)});
-            this._RegisterHandler('game.applyDamage', (msg) => {this.#UpdateHealth(msg)});
+            this._RegisterHandler('battle.updateHealth', (msg) => {this.#UpdateHealth(msg)});
             this._RegisterHandler('battle.endBattle', (msg) => {this.#EndBattle(msg)})
+            this._RegisterHandler('battle.highlightMonster', (msg) => {this.#HighlightMonsterTurn(msg)});
+            this._RegisterHandler('battle.highlightPlayer', (msg) => {this.#HighlightPlayerTurn(msg)});
+            this._RegisterHandler('battle.showWinMessage', (msg) => {this.#ShowEndOfFightWindow(msg)});
+            document.getElementById("battle-info-button").addEventListener("click", () => {this.#ShowSchoolInfo()});
         }
 
         #StartBattle(msg) { 
             this.#monster = msg.monster;
             this.#player = msg.player;
+            
+            //shuffle happens in battle ui manager cause timing issues with hp showage
+            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, false));
+            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Monster")); 
+            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, false));
+            let varDiff = this.#monster.FindComponent("Carddeck").deck.length -this.#monster.health;
+            for (let i = 0; i < varDiff; i++) {
+                this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.DiscardRandomCard());
+            }
 
-            document.getElementById("player-window").classList.remove("borders--bottom-right");
-            document.getElementById("player-window").classList.add("borders--all");
+            let playerWindow = document.getElementById("player-window");
+            playerWindow.classList.remove("borders--bottom-right");
+            playerWindow.classList.add("borders--all");
+            playerWindow.classList.remove("position-top-left");
+
+            
+            let combatUI = document.getElementById("combat-ui");
+            combatUI.style.display = "flex";
+            combatUI.insertBefore(playerWindow, document.getElementById("battle-monster-window"));
+
+            let playerCardStacks = document.getElementById("player-card-stacks");
+            playerCardStacks.classList.remove("position-bottom-left");
+            combatUI.insertBefore(playerCardStacks, playerWindow);
+            playerCardStacks.insertBefore(document.getElementById("discard-stack"), document.getElementById("player-deck-stack"));
+
             document.getElementById("player-inventory-container").style.display = "none";
             document.getElementById("skills-container").style.display = "none";
-            document.getElementById("combat-ui").style.display = "flex";
             document.getElementById("phase-window").style.display = "none";
-            document.getElementById("monster-avatar").src = this.#GetPathForMonsterAvatar(msg.monster);
-            document.getElementById("witcher-level").innerHTML = msg.player.GetHealth()
-            document.getElementById("monster-health").innerHTML = msg.monster.health
+            document.getElementById("monster-avatar").src = this.GetPathForMonsterAvatar(msg.monster);
+            document.getElementById("player-hp-amount").innerHTML = msg.player.GetHealth();
+            document.getElementById("monster-hp-amount").innerHTML = msg.monster.health;
+            document.getElementById("monster-deck-number").innerHTML = msg.monster.health;
+            let monsterLevel;
+            switch (msg.monster.rank) {
+                case 1: monsterLevel = "I"; break;
+                case 2: monsterLevel = "II"; break;
+                case 3: monsterLevel = "III"; break;
+
+            }
+            document.getElementById("monster-level").innerHTML = monsterLevel;
+            document.getElementById("hp-separator").style.display = "flex";
+            document.getElementById("player-hp-container").style.display = "flex";
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.StartBattle(msg.player, msg.monster));
         }
 
         #EndBattle(msg){
-            document.getElementById("player-window").classList.remove("borders--all");
-            document.getElementById("player-window").classList.add("borders--bottom-right");
+            let playerWindow = document.getElementById("player-window");
+            document.getElementById("game-ui").appendChild(playerWindow);
+            playerWindow.classList.remove("borders--all");
+            playerWindow.classList.add("borders--bottom-right");
+            playerWindow.classList.add("position-top-left");
+            playerWindow.remove("window--inactive");
+            document.getElementById("game-ui").appendChild(playerWindow);
+
+            let playerCardStacks = document.getElementById("player-card-stacks");
+            playerCardStacks.classList.add("position-bottom-left");
+            document.getElementById("game-ui").appendChild(playerCardStacks);
+            playerCardStacks.insertBefore(document.getElementById("player-deck-stack"), document.getElementById("discard-stack"));
+
+            document.getElementById("combat-ui").style.display = "none";
             document.getElementById("player-inventory-container").style.display = "flex";
             document.getElementById("skills-container").style.display = "flex";
-            document.getElementById("combat-ui").style.display = "none";
             document.getElementById("phase-window").style.display = "flex";
-            document.getElementById("witcher-level").innerHTML = this.#player.FindComponent("PlayerSkills").witcher.level
+            document.getElementById("hp-separator").style.display = "none";
+            document.getElementById("player-hp-container").style.display = "none";
+
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
         }
 
-        #GetPathForMonsterAvatar(monster) {
+        GetPathForMonsterAvatar(monster) {
             switch(monster.rank) {
                 case 1:
                     return "./resources/assets/avatars/monster_wolf.webp";
@@ -65,13 +115,214 @@ export const battle_ui = (() => {
             }
         }
 
+        /**
+         * Attaches DOM element to another element using absolute positioning
+         * @param {Element} element 
+         * @param {int} id 
+         * @param {string} side 
+         * @param {int} offset 
+         */
+        AttachElementToElementById(element, id, side, offset) {
+            element.style.position = "absolute";
+            document.getElementsByTagName("body")[0].appendChild(element);
+            let rect = document.getElementById(id).getBoundingClientRect();
+            switch (side) {
+                case "bottom":
+                    element.style.top = `${rect.bottom + offset}px`;
+                    element.style.left = `${rect.left + rect.width/2 - element.offsetWidth/2}px`;
+                    break;
+
+                case "top":
+                    element.style.bottom = `${rect.top + offset}px`;
+                    element.style.left = `${rect.left + rect.width/2 - element.offsetWidth/2}px`;
+                    break;
+
+                case "left":
+                    element.style.right = `${rect.left + offset}px`;
+                    element.style.top = `${rect.top + rect.height/2 - element.offsetHeight/2}px`;
+                    break;
+
+                case "right":
+                    element.style.left = `${rect.right + offset}px`;
+                    element.style.top = `${rect.top + rect.height/2 - element.offsetHeight/2}px`;
+                    break;
+            }
+        }
+
+        #CreateDamageHint(msg) {
+            let dmgHint = document.createElement("div");
+            dmgHint.classList.add("dmg-hint", "--fancy-font");
+            dmgHint.style.display = "block";
+            dmgHint.innerHTML = `-${msg.damageAmount}`;
+            requestAnimationFrame(() => {
+                dmgHint.style.opacity = 1;
+            });
+            this.AttachElementToElementById(dmgHint, `${msg.victim}-hp-amount`, "right", 8);
+            setTimeout(() => {this.#RemoveDamageHint(dmgHint)}, 2250);
+        }
+
+        #RemoveDamageHint(element) {
+            element.style.opacity = 0;
+            setTimeout(() => {
+                element.remove();
+            }, 400);
+        }
+
         #UpdateHealth(msg) {
-            if (this.#player) {
-                document.getElementById("witcher-level").innerHTML = this.#player.GetHealth()
+            if (msg.victim == "player") {
+                document.getElementById("player-hp-amount").innerHTML = this.#player.GetHealth();
+                if (msg.damageAmount > 0) {
+                    this.#CreateDamageHint(msg);
+                }
             }
-            if (this.#monster) {
-                document.getElementById("monster-health").innerHTML = this.#monster.GetCurrentHealth()
+            if (msg.victim == "monster") {
+                if (msg.damageAmount > 0) {
+                    this.#CreateDamageHint(msg);
+                }
             }
+        }
+
+        #SetWindowActiveById(id) {
+            document.getElementById(id).classList.remove("window--inactive");
+        }
+
+        #SetWindowInactiveById(id) {
+            document.getElementById(id).classList.add("window--inactive");
+        }
+
+        #HighlightMonsterTurn(msg) {
+            document.getElementById("monster-hp-amount").innerHTML = this.#monster.GetCurrentHealth();
+            document.getElementById("monster-deck-number").innerHTML = this.#monster.GetCurrentHealth();
+            
+            this.#SetWindowActiveById("battle-monster-window");
+            this.#SetWindowInactiveById("player-window");
+            
+            let turnIndicator = document.createElement("div");
+            turnIndicator.id = "monster-turn-indicator";
+            turnIndicator.classList.add("material-symbols-outlined", "filled", "container", "container--set-colors", "borders--all");
+            turnIndicator.innerHTML = "clock_loader_40";
+            turnIndicator.dataset["theme"] = "Monster";
+            setTimeout(() => {turnIndicator.innerHTML = "clock_loader_60";}, 1000);
+            setTimeout(() => {turnIndicator.innerHTML = "clock_loader_90";}, 2000);
+            this.AttachElementToElementById(turnIndicator, "battle-monster-window", "bottom", 8);
+        }
+
+        #HighlightPlayerTurn(msg) {
+            document.getElementById("monster-hp-amount").innerHTML = this.#monster.GetCurrentHealth();
+            document.getElementById("monster-deck-number").innerHTML = this.#monster.GetCurrentHealth();
+            
+            this.#SetWindowActiveById("player-window");
+            this.#SetWindowInactiveById("battle-monster-window");
+
+            if (document.getElementById("monster-turn-indicator")) {
+                document.getElementById("monster-turn-indicator").remove();
+            }
+        }
+
+        #ShowEndOfFightWindow(msg) {
+            const window = document.createElement("div");
+            window.classList.add("container", "container--col", "container--set-colors", "position-center", "borders--all", "battle-popup");
+            window.style.zIndex = this.FindEntity("GameArea").FindComponent("UIManager").uiLayers.get("layer-hud");
+            document.getElementById("game-ui").appendChild(window);
+            const avatarContainer = document.createElement("div");
+            avatarContainer.classList.add("avatar-container");
+            const avatar = document.createElement("img");
+            avatar.classList.add("avatar", "avatar--big");
+            avatarContainer.appendChild(avatar);
+            const header = document.createElement("div");
+            header.classList.add("--fancy-font", "font-size-large");
+            const textContainer = document.createElement("div");
+            textContainer.classList.add("container", "container--col");
+            const subHeader = document.createElement("div");
+            subHeader.classList.add("--fancy-font", "font-size-middle");
+            subHeader.innerHTML = "Du erhälst:";
+            const text1 = document.createElement("div");
+            const text2 = document.createElement("div");
+            const continueButton = document.createElement("div");
+            continueButton.classList.add("textbox", "textbox--fill", "button");
+            continueButton.innerHTML = "Fortfahren";
+            continueButton.addEventListener("click", () => {
+                window.remove();
+                if (msg.isDraw) {
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ResolveDraw());
+                }
+                else if (msg.winningEntity.name.toLowerCase().includes("player") ) {
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ResolvePlayerWin());
+                }
+                else {
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ResolveMonsterWin());
+                }
+            });
+
+            window.appendChild(avatarContainer);
+            window.appendChild(header);
+            window.appendChild(avatarContainer);
+            textContainer.appendChild(subHeader);
+            textContainer.appendChild(text1);
+            textContainer.appendChild(text2);
+            window.appendChild(textContainer);
+            window.appendChild(continueButton);
+
+            if (msg.isDraw) {
+                window.dataset["theme"] = "Monster";
+                header.innerHTML = "Unentschieden: Das Monster wurde vertrieben";
+                text2.innerHTML = "+2 Gold";
+                avatar.src = this.GetPathForMonsterAvatar(msg.winningEntity);
+            }
+            else if (msg.winningEntity.name.toLowerCase().includes("player") ) {
+                header.innerHTML = `${msg.winningEntity.playerName} hat gewonnen`;
+                text1.innerHTML = "+1 Trophäe (du erleidest Erschöpfung)";
+                text2.innerHTML = "+2 Gold";
+                avatar.src = this.FindEntity("GameArea").FindComponent("UIManager").GetAvatarPathFromPlayer(msg.winningEntity);
+            }
+            else {
+                window.dataset["theme"] = "Monster";
+                // header.innerHTML = `Das Monster ${msg.winningEntity.monsterName} hat gewonnen`;
+                header.innerHTML = "Das Monster hat gewonnen";
+                text1.innerHTML = "+1 Spur des Monsters";
+                text2.innerHTML = "In Phase 3 ziehst du eine Karte weniger";
+                avatar.src = this.GetPathForMonsterAvatar(msg.winningEntity);
+            }
+
+        }
+
+        #ShowSchoolInfo() {
+            let schoolInfo = document.getElementById("school-info");
+            schoolInfo.style.display = "flex";
+            let playerSkillContainer = document.getElementById("skills-content");
+            let battlePlayerWindow = document.getElementById("battle-player-window");
+            const containerWidth = battlePlayerWindow.offsetWidth;
+
+            battlePlayerWindow.insertBefore(schoolInfo, document.getElementById("battle-buttons-container"));
+            let schoolAbilityInfo = document.getElementById("school-ability-info");
+            schoolAbilityInfo.style.maxWidth = `${containerWidth}px`;
+            schoolAbilityInfo.style.textAlign = "left";
+
+            let infoButton = document.getElementById("battle-info-button");
+            let infoButtonClone = infoButton.cloneNode(true);
+            infoButton.parentNode.replaceChild(infoButtonClone, infoButton);
+            infoButtonClone.id = "battle-info-button";
+            infoButtonClone.classList.add("filled");
+            infoButtonClone.addEventListener("click", () => {this.#HideSchoolInfo()});
+        }
+
+        #HideSchoolInfo() {
+            let schoolInfo = document.getElementById("school-info");
+            let playerSkillContainer = document.getElementById("skills-content");
+            let schoolAbilityInfo = document.getElementById("school-ability-info");
+            let infoButton = document.getElementById("battle-info-button");
+
+            schoolInfo.style.display = "none";
+            infoButton.style.display = "block";
+            playerSkillContainer.appendChild(schoolInfo);
+            schoolAbilityInfo.classList.remove("school-ability-info-battle");
+            schoolAbilityInfo.style.removeProperty("max-width");
+            schoolAbilityInfo.style.removeProperty("text-align");
+
+            let infoButtonClone = infoButton.cloneNode(true);
+            infoButton.parentNode.replaceChild(infoButtonClone, infoButton);
+            infoButtonClone.classList.remove("filled");
+            infoButtonClone.addEventListener("click", () => {this.#ShowSchoolInfo()});
         }
     }
 

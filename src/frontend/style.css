@@ -33,14 +33,6 @@ body {
     opacity: 0;
 }
 
-/* .theme--color {
-    --color-bg: rgba(59, 55, 49, 0.70);
-    --color-border: rgba(233, 225, 213, 1.00);
-    --color-primary: rgba(219, 218, 213, 1.00);
-    --color-secondary: rgba(61, 59, 55, 1.00);
-    --color-primary-inactive: rgba(219, 218, 213, 0.40);
-} */
-
 :root {
   --color-bg: rgba(59, 55, 49, 0.70);
   --color-border: rgba(233, 225, 213, 1.00);
@@ -50,12 +42,26 @@ body {
   --color-button-border: rgba(132, 126, 116, 1.00);
   --color-hover: #ffffff;
   --color-selected: rgba(255, 225, 123, 1.00);
+  --color-warning: #ff4242;
   --cursor-default: url("../../resources/assets/cursor/sword-48.png");
   --cursor-pointer: url("../../resources/assets/cursor/pointer-48.png");
-
+  
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+
+  /* z-index */
+  --layer-default: 0;
+  --layer-three-positioned-windows: 1;
+  --layer-phase-two: 2;
+  --layer-hud: 3;
+  --layer-player-prompted-windows: 4;
+  --layer-notifications: 5;
+  --layer-tooltips: 6;
+  --layer-player-turn-overlay: 7;
+  --layer-tutorial: 8;
+  --layer-end-game-screen: 9;
+  --layer-loading-screen: 10;
 }
 
 [data-theme="neutral"] {
@@ -76,24 +82,6 @@ body {
   --color-button-border: rgb(116, 128, 132);
 }
 
-[data-theme="Vipernschule"] {
-  --color-bg: rgba(18, 54, 21, 0.70);
-  --color-border: rgba(43, 164, 52, 1.00);
-  --color-primary: rgb(163, 223, 167);
-  --color-primary-inactive: rgba(163, 223, 167, 0.5);
-  --color-secondary: rgba(19, 54, 21, 1.00);
-  --color-button-border: rgb(116, 132, 117);
-}
-
-[data-theme="Baerenschule"] {
-  --color-bg: rgba(78, 21, 6, 0.70);
-  --color-border: rgb(166, 40, 8);
-  --color-primary: rgba(239, 138, 113, 1.00);
-  --color-primary-inactive: rgba(239, 138, 113, 0.5);
-  --color-secondary: rgba(78, 21, 6, 1.00);
-  --color-button-border: rgb(132, 120, 116);
-}
-
 [data-theme="Wolfsschule"] {
   --color-bg: rgba(20, 14, 4, 0.788);
   --color-border: rgb(88, 58, 9);
@@ -103,29 +91,45 @@ body {
   --color-button-border: rgb(76, 70, 65);
 }
 
+[data-theme="Vipernschule"] {
+  --color-bg: rgba(28, 54, 30, 0.70);
+  --color-border: rgba(88, 150, 94, 1.00);
+  --color-primary: rgba(185, 210, 187, 1.00);
+  --color-primary-inactive: rgba(185, 210, 187, 0.5);
+  --color-secondary: rgba(30, 52, 31, 1.00);
+  --color-button-border: rgb(120, 128, 121);
+}
+
+[data-theme="Baerenschule"] {
+  --color-bg: rgba(62, 26, 15, 0.7);
+  --color-border: rgba(140, 70, 50, 1.00);
+  --color-primary: rgba(210, 160, 145, 1.00);
+  --color-primary-inactive: rgba(210, 160, 145, 0.5);
+  --color-secondary: rgba(65, 30, 18, 1.00);
+  --color-button-border: rgb(128, 118, 112);
+}
+
 [data-theme="Greifenschule"] {
-  --color-bg: rgba(82, 77, 8, 0.70);
-  --color-border: rgba(197, 185, 12, 1);
-  --color-primary: rgba(240, 233, 142, 1);
-  --color-primary-inactive: rgba(240, 233, 142, 0.5);
-  --color-secondary: rgba(50, 47, 6, 1);
-  --color-button-border: rgb(132, 131, 116);
+  --color-bg: rgba(78, 74, 28, 0.70);
+  --color-border: rgba(160, 150, 60, 1);
+  --color-primary: rgba(220, 215, 150, 1);
+  --color-primary-inactive: rgba(220, 215, 150, 0.5);
+  --color-secondary: rgba(60, 58, 20, 1);
+  --color-button-border: rgb(130, 128, 115);
 }
 
 [data-theme="Monster"] {
-  --color-bg: rgba(66, 14, 14, 0.70);
-  --color-border: rgba(170, 94, 94, 1.00);
-  --color-primary: rgb(233, 153, 153);
-  --color-primary-inactive: rgba(233, 153, 153, 0.5);
-  --color-secondary: rgba(65, 34, 32, 1.00);
-  --color-button-border: rgb(132, 116, 116);
+  --color-bg: rgba(55, 28, 90, 0.70);
+  --color-border: rgba(130, 80, 190, 1);
+  --color-primary: rgba(205, 190, 235, 1);
+  --color-primary-inactive: rgba(205, 190, 235, 0.5);
+  --color-secondary: rgba(70, 40, 120, 1);
+  --color-button-border: rgba(130, 120, 125, 1);
 }
 
 p, div {
     color: var(--color-primary);
     font-family: "PT Sans", sans-serif;
-    /* font-weight: 400;
-    font-style: normal; */
 
     margin:0px;
 }
@@ -184,9 +188,6 @@ input {
     align-content: space-around;
     gap: 8px;
     padding: 4px;
-
-    /* text-align: center; */
-    /* vertical-align: middle; */
 }
 
 .container--stretch {
@@ -219,7 +220,7 @@ input {
     flex-direction: column;
 }
 
-.container--neutral {
+.container--set-colors {
     border-style: solid;
 
     background-color: var(--color-bg);
@@ -307,7 +308,7 @@ input {
     gap: 4px;
 
     align-items: center;
-    z-index: 10;
+    z-index: var(--layer-hud);
 }
 
 .icon--active {
@@ -519,10 +520,10 @@ input {
     padding-right: 8px;
 }
 
-#player-name-container {
+.name-container {
     margin-top: -20px;
     margin-bottom: -6px;
-    z-index: 1;
+    z-index: var(--layer-hud);
 }
 
 #skills-container {
@@ -553,12 +554,10 @@ input {
     inset: 0;
     border-radius: inherit;
     backdrop-filter: grayscale(100%) brightness(0.5);
-    z-index: 0;
 }
 
 .option--disabled > * {
     position: relative;
-    z-index: 1;
 }
 
 #phase-window {
@@ -566,6 +565,7 @@ input {
     width: fit-content;
 
     gap: 4px;
+    z-index: var(--layer-hud);
 }
 
 #avatars-container {
@@ -611,7 +611,7 @@ input {
     
     justify-content: center;
     align-items: center;
-    z-index: 9999; 
+    z-index: var(--layer-end-game-screen);
 }
 
 #end-game-overlay .textbox {
@@ -644,7 +644,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Über dem restlichen Spielfeld */
+    z-index: var(--layer-player-turn-overlay);
     opacity: 1;
     transition: opacity 0.2s ease;
 }
@@ -672,7 +672,7 @@ input {
 
 #discard-modal {
     border-radius: 10px;
-    z-index: 9;
+    z-index: var(--layer-hud);
     
     display: flex;
     flex-direction: column;
@@ -701,6 +701,7 @@ input {
     min-width: 150px;
     max-width: 250px;
     display: none;
+    z-index: var(--layer-three-positioned-windows);
 }
 
 #town-name {
@@ -748,7 +749,7 @@ input {
     position: absolute;
     top: 50%;
     left: 100%;
-    z-index: 1;
+    z-index: var(--layer-tooltips);
 
     background-color: black;
     color: var(--color-primary);
@@ -765,7 +766,7 @@ input {
     left: 50% !important;
     transform: translateX(-50%);
     margin-top: 8px;
-    z-index: 11;
+    z-index: var(--layer-tooltips);
 }
 
 .tooltip:hover + .tooltip-text {
@@ -797,12 +798,15 @@ input {
 }
 
 #hand-window > div {
-    cursor: var(--cursor-pointer), pointer;
     transition: margin-right 400ms;
 }
 
 #hand-window > div:not(:last-child) {
     margin-right: -100px;
+}
+
+#hand-window > div:last-child {
+    margin-right: 0 !important;
 }
 
 #hand-window > div:hover {
@@ -814,7 +818,7 @@ input {
     border-radius: 10px;
 }
 
-#card-select > div:not(.card--selected):hover {
+#card-select > .card--selectable:hover {
     border: 2px solid var(--color-primary);
     border-radius: 10px;
     transform: scale(103%, 103%);
@@ -823,10 +827,9 @@ input {
 #card-select {
     max-height: 512px;
     overflow: auto;
-}
-
-#card-select-window {
-    max-width: 690px;
+    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 #phase-two-header {
@@ -842,7 +845,7 @@ input {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10;
+    z-index: var(--layer-phase-two);
 }
 
 #explore-window {
@@ -854,7 +857,7 @@ input {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1001;
+    z-index: var(--layer-phase-two);
 }
 
 #explore-window .button {
@@ -868,7 +871,7 @@ input {
 #explore-header{
     font-size: 24pt;
     font-family: Gwent;
-    color: #ffffff;
+    color: var(--color-primary);
 }
 
 #meditate-option {
@@ -877,7 +880,7 @@ input {
     filter: brightness(0.95);
     font-size: 24pt;
     font-family: Gwent;
-    color: #ffffff;
+    color: var(--color-primary);
     width: 250px;
     height: 350px;
     border-radius: 12px;
@@ -888,7 +891,7 @@ input {
     background-size: cover;
     filter: brightness(0.95);
     font-size: 24pt;
-    color: #ffffff;
+    color: var(--color-primary);
     font-family: Gwent;
     width: 250px;
     height: 350px;
@@ -934,10 +937,6 @@ input {
 }
 
 .card {
-    background-color: #3F3F3F;
-    border: 2px solid #868686;
-    border-radius: 8px;
-
     align-items: flex-start;
     justify-content: space-between;
 
@@ -947,6 +946,14 @@ input {
 
     background-size: cover;
     transition: transform 400ms;
+
+    cursor: var(--cursor-pointer), pointer;
+}
+
+.card--selectable {
+    background-color: #3F3F3F;
+    border: 2px solid #868686;
+    border-radius: 8px;
 }
 
 .card--selected {
@@ -958,6 +965,11 @@ input {
     writing-mode: vertical-rl;
     rotate: 180deg;
     margin-bottom: 4px;
+}
+
+.card--small {
+    width: 80px;
+    height: 124px;
 }
 
 .--cursor-pointer {
@@ -1025,7 +1037,7 @@ input {
     background-size: cover;
     background-position: center;
     border: 1px solid black;
-    z-index: 99;
+    z-index: var(--layer-loading-screen);
 }
 
 #loading_tip {
@@ -1058,24 +1070,26 @@ input {
     overflow: hidden;
 }
 
+#combat-ui {
+    left: 50%;
+    transform: translate(-50%, 0);
+    align-items: flex-start;
+}
 
 #battle-player-window {
     position: fixed;
     right: 0px;
     bottom: 400px;
     min-width: 100px;
-    max-width: 300px;
+    align-items: flex-end;
 }
 
 #battle-monster-window {
-    position: fixed;
-    right: 30%;
-    top: 0px;
     min-width: 100px;
     max-width: 300px;
 }
 
-#monster-health {
+#monster-level {
     position:absolute;
     top: -3px;
     right: -3px;
@@ -1172,6 +1186,10 @@ input {
     font-size: 10px;
 }
 
+.font-size-single-numbers {
+    font-size: 20px;
+}
+
 .player-number {
     font-size: 24px;
     width: 12px;
@@ -1205,7 +1223,7 @@ input {
     left: 0px;
     top: 220px;
     width: 310px;
-    z-index: 99;
+    z-index: var(--layer-notifications);
 } 
 
 #notification-banner {
@@ -1247,7 +1265,7 @@ input {
     font-weight: 700;
 
     color: var(--color-secondary);
-    z-index: 100;
+    z-index: var(--layer-notifications);
 }
 
 #log-window {
@@ -1269,6 +1287,7 @@ input {
 
 .log-window--open {
     transform: translateX(310px); 
+    z-index: var(--layer-hud);
 }
 
 #log-toggle-btn {
@@ -1288,6 +1307,7 @@ input {
     border-left: none;
     border-radius: 0px 12px 12px 0px;
     box-sizing: border-box;
+    z-index: var(--layer-hud);
 }
 
 #log-toggle-btn:hover #log-toggle-icon {
@@ -1343,4 +1363,81 @@ input {
 
 #reset-camera-button {
     bottom: 16px;
+}
+
+.card-stacks-container {
+    padding-left: 4px;
+    padding-bottom: 4px;
+    gap: 0px;
+    z-index: var(--layer-hud);
+}
+
+#discard-stack {
+    background-size: cover;
+    padding-left: 8px;
+}
+
+#discard-stack > div:not(.card--selected):hover {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    transform: scale(102%, 102%);
+}
+
+#discard-card {
+    border: 2px solid rgba(0, 0, 0, 0);
+}
+
+.deck-stack {
+    background-size: cover;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+}
+
+.deck-stack--selectable {
+    transition: transform 400ms;
+    border: 2px solid rgba(0, 0, 0, 0);
+}
+
+.deck-stack--selectable:hover {
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    transform: scale(102%, 102%);
+}
+
+#player-deck-stack {
+    background-image: url("/resources/assets/cards/0-backside.png");
+}
+
+#monster-deck-stack {
+    background-image: url("/resources/assets/cards/0-monster-card-back.png");
+}
+
+.deck-number {
+    padding: 8px;
+}
+
+#debug-menu {
+    bottom: 15%;
+    border-width: 3px 3px 3px 0px;
+    border-radius: 0px 12px 12px 0px;
+    display: none;
+}
+
+.window--inactive {
+    opacity: 0.6;
+}
+
+.dmg-hint {
+    opacity: 0;
+    display: none;
+    transition: opacity 400ms;
+    color: var(--color-hover);
+    font-size: 20px;
+    color: var(--color-warning);
+}
+
+.battle-popup {
+    padding: 16px;
+    gap: 32px;
 }
