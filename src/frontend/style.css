@@ -425,6 +425,12 @@ input {
     background-color: var(--color-primary-inactive);
 }
 
+.button--inactive, .option--disabled {
+    pointer-events: auto !important;
+    cursor: default;
+    position: relative;
+}
+
 .button:hover {
     cursor: var(--cursor-pointer), pointer;
     background-color: var(--color-hover);
@@ -434,6 +440,45 @@ input {
     cursor: var(--cursor-default), default;
     background-color: var(--color-primary-inactive);
 }
+
+.button--inactive[data-tooltip]:hover::after,
+.option--disabled[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background-color: rgba(0, 0, 0, 0.95);
+    color: var(--color-primary, #f0d2a4);
+    border: 1px solid var(--color-border, #aa8d5e);
+    border-radius: 4px;
+    padding: 6px 12px;
+    
+    font-family: "PT Sans", sans-serif;
+    font-size: 11pt;
+    text-transform: none; 
+    white-space: normal;
+    width: 220px; 
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+#shop-button.button--inactive[data-tooltip]:hover::after {
+    left: auto;
+    right: 0;
+    transform: none;
+    
+    white-space: normal;
+    width: 220px;
+    text-align: left;
+}
+
+#button-discard.button--inactive[data-tooltip]:hover::after {
+    top: auto !important;
+    bottom: 130% !important;
+}
+
 
 .glyph-button {
     color: var(--color-primary);
