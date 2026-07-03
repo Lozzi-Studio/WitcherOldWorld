@@ -2,8 +2,6 @@ import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
 import { shiftLeft } from "three/tsl";
 import { player_skills } from "../../Players/player-skills";
-import { status_templates } from "../../Players/status-templates";
-import { status_options } from "../../Players/status-options";
 
 export const ui_manager = (() => {
 
@@ -1029,7 +1027,6 @@ export const ui_manager = (() => {
             }
             this.#SetPlayerMoney(msg.player);
             this.#SetPlayerTrophies(msg.player);
-            this.#UpdatePlayerEffects(msg.player);
         }
 
         /**
