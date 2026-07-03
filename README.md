@@ -2,7 +2,7 @@
 Witcher: Old World ist ein Abenteuer-Brettspiel, das die Spieler auf eine Reise durch eine fantastische Welt voller Gefahren, mysteriöser Magie, dunkler Geheimnisse und ungewöhnlicher Orte mitnimmt, die nur darauf warten, entdeckt zu werden.
 
 ## Spielprinzip
-Jeder Spieler übernimmt die Rolle eines professionellen Monstertöters. Auf seiner Reise durch die weiten Länder des Kontinents entdeckt er Geheimnisse, trainiert den Kampf und sammelt Erfahrung. Wer als Erster vier Trophäengesammelt hat, gewinnt das Spiel und bringt seiner Hexerschule damit die höchste Ehre und den größten Ruhm ein.
+Jeder Spieler übernimmt die Rolle eines professionellen Hexers. Auf seiner Reise durch die weiten Länder des Kontinents entdeckt er Geheimnisse, trainiert den Kampf und sammelt Erfahrung. Wer als Erster vier Trophäen gesammelt hat, gewinnt das Spiel und bringt seiner Hexerschule damit die höchste Ehre und den größten Ruhm ein.
 
 ## Phasenablauf
 ### Phase 1
