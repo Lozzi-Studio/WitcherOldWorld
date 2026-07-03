@@ -39,13 +39,8 @@ export const battle_manager = (() => {
         #StartBattle(msg) {
             this.#player = msg.player;
             this.#monster = msg.monster;
-            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, false));
-            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Monster")); 
-            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, false));
-            let varDiff = this.#monster.FindComponent("Carddeck").deck.length -this.#monster.health;
-            for (let i = 0; i < varDiff; i++) {
-                this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.DiscardRandomCard());
-            }
+            //shuffle happens in battle ui manager cause timing issues with hp showage
+            
             this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayBattleMonsterTheme());
             this.#GetStartingTurn();
         }
