@@ -38,21 +38,23 @@ export const player_skills = (() => {
             let skill = this.GetSkillByName(msg.skill.toIdentifier());
             switch(msg.mode) {
                 case "Increase":
-                    if (msg.payMoney && skill?.maxAmount != skill?.level) {
-                        this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(- (skill.level + 1)));
-                    }
-                    skill?.increaseLevel();
-                    if (this.#combat.level > this.#witcher.level && this.#defense.level > this.#witcher.level && this.#alchemy.level > this.#witcher.level && this.#special.level > this.#witcher.level) {
-                        this.#witcher.increaseLevel();
-                        if (this.#witcher.level < 3) {
-                            this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
-                        } else {
-                            this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 2));
+                    if (skill?.maxAmount != skill?.level) {
+                        if (msg.payMoney) {
+                            this.parent.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(- (skill.level + 1)));
                         }
-                    } else if (skill.toIdentifier() == "Alchemy") {
-                        this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Potion", 1));
-                    } else if (skill.toIdentifier() == "Defense") {
-                        this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#defense.level, 1))
+                        skill?.increaseLevel();
+                        if (this.#combat.level > this.#witcher.level && this.#defense.level > this.#witcher.level && this.#alchemy.level > this.#witcher.level && this.#special.level > this.#witcher.level) {
+                            this.#witcher.increaseLevel();
+                            if (this.#witcher.level < 3) {
+                                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 1));
+                            } else {
+                                this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 2));
+                            }
+                        } else if (skill.toIdentifier() == "Alchemy") {
+                            this.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Potion", 1));
+                        } else if (skill.toIdentifier() == "Defense") {
+                            this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#defense.level, 1))
+                        }
                     }
                     break;
                 case "Decrease":
@@ -63,6 +65,45 @@ export const player_skills = (() => {
                     break;
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateSkills.UpdateUI(this.parent));
+        }
+
+        canIncrease(skill) {
+            switch (skill.toIdentifier()) {
+                case "Combat":
+                    return this.#combat.level <= this.#witcher.level;
+                case "Defense":
+                    return this.#defense.level <= this.#witcher.level;
+                case "Alchemy":
+                    return this.#alchemy.level <= this.#witcher.level;
+                case "Special":
+                    return this.#special.level <= this.#witcher.level;
+                default:
+                    return false;
+            }
+        }
+
+        GetLowestSkill() {
+            let lowestSkill = null;
+            let lowestLevel = 6;
+            
+            for (let skill of [this.#combat, this.#defense, this.#alchemy, this.#special]) {
+                if (skill.level < lowestLevel) {
+                    lowestLevel = skill.level;
+                    lowestSkill = skill;
+                } else if (skill.level == lowestLevel) {
+                    lowestSkill = this.GetRandomSkill([lowestSkill, skill]);
+                    lowestLevel = lowestSkill.level;
+                }
+            }
+
+            return lowestSkill;
+        }
+
+        GetRandomSkill(skills) {
+            if (skills == undefined) {
+                skills = [this.#combat, this.#defense, this.#alchemy, this.#special]
+            }
+            return skills[Math.floor(Math.random() * skills.length)];
         }
 
         canMeditate(){
@@ -201,6 +242,7 @@ export const player_skills = (() => {
         toIdentifier() {
             return this.#name;
         }
+
     }
 
     class Shield extends component.Component {
@@ -251,7 +293,7 @@ export const player_skills = (() => {
                             this.#amount = this.#maxAmount;
                         }
                     } else if (this.#amount > 0) {
-                        if (this.#amount - msg.amount < 0) {
+                        if ((this.#amount - msg.amount) < 0) {
                             this.#amount = 0;
                         } else {
                             this.#amount -= msg.amount;

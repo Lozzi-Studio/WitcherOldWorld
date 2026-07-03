@@ -21,6 +21,7 @@ export const player_menu_overlay = (() => {
          * Used to intialize and add any default components/events
          */
         InitComponents() {
+            document.getElementById('player-selector').style.display = 'block';
             this.AddComponent(new player_picker.PlayerPicker())
             this.AddComponent(new player_selection_ui_manager.PlayerSelectionUIManager());
             

@@ -96,8 +96,12 @@ export const entity = (() => {
         /**
          * Brodcast an object message to all components in this entity. Use templates in ./broadcasts.js
          * @param {object} msg 
+         * @param {bool} globalCall
          */
-        Broadcast(msg) {
+        Broadcast(msg, globalCall = false) {
+            if (!globalCall) {
+                this._parent.BroadcastGlobalListener(msg);
+            }
             if (msg.topic in this._handlers) {
                 for (let curHandler of this._handlers[msg.topic]) {
                     curHandler(msg);

@@ -7,7 +7,6 @@ export const status_templates = (() => {
 
         /**
          * Get status template for status "status name"
-         * @param {string} type
          * @param {Timing} timing
          * @param {amount} int 
          * @returns {object}
@@ -18,13 +17,24 @@ export const status_templates = (() => {
 
         /**
          * Get status template for status "status name"
-         * @param {string} type
          * @param {Timing} timing
          * @param {amount} int 
          * @returns {object}
          */
         static drawMoreCards(timing, amount){
             return {"type": "drawMoreCards","timing": timing, "amount":amount}
+        }
+
+        static forestTracker() {
+            return {"type": "forestTracker","timing": status_options.Timing.InCombat(), "amount":1}
+        }
+
+        static riverTracker() {
+            return {"type": "riverTracker","timing": status_options.Timing.InCombat(), "amount":1}
+        }
+
+        static mountainTracker() {
+            return {"type": "mountainTracker","timing": status_options.Timing.InCombat(), "amount":1}
         }
 
     }

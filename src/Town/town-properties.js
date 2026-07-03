@@ -25,7 +25,7 @@ export const town_properties = (() => {
             this.#ability = ability;
             this.#region = region;
             this.#neighboringTowns = neighboringTowns;
-            this.#abilityExecuted = false;
+            this.#abilityExecuted = true;
         }
 
         /**
@@ -73,12 +73,28 @@ export const town_properties = (() => {
             return (card.region.equals(this.#region) || this.#region.toIdentifier() == region.Region.Joker().toIdentifier() || card.region.toIdentifier() == region.Region.Joker().toIdentifier());
         }
 
+        canUseAbility() {
+            if (this.#ability.trigger.topic == 'skill.changeLevel') {
+                return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").canIncrease(this.#ability.trigger.skill);
+            } 
+            if (this.#ability.trigger.topic == 'card.drawCard') {
+                return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").potion.length < 4;
+            }
+            if (this.#ability.trigger.topic == 'game.swapoutCard')
+                return this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer.FindComponent("Carddeck").hand.length > 0;
+            return true
+        }
+
         /**
          * 
          * @returns {bool}
          */
         get abilityExecuted() {
             return this.#abilityExecuted;
+        }
+
+        get ability(){
+            return this.#ability;
         }
     }
 

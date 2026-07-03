@@ -47,9 +47,10 @@ export const music_component = (() => {
          * @param {object} msg 
          */
         #PlayMainMenuTheme(msg) {
-            var buffer = this._parent.GetFromCache("MainMenuTheme")
-            this.#maxVolume = 0.1;
-            this.#loadTrack(buffer);
+            this.#loader.load( 'resources/sounds/MainMenuTheme.mp3',(buffer) => {
+                this.#maxVolume = 0.1;
+                this.#loadTrack(buffer);
+            });
         }
 
         /**

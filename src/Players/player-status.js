@@ -23,6 +23,24 @@ export const player_status = (() => {
             this._RegisterHandler('game.nextRound', (msg) => {this.#ClearAllTemporaryStatuses();});
         }
 
+        #getStatusGermanText(type, amount, mode) {
+            let suffix = mode === "temporary" ? " (temporär)" : " (permanent)";
+            switch(type) {
+                case "drawLessCards":
+                    return `muss ${amount} Karte(n) weniger ziehen` + suffix;
+                case "drawMoreCards":
+                    return `darf ${amount} Karte(n) mehr ziehen` + suffix;
+                case "forestTracker":
+                    return "hat eine Waldspur erhalten und greift im nächsten Kampf im Wald zuerst an";
+                case "riverTracker":
+                    return "hat eine Flussspur erhalten und greift im nächsten Kampf am Fluss zuerst an";
+                case "mountainTracker":
+                    return "hat eine Gebirgespur erhalten und greift im nächsten Kampf im Gebirge zuerst an";
+                default:
+                    return `erhält den Effekt '${type}'`;
+            }
+        }
+
         /**
          * Adds a temporary status to the temporary status list of the player
          * If the status already exists, the amount is increased by the incoming amount
@@ -30,13 +48,17 @@ export const player_status = (() => {
          * @returns
          */
         #AddStatus(msg){
+            let statusText = this.#getStatusGermanText(msg.status.type, msg.status.amount, msg.mode);
+            let playerName = this._parent.playerName;
             if(msg.mode === "temporary"){
                 const existingStatus = this.#temporaryStatusList.find(
                     status => status.type === msg.status.type && status.timing.equals(msg.status.timing));
                 if (existingStatus) {
                     existingStatus.amount += msg.status.amount;
+                    this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`${playerName} ${statusText}.`));
                     return; 
                 }
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`${playerName} ${statusText}.`));
                 this.#temporaryStatusList.push(msg.status);
                 return;
             }
@@ -45,12 +67,14 @@ export const player_status = (() => {
                     status => status.type === msg.status.type && status.timing.equals(msg.status.timing));
                 if (existingStatus) {
                     existingStatus.amount += msg.status.amount;
+                    this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`${playerName} ${statusText}.`));
                     return; 
                 }
                 this.#permanentStatusList.push(msg.status);
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`${playerName} ${statusText}.`));
                 return;
             }
-        };
+        }
 
         /**
          * Gets a status by status type
@@ -72,6 +96,19 @@ export const player_status = (() => {
          */
         #ClearAllTemporaryStatuses(){
             this.#temporaryStatusList = [];
+        }
+
+        /**
+         * Remove the given status from the permanent stati
+         * @param {object} givenStatus 
+         */
+        RemovePermanentStatus(givenStatus) {
+            let status = this.#permanentStatusList.find(status => status.type === givenStatus.type && status.timing.equals(givenStatus.timing));
+            if (status && status.amount > 1) {
+                status.amount -= 1;
+            } else if (status){
+                this.#permanentStatusList.splice(this.#permanentStatusList.indexOf(status), 1);
+            }
         }
         
     }
