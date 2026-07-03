@@ -87,13 +87,11 @@ export const battle_manager = (() => {
             // this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Das Monster ist am Zug."));
             let nextMove = this.#monster.FindComponent("MonsterAi").ChooseNextMove();
             if (nextMove.damage > 0) {
-                console.log(nextMove.damage, "MonsterTurn()");
                 this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.damage, "player"));
                 this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster greift an und fügt ${this.#player.playerName} ${nextMove.damage} Schaden zu.`));
             } else if (nextMove.skill != ""){
                 if (nextMove.discard) {
                     if (nextMove.level != undefined){
-                        console.log(nextMove.level, "MonsterTurn()");
                         this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level, "player"));
                         switch (nextMove.skill) {
                             case "combat":
@@ -127,7 +125,6 @@ export const battle_manager = (() => {
                             this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Spezial-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                     }
-                    console.log(dmg, "MonsterTurn()");
                     this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(dmg, "player"));
                 }
             } else if (nextMove.level != undefined){
@@ -138,25 +135,20 @@ export const battle_manager = (() => {
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster zwingt ${this.#player.playerName} ${nextMove.level} Karte(n) abzuwerfen.`));
                     this.Broadcast(broadcasts.BroadcastTemplateBattle.UpdateHealth(nextMove.level, "player"));
                 } else {
-                    console.log(nextMove.level, "MonsterTurn()");
                     this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level, "player"));
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster trifft ${this.#player.playerName} für ${nextMove.level} Schaden.`));
                 }
             } else {
-                console.log(2, "MonsterTurn()");
                 this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(2, "player"));
                 this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster fügt ${this.#player.playerName} 2 Schaden zu.`));
             }
 
             if (this.#poisened > 0) {
                 this.#poisened -= 1;
-                console.log(1, "MonsterTurn()");
                 this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(1, "monster"));
                 this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster erleidet 1 Giftschaden.`));
             }
 
-
-            console.log("monster next move", nextMove);
             if (this.#player.GetHealth() <= 0 ) {
                 if (this.#monster.GetCurrentHealth()  <= 1 ) {
                     this.#ResolveDraw();
@@ -229,7 +221,6 @@ export const battle_manager = (() => {
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
-            console.log(this.#monster.rank + 1 <= 3 ? this.#monster.rank + 1 : 3, this.#monster.name.split("_")[1], true);
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.CreateNewMonster(this.#monster.rank + 1 <= 3 ? this.#monster.rank + 1 : 3, this.#monster.name.split("_")[1], true));
             this.#EndBattle();
         } 
@@ -275,7 +266,6 @@ export const battle_manager = (() => {
                 }
                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 if (result.damage > 0) {
-                    console.log(result.damage, "PlayCombo()");
                     this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage, "monster"));
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`${this.#player.playerName} spielt eine Kombo und fügt dem Monster ${result.damage} Schaden zu.`));
                 }
@@ -300,8 +290,6 @@ export const battle_manager = (() => {
                         break;
                     case "Schwertkunst":
                         if (comboCount >= 3) {
-                        console.log(this.#choosenSpecialAbility.value[0], "PlayCombo()");
-                            console.log(nextMove.damage, "MonsterTurn()");
                             this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(this.#choosenSpecialAbility.value[0], "monster"));
                             this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Spezialfähigkeit Schwertkunst! Zusätzliche ${this.#choosenSpecialAbility.value[0]} Schaden verursacht.`));
                             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", this.#choosenSpecialAbility.value[1]));

@@ -157,7 +157,6 @@ export const battle_ui = (() => {
             requestAnimationFrame(() => {
                 dmgHint.style.opacity = 1;
             });
-            console.log("-", msg.damageAmount);
             this.AttachElementToElementById(dmgHint, `${msg.victim}-hp-amount`, "right", 8);
             setTimeout(() => {this.#RemoveDamageHint(dmgHint)}, 2250);
         }
@@ -170,7 +169,6 @@ export const battle_ui = (() => {
         }
 
         #UpdateHealth(msg) {
-            console.log("UpdateHealth(), amount: ", msg.damageAmount);
             if (msg.victim == "player") {
                 document.getElementById("player-hp-amount").innerHTML = this.#player.GetHealth();
                 if (msg.damageAmount > 0) {

@@ -1421,6 +1421,7 @@ input {
     bottom: 15%;
     border-width: 3px 3px 3px 0px;
     border-radius: 0px 12px 12px 0px;
+    display: none;
 }
 
 .window--inactive {

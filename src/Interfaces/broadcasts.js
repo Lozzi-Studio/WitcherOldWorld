@@ -428,7 +428,6 @@ export const broadcasts = (() => {
         }
 
         static ApplyDamage(amount, victim) {
-            console.log(amount, "ApplyDamage Broadcast");
             return {topic: 'game.applyDamage', amount: amount, victim: victim}
         }
 
