@@ -54,10 +54,22 @@ body {
   --cursor-default: url("../../resources/assets/cursor/sword-48.png");
   --cursor-pointer: url("../../resources/assets/cursor/pointer-48.png");
   
-
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+
+  /* Z-Indices */
+  --default-layer: 0;
+  --three-positioned-windows: 1;
+  --phase-two: 2;
+  --hud: 3;
+  --player-prompted-windows: 4;
+  --notifications: 5;
+  --tooltips: 6;
+  --player-turn-overlay: 7;
+  --tutorial: 8;
+  --end-game-screen: 9;
+  --loading-screen: 10;
 }
 
 [data-theme="neutral"] {
@@ -309,7 +321,7 @@ input {
     gap: 4px;
 
     align-items: center;
-    z-index: 10;
+    z-index: var(--hud);
 }
 
 .icon--active {
@@ -524,7 +536,7 @@ input {
 .name-container {
     margin-top: -20px;
     margin-bottom: -6px;
-    z-index: 1;
+    z-index: var(--hud);
 }
 
 #skills-container {
@@ -555,12 +567,10 @@ input {
     inset: 0;
     border-radius: inherit;
     backdrop-filter: grayscale(100%) brightness(0.5);
-    z-index: 0;
 }
 
 .option--disabled > * {
     position: relative;
-    z-index: 1;
 }
 
 #phase-window {
@@ -613,7 +623,7 @@ input {
     
     justify-content: center;
     align-items: center;
-    z-index: 9999; 
+    z-index: var(--end-game-screen);
 }
 
 #end-game-overlay .textbox {
@@ -646,7 +656,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Über dem restlichen Spielfeld */
+    z-index: var(--player-turn-overlay);
     opacity: 1;
     transition: opacity 0.2s ease;
 }
@@ -674,7 +684,7 @@ input {
 
 #discard-modal {
     border-radius: 10px;
-    z-index: 9;
+    z-index: var(--hud);
     
     display: flex;
     flex-direction: column;
@@ -750,7 +760,7 @@ input {
     position: absolute;
     top: 50%;
     left: 100%;
-    z-index: 1;
+    z-index: var(--tooltips);
 
     background-color: black;
     color: var(--color-primary);
@@ -767,7 +777,7 @@ input {
     left: 50% !important;
     transform: translateX(-50%);
     margin-top: 8px;
-    z-index: 11;
+    z-index: var(--tooltips);
 }
 
 .tooltip:hover + .tooltip-text {
@@ -846,7 +856,7 @@ input {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10;
+    z-index: var(--phase-two);
 }
 
 #explore-window {
@@ -858,7 +868,7 @@ input {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1001;
+    z-index: var(--phase-two);
 }
 
 #explore-window .button {
@@ -1038,7 +1048,7 @@ input {
     background-size: cover;
     background-position: center;
     border: 1px solid black;
-    z-index: 99;
+    z-index: var(--loading-screen);
 }
 
 #loading_tip {
@@ -1224,7 +1234,7 @@ input {
     left: 0px;
     top: 220px;
     width: 310px;
-    z-index: 99;
+    z-index: var(--notifications);
 } 
 
 #notification-banner {
@@ -1266,7 +1276,7 @@ input {
     font-weight: 700;
 
     color: var(--color-secondary);
-    z-index: 100;
+    z-index: var(--notifications);
 }
 
 #log-window {

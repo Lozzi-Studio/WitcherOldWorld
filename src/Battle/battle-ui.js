@@ -216,7 +216,9 @@ export const battle_ui = (() => {
             this.#SetWindowActiveById("player-window");
             this.#SetWindowInactiveById("battle-monster-window");
 
-            document.getElementById("monster-turn-indicator").remove();
+            if (document.getElementById("monster-turn-indicator")) {
+                document.getElementById("monster-turn-indicator").remove();
+            }
         }
     }
 

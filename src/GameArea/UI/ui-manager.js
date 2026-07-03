@@ -926,8 +926,6 @@ export const ui_manager = (() => {
             if (msg.card instanceof card.Card && msg.noUIUpdate == false) {
                 this.FindComponent("UIManager").UpdateCardContent(msg.card, cardDIV);
             }
-            cardDIV.style.zIndex = 9;
-            // cardDIV.style.marginLeft = "6px";
         }
 
         #UpdateDeckStack(msg) {
