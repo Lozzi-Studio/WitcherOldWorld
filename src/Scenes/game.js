@@ -76,6 +76,18 @@ export const game = (() => {
             promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
 
+            promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("bear_default_figure", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("cat_default_figure", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("griffin_default_figure", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("viper_default_figure", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("wolf_default_figure", result.scene);}));
+
+            promises.push(this.#loadModel("resources/assets/3D-Assets/player_model_bear_school.glb").then(result => {  this.CacheData("bear_player_model", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/3D-Assets/player_model_cat_school.glb").then(result => {  this.CacheData("cat_player_model", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/3D-Assets/player_model_griffin_school.glb").then(result => {  this.CacheData("griffin_player_model", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/3D-Assets/player_model_viper_school.glb").then(result => {  this.CacheData("viper_player_model", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/3D-Assets/player_model_wolf_school.glb").then(result => {  this.CacheData("wolf_player_model", result.scene);}));
+
             Promise.all(promises).then(() => {
                 setTimeout(() => { this.#startGame();}, 3000);
             });
