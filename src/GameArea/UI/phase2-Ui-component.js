@@ -42,7 +42,7 @@ export const phase_two_ui_component = (() => {
             const currentPlayer = this.FindComponent('GameManager').currentPlayer;
             const canMeditate = currentPlayer.FindComponent("PlayerSkills").canMeditate();
             const btn = document.getElementById("meditate-option");
-            btn.setAttribute("data-tooltip", "Du kannst nur meditieren, wenn einer deiner Skills Level 4 ist und du weniger als 3 Trophäen hast.");
+            btn.setAttribute("data-tooltip", "Du kannst nur meditieren, wenn einer deiner Skills Level 5 ist und du weniger als 3 Trophäen hast.");
 
             if (currentPlayer.FindComponent("TrophyStorage").amount < 3) {
                 for (let key in canMeditate){
@@ -57,7 +57,7 @@ export const phase_two_ui_component = (() => {
 
         #activateCombatOption(){
             let monster = this.FindComponent('GameManager').GetLocalMonster();
-            const btn = document.getElementById("meditate-option");
+            const btn = document.getElementById("fight-monster-option");
 
             btn.setAttribute("data-tooltip", "Kein Monster auf deinem Feld.");
             if (monster != null) {
@@ -210,11 +210,17 @@ export const phase_two_ui_component = (() => {
                 const currentPlayer = this.FindComponent('GameManager').currentPlayer;
                 const canMeditate = currentPlayer.FindComponent("PlayerSkills").canMeditate();
         
-                for(let skill in canMeditate){
-                    if(canMeditate[skill]){
-                        currentPlayer.Broadcast(broadcasts.BroadcastTemplateGame.Meditate(skill));
-                        break;
+                if (currentPlayer.FindComponent("TrophyStorage").amount < 3) {
+                    btn.setAttribute("data-tooltip", "Kein Skill hat das maximale Level erreicht.");
+                    
+                    for (let key in canMeditate){
+                        if(canMeditate[key]){
+                            btn.classList.remove("option--disabled");
+                            btn.removeAttribute("data-tooltip");
+                        }
                     }
+                } else {
+                    btn.setAttribute("data-tooltip", "Du kannst nur für deine ersten drei Trophäen meditieren.");
                 }
                 this.#onPhaseTwoEnd();
                 this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());

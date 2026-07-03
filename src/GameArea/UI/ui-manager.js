@@ -721,7 +721,7 @@ export const ui_manager = (() => {
                     buttonMode = "action";
                     if (selectedTown.FindComponent("TownProperties").abilityExecuted || !(selectedTown.FindComponent("TownProperties").canUseAbility()) ) {
                         buttonActive = false;
-                        button.setAttribute("data-tooltip", "Du hast bereits eine Aktion ausgeführt. Bitte reise weiter.");
+                        button.setAttribute("data-tooltip", "Du hast bereits eine Aktion ausgeführt oder hast nicht genug Geld. Bitte reise weiter.");
                     }
                     else {
                         buttonActive = true;
