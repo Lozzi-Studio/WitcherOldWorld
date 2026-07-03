@@ -137,6 +137,30 @@ export const tutorial_component = (() => {
                     return img;
                 }
             ],[
+                 () => {
+                    let element = document.createElement("div");
+                    element.innerHTML = "Karten Symbole";
+                    element.classList.add("--fancy-font");
+                    element.style.textAlign = "center";
+                    element.style.fontSize = "30px"
+                    return element;
+                },
+                () => {
+                    let element = document.createElement("div");
+                    element.style.marginTop = "2vh";
+                    element.style.marginBottom = "2vh";
+                    element.innerHTML = "Auf den Karten gibt es verschiedene Symbole, welche die Effekte der Karten bestimmen.";
+                    return element;
+                },
+                () => {
+                    let img = document.createElement("img");
+                    img.src = "./resources/assets/tutorial/kartensymbol.png";
+                    img.style.maxWidth = "100%";
+                    img.style.height = "auto";
+                    
+                    return img;
+                }
+            ],[
                 () => {
                     let element = document.createElement("div");
                     element.innerHTML = "Phase 3";
