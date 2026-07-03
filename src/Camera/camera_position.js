@@ -21,7 +21,7 @@ export const camera_position = (() => {
             this.#currentLookat = new THREE.Vector3();
             this.#target = undefined;
             this.#controlable = true;
-            this.#directions = [];
+            this.#directions = new Map([[Direction.Down().toIdentifier(), false], [Direction.Left().toIdentifier(), false], [Direction.Right().toIdentifier(),false], [Direction.Up().toIdentifier(), false]]);
         }
 
         /**
@@ -101,28 +101,20 @@ export const camera_position = (() => {
                 this.#createButton();
                 switch (event.keyCode) {
                     case 87: // W
-                        if (this.#directions.find((direction) => direction.toIdentifier() == "up") == undefined)  {
-                            this.#directions.push(Direction.Up());
-                        }
+                        this.#directions.set(Direction.Up().toIdentifier(), true);
                         break;
                     case 83: // S
-                        if (this.#directions.find((direction) => direction.toIdentifier() == "down") == undefined)  {
-                            this.#directions.push(Direction.Down());
-                        }
+                        this.#directions.set(Direction.Down().toIdentifier(), true);
                         break;
                     case 65: // A
-                        if (this.#directions.find((direction) => direction.toIdentifier() == "left") == undefined) {
-                            this.#directions.push(Direction.Left());
-                        }
+                        this.#directions.set(Direction.Left().toIdentifier(), true);
                         break;
                     case 68: // D
-                        if (this.#directions.find((direction) => direction.toIdentifier() == "right") == undefined)  {
-                            this.#directions.push(Direction.Right());
-                        }
+                        this.#directions.set(Direction.Right().toIdentifier(), true);
                         break;
                     case 32: // Space
                         
-                        this.#directions = [];
+                        this.#directions = new Map([[Direction.Down().toIdentifier(), false], [Direction.Left().toIdentifier(), false], [Direction.Right().toIdentifier(),false], [Direction.Up().toIdentifier(), false]]);
                         this._parent.controls.enableDamping = false;
                         this.#target = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
                         this._parent.controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
@@ -165,16 +157,16 @@ export const camera_position = (() => {
         #onKeyUp(event) {
              switch (event.keyCode) {
                     case 87: // W
-                        this.#directions.splice(this.#directions.indexOf(Direction.Up()), 1);
+                        this.#directions.set(Direction.Up().toIdentifier(), false);
                         break;
                     case 83: // S
-                        this.#directions.splice(this.#directions.indexOf(Direction.Down()), 1);
+                        this.#directions.set(Direction.Down().toIdentifier(), false);
                         break;
                     case 65: // A
-                        this.#directions.splice(this.#directions.indexOf(Direction.Left()), 1);
+                        this.#directions.set(Direction.Left().toIdentifier(), false);
                         break;
                     case 68: // D
-                        this.#directions.splice(this.#directions.indexOf(Direction.Right()), 1);
+                        this.#directions.set(Direction.Right().toIdentifier(), false);
                         break;
             }
         }
@@ -187,36 +179,43 @@ export const camera_position = (() => {
             const t = 1.0 - Math.pow(0.01, timeElapsed);
             let h = this.FindComponent("CubicHitbox").hitbox;
             let y = this._parent.camera.position.y;
-            for (let direction of this.#directions) {
-                switch (direction.toIdentifier()) {
+            for (let [key, value] of this.#directions.entries()) {
+                switch (key) {
                     case "up":
-                        this._parent.camera.translateZ(- (3 * t));
-                        h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
-                        h.translateZ(- (3 * t));
-                        h.position.y = 0;
-                        this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        if (value) {
+                            this._parent.camera.translateZ(- (3 * t));
+                            h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                            h.translateZ(- (3 * t));
+                            h.position.y = 0;
+                            this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        }
                         break;
                     case "down":
-                        this._parent.camera.translateZ((3 * t));
-                        h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
-                        h.translateZ((3 * t));
-                        h.position.y = 0;
-                        this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        if (value) {
+                            this._parent.camera.translateZ((3 * t));
+                            h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                            h.translateZ((3 * t));
+                            h.position.y = 0;
+                            this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        }
                         break;
                     case "right":
-
-                        this._parent.camera.translateX((3 * t));
-                        h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
-                        h.translateX((3 * t));
-                        h.position.y = 0;
-                        this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        if (value) {
+                            this._parent.camera.translateX((3 * t));
+                            h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                            h.translateX((3 * t));
+                            h.position.y = 0;
+                            this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        }
                         break;
                     case "left":
-                        this._parent.camera.translateX(- (3 * t));
-                        h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
-                        h.translateX(-(3 * t));
-                        h.position.y = 0;
-                        this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        if (value) {
+                            this._parent.camera.translateX(- (3 * t));
+                            h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                            h.translateX(-(3 * t));
+                            h.position.y = 0;
+                            this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        }
                         break;
                     case "none":
                         break;

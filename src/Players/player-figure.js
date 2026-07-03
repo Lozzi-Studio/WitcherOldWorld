@@ -45,8 +45,6 @@ export const player_figure = (() =>{
                     break;
             }
             let model = this._parent.GetFromCache((schoolName + "player_model"));
-            let pointLight = new THREE.PointLight("white", 12, 2, 3)
-            pointLight.position.set(0, 6, 5)
             if (model == undefined) {
                 let default_model = this._parent.GetFromCache((schoolName + "default_figure"));
                 default_model.traverse((child) =>{
@@ -58,12 +56,10 @@ export const player_figure = (() =>{
                 default_model.name = (schoolName + "default_figure");
                 this.#mesh = default_model;
                 this.#mesh.position.copy(this.#startPosition);
-                this.#mesh.add(pointLight);
                 this._parent._parent.scene.add(this.#mesh);
             } else {
                 this.#mesh = model ;
                 this.#mesh.position.copy(this.#startPosition);
-                this.#mesh.add(pointLight);
                 this._parent._parent.scene.add(this.#mesh);
             }
         }
