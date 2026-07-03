@@ -599,6 +599,10 @@ export const broadcasts = (() => {
         static UpdateHealth(damageAmount, victim) {
             return {topic: 'battle.updateHealth', damageAmount: damageAmount, victim: victim};
         }
+
+        static ShowWinMessage(winningEntity) {
+            return {topic: 'battle.showWinMessage', winningEntity: winningEntity};
+        }
     }
 
     return {

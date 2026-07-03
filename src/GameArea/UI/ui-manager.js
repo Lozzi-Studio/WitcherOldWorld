@@ -14,6 +14,7 @@ export const ui_manager = (() => {
         #isLevelupPossible;
         #hasEnoughMoneyForLevelup;
         #hasSkillLeftForLevelup;
+        #uiLayers;
 
         /**
          * Manages API between UI and Backend
@@ -23,6 +24,19 @@ export const ui_manager = (() => {
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
             this.#phaseThreePartTwo = false;
+            this.#uiLayers = new Map([
+                ["layer-default", 0],
+                ["layer-three-positioned-windows", 1],
+                ["layer-phase-two", 2],
+                ["layer-hud", 3],
+                ["layer-player-prompted-windows", 4],
+                ["layer-notifications", 5],
+                ["layer-tooltips", 6],
+                ["layer-player-turn-overlay", 7],
+                ["layer-tutorial", 8],
+                ["layer-end-game-screen", 9],
+                ["layer-loading-screen", 10],
+            ]);
 
             let button = document.getElementById("town-button");
             this.handleMoveClick = () => {
@@ -300,7 +314,7 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          * @returns {string}
          */
-        #GetAvatarPathFromPlayer(player) {
+        GetAvatarPathFromPlayer(player) {
             let path = ""
             switch(player.witcherSchool.name){
                 case "Baerenschule":
@@ -327,7 +341,7 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          */
         #SetPlayerAvatar(msg) {
-            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.player);
+            document.getElementById("player-avatar").src = this.GetAvatarPathFromPlayer(msg.player);
         }
 
         #ShowLevelBonuses(skill) {
@@ -472,7 +486,7 @@ export const ui_manager = (() => {
 
                 var avatar = document.createElement("img");
                 avatar.classList.add("avatar", "avatar--small");
-                avatar.src = this.#GetAvatarPathFromPlayer(player);
+                avatar.src = this.GetAvatarPathFromPlayer(player);
                 document.getElementById(`avatar-container-${i+1}`).appendChild(avatar);
             }
         }
@@ -1243,7 +1257,7 @@ export const ui_manager = (() => {
             const avatar = document.getElementById("turn-change-avatar");
             const text = document.getElementById("turn-change-text");
 
-            avatar.src = this.#GetAvatarPathFromPlayer(player);
+            avatar.src = this.GetAvatarPathFromPlayer(player);
             
             let formattedName = this.#ReplaceUmlaute(player.playerName);
             text.innerHTML = `${formattedName} ist an der Reihe`;
@@ -1276,7 +1290,7 @@ export const ui_manager = (() => {
             const text = document.getElementById("end-game-text");
             const scoreboard = document.getElementById("end-game-scoreboard");
 
-            avatar.src = this.#GetAvatarPathFromPlayer(msg.winner);
+            avatar.src = this.GetAvatarPathFromPlayer(msg.winner);
             
             let formattedName = this.#ReplaceUmlaute(msg.winner.playerName.toUpperCase());
             text.innerHTML = `${formattedName} HAT GEWONNEN`;
@@ -1443,6 +1457,12 @@ export const ui_manager = (() => {
             return this.#phaseThreePartTwo;
         }
   
+        /**
+         * @returns {Map}
+         */
+        get uiLayers() {
+            return this.#uiLayers;
+        }
     }
 
     return {

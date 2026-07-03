@@ -22,6 +22,7 @@ export const battle_ui = (() => {
             this._RegisterHandler('battle.endBattle', (msg) => {this.#EndBattle(msg)})
             this._RegisterHandler('battle.highlightMonster', (msg) => {this.#HighlightMonsterTurn(msg)});
             this._RegisterHandler('battle.highlightPlayer', (msg) => {this.#HighlightPlayerTurn(msg)});
+            this._RegisterHandler('battle.showWinMessage', (msg) => {this.#ShowEndOfFightWindow(msg)});
         }
 
         #StartBattle(msg) { 
@@ -219,6 +220,58 @@ export const battle_ui = (() => {
             if (document.getElementById("monster-turn-indicator")) {
                 document.getElementById("monster-turn-indicator").remove();
             }
+        }
+
+        #ShowEndOfFightWindow(msg) {
+            const window = document.createElement("div");
+            window.classList.add("container", "container--col", "container--set-colors", "position-center", "borders--all", "battle-popup");
+            window.dataset["theme"] = "Monster";
+            window.style.zIndex = 3;
+            // window.style.zIndex = this.FindComponent("UIManager").uiLayers["layer-hud"];
+            document.getElementById("game-ui").appendChild(window);
+            const avatarContainer = document.createElement("div");
+            avatarContainer.classList.add("avatar-container");
+            const avatar = document.createElement("img");
+            avatar.classList.add("avatar", "avatar--big");
+            avatarContainer.appendChild(avatar);
+            const header = document.createElement("div");
+            header.classList.add("--fancy-font", "font-size-large");
+            const textContainer = document.createElement("div");
+            textContainer.classList.add("container", "container--col");
+            const subHeader = document.createElement("div");
+            subHeader.classList.add("--fancy-font", "font-size-middle");
+            subHeader.innerHTML = "Du erhälst:";
+            const text1 = document.createElement("div");
+            const text2 = document.createElement("div");
+            const continueButton = document.createElement("div");
+            continueButton.classList.add("textbox", "textbox--fill", "button");
+            continueButton.innerHTML = "Fortfahren";
+            continueButton.addEventListener("click", () => {
+                window.remove();
+            })
+
+            window.appendChild(avatarContainer);
+            window.appendChild(header);
+            window.appendChild(avatarContainer);
+            textContainer.appendChild(subHeader);
+            textContainer.appendChild(text1);
+            textContainer.appendChild(text2);
+            window.appendChild(textContainer);
+            window.appendChild(continueButton);
+
+            if (msg.winningEntity.name.toLowerCase().includes("player") ) {
+                header.innerHTML = `${msg.winningEntity.playerName} hat gewonnen`;
+                text1.innerHTML = "+1 Trophäe (du erleidest Erschöpfung)";
+                text2.innerHTML = "+2 Gold";
+            }
+            else {
+                // header.innerHTML = `Das Monster ${msg.winningEntity.monsterName} hat gewonnen`;
+                header.innerHTML = "Das Monster hat gewonnen";
+                text1.innerHTML = "+1 Spur des Monsters";
+                text2.innerHTML = "In Phase 3 ziehst du eine Karte weniger";
+            }
+
+            avatar.src = this.#GetPathForMonsterAvatar(msg.winningEntity);
         }
     }
 

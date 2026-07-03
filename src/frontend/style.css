@@ -130,8 +130,6 @@ body {
 p, div {
     color: var(--color-primary);
     font-family: "PT Sans", sans-serif;
-    /* font-weight: 400;
-    font-style: normal; */
 
     margin:0px;
 }
@@ -190,9 +188,6 @@ input {
     align-content: space-around;
     gap: 8px;
     padding: 4px;
-
-    /* text-align: center; */
-    /* vertical-align: middle; */
 }
 
 .container--stretch {
@@ -570,6 +565,7 @@ input {
     width: fit-content;
 
     gap: 4px;
+    z-index: var(--layer-hud);
 }
 
 #avatars-container {
@@ -705,6 +701,7 @@ input {
     min-width: 150px;
     max-width: 250px;
     display: none;
+    z-index: var(--layer-three-positioned-windows);
 }
 
 #town-name {
@@ -1290,6 +1287,7 @@ input {
 
 .log-window--open {
     transform: translateX(310px); 
+    z-index: var(--layer-hud);
 }
 
 #log-toggle-btn {
@@ -1309,6 +1307,7 @@ input {
     border-left: none;
     border-radius: 0px 12px 12px 0px;
     box-sizing: border-box;
+    z-index: var(--layer-hud);
 }
 
 #log-toggle-btn:hover #log-toggle-icon {
@@ -1370,6 +1369,7 @@ input {
     padding-left: 4px;
     padding-bottom: 4px;
     gap: 0px;
+    z-index: var(--layer-hud);
 }
 
 #discard-stack {
@@ -1434,4 +1434,9 @@ input {
     color: var(--color-hover);
     font-size: 20px;
     color: var(--color-warning);
+}
+
+.battle-popup {
+    padding: 16px;
+    gap: 32px;
 }

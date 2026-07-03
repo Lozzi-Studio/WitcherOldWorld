@@ -192,6 +192,7 @@ export const battle_manager = (() => {
 
         #ResolveMonsterWin(){
             let winMessage = "Das Monster hat den Kampf gewonnen";
+            this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster));
             this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(winMessage));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
@@ -226,6 +227,7 @@ export const battle_manager = (() => {
 
         #ResolvePlayerWin(){
             let winMessage = this.#player.name + " hat den Kampf gewonnen";
+            this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
             this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(winMessage));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
