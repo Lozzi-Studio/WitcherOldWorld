@@ -221,7 +221,7 @@ export const tutorial_component = (() => {
 
         #initTutorial() {
             let tutorial = document.createElement("div");
-            tutorial.id = "loading_tutorial";
+            tutorial.id = "loading-tutorial";
             tutorial.classList.add(
                 "container",  "container--row", "container--neutral", "container--justify", "borders--all"
             )
@@ -232,22 +232,22 @@ export const tutorial_component = (() => {
             let buttonLeft = document.createElement("img");
             let buttonRight = document.createElement("img");
             let content = document.createElement("div");
-            content.id = "loading_tutorial_content";
+            content.id = "loading-tutorial-content";
             content.classList.add("cotainer--col", "container--justify");
             content.style.overflowY = "auto";
             content.style.overflowX = "hidden";
-            buttonLeft.id = "loading_tutorial_left";
+            buttonLeft.id = "loading-tutorial-left";
             buttonLeft.src = "./resources/assets/tutorial/arrow2.png"
             buttonLeftDiv.addEventListener("click", () => {
                 if (this.#tutorialIndex > 0) {
                     this.#tutorialIndex = this.#tutorialIndex - 1
                     if (this.#tutorialIndex == 0) {
-                        document.getElementById("loading_tutorial_left").style.visibility  = "hidden";
+                        document.getElementById("loading-tutorial-left").style.visibility  = "hidden";
                     }
-                    document.getElementById("loading_tutorial_right").style.visibility = "visible";
-                    document.getElementById("loading_tutorial_content").innerHTML = '';
+                    document.getElementById("loading-tutorial-right").style.visibility = "visible";
+                    document.getElementById("loading-tutorial-content").innerHTML = '';
                     this.#tutorialContent[this.#tutorialIndex].forEach((element) => {
-                        document.getElementById("loading_tutorial_content").appendChild(element());
+                        document.getElementById("loading-tutorial-content").appendChild(element());
                     });
                 }
             });
@@ -257,18 +257,18 @@ export const tutorial_component = (() => {
             buttonLeftDiv.style.maxWidth = "3vw";
 
 
-            buttonRight.id = "loading_tutorial_right";
+            buttonRight.id = "loading-tutorial-right";
             buttonRight.src = "./resources/assets/tutorial/arrow.png"
             buttonRightDiv.addEventListener("click", () => {
                 if (this.#tutorialIndex < (this.#tutorialContent.length - 1) ) {
                     this.#tutorialIndex = this.#tutorialIndex + 1
                     if (this.#tutorialIndex == (this.#tutorialContent.length - 1)) {
-                        document.getElementById("loading_tutorial_right").style.visibility  = "hidden";
+                        document.getElementById("loading-tutorial-right").style.visibility  = "hidden";
                     }
-                    document.getElementById("loading_tutorial_left").style.visibility = "visible";
-                    document.getElementById("loading_tutorial_content").innerHTML = '';
+                    document.getElementById("loading-tutorial-left").style.visibility = "visible";
+                    document.getElementById("loading-tutorial-content").innerHTML = '';
                     this.#tutorialContent[this.#tutorialIndex].forEach((element) => {
-                        document.getElementById("loading_tutorial_content").appendChild(element());
+                        document.getElementById("loading-tutorial-content").appendChild(element());
                     });
                 }
             });
@@ -283,12 +283,11 @@ export const tutorial_component = (() => {
             tutorial.appendChild(content);
             tutorial.appendChild(buttonRightDiv);
 
-            
-            document.getElementById("loading_screen_info").appendChild(tutorial)
-            document.getElementById("loading_tutorial_left").style.visibility  = "hidden";
-            document.getElementById("loading_screen_info").insertBefore(document.getElementById("loading_tutorial"), document.getElementById("loading_tip"));
+            document.getElementById("loading-screen-info").appendChild(tutorial)
+            document.getElementById("loading-tutorial-left").style.visibility  = "hidden";
+            document.getElementById("loading-screen-info").insertBefore(document.getElementById("loading-tutorial"), document.getElementById("loading_tip"));
             this.#tutorialContent[0].forEach((element) => {
-                document.getElementById("loading_tutorial_content").appendChild(element());
+                document.getElementById("loading-tutorial-content").appendChild(element());
             });
 
         }

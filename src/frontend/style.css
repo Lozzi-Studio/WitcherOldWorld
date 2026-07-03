@@ -1029,14 +1029,14 @@ input {
     justify-content: center;
 }
 
-#loading_screen_info{
+#loading-screen-info{
     position: relative;
     top: 30%;
     justify-content: center;
         
 }
 
-#loading_tutorial {
+#loading-tutorial {
     min-height: 45vh;
     min-width: 90vb;
     max-height: 45vh;
