@@ -24,6 +24,10 @@ Ziehen der Maus – Drehen
 WASD – Bewegen der Kamera
 Space – Zurücksetzen der Kamera auf aktiven Spieler
 
+## Detailiertes Regelwerk
+Das Spiel beinhaltet eine kürze Einführung und einen Glossar für Begriffserklärungen. Falls es aber noch Fragen geben sollte, kann man hier die Regeln nachlesen:
+https://gamers-hq.de/media/pdf/d5/d0/33/The-Witcher_Alte_Welt_Regelwerk_DE.pdf
+
 ## Starten des Projekts
 1. Lade dir das Repository herunter.
 2. Navigiere im Terminal zu dem Ordner projektrepo-gruppe6 oder öffne den Ordner direkt in VS Code.
