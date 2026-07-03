@@ -126,9 +126,9 @@ export const game = (() => {
     
             let startButton = document.createElement("div");
             startButton.id = "game-start-button-loading";
-            startButton.innerHTML = "Das Spiel beginnen.";
+            startButton.innerHTML = "Spiel beginnen";
             startButton.classList.add(
-                "textbox", "textbox--fill",  "button", "--fancy-font"
+                "container", "textbox", "textbox--fill",  "button", "--fancy-font"
             )
             startButton.addEventListener("click", () => {
                 this._entityManager.FindEntity("TutorialEntity").Broadcast(broadcasts.BroadcastTemplateGame.CloseTutorial());
