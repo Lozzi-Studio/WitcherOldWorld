@@ -99,7 +99,7 @@ export const tutorial_component = (() => {
                     let element = document.createElement("div");
                     element.style.marginTop = "2vh";
                     element.style.marginBottom = "2vh";
-                    element.innerHTML = "In Phase 2 kann der Spieler zwischen verschiedenen Hauptaktionen wählen. Nicht jede Hauptaktion ist immer verfügbar.";
+                    element.innerHTML = "In Phase 2 kann der Spieler zwischen verschiedenen Hauptaktionen wählen. Nicht jede Hauptaktion ist immer verfügbar. So kannst du beispielsweise nur meditieren, wenn einer deiner Fähigkeiten auf dem höchsten Level ist und du noch keine 3 Trophäen hast. Ein Monster kannst du nur bekämpfen, wenn eines auf dem Feld ist, auf dem du stehst.";
                     return element;
                 },
                 () => {
@@ -173,7 +173,7 @@ export const tutorial_component = (() => {
                     let element = document.createElement("div");
                     element.style.marginTop = "2vh";
                     element.style.marginBottom = "2vh";
-                    element.innerHTML = "In Phase drei kann der Spieler so viele Karten abwerfen, wie er möchte. Anschließend zieht er regulär seine Hand wieder auf drei Karten nach. Daraufhin kann er im Karten-Shop eine neue Karte erwerben, die mit den eigenen Handkarten bezahlt wird.";
+                    element.innerHTML = "In Phase 3 kann der Spieler so viele Karten abwerfen, wie er möchte. Anschließend zieht er regulär seine Hand wieder auf drei Karten nach. Abschließend kann er im Karten-Shop eine neue Karte erwerben, die mit den eigenen Handkarten unter Hinzunahme der Modifikatoren bezahlt werden. Die Karten rotieren von rechts nach links nach.";
                     return element;
                 },
                 () => {
@@ -198,7 +198,7 @@ export const tutorial_component = (() => {
                     let element = document.createElement("div");
                     element.style.marginTop = "2vh";
                     element.style.marginBottom = "2vh";
-                    element.innerHTML = "Falls es noch Fragen gibt, nutze gerne den inGame Glossar zum Nachschlagen von Details.";
+                    element.innerHTML = "Falls es noch Fragen gibt, nutze gerne dem spielinternem Glossar zum Nachschlagen von Details. Du findest das Glossar oben rechts am Spielfeldrand. Ansonsten wünschen wir viel Spaß beim Spielen.";
                     return element;
                 },
                 () => {
@@ -209,14 +209,6 @@ export const tutorial_component = (() => {
                     img.style.display = "block";
                     img.style.margin = "auto";
                     return img;
-                },
-                () => {
-                    let element = document.createElement("div");
-                    element.style.marginTop = "2vh";
-                    element.style.marginBottom = "2vh";
-                    element.innerHTML = "Ansonsten wünschen wir viel Spaß beim Spielen.";
-                    element.style.textAlign = "center";
-                    return element;
                 }
             ]];
             this.#tutorialIndex = 0;
