@@ -42,6 +42,9 @@ export const card_select_ui = (() => {
          * @param {bool} cancelable
          */
         PromptCardSelection(cards, selectableCards, reason, cancelable, topic) {
+            if (document.getElementById("card-select-window")) {
+                return null;
+            }
             return new Promise((resolve) => {
                 let handWindow = document.getElementById("hand-window");
                 const handCards = document.querySelectorAll('#hand-window > div:not(:last-child)');
