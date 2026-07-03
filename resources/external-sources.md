@@ -26,3 +26,6 @@ https://www.cgtrader.com/free-3d-models/exterior/industrial-exterior/stone-mine-
 
 city assets and textures:
 https://sketchfab.com/3d-models/modular-lowpoly-medieval-environment-5bf0a1562b7e401e9e6d7758ec54d09c
+
+wood texture:
+https://www.textures.com/browse/old-planks/114537
