@@ -52,7 +52,6 @@ export const phase_two_ui_component = (() => {
                     }
                 }
             }
-            
         }
 
         #activateCombatOption(){
@@ -209,19 +208,14 @@ export const phase_two_ui_component = (() => {
             if  (!(document.getElementById("meditate-option").classList.contains("option--disabled"))) {
                 const currentPlayer = this.FindComponent('GameManager').currentPlayer;
                 const canMeditate = currentPlayer.FindComponent("PlayerSkills").canMeditate();
-        
-                if (currentPlayer.FindComponent("TrophyStorage").amount < 3) {
-                    btn.setAttribute("data-tooltip", "Kein Skill hat das maximale Level erreicht.");
-                    
-                    for (let key in canMeditate){
-                        if(canMeditate[key]){
-                            btn.classList.remove("option--disabled");
-                            btn.removeAttribute("data-tooltip");
-                        }
+                
+                for(let skill in canMeditate){
+                    if(canMeditate[skill]){
+                        currentPlayer.Broadcast(broadcasts.BroadcastTemplateGame.Meditate(skill));
+                        break;
                     }
-                } else {
-                    btn.setAttribute("data-tooltip", "Du kannst nur für deine ersten drei Trophäen meditieren.");
                 }
+
                 this.#onPhaseTwoEnd();
                 this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
             }
