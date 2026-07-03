@@ -33,14 +33,6 @@ body {
     opacity: 0;
 }
 
-/* .theme--color {
-    --color-bg: rgba(59, 55, 49, 0.70);
-    --color-border: rgba(233, 225, 213, 1.00);
-    --color-primary: rgba(219, 218, 213, 1.00);
-    --color-secondary: rgba(61, 59, 55, 1.00);
-    --color-primary-inactive: rgba(219, 218, 213, 0.40);
-} */
-
 :root {
   --color-bg: rgba(59, 55, 49, 0.70);
   --color-border: rgba(233, 225, 213, 1.00);
@@ -58,18 +50,18 @@ body {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 
-  /* Z-Indices */
-  --default-layer: 0;
-  --three-positioned-windows: 1;
-  --phase-two: 2;
-  --hud: 3;
-  --player-prompted-windows: 4;
-  --notifications: 5;
-  --tooltips: 6;
-  --player-turn-overlay: 7;
-  --tutorial: 8;
-  --end-game-screen: 9;
-  --loading-screen: 10;
+  /* z-index */
+  --layer-default: 0;
+  --layer-three-positioned-windows: 1;
+  --layer-phase-two: 2;
+  --layer-hud: 3;
+  --layer-player-prompted-windows: 4;
+  --layer-notifications: 5;
+  --layer-tooltips: 6;
+  --layer-player-turn-overlay: 7;
+  --layer-tutorial: 8;
+  --layer-end-game-screen: 9;
+  --layer-loading-screen: 10;
 }
 
 [data-theme="neutral"] {
@@ -321,7 +313,7 @@ input {
     gap: 4px;
 
     align-items: center;
-    z-index: var(--hud);
+    z-index: var(--layer-hud);
 }
 
 .icon--active {
@@ -536,7 +528,7 @@ input {
 .name-container {
     margin-top: -20px;
     margin-bottom: -6px;
-    z-index: var(--hud);
+    z-index: var(--layer-hud);
 }
 
 #skills-container {
@@ -623,7 +615,7 @@ input {
     
     justify-content: center;
     align-items: center;
-    z-index: var(--end-game-screen);
+    z-index: var(--layer-end-game-screen);
 }
 
 #end-game-overlay .textbox {
@@ -656,7 +648,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: var(--player-turn-overlay);
+    z-index: var(--layer-player-turn-overlay);
     opacity: 1;
     transition: opacity 0.2s ease;
 }
@@ -684,7 +676,7 @@ input {
 
 #discard-modal {
     border-radius: 10px;
-    z-index: var(--hud);
+    z-index: var(--layer-hud);
     
     display: flex;
     flex-direction: column;
@@ -760,7 +752,7 @@ input {
     position: absolute;
     top: 50%;
     left: 100%;
-    z-index: var(--tooltips);
+    z-index: var(--layer-tooltips);
 
     background-color: black;
     color: var(--color-primary);
@@ -777,7 +769,7 @@ input {
     left: 50% !important;
     transform: translateX(-50%);
     margin-top: 8px;
-    z-index: var(--tooltips);
+    z-index: var(--layer-tooltips);
 }
 
 .tooltip:hover + .tooltip-text {
@@ -856,7 +848,7 @@ input {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: var(--phase-two);
+    z-index: var(--layer-phase-two);
 }
 
 #explore-window {
@@ -868,7 +860,7 @@ input {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: var(--phase-two);
+    z-index: var(--layer-phase-two);
 }
 
 #explore-window .button {
@@ -1048,7 +1040,7 @@ input {
     background-size: cover;
     background-position: center;
     border: 1px solid black;
-    z-index: var(--loading-screen);
+    z-index: var(--layer-loading-screen);
 }
 
 #loading_tip {
@@ -1234,7 +1226,7 @@ input {
     left: 0px;
     top: 220px;
     width: 310px;
-    z-index: var(--notifications);
+    z-index: var(--layer-notifications);
 } 
 
 #notification-banner {
@@ -1276,7 +1268,7 @@ input {
     font-weight: 700;
 
     color: var(--color-secondary);
-    z-index: var(--notifications);
+    z-index: var(--layer-notifications);
 }
 
 #log-window {
