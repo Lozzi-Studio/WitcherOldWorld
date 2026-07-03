@@ -31,11 +31,11 @@ export const player_status = (() => {
                 case "drawMoreCards":
                     return `darf ${amount} Karte(n) mehr ziehen` + suffix;
                 case "forestTracker":
-                    return "hat eine Waldspur erhalten und greift im nächsten Kampf im Wald zuerst an)";
+                    return "hat eine Waldspur erhalten und greift im nächsten Kampf im Wald zuerst an";
                 case "riverTracker":
-                    return "hat eine Flussspur erhalten und greift im nächsten Kampf am Fluss zuerst an)";
+                    return "hat eine Flussspur erhalten und greift im nächsten Kampf am Fluss zuerst an";
                 case "mountainTracker":
-                    return "hat eine Gebirgespur erhalten und greift im nächsten Kampf im Gebirge zuerst an)";
+                    return "hat eine Gebirgespur erhalten und greift im nächsten Kampf im Gebirge zuerst an";
                 default:
                     return `erhält den Effekt '${type}'`;
             }
