@@ -19,24 +19,24 @@ export const glossar_component = (() => {
             glossar.classList.add(
                 "container",  "container--col", "container--set-colors", "container--justify", "borders--all", "position-center"
             )
-            glossar.style.padding = "15px";
             glossar.style.height = "65vh";
             glossar.style.width = "65vw";
-            glossar.style.zIndex = "100000000000000000000";
+            glossar.style.zIndex = this.FindEntity("GameArea").FindComponent("UIManager").uiLayers.get("layer-player-prompted-windows");
             
             let header = document.createElement("div");
-            header.classList.add("container",  "container--row");
+            header.classList.add("container", "container--row", "container--justify-between");
+            header.id = "glossar-header";
 
-            let title = document.createElement("h1");
+            let title = document.createElement("div");
             title.innerHTML = "Glossar";
-            title.classList.add("--fancyfont");
-            title.style.marginLeft = "10vw";
-            title.style.marginRight = "25vw";
-            title.style.textAlign = "center";
+            title.classList.add("--fancy-font", "font-size-large");
+            title.id = "glossar-title";
             
             let search = document.createElement("div");
+            search.id = "glossar-search";
+            search.classList.add("container", "container--no-padding", "container--row", "container--no-gap");
             let input = document.createElement("input")
-            input.id = "searchGlossar";
+            input.id = "search-glossar-input";
             input.type = "text";
             input.name = "searchGlossar";
             input.placeholder = "Suchen ..."
@@ -53,22 +53,23 @@ export const glossar_component = (() => {
             cancel.innerHTML = "close";
             cancel.style.marginLeft = "0.2vw";
             cancel.addEventListener("click", (event)=> {
-                document.getElementById("searchGlossar").value = "";
-                document.getElementById("searchGlossar").dispatchEvent(new CustomEvent("input"));
+                input.value = "";
+                input.dispatchEvent(new CustomEvent("input"));
             })
             search.appendChild(cancel);
-
-            header.appendChild(search);
-            header.appendChild(title);
-            header.style.textAlign = "center";
-
+            
             let close = document.createElement("div");
             close.innerHTML = "close";
             close.classList.add("material-symbols-outlined", "filled", "glyph-button");
             close.addEventListener("click", (event) => {document.getElementById("glossar").style.display = "none"})
+            let closeDummy = close.cloneNode(true);
+            closeDummy.style.visibility = "hidden";
+            header.appendChild(closeDummy);
+            header.appendChild(title);
             header.appendChild(close);
             glossar.appendChild(header);
-
+            glossar.appendChild(search);
+            
             glossar.style.display = "none";
 
             document.getElementById("game-ui").appendChild(glossar)
@@ -79,6 +80,7 @@ export const glossar_component = (() => {
         }
 
         #GetEntries(filterBy = "") {
+            const bodyFontSize = "16px";
             let dataset = this.#data;
             try {
                 document.getElementById("glossar").removeChild(document.getElementById("entries_glossar"));
@@ -108,8 +110,8 @@ export const glossar_component = (() => {
                 } else {
                     glossaerEntry.innerHTML = "<b>" + entry[0] + ":</b> ";
                 }
-                glossaerEntry.style.fontSize = "23px"
-                glossaerEntry.style.margin = "5vh";
+                glossaerEntry.style.fontSize = bodyFontSize;
+                glossaerEntry.style.marginBottom = "8px";
                 let cites = [];
                 for (let word of entry[1].split(/[\s]+/)) {
                     let s = "\\b" + word.split(/[,.?!:()]+/)[0] + "\\b";
@@ -118,17 +120,18 @@ export const glossar_component = (() => {
                     if (foundEntry.length > 0) {
                         let span = document.createElement("span");
                         span.addEventListener("click", (event)=> {
-                            document.getElementById("searchGlossar").value = event.target.innerHTML.split(/[,.?!:()]+/)[0];
-                            document.getElementById("searchGlossar").dispatchEvent(new CustomEvent("input"));
+                            document.getElementById("search-glossar").value = event.target.innerHTML.split(/[,.?!:()]+/)[0];
+                            document.getElementById("search-glossar").dispatchEvent(new CustomEvent("input"));
                         })
                         span.innerHTML = "<u><b>"+ word +"</b></u> ";
-                        span.style.fontSize = "23px"
+                        span.style.fontSize = bodyFontSize;
+                        span.classList.add("glossar-link");
                         glossaerEntry.appendChild(span)
                         continue;
                     } 
                     let span = document.createElement("span");
                     span.innerHTML = word +" ";
-                    span.style.fontSize = "23px"
+                    span.style.fontSize = bodyFontSize;
                     glossaerEntry.appendChild(span)
 
                 }
