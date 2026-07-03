@@ -1033,40 +1033,6 @@ export const ui_manager = (() => {
         }
 
         /**
-         * Checks active debuffs and shows/hides the effect icon
-         * @param {player_entity.Player} player
-         */
-        #UpdatePlayerEffects(player) {
-            const effectContainer = document.getElementById("effect-icon-container");
-            const effectIcon = document.getElementById("effect-icon");
-            const effectTooltip = document.getElementById("effect-tooltip-text");
-
-            if (!effectContainer || !effectIcon) return;
-
-            const playerStatus = player.FindComponent("PlayerStatus");
-            let drawLessAmount = 0;
-
-            if (playerStatus) {
-                drawLessAmount = playerStatus.GetStatusAmount(
-                    status_templates.StatusTemplates.drawLessCards(status_options.Timing.EndOfTurn())
-                );
-            }
-
-            if (drawLessAmount > 0) {
-                const iconNumber = Math.min(drawLessAmount, 4);
-                
-                effectIcon.src = `resources/assets/effects/${iconNumber}_less.svg`;
-                
-                effectContainer.style.display = "flex";
-                if (effectTooltip) {
-                    effectTooltip.innerHTML = `Minderungs-Effekt: Du ziehst am Rundenende ${drawLessAmount} Karte(n) weniger!`;
-                }
-            } else {
-                effectContainer.style.display = "none";
-            }
-        }
-
-        /**
          * Checks if mouse cursor is on any UI element and handles raycasting accordingly
          */
         #ExcludeUIFromRaycasting () {
