@@ -1,6 +1,7 @@
 import { pass } from "three/tsl";
 import { component } from "../Interfaces/component";
 import * as THREE from 'three';
+import { broadcasts } from "../Interfaces/broadcasts";
 
 export const camera_position = (() => {
 
@@ -9,7 +10,7 @@ export const camera_position = (() => {
         #currentLookat;
         #target;
         #controlable;
-        #direction;
+        #directions;
 
         /**
          * Manager for position of camera
@@ -20,7 +21,7 @@ export const camera_position = (() => {
             this.#currentLookat = new THREE.Vector3();
             this.#target = undefined;
             this.#controlable = true;
-            this.#direction = Direction.None();
+            this.#directions = [];
         }
 
         /**
@@ -32,8 +33,6 @@ export const camera_position = (() => {
             this._RegisterHandler("camera.focusOnShop", (msg) => {this.#FocusOnShop(msg)});
             this._RegisterHandler("camera.stopFocusShop", (msg) => {this.#StopFocusShop(msg)});
             this._RegisterHandler("camera.stopFocus", (msg) => {this.#StopFocus(msg)});
-            this._RegisterHandler('battle.startBattle', (msg) => {this.#StartBattle(msg)});
-            this._RegisterHandler('battle.endBattle', (msg) => {this.#EndBattle(msg)})
 
             window.addEventListener("keydown", (event) => {this.#onKeyDown(event)});
             window.addEventListener("keyup", (event) => {this.#onKeyUp(event)});
@@ -57,6 +56,7 @@ export const camera_position = (() => {
             this._parent.controls.enableDamping = false;
             this.#target = msg.target;
             this._parent.controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
+            this.FindComponent("CubicHitbox").hitbox.position.set(this.#target.position.x, 0, this.#target.position.z);
         }
 
         /**
@@ -88,14 +88,7 @@ export const camera_position = (() => {
             this._parent.controls.enableDamping = true;
             this.#target = undefined;
             this._parent.controls.target.set(0,0,0);
-        }
-
-        #StartBattle(msg) {
-            return;
-        }
-
-        #EndBattle(msg) {
-            return;
+            this.FindComponent("CubicHitbox").hitbox.position.set(0, 0, 0);
         }
 
         /**
@@ -103,22 +96,66 @@ export const camera_position = (() => {
          * @param {object} event 
          */
         #onKeyDown(event) {
+
             if (this._parent.controls.enabled) {
+                this.#createButton();
                 switch (event.keyCode) {
                     case 87: // W
-                        this.#direction = Direction.Up();
+                        if (this.#directions.find((direction) => direction.toIdentifier() == "up") == undefined)  {
+                            this.#directions.push(Direction.Up());
+                        }
                         break;
                     case 83: // S
-                        this.#direction = Direction.Down();
+                        if (this.#directions.find((direction) => direction.toIdentifier() == "down") == undefined)  {
+                            this.#directions.push(Direction.Down());
+                        }
                         break;
                     case 65: // A
-                        this.#direction = Direction.Left();
+                        if (this.#directions.find((direction) => direction.toIdentifier() == "left") == undefined) {
+                            this.#directions.push(Direction.Left());
+                        }
                         break;
                     case 68: // D
-                        this.#direction = Direction.Right();
+                        if (this.#directions.find((direction) => direction.toIdentifier() == "right") == undefined)  {
+                            this.#directions.push(Direction.Right());
+                        }
+                        break;
+                    case 32: // Space
+                        
+                        this.#directions = [];
+                        this._parent.controls.enableDamping = false;
+                        this.#target = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
+                        this._parent.controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
+                        this.FindComponent("CubicHitbox").hitbox.position.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
+
+                        this.#deleteButton()
+    
                         break;
                 }
             }
+        }
+
+        #createButton(){
+            if (!document.getElementById("reset-camera-button")) {
+                let resetButton = document.createElement("div");
+                resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
+                resetButton.id = "reset-camera-button";
+                resetButton.innerHTML = "Zurück zu meiner Spielfigur";
+                document.getElementById("game-ui").appendChild(resetButton);
+    
+                resetButton.addEventListener("click", () => {
+                    this.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#target));
+                    this.#deleteButton();
+                })
+            }
+        }
+
+        #deleteButton() {
+            if (document.getElementById("reset-camera-button")){
+                let resetButton = document.getElementById("reset-camera-button");
+                resetButton.remove()
+            }
+
         }
 
         /**
@@ -126,8 +163,19 @@ export const camera_position = (() => {
          * @param {object} event 
          */
         #onKeyUp(event) {
-            if (event.keyCode == 87 || event.keyCode == 83 || event.keyCode == 65 || event.keyCode == 68) {
-                this.#direction = Direction.None();
+             switch (event.keyCode) {
+                    case 87: // W
+                        this.#directions.splice(this.#directions.indexOf(Direction.Up()), 1);
+                        break;
+                    case 83: // S
+                        this.#directions.splice(this.#directions.indexOf(Direction.Down()), 1);
+                        break;
+                    case 65: // A
+                        this.#directions.splice(this.#directions.indexOf(Direction.Left()), 1);
+                        break;
+                    case 68: // D
+                        this.#directions.splice(this.#directions.indexOf(Direction.Right()), 1);
+                        break;
             }
         }
 
@@ -137,25 +185,44 @@ export const camera_position = (() => {
          */
         Update(timeElapsed) {   
             const t = 1.0 - Math.pow(0.01, timeElapsed);
-            switch (this.#direction.getIdentifier()) {
-                case "up":
-                    this._parent.controls.target.z -= 1 * t;
-                    break;
-                case "down":
-                    this._parent.controls.target.z += 1 * t;
-                    break;
-                case "right":
-                    this._parent.controls.target.x += 1 * t;
-                    break;
-                case "left":
-                    this._parent.controls.target.x += -1 * t;
-                    break;
-                case "none":
-                    if (this._parent.controls.enabled) {
-                        this._parent.controls.target.set(this.#target?.position.x ?? 0, this.#target?.position.y ?? 0, this.#target?.position.z ?? 0);
-                    }
-                    break;
-            }  
+            let h = this.FindComponent("CubicHitbox").hitbox;
+            let y = this._parent.camera.position.y;
+            for (let direction of this.#directions) {
+                switch (direction.toIdentifier()) {
+                    case "up":
+                        this._parent.camera.translateZ(- (3 * t));
+                        h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                        h.translateZ(- (3 * t));
+                        h.position.y = 0;
+                        this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        break;
+                    case "down":
+                        this._parent.camera.translateZ((3 * t));
+                        h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                        h.translateZ((3 * t));
+                        h.position.y = 0;
+                        this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        break;
+                    case "right":
+
+                        this._parent.camera.translateX((3 * t));
+                        h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                        h.translateX((3 * t));
+                        h.position.y = 0;
+                        this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        break;
+                    case "left":
+                        this._parent.camera.translateX(- (3 * t));
+                        h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                        h.translateX(-(3 * t));
+                        h.position.y = 0;
+                        this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        break;
+                    case "none":
+                        break;
+                }  
+            }
+            this._parent.camera.position.y = y;
         }
     }
 
@@ -182,7 +249,7 @@ export const camera_position = (() => {
          * Get identifier of enum
          * @returns {string}
          */
-        getIdentifier() {
+        toIdentifier() {
             return this.#direction;
         }
     }
