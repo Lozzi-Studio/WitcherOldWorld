@@ -238,8 +238,8 @@ export const ui_manager = (() => {
             })
             document.getElementById("discard-card").addEventListener("click", () => {
                 let player = this.FindComponent("GameManager").currentPlayer;
-                let discard = player.FindComponent("Carddeck").discard;
-                this.FindComponent("CardSelectUI").PromptCardSelection(discard, 0, "", true, "Ablagestapel");
+                let discard = Object.assign([],player.FindComponent("Carddeck").discard);
+                this.FindComponent("CardSelectUI").PromptCardSelection(discard.reverse(), 0, "", true, "Ablagestapel");
             })
             document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
         }

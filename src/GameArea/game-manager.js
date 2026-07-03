@@ -159,6 +159,8 @@ export const game_manager = (() => {
                     this.#isHuntMusic = true;
                 }
                 this.Broadcast(broadcasts.BroadcastTemplateGame.NextPlayer(this.#currentPlayer));
+                let discardDeck = this.#currentPlayer.FindComponent("Carddeck").discard;
+                this.Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI((discardDeck.length > 0) ? discardDeck[discardDeck.length - 1] : undefined, false));
                 this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
             }
         }

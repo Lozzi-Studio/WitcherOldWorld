@@ -118,7 +118,7 @@ export const carddeck_component = (() => {
                             this.#cardDeck.push(new card.Card("Viper Quen", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Viper Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,0,false,false), region.Region.Forest(), 0));
                             this.#cardDeck.push(new card.Card("Viper Spaltschlag", card_options.Color.Red(), new Map(), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Joker(), 0));
-                            this.#cardDeck.push(new card.Card("Viper Spaltschlag", card_options.Color.Red(), new Map(), card_options.CardEffect.createCardEffect(2,0,2,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Spaltschlag", card_options.Color.Red(), new Map(), card_options.CardEffect.createCardEffect(2,0,-2,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Viper Stoß", card_options.Color.Green(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Mountain(), 0));
                             this.#cardDeck.push(new card.Card("Viper Stoß", card_options.Color.Green(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Forest(), 0));
                             this.#cardDeck.push(new card.Card("Viper Schneller Hieb", card_options.Color.Blue(), new Map(), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
@@ -426,7 +426,7 @@ export const carddeck_component = (() => {
                 }
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
-            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI((this.#cardDiscard.length > 0) ? this.#cardDiscard[this.#cardDiscard.length - 1] : msg.card, this.#noUiUpdate));
             this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UpdateHealth(msg.amount, msg.victim));
         }
 
