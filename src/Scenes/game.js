@@ -79,7 +79,7 @@ export const game = (() => {
             promises.push(fetch("resources/database/events_land.json").then(response => response.json()).then(result => {this.CacheData("eventsLand", result)}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
-            promises.push(this.#loadModel("resources/assets/3D-Assets/card_shop_modell.glb").then(result => {console.log(result);this.CacheData("shop", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/3D-Assets/card_shop_modell.glb").then(result => {this.CacheData("shop", result.scene);}));
 
             promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("bear_default_figure", result.scene);}));
             promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("cat_default_figure", result.scene);}));
