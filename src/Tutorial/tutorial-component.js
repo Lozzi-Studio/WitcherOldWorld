@@ -47,7 +47,7 @@ export const tutorial_component = (() => {
                     let element = document.createElement("div");
                     element.style.marginTop = "2vh";
                     element.style.marginBottom = "2vh";
-                    element.innerHTML = "Das Spiel ist unterteil in 3 verschiedene Phasen pro Zug, die jeder Spieler nacheinander reiherum absolviert.";
+                    element.innerHTML = "Das Spiel ist unterteilt in 3 verschiedene Phasen pro Zug, die jeder Spieler nacheinander reiherum absolviert.";
                     return element;
                 },
                 () => {
