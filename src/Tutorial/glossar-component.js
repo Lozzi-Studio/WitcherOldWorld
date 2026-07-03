@@ -84,7 +84,7 @@ export const glossar_component = (() => {
                 document.getElementById("glossar").removeChild(document.getElementById("entries_glossar"));
             } catch (e){}
             if (filterBy.length > 0 ) {
-                dataset = dataset.filter((data) => data[0].includes(filterBy));
+                dataset = dataset.filter((data) => data[0].toLowerCase().includes(filterBy.toLowerCase()));
             }
             let entries = document.createElement("ul");
             entries.id = "entries_glossar";
@@ -95,7 +95,19 @@ export const glossar_component = (() => {
         
             for (let entry of dataset.sort((a, b) => a[0].localeCompare(b[0]))) {
                 let glossaerEntry = document.createElement("li");
-                glossaerEntry.innerHTML = "<u><b>" + entry[0] + ":</b></u> ";
+                if (entry[0].includes("Icon")) {
+                    let img = document.createElement("img");
+                    img.src = "./resources/assets/tutorial/" + entry[0] + ".png";
+                    img.style.maxWidth = "100%";
+                    img.style.height = "auto";
+                    img.style.margin = "auto";
+                    glossaerEntry.appendChild(img);
+                    let space = document.createElement("span");
+                    space.innerHTML = " : ";
+                    glossaerEntry.appendChild(space);
+                } else {
+                    glossaerEntry.innerHTML = "<u><b>" + entry[0] + ":</b></u> ";
+                }
                 glossaerEntry.style.fontSize = "23px"
                 glossaerEntry.style.margin = "5vh";
                 let cites = [];
