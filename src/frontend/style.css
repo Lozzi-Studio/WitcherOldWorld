@@ -1083,17 +1083,28 @@ input {
     background-position: center;
     border: 1px solid black;
     z-index: var(--layer-loading-screen);
+    justify-content: center;
+}
+
+#loading-screen-info{
+    position: relative;
+    top: 30%;
+    justify-content: center;
+        
+}
+
+#loading-tutorial {
+    min-height: 45vh;
+    min-width: 90vb;
+    max-height: 45vh;
+    max-width: 90vb;
 }
 
 #loading_tip {
-    height: 200px;
-    width: 600px;
+    height: 20vh;
+    width: 90vb;
+    margin-top: 14%;
 
-    position: fixed;
-    top: 85%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -300px;
     text-align: center;
 }
 
@@ -1110,6 +1121,17 @@ input {
     top: 85%;
     left: 90%;
 }
+
+#game-start-button-loading {
+    position: fixed;
+    top: 85%;
+    left: 90%;
+    height: 3vh;
+    width: 10vb;
+    justify-content: center;
+    text-align: center;
+}
+
 
 #main-menu {
     overflow: hidden;
@@ -1408,6 +1430,24 @@ input {
 
 #reset-camera-button {
     bottom: 16px;
+}
+
+#top-right-ui {
+    display: flex;
+    align-items: start;
+}
+
+#glossar-window {
+    margin-right: 2vw;
+    min-height: 45px;
+    min-width: 45px;
+    font-size: 30px;
+    border-color: var(--color-border);
+}
+
+#glossar-window:hover #glossar-window-icon {
+    color: var(--color-hover);
+    transform: scale(1.2);
 }
 
 .card-stacks-container {
