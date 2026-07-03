@@ -1,10 +1,10 @@
 {
     "events" : [
         {
-            "Text": "Ein Wagen, der mitten auf der Straße steht, ist nichts Außergewöhnliches für einen weitgereisten Hexer. Auch dass ein Mann danabensteht und lautstarkt mit dem Schicksal hadert, überrascht dich nicht. Dass sein Pferd irgendwie auf dem Dach des am Wegesrand gelegenen Gasthofes gelandet ist, erstaund dich hingegen schon. Ein Pferd? Auf dem Dach?! \n\"Bitte helft mir, mein Pferd vom Dach zu holen! Ich habe keine Ahnung, wie es dort gelandet ist.",
+            "Text": "Ein Wagen, der mitten auf der Straße steht, ist nichts Außergewöhnliches für einen weitgereisten Hexer. Auch, dass ein Mann danabensteht und lautstarkt mit dem Schicksal hadert, überrascht dich nicht. Dass sein Pferd irgendwie auf dem Dach des am Wegesrand gelegenen Gasthofes gelandet ist, erstaund dich hingegen schon. Ein Pferd? Auf dem Dach?! \n\"Bitte helft mir, mein Pferd vom Dach zu holen! Ich habe keine Ahnung, wie es dort gelandet ist.\"",
             "OptionA": "Ich helfe dem Mann.",
             "OptionB": "Das ist zu absurd, selbst für einen Hexer. Ich reise schnell weiter.",
-            "ResultTextA": "Als du aus dem Sattel steigst, springen sechs schwerbewaffnete Banditen aus ihrem Versteck am Wegesrand. Die werden auch immer einfallsreicher das musst du schon sagen. Nach einem kurzen Schlagabtausch siehst du ein, dass es sinnlos ist, weiterzukämpfen, und gibst uhnen, was sie wollen.",
+            "ResultTextA": "Als du aus dem Sattel steigst, springen sechs schwerbewaffnete Banditen aus ihrem Versteck am Wegesrand. Die werden auch immer einfallsreicher, das musst du schon sagen. Nach einem kurzen Schlagabtausch siehst du ein, dass es sinnlos ist, weiterzukämpfen, und gibst ihnen, was sie wollen.",
             "ResultTextB": "Du machst einen Bogen um den Wagen herum und findest dabei seltene Pilze.",
             "ResultA": {
                 "Info": "Wirf 1 Würfel.",
@@ -32,7 +32,7 @@
             }
         },
         {
-            "Text": "Du spürst die Magie des Sees, schon lang bevor du das Ufer erreichst. Das Wasser verströmt ein azurblaues Leuchten, und als du vom Pferd steigst, um zu meditieren, bemerkst du etwas Eigenartiges. über der Wasseroberfläche, nur wenige Meter von dir entfernt, schwebt eine geisterhafte Erscheinung. Sie flackert immerzu und kommt mit jedem Mal näher.",
+            "Text": "Du spürst die Magie des Sees, schon lang bevor du das Ufer erreichst. Das Wasser verströmt ein azurblaues Leuchten, und als du vom Pferd steigst, um zu meditieren, bemerkst du etwas Eigenartiges. Über der Wasseroberfläche, nur wenige Meter von dir entfernt, schwebt eine geisterhafte Erscheinung. Sie flackert immerzu und kommt mit jedem Mal näher.",
             "OptionA": "Mein Schwert übernimmt das Reden",
             "OptionB": "Ich tue das einzig Vernünftige und reite schnell weiter.",
             "ResultTextA": "Du hast dich mit etwas angelegt, das weit über deine Kräfte hinausgeht. Dein Schwert gleitet widerstandslos durch die Erscheinung hindurch, ohne irgendwelchen Schaden anzurichten. Es ist, als würdest du gegen Luft kämpfen. Dann plötzlich, ein stechender Schmerz! Als du wieder zu dir kommst, liegst du allein am Seeufer.",
@@ -48,7 +48,7 @@
             }
         },
         {
-            "Text": "Die Blutspur führt geradewegs zu einer Gruft. Die Gegend ist mit Bäumen und dichtem Dornengestrüpp überwuchert, doch die Schleifspuren am Boden lassen keinen Zweifel: Der Vermisste, den du suchen sollst, ist nicht freiwillig hergekommen. \nKaum hast du die Schwelle zur Gruft überschritten, da beginnt dein Medaillon zu vibrieren.",
+            "Text": "Eine Blutspur führt geradewegs zu einer Gruft. Die Gegend ist mit Bäumen und dichtem Dornengestrüpp überwuchert, doch die Schleifspuren am Boden lassen keinen Zweifel: Der Vermisste, den du suchen sollst, ist nicht freiwillig hergekommen. \nKaum hast du die Schwelle zur Gruft überschritten, da beginnt dein Medaillon zu vibrieren.",
             "OptionA": "Ich steige in die Gruft hinab.",
             "OptionB": "Ich kehre um. Für den Vermissten besteht ohnenin keine Hoffnung mehr.",
             "ResultTextA": "Ein riesiger Ghul stürzt sich aus der Dunkelheit auf dich. Ein wilder Kampf entbrennt, und die Narben, die seine Klauen hinterlassen, werden dir bis ans Ende deines Lebends erhalten bleiben.",
@@ -64,10 +64,10 @@
             }
         },
         {
-            "Text": "Mitten im Nirgendwo begegnest du einen Einsiedler. Der Mann hat dunkle Schatten unter den Augen und wirkt durch seinen langen, zerzausten Bart, als wäre er nicht ganz bei Verstand. \n\"Biite, darf ich mich in Eurer Schwertklinge spiegeln\", fragt er mit heiserer Stimme.",
+            "Text": "Mitten im Nirgendwo begegnest du einen Einsiedler. Der Mann hat dunkle Schatten unter den Augen und wirkt durch seinen langen, zerzausten Bart, als wäre er nicht ganz bei Verstand. \n\"Bitte, darf ich mich in Eurer Schwertklinge spiegeln\", fragt er mit heiserer Stimme.",
             "OptionA": "Ich gebe ihm das Schwert in die Hand",
-            "OptionB": "\"äh, lieber nicht. Habt ihr etwas Gefährliches in der Gegend bemerkt?\"",
-            "ResultTextA": "Als der Einsiedler sein Spiegelbild steht, schreit er. \"Ich sehe sie! Sie sind immer noch da!\" Wie ein Wahnsinniger schlägt er auf dich ein. Kurz darauf fängt er sich wieder und japst nach Luft. \"Die Geister derer, die ich enttäuscht habe ..., sie verfolgen mich. Ich sehe sie in jedem Spiegel. All meine Trä und Kräuter helfen mir nicht. Hier nehm sie!\"",
+            "OptionB": "\"Äh, lieber nicht. Habt ihr etwas Gefährliches in der Gegend bemerkt?\"",
+            "ResultTextA": "Als der Einsiedler sein Spiegelbild steht, schreit er. \"Ich sehe sie! Sie sind immer noch da!\" Wie ein Wahnsinniger schlägt er auf dich ein. Kurz darauf fängt er sich wieder und japst nach Luft. \"Die Geister derer, die ich enttäuscht habe ..., sie verfolgen mich. Ich sehe sie in jedem Spiegel. All meine Tränke und Kräuter helfen mir nicht. Hier nehm sie!\"",
             "ResultTextB": "Der Einsiedler schickt dich zu einem Harpyiennest. Die Kreaturen sind nicht auf dich vorbereitet und leisten kaum Gegenwehr.",
             "ResultA": {
                 "Info": "Deine Spezialiserungsstufe sinkt um 1. Ziehe 2 Tränke.",
@@ -85,7 +85,7 @@
             "OptionA": "Ich erklimme den Hang.",
             "OptionB": "Ich suche den Boden in der nähere Umgebung ab.",
             "ResultTextA": "Die Kletterpartie ist nicht einfach. Auf halbem Weg bricht ein Stein unter deinen Füßen weg und du stürzt mehrere Meter in die Tiefe. Der Aufprall ist schmerzhaft.",
-            "ResultTextB": " Die meisten Leute würden den Fund riesiger Prankenspuren nicht als Höhepunkt ihres Tages bezeichnen. Aber über Geschmack lässt sich ja bekanntlich nicht streiten. Vor allem nicht über den Geschmack eines Hexers.",
+            "ResultTextB": "Die meisten Leute würden den Fund riesiger Prankenspuren nicht als Höhepunkt ihres Tages bezeichnen. Aber über Geschmack lässt sich ja bekanntlich nicht streiten. Vor allem nicht über den Geschmack eines Hexers.",
             "ResultA": {
                 "Info" : "Deine Kampfstufe sinkt um 1. Ziehe 1 Trank",
                 "Potion": "1",
@@ -97,10 +97,10 @@
             }
         },
         {
-            "Text": "Blutige Fußabdrücke führen dich zu einer jungen Frau, die vornübergebeugt unter einem Baum sitzt. Sie ist kreidebleich und der Saum ihres Kleides ist mit Blut getränkt. \"Ich was unterwegs ... muss ihn finden ... meinen Bruder. Er sticht bald in See ... Großmutters Vision ... er darf nicht fahren.\"",
+            "Text": "Blutige Fußabdrücke führen dich zu einer jungen Frau, die vornübergebeugt unter einem Baum sitzt. Sie ist kreidebleich und der Saum ihres Kleides ist mit Blut getränkt. \"Ich war unterwegs ... muss ihn finden ... meinen Bruder. Er sticht bald in See ... Großmutters Vision ... er darf nicht fahren.\"",
             "OptionA": "Ich suche das Monster, das sie verletzt hat.",
             "OptionB": "Ich biete an, ihren Bruder zu suchen.",
-            "ResultTextA": "Die jungen Frau weiß nichts von einem Monster, aber die blutende Bissspur an ihrer Wade kommt dir bekannt vor.",
+            "ResultTextA": "Die junge Frau weiß nichts von einem Monster, aber die blutende Bissspur an ihrer Wade kommt dir bekannt vor.",
             "ResultTextB": "Es dauert eine Weile, bis du den jungen Mann in ener Hafenkneipe aufgespürt hast. Du setzt dich zu ihm und gibst ihm einen Grog aus. Jetzt musst du ihn nur noch überzeugen. ",
             "ResultA": {
                 "Info": "Du erhälst 1 beliebige Spur. Lege 1 Trank ab",
@@ -118,14 +118,14 @@
                     },
                     {
                         "Info": "In Phase 3 ziehst du eine zusätzliche Karte",
-                        "InfoText": "\" Vielleicht hat Großmutter recht. Vielleicht tauge ich nciht zum Seeman. Immerhin verabschaue ich Grog. Mein Zimmer ist schon bezahlt. Nimm es ruhig, wenn du noch keine Unterkunft hast.\"",
+                        "InfoText": "\" Vielleicht hat Großmutter recht. Vielleicht tauge ich nicht zum Seeman. Immerhin verabschaue ich Grog. Mein Zimmer ist schon bezahlt. Nimm es ruhig, wenn du noch keine Unterkunft hast.\"",
                         "Phase3Draw": "1"
                     }
                 ]
             }
         },
         {
-            "Text": "Drei Reiter bilden eine Kolonne, einer hinter dem anderen. Der mittlere ist mit dicken Seilen gefesselt und sieht kaum älter als sechzehn aus. Als du die drei überholst, ruf dir der Junge hinterer. \n\"Helft mir, Hexer! Ihr tötet doch Monster, nicht wahr? Wie sonst würdet ihr Männer bezeichnen , die den Sohn eines Herzogs entführen, um Lösegeld zu erpressen?\"",
+            "Text": "Drei Reiter bilden eine Kolonne, einer hinter dem anderen. Der mittlere ist mit dicken Seilen gefesselt und sieht kaum älter als sechzehn aus. Als du die drei überholst, ruf dir der Junge hinterer. \n\"Helft mir, Hexer! Ihr tötet doch Monster, nicht wahr? Wie sonst würdet ihr Männer bezeichnen, die den Sohn eines Herzogs entführen, um Lösegeld zu erpressen?\"",
             "OptionA": "\"Geschäfstleute. Ich würde sie als Geschäftsleute bezeichnen.\"",
             "OptionB": "Ich greife die bewaffnete Eskorte an.",
             "ResultTextA": "Die Entführer brechen in schallendes Gelächter aus. Der Mann an der Spitze der Kolonne wirft dir mit einem Zwinkern einen Beutel voller Münzen zu.",
