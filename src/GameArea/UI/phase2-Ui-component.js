@@ -139,7 +139,7 @@ export const phase_two_ui_component = (() => {
                         }
                         break;
                     case "Shield": 
-                        currentPlayer.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield(parseInt(result[key]) > 0 ? "Increase" : "Decrease", parseInt(result[key])));
+                        currentPlayer.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield(parseInt(result[key]) > 0 ? "Increase" : "Decrease", Math.abs(parseInt(result[key]))));
                         break;
                     case "RngSkill":
                         let rngSkill = currentPlayer.FindComponent("PlayerSkills").GetRandomSkill();
