@@ -95,7 +95,7 @@ export const notifaction_manager = (() => {
                     break;
                 case 'skill.changeLevel':
                     const current_skill = msg.skill.toIdentifier()
-                    this.#notificationQueue.push(currentPlayer.playerName + " hat die Fähigkeit " + this.toGermanIdentifier(current_skill) + msg.mode == "Increase" ? " verbessert." + " verschlechtert.");
+                    this.#notificationQueue.push(currentPlayer.playerName + " hat die Fähigkeit " + this.toGermanIdentifier(current_skill) + msg.mode == "Increase" ? " verbessert." : " verschlechtert.");
                     notificationAdded = true;
                     break;
                 case 'player.move':
