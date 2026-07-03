@@ -985,6 +985,7 @@ export const ui_manager = (() => {
             this.#OnNextPhase();
             this.#UpdateHandCards(msg);
             this.UpdateButtonState("end-phase-button", false);
+            document.getElementById("end-phase-button").setAttribute("data-tooltip", "Bitte bewege dich einmal weiter");
 
             const playerList = this._parent._parent.Filter(x => x.name.includes("Player"));
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
