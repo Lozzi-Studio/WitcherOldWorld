@@ -2,6 +2,8 @@ import { component } from "../../Interfaces/component";
 import { broadcasts } from "../../Interfaces/broadcasts";
 import { shiftLeft } from "three/tsl";
 import { player_skills } from "../../Players/player-skills";
+import { cards } from "../../Cards/card-templates";
+import { card } from "../../Cards/card";
 
 export const ui_manager = (() => {
 
@@ -12,6 +14,7 @@ export const ui_manager = (() => {
         #isLevelupPossible;
         #hasEnoughMoneyForLevelup;
         #hasSkillLeftForLevelup;
+        #uiLayers;
 
         /**
          * Manages API between UI and Backend
@@ -21,6 +24,19 @@ export const ui_manager = (() => {
             this.#maxSkillLevel = 5;
             this.#numberOfPhaseOptions = 3;
             this.#phaseThreePartTwo = false;
+            this.#uiLayers = new Map([
+                ["layer-default", 0],
+                ["layer-three-positioned-windows", 1],
+                ["layer-phase-two", 2],
+                ["layer-hud", 3],
+                ["layer-player-prompted-windows", 4],
+                ["layer-notifications", 5],
+                ["layer-tooltips", 6],
+                ["layer-player-turn-overlay", 7],
+                ["layer-tutorial", 8],
+                ["layer-end-game-screen", 9],
+                ["layer-loading-screen", 10],
+            ]);
 
             let button = document.getElementById("town-button");
             this.handleMoveClick = () => {
@@ -191,9 +207,11 @@ export const ui_manager = (() => {
             this._RegisterHandler('player.updateHandCardsUI', (msg) => {this.#UpdateHandCards(msg)});
             this._RegisterHandler('card.updateHandSelectionUI', (msg) => {this.#UpdateHandCardSelection(msg)});
             this._RegisterHandler('player.selection', (msg) => {this.#UpdatePlayerInfoWindow(msg)});
+            this._RegisterHandler('player.updateDiscardCardsUI', (msg) => {this.#UpdateDiscardStack(msg)});
+            this._RegisterHandler('player.updateDeckCardsUI', (msg) => {this.#UpdateDeckStack(msg)});
             
             this._RegisterHandler("skill.chooseSkill", (msg) => {this.#LoadSkillDecider(msg)});
-
+            
             this._RegisterHandler('town.selection', (msg) => {this.#ShowTownInfo(msg)});
             this._RegisterHandler('town.updateButton', (msg) => {this.#UpdateTownButton(msg)});
             this._RegisterHandler('game.updateDiscardButton', (msg) => {this.UpdateButtonState("button-discard", msg.active);});
@@ -227,7 +245,16 @@ export const ui_manager = (() => {
             });
 
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
-
+            document.getElementById("player-deck-stack").addEventListener("click", () => {
+                let player = this.FindComponent("GameManager").currentPlayer;
+                let deck = Object.assign([],player.FindComponent("Carddeck").deck);
+                this.FindComponent("CardSelectUI").PromptCardSelection(deck.sort((a, b) => a.name.localeCompare(b.name)), 0, "", true, "Deck");
+            })
+            document.getElementById("discard-card").addEventListener("click", () => {
+                let player = this.FindComponent("GameManager").currentPlayer;
+                let discard = Object.assign([],player.FindComponent("Carddeck").discard);
+                this.FindComponent("CardSelectUI").PromptCardSelection(discard.reverse(), 0, "", true, "Ablagestapel");
+            })
             document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
         }
 
@@ -287,7 +314,7 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          * @returns {string}
          */
-        #GetAvatarPathFromPlayer(player) {
+        GetAvatarPathFromPlayer(player) {
             let path = ""
             switch(player.witcherSchool.name){
                 case "Baerenschule":
@@ -314,7 +341,7 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          */
         #SetPlayerAvatar(msg) {
-            document.getElementById("player-avatar").src = this.#GetAvatarPathFromPlayer(msg.player);
+            document.getElementById("player-avatar").src = this.GetAvatarPathFromPlayer(msg.player);
         }
 
         #ShowLevelBonuses(skill) {
@@ -459,7 +486,7 @@ export const ui_manager = (() => {
 
                 var avatar = document.createElement("img");
                 avatar.classList.add("avatar", "avatar--small");
-                avatar.src = this.#GetAvatarPathFromPlayer(player);
+                avatar.src = this.GetAvatarPathFromPlayer(player);
                 document.getElementById(`avatar-container-${i+1}`).appendChild(avatar);
             }
         }
@@ -847,7 +874,7 @@ export const ui_manager = (() => {
                 else {
                     let newCardDIV = document.createElement("div");
                     newCardDIV.id = `card-image-${i}`;
-                    newCardDIV.classList.add("container", "container--col", "card");
+                    newCardDIV.classList.add("container", "container--col", "card", "card--selectable");
                     handWindow.appendChild(newCardDIV);
                     newCardDIV.addEventListener("click", () => this.SelectCard(i, card, "Hand", 1));
                     this.UpdateCardContent(card, newCardDIV);
@@ -891,6 +918,35 @@ export const ui_manager = (() => {
                     this.#UpdateShopButton(msg);
                     break;
             }   
+        }
+
+        #UpdateDiscardStack(msg) {
+            let discardStack = document.getElementById("discard-stack");
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let discardCards = player.FindComponent("Carddeck").discard;
+            let cardDIV = document.getElementById("discard-card");
+            if (discardCards.length == 0) {
+                cardDIV.classList.remove("card", "card--small");
+            }
+            else {
+                cardDIV.classList.add("card", "card--small");
+            }
+            if (discardCards.length < 2) {
+                discardStack.style.backgroundImage = "none";
+            } else {
+                discardStack.style.backgroundImage = "url(./resources/assets/cards/0-backside.png)";
+            }
+
+            if (msg.card instanceof card.Card && msg.noUIUpdate == false) {
+                this.FindComponent("UIManager").UpdateCardContent(msg.card, cardDIV);
+            }
+        }
+
+        #UpdateDeckStack(msg) {
+            let deckNumber = document.getElementById("player-deck-number");
+            let player = this.FindComponent("GameManager").currentPlayer;
+            let deckSize = player.FindComponent("Carddeck").deck.length;
+            deckNumber.innerHTML = deckSize;
         }
 
         /**
@@ -1088,10 +1144,10 @@ export const ui_manager = (() => {
             document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
             document.getElementById("button-special").addEventListener("click", this.handleSpecialClick);
             if (msg.emptyHand) {
-                document.getElementById("button-play").innerHTML = "Zug Aussetzen"
+                document.getElementById("button-play").innerHTML = "Zug Aussetzen";
                 this.UpdateButtonState("button-play", true);
             } else {
-                document.getElementById("button-play").innerHTML = "Combo Auspielen"
+                document.getElementById("button-play").innerHTML = "Karte/n Spielen";
                 this.UpdateButtonState("button-play", false);
             }
             if (msg.specialUsed) {
@@ -1190,6 +1246,8 @@ export const ui_manager = (() => {
             document.getElementById("player-info-button").classList.remove("filled");
             document.getElementById("skill-levelup-buttons-container").style.display = "none";
             document.getElementById("levelup-impossible-text").style.display = "none";
+            document.getElementById("hp-separator").style.display = "none";
+            document.getElementById("player-hp-container").style.display = "none";
 
         }
 
@@ -1199,7 +1257,7 @@ export const ui_manager = (() => {
             const avatar = document.getElementById("turn-change-avatar");
             const text = document.getElementById("turn-change-text");
 
-            avatar.src = this.#GetAvatarPathFromPlayer(player);
+            avatar.src = this.GetAvatarPathFromPlayer(player);
             
             let formattedName = this.#ReplaceUmlaute(player.playerName);
             text.innerHTML = `${formattedName} ist an der Reihe`;
@@ -1232,7 +1290,7 @@ export const ui_manager = (() => {
             const text = document.getElementById("end-game-text");
             const scoreboard = document.getElementById("end-game-scoreboard");
 
-            avatar.src = this.#GetAvatarPathFromPlayer(msg.winner);
+            avatar.src = this.GetAvatarPathFromPlayer(msg.winner);
             
             let formattedName = this.#ReplaceUmlaute(msg.winner.playerName.toUpperCase());
             text.innerHTML = `${formattedName} HAT GEWONNEN`;
@@ -1399,6 +1457,12 @@ export const ui_manager = (() => {
             return this.#phaseThreePartTwo;
         }
   
+        /**
+         * @returns {Map}
+         */
+        get uiLayers() {
+            return this.#uiLayers;
+        }
     }
 
     return {

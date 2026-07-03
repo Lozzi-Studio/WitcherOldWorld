@@ -25,7 +25,7 @@ export const battle_manager = (() => {
             this.#playerDrawValues = [1, 2, 3, 4, 4];
             this.#usedSpecialAbility = false;
             this.#choosenSpecialAbility = {};
-            this.#monsterAttackDelay = 2000;
+            this.#monsterAttackDelay = 3000;
 
             this.#poisened = 0;
         }
@@ -33,19 +33,17 @@ export const battle_manager = (() => {
         InitComponent() {
             this._RegisterHandler('battle.playCombo', (msg) => {this.#PlayCombo(msg)});
             this._RegisterHandler('battle.startBattle', (msg) => {this.#StartBattle(msg)});
-            this._RegisterHandler('battle.special', (msg) => {this.#UsedSpecial(msg)})
+            this._RegisterHandler('battle.special', (msg) => {this.#UsedSpecial(msg)});
+            this._RegisterHandler('battle.resolveDraw', (msg) => {this.#ResolveDraw(msg)});
+            this._RegisterHandler('battle.resolvePlayerWin', (msg) => {this.#ResolvePlayerWin(msg)});
+            this._RegisterHandler('battle.resolveMonsterWin', (msg) => {this.#ResolveMonsterWin(msg)});
         }
 
         #StartBattle(msg) {
             this.#player = msg.player;
             this.#monster = msg.monster;
-            this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, false));
-            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Monster")); 
-            this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, false));
-            let varDiff = this.#monster.FindComponent("Carddeck").deck.length -this.#monster.health;
-            for (let i = 0; i < varDiff; i++) {
-                this.#monster.Broadcast(broadcasts.BroadcastTemplateCards.DiscardRandomCard());
-            }
+            //shuffle happens in battle ui manager cause timing issues with hp showage
+            
             this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayBattleMonsterTheme());
             this.#GetStartingTurn();
         }
@@ -59,6 +57,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.riverTracker());
                         this.#PlayerTurn();
                     } else {
+                        this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
                         setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
@@ -68,6 +67,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.forestTracker());
                         this.#PlayerTurn();
                     } else {
+                        this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
                         setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
@@ -77,6 +77,7 @@ export const battle_manager = (() => {
                         this.#player.FindComponent("PlayerStatus").RemovePermanentStatus(status_templates.StatusTemplates.mountainTracker());
                         this.#PlayerTurn();
                     } else {
+                        this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
                         setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
                     }
                     break;
@@ -86,15 +87,15 @@ export const battle_manager = (() => {
         }
 
         #MonsterTurn() {
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Das Monster ist am Zug."))
+            // this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Das Monster ist am Zug."));
             let nextMove = this.#monster.FindComponent("MonsterAi").ChooseNextMove();
             if (nextMove.damage > 0) {
-                this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.damage));
+                this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.damage, "player"));
                 this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster greift an und fügt ${this.#player.playerName} ${nextMove.damage} Schaden zu.`));
             } else if (nextMove.skill != ""){
                 if (nextMove.discard) {
                     if (nextMove.level != undefined){
-                        this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level));
+                        this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level, "player"));
                         switch (nextMove.skill) {
                             case "combat":
                                 this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(player_skills.Skill.Combat(), "Decrease", false));
@@ -111,20 +112,23 @@ export const battle_manager = (() => {
                     let dmg = 0;
                     switch (nextMove.skill) {
                         case "combat":
-                            dmg = this.#player.FindComponent("PlayerSkills").combat;
+                            dmg = this.#player.FindComponent("PlayerSkills").combat.level;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Angriffs-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                         case "defense":
-                            dmg = this.#player.FindComponent("PlayerSkills").defense;
+                            dmg = this.#player.FindComponent("PlayerSkills").defense.level;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Verteidigungs-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                         case "alchemy":
-                            dmg = this.#player.FindComponent("PlayerSkills").alchemy;
+                            dmg = this.#player.FindComponent("PlayerSkills").alchemy.level;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Alchemie-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                         case "special":
-                            dmg = this.#player.FindComponent("PlayerSkills").special;
+                            dmg = this.#player.FindComponent("PlayerSkills").special.level;
+                            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die Spezial-Stufe aus und fügt ${this.#player.playerName} ${dmg} Schaden zu.`));
                             break;
                     }
-                    this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(dmg));
-                    this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster nutzt die ${nextMove.skill}-Stufe aus und fügt ${this.#player.playerName} ${dmg.level} Schaden zu.`));
+                    this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(dmg, "player"));
                 }
             } else if (nextMove.level != undefined){
                 if (nextMove.discard) {
@@ -132,36 +136,39 @@ export const battle_manager = (() => {
                         this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DiscardRandomCard());
                     }
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster zwingt ${this.#player.playerName} ${nextMove.level} Karte(n) abzuwerfen.`));
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.UpdateHealth(nextMove.level, "player"));
                 } else {
-                    this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level));
+                    this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(nextMove.level, "player"));
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster trifft ${this.#player.playerName} für ${nextMove.level} Schaden.`));
                 }
             } else {
-                this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(2));
+                this.#player.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(2, "player"));
                 this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster fügt ${this.#player.playerName} 2 Schaden zu.`));
             }
 
             if (this.#poisened > 0) {
                 this.#poisened -= 1;
-                this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(1));
+                this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(1, "monster"));
                 this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster erleidet 1 Giftschaden.`));
             }
 
-
             if (this.#player.GetHealth() <= 0 ) {
                 if (this.#monster.GetCurrentHealth()  <= 1 ) {
-                    this.#ResolveDraw();
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster, true));
                 } else {
-                    this.#ResolveMonsterWin();
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster));
                 }
-            } else if (this.#monster.GetCurrentHealth() <= 1) {
-                this.#ResolvePlayerWin()
+            } else if (this.#monster.GetCurrentHealth() <= 0) {
+                this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
+                this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
             } else{
                 this.#PlayerTurn();
             }
         }
 
         #PlayerTurn() {
+            this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
             if (this.#player.witcherSpecialAbility.name == "Ruestung" && !(this.#usedSpecialAbility) && this.#player.FindComponent("Shield").amount <= 0) {
                 this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, this.#player.witcherSpecialAbility.value[0]));
                 this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", this.#player.witcherSpecialAbility.value[1]));
@@ -175,8 +182,6 @@ export const battle_manager = (() => {
         }
 
         #ResolveMonsterWin(){
-            let winMessage = "Das Monster hat den Kampf gewonnen";
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(winMessage));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             let amount = 0;
@@ -208,9 +213,7 @@ export const battle_manager = (() => {
             this.#EndBattle();
         }
 
-        #ResolvePlayerWin(){
-            let winMessage = this.#player.name + " hat den Kampf gewonnen";
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(winMessage));
+        #ResolvePlayerWin() {
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
@@ -219,9 +222,7 @@ export const battle_manager = (() => {
             this.#EndBattle();
         } 
         
-        #ResolveDraw(){
-            let drawMessage = "Es kam zu einem Gleichstand.";
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(drawMessage));
+        #ResolveDraw() {
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
@@ -261,7 +262,7 @@ export const battle_manager = (() => {
                 }
                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateCards.UpdateCardSelectionUI());
                 if (result.damage > 0) {
-                    this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage));
+                    this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(result.damage, "monster"));
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`${this.#player.playerName} spielt eine Kombo und fügt dem Monster ${result.damage} Schaden zu.`));
                 }
                 
@@ -285,7 +286,7 @@ export const battle_manager = (() => {
                         break;
                     case "Schwertkunst":
                         if (comboCount >= 3) {
-                            this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(this.#choosenSpecialAbility.value[0]));
+                            this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(this.#choosenSpecialAbility.value[0], "monster"));
                             this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Spezialfähigkeit Schwertkunst! Zusätzliche ${this.#choosenSpecialAbility.value[0]} Schaden verursacht.`));
                             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", this.#choosenSpecialAbility.value[1]));
                         } else {
@@ -298,11 +299,12 @@ export const battle_manager = (() => {
 
             if (this.#monster.GetCurrentHealth() <= 0 ) {
                 if (this.#player.GetHealth() <= 0 ) {
-                    this.#ResolveDraw();
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster, true)); // Unentschieden / Draw
                 } else {
-                    this.#ResolvePlayerWin();
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
                 }
             } else {
+                this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
                 setTimeout(() => { this.#MonsterTurn();}, this.#monsterAttackDelay);
             }
         }
@@ -322,7 +324,7 @@ export const battle_manager = (() => {
                             }
                         }
                         if (cardsToChoose.length > 0) {
-                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen der Hand", false).then(
+                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen zur Hand", false, "Spezialfähigkeit").then(
                                 (result) => {   
                                     if (result != null) {
                                         for (let card of result) {
@@ -341,7 +343,7 @@ export const battle_manager = (() => {
                                 if (topDiscard) {
                                     this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
                                     if (this.#choosenSpecialAbility.value[1] != 0) {
-                                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "Abwerfen").then(
+                                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "abwerfen aus der Hand", false, "Spezialfähigkeit").then(
                                             (result) => {   
                                                 if (result != null) {
                                                     for (let card of result) {
@@ -360,7 +362,7 @@ export const battle_manager = (() => {
                                     this.FindEntity("GameArea").FindComponent("UIManager").UpdateButtonState("button-special", true);
                                 }
                             } else {
-                                this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "Hinzufügen der Hand").then(
+                                this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "hinzufügen zur Hand", false, "Spezialfähigkeit").then(
                                     (result) => {   
                                         if (result != null) {
                                             for (let card of result) {
@@ -385,11 +387,11 @@ export const battle_manager = (() => {
         }
 
         #EndBattle() {
-            this.#player = null;
             this.#monster = null;
             this.#usedSpecialAbility = false;
             this.#choosenSpecialAbility = {};
-            this.Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
+            this.Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle(this.#player));
+            this.#player = null;
             this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateMusic.PlayMainTheme());
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
         }
