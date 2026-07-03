@@ -48,7 +48,7 @@
                     <div>Projektmodul Interaktion</div>
                     <div>Gruppe 6</div>
                 </div>
-                 <div class="container container--col container--no-gap">
+                <div class="container container--col container--no-gap">
                     <div class="--fancy-font" style="margin-bottom: 4px;">Copyright</div>
                     <div>Spiel, Bilder und Ton</div>
                     <div>&copy; CD Projekt RED</div>
@@ -411,11 +411,14 @@
 
         <div id="battle-window" style="display: flex;">
             <div class="container container--col container--set-colors borders--all" id="battle-player-window" style="display: none;">
-                <div class="textbox textbox--fill button" id="button-special">
-                    Special Nutzen
-                </div>
-                <div class="textbox textbox--fill button" id="button-play">
-                    Combo Spielen
+                <div class="container container--row" id="battle-buttons-container">
+                    <div class="textbox textbox--fill button" id="button-play">
+                        Karte/n Spielen
+                    </div>
+                    <div class="textbox textbox--fill button" id="button-special">
+                        Spezialfähigkeit Nutzen
+                    </div>
+                    <div class="material-symbols-outlined glyph-button" id="battle-info-button">info</div>
                 </div>
             </div>
         </div>

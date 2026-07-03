@@ -144,11 +144,11 @@ export const game = (() => {
             }
             
             let witcherSchools = [
-                player_options.WitcherSchool.Bear(),
+                /* player_options.WitcherSchool.Bear(), */
                 player_options.WitcherSchool.Cat(),
-                player_options.WitcherSchool.Griffin(),
-                player_options.WitcherSchool.Viper(),
-                player_options.WitcherSchool.Wolf()
+                player_options.WitcherSchool.Griffin()/* , */
+                /* player_options.WitcherSchool.Viper(),
+                player_options.WitcherSchool.Wolf() */
             ];
 
             //Fisher-Yates_shuffle (src:https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)

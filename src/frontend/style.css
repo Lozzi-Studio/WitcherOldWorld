@@ -1081,7 +1081,7 @@ input {
     right: 0px;
     bottom: 400px;
     min-width: 100px;
-    max-width: 300px;
+    align-items: flex-end;
 }
 
 #battle-monster-window {

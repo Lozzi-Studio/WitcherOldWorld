@@ -1144,10 +1144,10 @@ export const ui_manager = (() => {
             document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
             document.getElementById("button-special").addEventListener("click", this.handleSpecialClick);
             if (msg.emptyHand) {
-                document.getElementById("button-play").innerHTML = "Zug Aussetzen"
+                document.getElementById("button-play").innerHTML = "Zug Aussetzen";
                 this.UpdateButtonState("button-play", true);
             } else {
-                document.getElementById("button-play").innerHTML = "Combo Auspielen"
+                document.getElementById("button-play").innerHTML = "Karte/n Spielen";
                 this.UpdateButtonState("button-play", false);
             }
             if (msg.specialUsed) {

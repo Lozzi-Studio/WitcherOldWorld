@@ -23,6 +23,7 @@ export const battle_ui = (() => {
             this._RegisterHandler('battle.highlightMonster', (msg) => {this.#HighlightMonsterTurn(msg)});
             this._RegisterHandler('battle.highlightPlayer', (msg) => {this.#HighlightPlayerTurn(msg)});
             this._RegisterHandler('battle.showWinMessage', (msg) => {this.#ShowEndOfFightWindow(msg)});
+            document.getElementById("battle-info-button").addEventListener("click", () => {this.#ShowSchoolInfo()});
         }
 
         #StartBattle(msg) { 
@@ -56,7 +57,7 @@ export const battle_ui = (() => {
             document.getElementById("player-inventory-container").style.display = "none";
             document.getElementById("skills-container").style.display = "none";
             document.getElementById("phase-window").style.display = "none";
-            document.getElementById("monster-avatar").src = this.#GetPathForMonsterAvatar(msg.monster);
+            document.getElementById("monster-avatar").src = this.GetPathForMonsterAvatar(msg.monster);
             document.getElementById("player-hp-amount").innerHTML = msg.player.GetHealth();
             document.getElementById("monster-hp-amount").innerHTML = msg.monster.health;
             document.getElementById("monster-deck-number").innerHTML = msg.monster.health;
@@ -97,7 +98,7 @@ export const battle_ui = (() => {
             this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateBattle.EndBattle());
         }
 
-        #GetPathForMonsterAvatar(monster) {
+        GetPathForMonsterAvatar(monster) {
             switch(monster.rank) {
                 case 1:
                     return "./resources/assets/avatars/monster_wolf.webp";
@@ -125,7 +126,6 @@ export const battle_ui = (() => {
             element.style.position = "absolute";
             document.getElementsByTagName("body")[0].appendChild(element);
             let rect = document.getElementById(id).getBoundingClientRect();
-            console.log(rect);
             switch (side) {
                 case "bottom":
                     element.style.top = `${rect.bottom + offset}px`;
@@ -147,7 +147,6 @@ export const battle_ui = (() => {
                     element.style.top = `${rect.top + rect.height/2 - element.offsetHeight/2}px`;
                     break;
             }
-            console.log(element);
         }
 
         #CreateDamageHint(msg) {
@@ -225,9 +224,7 @@ export const battle_ui = (() => {
         #ShowEndOfFightWindow(msg) {
             const window = document.createElement("div");
             window.classList.add("container", "container--col", "container--set-colors", "position-center", "borders--all", "battle-popup");
-            window.dataset["theme"] = "Monster";
-            window.style.zIndex = 3;
-            // window.style.zIndex = this.FindComponent("UIManager").uiLayers["layer-hud"];
+            window.style.zIndex = this.FindEntity("GameArea").FindComponent("UIManager").uiLayers.get("layer-hud");
             document.getElementById("game-ui").appendChild(window);
             const avatarContainer = document.createElement("div");
             avatarContainer.classList.add("avatar-container");
@@ -259,19 +256,70 @@ export const battle_ui = (() => {
             window.appendChild(textContainer);
             window.appendChild(continueButton);
 
-            if (msg.winningEntity.name.toLowerCase().includes("player") ) {
+            if (msg.isDraw) {
+                window.dataset["theme"] = "Monster";
+                header.innerHTML = "Unentschieden: Das Monster wurde vertrieben";
+                text2.innerHTML = "+2 Gold";
+                avatar.src = this.GetPathForMonsterAvatar(msg.winningEntity);
+            }
+            else if (msg.winningEntity.name.toLowerCase().includes("player") ) {
                 header.innerHTML = `${msg.winningEntity.playerName} hat gewonnen`;
                 text1.innerHTML = "+1 Trophäe (du erleidest Erschöpfung)";
                 text2.innerHTML = "+2 Gold";
+                avatar.src = this.FindEntity("GameArea").FindComponent("UIManager").GetAvatarPathFromPlayer(msg.winningEntity);
             }
             else {
+                window.dataset["theme"] = "Monster";
                 // header.innerHTML = `Das Monster ${msg.winningEntity.monsterName} hat gewonnen`;
                 header.innerHTML = "Das Monster hat gewonnen";
                 text1.innerHTML = "+1 Spur des Monsters";
                 text2.innerHTML = "In Phase 3 ziehst du eine Karte weniger";
+                avatar.src = this.GetPathForMonsterAvatar(msg.winningEntity);
             }
 
-            avatar.src = this.#GetPathForMonsterAvatar(msg.winningEntity);
+        }
+
+        #ShowSchoolInfo() {
+            let schoolInfo = document.getElementById("school-info");
+            schoolInfo.style.display = "flex";
+            let playerSkillContainer = document.getElementById("skills-content");
+            let battlePlayerWindow = document.getElementById("battle-player-window");
+            const containerWidth = battlePlayerWindow.offsetWidth;
+            /* infoButton.style.display = "none"; */
+            battlePlayerWindow.insertBefore(schoolInfo, document.getElementById("battle-buttons-container"));
+            let schoolAbilityInfo = document.getElementById("school-ability-info");
+            schoolAbilityInfo.style.maxWidth = `${containerWidth}px`;
+            schoolAbilityInfo.style.textAlign = "left";
+            
+            /* let closeButton = document.createElement("div");
+            closeButton.classList.add("material-symbols-outlined", "glyph-button");
+            closeButton.innerHTML = "close";
+            battlePlayerWindow.insertBefore(closeButton, schoolInfo); */
+            let infoButton = document.getElementById("battle-info-button");
+            let infoButtonClone = infoButton.cloneNode(true);
+            infoButton.parentNode.replaceChild(infoButtonClone, infoButton);
+            infoButtonClone.id = "battle-info-button";
+            infoButtonClone.classList.add("filled");
+            infoButtonClone.addEventListener("click", () => {this.#HideSchoolInfo()});
+        }
+
+        #HideSchoolInfo() {
+            let schoolInfo = document.getElementById("school-info");
+            let playerSkillContainer = document.getElementById("skills-content");
+            let schoolAbilityInfo = document.getElementById("school-ability-info");
+            let infoButton = document.getElementById("battle-info-button");
+
+            schoolInfo.style.display = "none";
+            infoButton.style.display = "block";
+            playerSkillContainer.appendChild(schoolInfo);
+            schoolAbilityInfo.classList.remove("school-ability-info-battle");
+            schoolAbilityInfo.style.removeProperty("max-width");
+            schoolAbilityInfo.style.removeProperty("text-align");
+
+            let infoButtonClone = infoButton.cloneNode(true);
+            infoButton.parentNode.replaceChild(infoButtonClone, infoButton);
+            infoButtonClone.classList.remove("filled");
+            infoButtonClone.addEventListener("click", () => {this.#ShowSchoolInfo()});
         }
     }
 

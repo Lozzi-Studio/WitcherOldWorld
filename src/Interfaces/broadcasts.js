@@ -600,8 +600,8 @@ export const broadcasts = (() => {
             return {topic: 'battle.updateHealth', damageAmount: damageAmount, victim: victim};
         }
 
-        static ShowWinMessage(winningEntity) {
-            return {topic: 'battle.showWinMessage', winningEntity: winningEntity};
+        static ShowWinMessage(winningEntity, isDraw) {
+            return {topic: 'battle.showWinMessage', winningEntity: winningEntity, isDraw: isDraw};
         }
     }
 

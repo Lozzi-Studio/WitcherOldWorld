@@ -462,10 +462,10 @@ export const game_manager = (() => {
                 }
             }
             this._parent._parent.scene.remove(this.#currentMonster.get(msg.region).FindComponent("MonsterFigure").mesh);
-            const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(newRegion, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Ein neues Monster der Stufe " + newMonster.rank + " ist in " + newMonster.town.town_name + " erschienen."));
+            let newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(newRegion, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
             this.#currentMonster.set(newRegion.toIdentifier(), newMonster);
             this._parent._parent.AddEntity(newMonster, "Monster_" + newRegion.toIdentifier());
+            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Ein neues Monster der Stufe " + newMonster.rank + " ist in " + newMonster.town.town_name + " erschienen."));
         }
 
         #isBattleTurn(msg) {

@@ -151,7 +151,7 @@ export const battle_manager = (() => {
             if (this.#poisened > 0) {
                 this.#poisened -= 1;
                 console.log(1, "MonsterTurn()");
-                this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(1, "player"));
+                this.#monster.Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(1, "monster"));
                 this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(`Das Monster erleidet 1 Giftschaden.`));
             }
 
@@ -191,9 +191,7 @@ export const battle_manager = (() => {
         }
 
         #ResolveMonsterWin(){
-            let winMessage = "Das Monster hat den Kampf gewonnen";
             this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster));
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(winMessage));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             let amount = 0;
@@ -225,21 +223,19 @@ export const battle_manager = (() => {
             this.#EndBattle();
         }
 
-        #ResolvePlayerWin(){
-            let winMessage = this.#player.name + " hat den Kampf gewonnen";
+        #ResolvePlayerWin() {
             this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(winMessage));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
+            console.log(this.#monster.rank + 1 <= 3 ? this.#monster.rank + 1 : 3, this.#monster.name.split("_")[1], true);
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.CreateNewMonster(this.#monster.rank + 1 <= 3 ? this.#monster.rank + 1 : 3, this.#monster.name.split("_")[1], true));
             this.#EndBattle();
         } 
         
-        #ResolveDraw(){
-            let drawMessage = "Es kam zu einem Gleichstand.";
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(drawMessage));
+        #ResolveDraw() {
+            this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
@@ -344,7 +340,7 @@ export const battle_manager = (() => {
                             }
                         }
                         if (cardsToChoose.length > 0) {
-                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen der Hand", false, "Spezialfähigkeit").then(
+                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(cardsToChoose,this.#choosenSpecialAbility.value[1], "Hinzufügen zur Hand", false, "Spezialfähigkeit").then(
                                 (result) => {   
                                     if (result != null) {
                                         for (let card of result) {
@@ -363,7 +359,7 @@ export const battle_manager = (() => {
                                 if (topDiscard) {
                                     this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
                                     if (this.#choosenSpecialAbility.value[1] != 0) {
-                                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "Abwerfen", "Spezialfähigkeit").then(
+                                            this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").hand,this.#choosenSpecialAbility.value[1], "abwerfen aus der Hand", false, "Spezialfähigkeit").then(
                                             (result) => {   
                                                 if (result != null) {
                                                     for (let card of result) {
@@ -382,7 +378,7 @@ export const battle_manager = (() => {
                                     this.FindEntity("GameArea").FindComponent("UIManager").UpdateButtonState("button-special", true);
                                 }
                             } else {
-                                this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "Hinzufügen der Hand", "Spezialfähigkeit").then(
+                                this.FindEntity("GameArea").FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#player.FindComponent("Carddeck").discard,1, "hinzufügen zur Hand", false, "Spezialfähigkeit").then(
                                     (result) => {   
                                         if (result != null) {
                                             for (let card of result) {

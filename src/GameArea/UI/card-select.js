@@ -63,6 +63,7 @@ export const card_select_ui = (() => {
                 header.classList.add(
                     "font-size-large", "--fancy-font"
                 )
+                header.style.textAlign = "center";
 
                 if (selectableCards instanceof Array) {
                     header.innerHTML = `${topic}: Wähle ${selectableCards[0]} - ${selectableCards[1]} Karten zum ${reason} aus`
