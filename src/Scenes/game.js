@@ -20,6 +20,8 @@ import data from '../../resources/database/loadingScreen_tooltips.json'
 import { notification_entity } from '../notifications/notification-entity';
 import { monster_entity } from '../Monster/monster-entity';
 import { battle_entity } from '../Battle/battle-entity';
+import { tutorial_entity } from '../Tutorial/tutorial-entity';
+import { glossar_entity } from '../Tutorial/glossar-entity';
 
 
 export const game = (() => {
@@ -51,6 +53,8 @@ export const game = (() => {
         InitSceneEntities() {
             document.getElementById('game-loading-screen').style.display = 'flex';
             document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
+            this._entityManager.AddEntity(new tutorial_entity.TutorialEntity());
+            this._entityManager.FindEntity("TutorialEntity").Broadcast(broadcasts.BroadcastTemplateGame.LoadTutorial());
             this._entityManager.AddEntity(new notification_entity.NotificationEntity(), "NotificationEntity", true);
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitShop();
@@ -77,9 +81,10 @@ export const game = (() => {
 
             promises.push(fetch("resources/database/events_City.json").then(response => response.json()).then(result => {this.CacheData("eventsCity", result)}));
             promises.push(fetch("resources/database/events_land.json").then(response => response.json()).then(result => {this.CacheData("eventsLand", result)}));
+            promises.push(fetch("resources/database/rules.json").then(response => response.json()).then(result => {this.CacheData("glossar", result)}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
-            promises.push(this.#loadModel("resources/assets/3D-Assets/card_shop_modell.glb").then(result => {console.log(result);this.CacheData("shop", result.scene);}));
+            promises.push(this.#loadModel("resources/assets/3D-Assets/card_shop_modell.glb").then(result => {this.CacheData("shop", result.scene);}));
 
             promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("bear_default_figure", result.scene);}));
             promises.push(this.#loadModel("resources/assets/PlayerBaseModel.glb").then(result => {  this.CacheData("cat_default_figure", result.scene);}));
@@ -126,14 +131,28 @@ export const game = (() => {
             this.#InitPlayers();
             this._entityManager.AddEntity(new game_area_entity.GameArea());
             
-            this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
-            this._entityManager.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
 
             this.#InitMap();
-            document.getElementById('game-loading-screen').style.display = 'none';
-            document.getElementById('game-ui').style.display = 'block';
+            
 
-            this._entityManager.AddEntity(new battle_entity.BattleEntity());
+            this._entityManager.AddEntity(new battle_entity.BattleEntity());       
+            this._entityManager.AddEntity(new glossar_entity.GlossarEntity());
+    
+            let startButton = document.createElement("div");
+            startButton.id = "game-start-button-loading";
+            startButton.innerHTML = "Spiel beginnen";
+            startButton.classList.add(
+                "container", "textbox", "textbox--fill",  "button", "--fancy-font"
+            )
+            startButton.addEventListener("click", () => {
+                this._entityManager.FindEntity("TutorialEntity").Broadcast(broadcasts.BroadcastTemplateGame.CloseTutorial());
+                this._entityManager.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
+                this._entityManager.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateGame.StartGame());
+                document.getElementById('game-loading-screen').style.display = 'none';
+                document.getElementById('game-ui').style.display = 'block';
+            });
+            document.getElementById("game-loading-screen").appendChild(startButton);
+            document.getElementById("spinner").style.display = 'none';
         }
             
 

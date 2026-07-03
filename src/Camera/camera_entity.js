@@ -2,6 +2,8 @@ import { entity } from "../Interfaces/entity";
 import { music_component } from "./music_component";
 import { camera_position } from "./camera_position";
 import * as THREE from 'three';
+import { hitbox_component } from "../GameArea/hitbox-component";
+import { Vector3 } from "three/webgpu";
 
 export const camera_entity = (() => {
 
@@ -27,6 +29,7 @@ export const camera_entity = (() => {
         InitComponents() {
             this.AddComponent(new camera_position.CameraPosition());
             this.AddComponent(new music_component.MusicComponent(this.#camera));
+            this.AddComponent(new hitbox_component.CubicHitbox(new Vector3(0,0,0), "camera", new Vector3(0.1,0.1,0.1)));
         }
 
         /**

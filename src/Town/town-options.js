@@ -15,7 +15,7 @@ export const town_options = (() => {
          * @returns {TownAbility}
          */
         static increaseSkill(skill) {return new TownAbility("Erhoehe Attribut", 
-            "Wenn deine Attributslevel gleich oder kleiner als dein Hexerlevel ist, kannst du das Level um 1 erhoehen.",
+            "Wenn dein Attributslevel gleich oder kleiner als dein Hexerlevel ist, kannst du das Level um 1 erhoehen.",
             broadcasts.BroadcastTemplateSkills.ChangeSkillLevel(skill, "Increase", false),
             town_options.TownAbilityTarget.Player()
         );}
@@ -24,7 +24,7 @@ export const town_options = (() => {
          * @returns {TownAbility}
          */
         static increaseSkillForMoney() {return new TownAbility("Erhoehe beliebiges Attribut gegen Geld", 
-            "Du kannst einen Skill um eine Stufe erhöhen. Zahle Gold entsprechender der neuen Stufe. Die Spezialitaet laesst sich nur in deiner Heimatstadt erhoehen.",
+            "Du kannst einen Skill um eine Stufe erhöhen. Zahle Gold entsprechender der neuen Stufe.",
             broadcasts.BroadcastTemplateSkills.ChooseSkillToIncrease(true),
             town_options.TownAbilityTarget.Game()
         );}
@@ -53,7 +53,7 @@ export const town_options = (() => {
         * @returns {TownAbility}
         */
         static getGeruechte() {
-            return new TownAbility("Bekomme ein Geruecht", "Erhalte 1 Gold und erhalte danach ein Geruecht. Beim Einsammeln dieses erhaeltst du noch ein Gold.",
+            return new TownAbility("Bekomme ein Geruecht", "Erhalte 1 Gold und erhalte danach ein Geruecht. Beim Einsammeln dieses erhaeltst du noch ein Gold und eine Spur.",
                 broadcasts.BroadcastTemplateGame.ChooseRegion("Rumor", broadcasts.BroadcastTemplatePlayer.GetRumor),
                 town_options.TownAbilityTarget.Game()
             );
