@@ -17,10 +17,8 @@
 <body style="margin-top: 0; margin-left: 0;">
     <script type="module" src="./src/main.js"></script>
     <div id="game-loading-screen" style="display: none;">
-        <div id="loading-screen-info" class="container--cols"> 
-
-            <div id="loading_tip" class="--fancy-font"></div>
-        </div>
+        <div id="loading-screen-info" class="container--cols"> </div>
+        <div id="loading-tip" class="--fancy-font position-bottom-center"></div>
         <div class="loader" id="spinner"></div>
     </div>
 
@@ -362,13 +360,13 @@
         </div>
 
         <div class=" container--row position-top-right" id="top-right-ui"> 
-            <div class="container container--col container--set-colors borders--all --fancy-font" id="glossar-window">
+            <div class="container container--col container--set-colors borders--all --fancy-font font-size-large" id="glossar-window">
                 <div class="" id="glossar-window-icon"> 
                     ?
                 </div>
             </div>
     
-            <div class="container container--col container--neutral borders--bottom-left" id="phase-window">
+            <div class="container container--col container--set-colors borders--bottom-left" id="phase-window">
                 <div class="container container--row container--no-padding" id="avatars-container"></div>
                 <div>
                     <div class="container container--row"><p id="phase-text">PHASE ID</p></div>

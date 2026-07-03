@@ -17,7 +17,7 @@ export const glossar_component = (() => {
             let glossar = document.createElement("div");
             glossar.id = "glossar";
             glossar.classList.add(
-                "container",  "container--col", "container--neutral", "container--justify", "borders--all", "position-center"
+                "container",  "container--col", "container--set-colors", "container--justify", "borders--all", "position-center"
             )
             glossar.style.padding = "15px";
             glossar.style.height = "65vh";
