@@ -21,6 +21,7 @@ import { notification_entity } from '../notifications/notification-entity';
 import { monster_entity } from '../Monster/monster-entity';
 import { battle_entity } from '../Battle/battle-entity';
 import { tutorial_entity } from '../Tutorial/tutorial-entity';
+import { glossar_entity } from '../Tutorial/glossar-entity';
 
 
 export const game = (() => {
@@ -120,7 +121,8 @@ export const game = (() => {
             this.#InitMap();
             
 
-            this._entityManager.AddEntity(new battle_entity.BattleEntity());              
+            this._entityManager.AddEntity(new battle_entity.BattleEntity());       
+            this._entityManager.AddEntity(new glossar_entity.GlossarEntity());
     
             let startButton = document.createElement("div");
             startButton.id = "game-start-button-loading";

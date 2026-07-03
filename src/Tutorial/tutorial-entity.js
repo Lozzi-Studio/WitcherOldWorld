@@ -1,4 +1,5 @@
 import { entity } from "../Interfaces/entity";
+import { glossar_component } from "./glossar-component";
 import { tutorial_component } from "./tutorial-component";
 
 
