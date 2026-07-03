@@ -233,8 +233,8 @@ export const ui_manager = (() => {
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
             document.getElementById("player-deck-stack").addEventListener("click", () => {
                 let player = this.FindComponent("GameManager").currentPlayer;
-                let deck = player.FindComponent("Carddeck").deck;
-                this.FindComponent("CardSelectUI").PromptCardSelection(deck, 0, "", true, "Deck");
+                let deck = Object.assign([],player.FindComponent("Carddeck").deck);
+                this.FindComponent("CardSelectUI").PromptCardSelection(deck.sort((a, b) => a.name.localeCompare(b.name)), 0, "", true, "Deck");
             })
             document.getElementById("discard-card").addEventListener("click", () => {
                 let player = this.FindComponent("GameManager").currentPlayer;
