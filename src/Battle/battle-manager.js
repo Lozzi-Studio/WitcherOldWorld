@@ -173,7 +173,11 @@ export const battle_manager = (() => {
                 this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Increase", this.#player.FindComponent("PlayerSkills").defense, this.#player.witcherSpecialAbility.value[0]));
                 this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", this.#player.witcherSpecialAbility.value[1]));
                 this.#usedSpecialAbility = true;
+            } else if (this.#player.witcherSpecialAbility.name == "Magie" && (this.#player.witcherSpecialAbility.value[1] > this.#player.FindComponent("Carddeck").hand.length || this.#player.FindComponent("Carddeck").discard > 0)) {
+                
+                this.#usedSpecialAbility = true;
             }
+
             if (this.#player.FindComponent("Carddeck").hand.length <= 0) {
                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplateBattle.StartPlayerTurn(true, this.GetIsSpecialAbilityUsed()));
             } else {
