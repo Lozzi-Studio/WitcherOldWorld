@@ -28,6 +28,7 @@ export const ui_manager = (() => {
                     this.FindEntity("GameArea")
                         .FindComponent("GameManager")
                         .DiscardCardToMove();
+                    this.#UpdateTownButton();
                 }
             };
 
@@ -79,6 +80,21 @@ export const ui_manager = (() => {
                     this.Broadcast(broadcasts.BroadcastTemplateGame.NextPhase());
                 }
             };
+
+            this.handleLogToggleClick = () => {
+                const logWindow = document.getElementById("log-window");
+                const logToggleIcon = document.getElementById("log-toggle-icon");
+                const logger = document.getElementById("logger");
+
+                logWindow.classList.toggle("log-window--open");
+                
+                if (logWindow.classList.contains("log-window--open")) {
+                    logToggleIcon.innerText = "arrow_back_ios"; 
+                    logger.scrollTop = logger.scrollHeight;
+                } else {
+                    logToggleIcon.innerText = "arrow_forward_ios"; 
+                }
+            }
 
             this.handlePlayClick = () => {
                 const btn = document.getElementById("button-play");
@@ -222,6 +238,11 @@ export const ui_manager = (() => {
 
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
 
+            document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
+        }
+
+        get phasethreeparttwo() {
+            return this.#phaseThreePartTwo;
         }
 
         /**
@@ -353,7 +374,7 @@ export const ui_manager = (() => {
          * @param {player_entity.Player} player 
          */
         #SetPlayerSkills(player) {
-            let skills = this.FindComponent("GameManager").currentPlayer.FindComponent("PlayerSkills").GetAllSkills();
+            let skills = player.FindComponent("PlayerSkills").GetAllSkills();
             for (const skill of skills) {
                 for (let i = 0; i < this.#maxSkillLevel; i++) {
                     let skillName = skill.toIdentifier().toLowerCase();
@@ -387,8 +408,37 @@ export const ui_manager = (() => {
         #CreateAvatarContainer(id) {
             var avatarContainer = document.createElement("div");
             avatarContainer.id = `avatar-container-${id}`;
-            avatarContainer.classList.add("avatar-container", "avatar-container--small");
-            return avatarContainer
+            avatarContainer.classList.add("avatar-container", "avatar-container--small", "tooltip-icon");
+            return avatarContainer;
+        }
+
+        /**
+         * creates button in HTML to reset camera to focus current player
+         */
+        #CreateResetCameraButton() {
+            if (!document.getElementById("reset-camera-button")) {
+                let resetButton = document.createElement("div");
+                resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
+                resetButton.id = "reset-camera-button";
+                resetButton.innerHTML = "Zurück zu meiner Spielfigur";
+                document.getElementById("game-ui").appendChild(resetButton);
+    
+                let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+                resetButton.addEventListener("click", () => {
+                    this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(currentPlayer));
+                    let msg = {player: currentPlayer}
+                    this.#UpdatePlayerInfoWindow(msg);
+                    this.#DeleteResetCameraButton();
+                })
+            }
+        }
+
+        /**
+         * removes reset camera button from DOM
+         */
+        #DeleteResetCameraButton() {
+            let resetButton = document.getElementById("reset-camera-button");
+            resetButton.remove()
         }
 
         /**
@@ -399,8 +449,23 @@ export const ui_manager = (() => {
         #InitPlayerAvatars(playerList) {
             for (const [i, player] of playerList.entries()) {
                 var avatarContainer = this.#CreateAvatarContainer(i+1);
-                avatarContainer.classList.add(`theme--player${i+1}`)
+                avatarContainer.dataset["theme"] = player.witcherSchool.name;
+                avatarContainer.addEventListener("click", () => {
+                    this.Broadcast(broadcasts.BroadcastTemplatePlayer.SelectPlayer(this.FindEntity(player.name)));
+                    this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(player));
+                    this.#CreateResetCameraButton();
+                    
+                    let currentPlayer = this.FindComponent("GameManager").currentPlayer;
+                    if (player == currentPlayer) {
+                        this.#DeleteResetCameraButton();
+                    }
+                    
+                })
                 document.getElementById("avatars-container").appendChild(avatarContainer);
+                const tooltip = document.createElement("div");
+                tooltip.classList.add("tooltip-text", "tooltip-text--bottom");
+                tooltip.innerHTML = player.playerName;
+                document.getElementById("avatars-container").appendChild(tooltip);
 
                 var avatar = document.createElement("img");
                 avatar.classList.add("avatar", "avatar--small");
@@ -645,39 +710,39 @@ export const ui_manager = (() => {
          * @param {object} msg 
          */
         #UpdateTownButton(msg) {
-            let player = this.FindComponent("GameManager").currentPlayer;
-            let selectedTown = this.FindComponent("GameManager").selectedTown;
-            let buttonActive = true;
-            let buttonMode = "";
-            let button = document.getElementById("town-button");
+            if (this.FindComponent("GameManager").phase.toIdentifier() == 1) {
+                let player = this.FindComponent("GameManager").currentPlayer;
+                let selectedTown = this.FindComponent("GameManager").selectedTown;
+                let buttonActive = true;
+                let buttonMode = "";
+                let button = document.getElementById("town-button");
 
-            if (!button) return; 
-
-            if (selectedTown == player.town) {
-                buttonMode = "action";
-                if (selectedTown.FindComponent("TownProperties").abilityExecuted || !(selectedTown.FindComponent("TownProperties").canUseAbility()) ) {
-                    buttonActive = false;
-                    button.setAttribute("data-tooltip", "Du hast bereits eine Aktion ausgeführt. Bitte reise weiter.");
+                if (selectedTown == player.town) {
+                    buttonMode = "action";
+                    if (selectedTown.FindComponent("TownProperties").abilityExecuted || !(selectedTown.FindComponent("TownProperties").canUseAbility()) ) {
+                        buttonActive = false;
+                        button.setAttribute("data-tooltip", "Du hast bereits eine Aktion ausgeführt. Bitte reise weiter.");
+                    }
+                    else {
+                        buttonActive = true;
+                        button.removeAttribute("data-tooltip");
+                    }
                 }
                 else {
-                    buttonActive = true;
-                    button.removeAttribute("data-tooltip");
+                    buttonMode = "move";
+                    if (this.FindEntity("GameArea").FindComponent("GameManager").ValidateMove().moveAllowed) {
+                        buttonActive = true;
+                        button.removeAttribute("data-tooltip");
+                    }
+                    else {
+                        buttonActive = false;
+                        button.setAttribute("data-tooltip", "Du musst eine passende Karte auswählen und in einer benachbarten Stadt sein.");
+                    }
                 }
-            }
-            else {
-                buttonMode = "move";
-                if (this.FindEntity("GameArea").FindComponent("GameManager").ValidateMove().moveAllowed) {
-                    buttonActive = true;
-                    button.removeAttribute("data-tooltip");
-                }
-                else {
-                    buttonActive = false;
-                    button.setAttribute("data-tooltip", "Du musst eine passende Karte auswählen und in einer benachbarten Stadt sein.");
-                }
-            }
 
-            this.UpdateButtonState("town-button", buttonActive);
-            this.#UpdateTownButtonMode(buttonMode, buttonActive);
+                this.UpdateButtonState("town-button", buttonActive);
+                this.#UpdateTownButtonMode(buttonMode, buttonActive);
+            }
         }
 
         /**
@@ -874,6 +939,10 @@ export const ui_manager = (() => {
             this.#OnNextPlayer(broadcasts.BroadcastTemplateGame.NextPlayer(playerList[0]));
         }
 
+        /**
+         * Update all stats in player window from input player in msg.player
+         * @param {object} msg 
+         */
         #UpdatePlayerInfoWindow(msg) {
             let currentPlayer = this.FindComponent("GameManager").currentPlayer;
             let playerWindow = document.getElementById("player-window");
@@ -903,6 +972,7 @@ export const ui_manager = (() => {
             this.#UpdatePlayerSchool(msg);
             this.#InitPlayerWindow();
 
+            document.getElementById("player-window").dataset["theme"] = msg.player.witcherSchool.name;
         }
 
         /**
@@ -921,6 +991,8 @@ export const ui_manager = (() => {
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
 
             this.#ShowTurnChangePopup(msg.player);
+
+            document.documentElement.dataset["theme"] = msg.player.witcherSchool.name;
         }
 
         /**
@@ -935,6 +1007,10 @@ export const ui_manager = (() => {
             const discardPanel = document.getElementById("discard-button-area");
             const discardButton = document.getElementById("button-discard");
             const skipButton = document.getElementById("button-skip");
+
+            if (currentPhase != 1) {
+                this.UpdateButtonState("town-button", false);
+            }
             if (currentPhase == 3) {
                 document.getElementById("debug-next-phase-button").innerHTML = "Next Player";
                 discardButton.style.display = "flex";
@@ -1152,8 +1228,8 @@ export const ui_manager = (() => {
 
             avatar.src = this.#GetAvatarPathFromPlayer(player);
             
-            let formattedName = this.#ReplaceUmlaute(player.playerName.toUpperCase());
-            text.innerHTML = `${formattedName} IST AN DER REIHE`;
+            let formattedName = this.#ReplaceUmlaute(player.playerName);
+            text.innerHTML = `${formattedName} ist an der Reihe`;
 
             if (modal) {
                 Array.from(modal.classList).forEach(className => {

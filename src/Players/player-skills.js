@@ -82,6 +82,30 @@ export const player_skills = (() => {
             }
         }
 
+        GetLowestSkill() {
+            let lowestSkill = null;
+            let lowestLevel = 6;
+            
+            for (let skill of [this.#combat, this.#defense, this.#alchemy, this.#special]) {
+                if (skill.level < lowestLevel) {
+                    lowestLevel = skill.level;
+                    lowestSkill = skill;
+                } else if (skill.level == lowestLevel) {
+                    lowestSkill = this.GetRandomSkill([lowestSkill, skill]);
+                    lowestLevel = lowestSkill.level;
+                }
+            }
+
+            return lowestSkill;
+        }
+
+        GetRandomSkill(skills) {
+            if (skills == undefined) {
+                skills = [this.#combat, this.#defense, this.#alchemy, this.#special]
+            }
+            return skills[Math.floor(Math.random() * skills.length)];
+        }
+
         canMeditate(){
             if (this.FindComponent("TrophyStorage").amount > 3){
                 return {"error": false}
@@ -218,6 +242,7 @@ export const player_skills = (() => {
         toIdentifier() {
             return this.#name;
         }
+
     }
 
     class Shield extends component.Component {

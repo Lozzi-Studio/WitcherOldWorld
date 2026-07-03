@@ -17,6 +17,7 @@ import { cards } from '../Cards/card-templates';
 import { cardshop_entity } from '../CardShop/cardshop-entity';
 
 import data from '../../resources/database/loadingScreen_tooltips.json'
+import { notification_entity } from '../notifications/notification-entity';
 import { monster_entity } from '../Monster/monster-entity';
 import { battle_entity } from '../Battle/battle-entity';
 
@@ -48,10 +49,9 @@ export const game = (() => {
          * Used to intialize and add any default Entities
          */
         InitSceneEntities() {
-
-            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
             document.getElementById('game-loading-screen').style.display = 'flex';
-
+            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
+            this._entityManager.AddEntity(new notification_entity.NotificationEntity(), "NotificationEntity", true);
             this._scene.background = new THREE.Color(0x3D342C);
             this.#InitShop();
             this.#CacheGameData();
@@ -75,6 +75,8 @@ export const game = (() => {
             promises.push(this.#loadMusic("resources/sounds/Battle_Monster.mp3").then(result => {this.CacheData("BattleMonsterTheme", result)}));
             promises.push(this.#loadMusic("resources/sounds/ChaseTheme.mp3").then(result => {this.CacheData("ChaseTheme", result)}));
 
+            promises.push(fetch("resources/database/events_City.json").then(response => response.json()).then(result => {this.CacheData("eventsCity", result)}));
+            promises.push(fetch("resources/database/events_land.json").then(response => response.json()).then(result => {this.CacheData("eventsLand", result)}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/provMap.glb").then(result => {  this.CacheData("map", result.scene);}));
             promises.push(this.#loadModel("resources/assets/3D-Assets/bar-table.glb").then(result => {  this.CacheData("table", result.scene);}));
 
@@ -176,8 +178,23 @@ export const game = (() => {
                     [players[i], players[j]] = [players[j], players[i]];
             }
             let count = 1;
+            let startGold = [];
+            switch(players.length) {
+                case 5:
+                    startGold = [5,5,5,7,7];
+                    break;
+                case 4:
+                    startGold = [4,5,6,7];
+                    break;
+                case 3:
+                    startGold = [2,4,6];
+                    break;
+                case 2:
+                    startGold = [2,4];
+                    break;
+            }
             for (let player of players) {
-                let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, count+1);
+                let playerEntity = new player_entity.Player(count, player.name, player.witcherschool, startGold[count - 1]);
                 this._entityManager.AddEntity(playerEntity, "Player_" + count);
                 count += 1;
             }
@@ -187,9 +204,9 @@ export const game = (() => {
          * Initialize town entities
          */
         #InitTowns() {
-            const size_x = 2.7;
-            const size_y = 0.7;
-            const size_z = 2.7;
+            const size_x = 5;
+            const size_y = 1;
+            const size_z = 5;
             this._entityManager.AddEntity(new town_entity.TownEntity(0, "Behelt Nar", town_options.TownAbility.increaseSkillForMoney(), new Vector3(23.6,0,-2.5), region.Region.Joker(), new Vector3(size_x,size_y,size_z), [4,8,11,15], new Vector3(22,0,-5)), "Town_0");
             this._entityManager.AddEntity(new town_entity.TownEntity(1, "Kaer Seren", town_options.TownAbility.increaseSkillForMoney(), new Vector3(-12,0,-19.3), region.Region.River(), new Vector3(size_x,size_y,size_z), [2,6,5,9], new Vector3(-13,0,-22)), "Town_1");
             this._entityManager.AddEntity(new town_entity.TownEntity(2, "Hengfors", town_options.TownAbility.getGeruechte(), new Vector3(5.1,0,-21.6), region.Region.Mountain(), new Vector3(size_x,size_y,size_z),[1,3,6,7], new Vector3(2,0,-22)), "Town_2");

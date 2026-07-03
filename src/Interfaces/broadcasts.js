@@ -175,6 +175,11 @@ export const broadcasts = (() => {
             return {topic: 'card.randomDiscard'}
         }
 
+
+        static DiscardRandomPotion(amount) {
+            return {topic: 'card.discardRandomPotion', amount: amount}
+        }
+
     }
 
     class BroadcastTemplateSkills {
@@ -532,6 +537,24 @@ export const broadcasts = (() => {
         static BuyCardFromShop(slot, cost) {
             return {topic: 'cardshop.buy', slot: slot, cost: cost}
         }
+
+        /**
+         * 
+         * @returns {object}
+         */
+        static UpdateCardShop() {
+            return {topic: 'cardshop.update'}
+        }
+    }
+
+    class BroadcastTemplateNotification {
+        /**
+         * @param {string} message
+         * @returns {object}
+         */
+        static CustomNotification(message) {
+            return {topic: 'notification.custom', message: message}
+        }
     }
 
     class BroadcastTemplateBattle {
@@ -566,6 +589,7 @@ export const broadcasts = (() => {
         BroadcastTemplateCamera : BroadcastTemplateCamera,
         BroadcastTemplateMusic: BroadcastTemplateMusic,
         BroadcastTemplateCardShop: BroadcastTemplateCardShop,
-        BroadcastTemplateBattle: BroadcastTemplateBattle
+        BroadcastTemplateBattle: BroadcastTemplateBattle,
+        BroadcastTemplateNotification : BroadcastTemplateNotification
     }
 })();

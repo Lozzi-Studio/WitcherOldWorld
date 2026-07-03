@@ -77,8 +77,19 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #RemoveShopCard(msg){
-            console.log("Remove Shop Card");
-            //TODO
+            if (this.#currentPlayer.FindComponent("MoneyStorage").amount == 0) {
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(1));
+            }
+            this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.FindEntity("Cardshop").FindComponent("Carddeck").hand,[1,2], "Entfernen aus dem Shop", false).then(
+                (result) => {   
+                    if (result != null) {
+                        for (let card of result) {
+                            this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Delete"));
+                        }
+                        this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCardShop.UpdateCardShop());
+                    }
+                }
+            );
         }
 
         /**
@@ -86,8 +97,38 @@ export const game_manager = (() => {
          * @param {object} msg 
          */
         #SwapoutCard(msg){
-            console.log("Swapout Card");
-            //TODO
+            let removedCard = null;
+             this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#currentPlayer.FindComponent("Carddeck").hand,1, "Entfernen aus deiner Hand", true).then(
+                (result) => {   
+                    if (result != null) {
+                        this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(result[0], "Delete"));
+                        removedCard = result[0];
+                        let shopCards = this.FindEntity("Cardshop").FindComponent("Carddeck").hand.filter(card => card.cost <= removedCard.cost + 1)
+                        if (shopCards.length > 0) {
+                            this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(shopCards,1, "Erhalten auf deine Hand", true).then(
+                                (result) => {   
+                                    if (result != null) {
+                                        for (let card of result) {
+                                            this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(card, "Delete"));
+                                            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(card, "Hand"));
+                                        }
+                                        this.FindEntity("Cardshop").Broadcast(broadcasts.BroadcastTemplateCardShop.UpdateCardShop());
+                                    } else {
+                                        if (removedCard != null) {
+                                            this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(removedCard, "Hand"));
+                                        }
+                                    }
+                                }
+                            );
+                        } else {
+                            if (removedCard != null) {
+                                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.AddCard(removedCard, "Hand"));
+                            }
+                        }
+                    }
+                }
+            );
+            
         }
 
         /**
@@ -102,12 +143,13 @@ export const game_manager = (() => {
                 this.Broadcast(broadcasts.BroadcastTemplateGame.loadPhaseTwoUi());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.DisableRaycasting())
             }
+            for (let card_slot of this.#selection) {
+                this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
+            }
+            this.#selection = [];
             
             if (nextPlayer) {
-                for (let card_slot of this.#selection) {
-                    this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI(card_slot, "Deselect", this.#currentRound.toIdentifier()));
-                }
-                this.#selection = [];
+                this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateGame.NextRound(this.#currentPlayer));
                 this.#currentPlayerId += 1;
                 this.#currentPlayer = this.FindEntity(this.#GetPlayer(this.#currentPlayerId));
                 if (this.#currentPlayer == undefined) {
@@ -199,13 +241,17 @@ export const game_manager = (() => {
             }
         }
 
-        DiscardSelectedCards(msg){
+        DiscardSelectedCards(){
+            let discardedCards = []
             if (!(this.#selection.length == 0 || this.#currentRound.toIdentifier() != 3)){
                 for (let card_slot of this.#selection) {
+                    discardedCards.push(card_slot)
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(this.#currentPlayer.FindComponent("Carddeck").hand[card_slot], "Discard"));
                 }
 
                 this.#selection = [];
+                let discardMessage = this.#currentPlayer.playerName + " hat " + discardedCards.length + " Karte/n abgeworfen";
+                this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(discardMessage));
                 this.Broadcast(broadcasts.BroadcastTemplateCards.UpdateHandCardSelectionUI());
                 this.Broadcast(broadcasts.BroadcastTemplateGame.UpdateDiscardButtonActive(false));
             }
@@ -292,6 +338,11 @@ export const game_manager = (() => {
             const drawMore = this.#currentPlayer.FindComponent("PlayerStatus").GetStatusAmount(drawMoreStatus);
 
             let amountToDraw = 3-deckLength-drawLess+drawMore;
+            if (amountToDraw == 0) {
+                if (this.#currentPlayer.FindComponent("Carddeck").hand.length == 0) {
+                    amountToDraw = 1;
+                }
+            }
             if(amountToDraw > 0){ 
                 this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", amountToDraw));
             } 
@@ -345,10 +396,28 @@ export const game_manager = (() => {
             // give start deck to players
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             let playerTownPositions = [];
+            let startCards = [];
+            switch(players.length) {
+                case 5:
+                    startCards = [2,3,4,4,5];
+                    break;
+                case 4:
+                    startCards = [2,3,4,5];
+                    break;
+                case 3:
+                    startCards = [3,4,5];
+                    break;
+                case 2:
+                    startCards = [3,5];
+                    break;
+            }
+            let index = 0;
             for (let player of players) {
                 player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player", player.witcherSchool.name));
-                player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", 3))
+                player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Deck", startCards[index]))
+                //
                 playerTownPositions.push(player.town);
+                index ++;
             }
             let regions = [region.Region.Forest(), region.Region.Mountain(), region.Region.River()];
             let i = 0;
@@ -368,10 +437,6 @@ export const game_manager = (() => {
             let hpPool = [12,15,19];
             const players = this._parent._parent.Filter(x => x.name.includes("Player"));
             let playerTownPositions = [];
-            for (let player of players) {
-                player.Broadcast(broadcasts.BroadcastTemplateCards.LoadCarddeck("Player"));
-                playerTownPositions.push(player.town);
-            }
             for (let monster of this.#currentMonster.values()) {
                 playerTownPositions.push(monster.town);
             }
@@ -402,6 +467,7 @@ export const game_manager = (() => {
             }
             this._parent._parent.scene.remove(this.#currentMonster.get(msg.region).FindComponent("MonsterFigure").mesh);
             const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(newRegion, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
+            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Ein neues Monster der Stufe " + newMonster.rank + " ist in " + newMonster.town.town_name + " erschienen."));
             this.#currentMonster.set(newRegion.toIdentifier(), newMonster);
             this._parent._parent.AddEntity(newMonster, "Monster_" + newRegion.toIdentifier());
         }
