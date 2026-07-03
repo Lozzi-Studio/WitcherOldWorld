@@ -248,10 +248,10 @@ export const battle_manager = (() => {
                     result.damage += effect.effects.damage;
                     result.shield += effect.effects.shield;
                     result.drawModifier += effect.effects.drawModifier;
-                    if (!(effect.effects.backtohand || effect.bonus ? effect.bonus.backtohand : false)) {
+                    if (!(effect.effects.backtohand || (effect.bonus != null ? effect.bonus.backtohand : false))) {
                        cardsToDiscard.push(effect.card);
                     }
-                    if (effect.effects.gettopdiscard || effect.bonus ? effect.bonus.gettopdiscard : false) {
+                    if (effect.effects.gettopdiscard || (effect.bonus != null ? effect.bonus.gettopdiscard : false)) {
                         this.#player.Broadcast(broadcasts.BroadcastTemplateCards.DrawCard("Discard", 1));
                     }
                     comboCount ++;
