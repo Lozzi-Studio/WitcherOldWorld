@@ -223,8 +223,8 @@ export const tutorial_component = (() => {
             let tutorial = document.createElement("div");
             tutorial.id = "loading-tutorial";
             tutorial.classList.add(
-                "container",  "container--row", "container--neutral", "container--justify", "borders--all"
-            )
+                "container",  "container--row", "container--set-colors", "container--justify", "borders--all"
+            );
             tutorial.style.padding = "15px";
 
             let buttonLeftDiv = document.createElement("div");
@@ -237,7 +237,7 @@ export const tutorial_component = (() => {
             content.style.overflowY = "auto";
             content.style.overflowX = "hidden";
             buttonLeft.id = "loading-tutorial-left";
-            buttonLeft.src = "./resources/assets/tutorial/arrow2.png"
+            buttonLeft.src = "./resources/assets/tutorial/arrow2.png";
             buttonLeftDiv.addEventListener("click", () => {
                 if (this.#tutorialIndex > 0) {
                     this.#tutorialIndex = this.#tutorialIndex - 1
@@ -251,17 +251,17 @@ export const tutorial_component = (() => {
                     });
                 }
             });
-            buttonLeftDiv.classList.add("container--row", "container--justify")
+            buttonLeftDiv.classList.add("container--row", "container--justify");
             buttonLeftDiv.style.display = "flex";
             buttonLeftDiv.style.alignItems = "center";
             buttonLeftDiv.style.maxWidth = "3vw";
 
 
             buttonRight.id = "loading-tutorial-right";
-            buttonRight.src = "./resources/assets/tutorial/arrow.png"
+            buttonRight.src = "./resources/assets/tutorial/arrow.png";
             buttonRightDiv.addEventListener("click", () => {
                 if (this.#tutorialIndex < (this.#tutorialContent.length - 1) ) {
-                    this.#tutorialIndex = this.#tutorialIndex + 1
+                    this.#tutorialIndex = this.#tutorialIndex + 1;
                     if (this.#tutorialIndex == (this.#tutorialContent.length - 1)) {
                         document.getElementById("loading-tutorial-right").style.visibility  = "hidden";
                     }
@@ -272,7 +272,7 @@ export const tutorial_component = (() => {
                     });
                 }
             });
-            buttonRightDiv.classList.add("container--row", "container--justify")
+            buttonRightDiv.classList.add("container--row", "container--justify");
             buttonRightDiv.style.display = "flex";
             buttonRightDiv.style.alignItems = "center";
             buttonRightDiv.style.maxWidth = "3vw";
@@ -283,7 +283,7 @@ export const tutorial_component = (() => {
             tutorial.appendChild(content);
             tutorial.appendChild(buttonRightDiv);
 
-            document.getElementById("loading-screen-info").appendChild(tutorial)
+            document.getElementById("loading-screen-info").appendChild(tutorial);
             document.getElementById("loading-tutorial-left").style.visibility  = "hidden";
             document.getElementById("loading-screen-info").insertBefore(document.getElementById("loading-tutorial"), document.getElementById("loading_tip"));
             this.#tutorialContent[0].forEach((element) => {
