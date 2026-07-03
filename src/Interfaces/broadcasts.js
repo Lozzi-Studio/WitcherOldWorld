@@ -602,6 +602,18 @@ export const broadcasts = (() => {
         static ShowWinMessage(winningEntity, isDraw) {
             return {topic: 'battle.showWinMessage', winningEntity: winningEntity, isDraw: isDraw};
         }
+
+        static ResolvePlayerWin() {
+            return {topic: 'battle.resolvePlayerWin'};
+        }
+
+        static ResolveMonsterWin() {
+            return {topic: 'battle.resolveMonsterWin'};
+        }
+
+        static ResolveDraw() {
+            return {topic: 'battle.resolveDraw'};
+        }
     }
 
     return {

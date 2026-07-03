@@ -243,7 +243,16 @@ export const battle_ui = (() => {
             continueButton.innerHTML = "Fortfahren";
             continueButton.addEventListener("click", () => {
                 window.remove();
-            })
+                if (msg.isDraw) {
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ResolveDraw());
+                }
+                else if (msg.winningEntity.name.toLowerCase().includes("player") ) {
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ResolvePlayerWin());
+                }
+                else {
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ResolveMonsterWin());
+                }
+            });
 
             window.appendChild(avatarContainer);
             window.appendChild(header);
@@ -283,16 +292,12 @@ export const battle_ui = (() => {
             let playerSkillContainer = document.getElementById("skills-content");
             let battlePlayerWindow = document.getElementById("battle-player-window");
             const containerWidth = battlePlayerWindow.offsetWidth;
-            /* infoButton.style.display = "none"; */
+
             battlePlayerWindow.insertBefore(schoolInfo, document.getElementById("battle-buttons-container"));
             let schoolAbilityInfo = document.getElementById("school-ability-info");
             schoolAbilityInfo.style.maxWidth = `${containerWidth}px`;
             schoolAbilityInfo.style.textAlign = "left";
-            
-            /* let closeButton = document.createElement("div");
-            closeButton.classList.add("material-symbols-outlined", "glyph-button");
-            closeButton.innerHTML = "close";
-            battlePlayerWindow.insertBefore(closeButton, schoolInfo); */
+
             let infoButton = document.getElementById("battle-info-button");
             let infoButtonClone = infoButton.cloneNode(true);
             infoButton.parentNode.replaceChild(infoButtonClone, infoButton);

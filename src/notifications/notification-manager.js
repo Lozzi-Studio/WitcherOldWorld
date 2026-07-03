@@ -151,7 +151,7 @@ export const notifaction_manager = (() => {
                     this.#selectedTown = msg.town;
                     break;
                 /* case 'town.action':
-                    let townActionText = currentPlayer.playerName + " hat in " + this.#selectedTown.town_name + " die AKtion " + this.#selectedTown.ability.name + " genutzt"
+                    let townActionText = currentPlayer.playerName + " hat in " + this.#selectedTown.town_name + " die Aktion " + this.#selectedTown.ability.name + " genutzt"
                     this.#notificationQueue.push(townActionText);
                     notificationAdded = true;
                     break; */

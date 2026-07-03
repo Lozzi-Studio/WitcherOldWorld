@@ -33,7 +33,10 @@ export const battle_manager = (() => {
         InitComponent() {
             this._RegisterHandler('battle.playCombo', (msg) => {this.#PlayCombo(msg)});
             this._RegisterHandler('battle.startBattle', (msg) => {this.#StartBattle(msg)});
-            this._RegisterHandler('battle.special', (msg) => {this.#UsedSpecial(msg)})
+            this._RegisterHandler('battle.special', (msg) => {this.#UsedSpecial(msg)});
+            this._RegisterHandler('battle.resolveDraw', (msg) => {this.#ResolveDraw(msg)});
+            this._RegisterHandler('battle.resolvePlayerWin', (msg) => {this.#ResolvePlayerWin(msg)});
+            this._RegisterHandler('battle.resolveMonsterWin', (msg) => {this.#ResolveMonsterWin(msg)});
         }
 
         #StartBattle(msg) {
@@ -151,18 +154,15 @@ export const battle_manager = (() => {
 
             if (this.#player.GetHealth() <= 0 ) {
                 if (this.#monster.GetCurrentHealth()  <= 1 ) {
-                    this.#ResolveDraw();
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster, true));
                 } else {
                     this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
-                    setTimeout(() => {
-                        this.#ResolveMonsterWin();
-                    }, this.#monsterAttackDelay);
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster));
                 }
-            } else if (this.#monster.GetCurrentHealth() <= 1) {
+            } else if (this.#monster.GetCurrentHealth() <= 0) {
                 this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
-                setTimeout(() => {
-                        this.#ResolvePlayerWin();
-                    }, this.#monsterAttackDelay);
+                console.log("t1", this.#monster.GetCurrentHealth());
+                this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
             } else{
                 this.#PlayerTurn();
             }
@@ -183,7 +183,6 @@ export const battle_manager = (() => {
         }
 
         #ResolveMonsterWin(){
-            this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             let amount = 0;
@@ -216,7 +215,6 @@ export const battle_manager = (() => {
         }
 
         #ResolvePlayerWin() {
-            this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.AddTrophy());
@@ -226,7 +224,6 @@ export const battle_manager = (() => {
         } 
         
         #ResolveDraw() {
-            this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeCurrentShield("Increase", 5));
             this.#player.Broadcast(broadcasts.BroadcastTemplateCards.ShuffleDeck(true, true));
             this.#player.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(2));
@@ -303,9 +300,10 @@ export const battle_manager = (() => {
 
             if (this.#monster.GetCurrentHealth() <= 0 ) {
                 if (this.#player.GetHealth() <= 0 ) {
-                    this.#ResolveDraw();
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster, true)); // Unentschieden / Draw
                 } else {
-                    this.#ResolvePlayerWin();
+                    console.log("t2", this.#monster.GetCurrentHealth());
+                    this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
                 }
             } else {
                 this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightMonster());
