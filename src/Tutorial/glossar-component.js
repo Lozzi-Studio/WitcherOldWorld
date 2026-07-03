@@ -106,7 +106,7 @@ export const glossar_component = (() => {
                     space.innerHTML = " : ";
                     glossaerEntry.appendChild(space);
                 } else {
-                    glossaerEntry.innerHTML = "<u><b>" + entry[0] + ":</b></u> ";
+                    glossaerEntry.innerHTML = "<b>" + entry[0] + ":</b> ";
                 }
                 glossaerEntry.style.fontSize = "23px"
                 glossaerEntry.style.margin = "5vh";
