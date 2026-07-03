@@ -33,7 +33,7 @@
         <video id="background-video" loop muted playsinline autoplay>
             <source src="resources/assets/background/main_menu.mp4">
         </video>
-        <div class="container container--col container--neutral container--justify borders--none" id="main-menu-ui">
+        <div class="container container--col container--set-colors container--justify borders--none" id="main-menu-ui">
             <img src="resources/assets/background/the-witcher-old-world-eng-logo.webp" id="main-menu-logo">
             <div class="textbox textbox--fill button --fancy-font" id="start-game-button">Spiel Starten</div>
             <div class="container container--col">
@@ -51,7 +51,7 @@
                     <div>Projektmodul Interaktion</div>
                     <div>Gruppe 6</div>
                 </div>
-                 <div class="container container--col container--no-gap">
+                <div class="container container--col container--no-gap">
                     <div class="--fancy-font" style="margin-bottom: 4px;">Copyright</div>
                     <div>Spiel, Bilder und Ton</div>
                     <div>&copy; CD Projekt RED</div>
@@ -61,7 +61,7 @@
     </div>
 
     <div id="player-selection" style="display: none;">
-        <div class="container container--col container--neutral container--justify position-center borders--all" id="player-selection-window">
+        <div class="container container--col container--set-colors container--justify position-center borders--all" id="player-selection-window">
             <div class="--fancy-font font-size-large">Spieler auswählen</div>
             <div class="container container--row container--align-flex-start">
                 <div class="container container--col container--justify-between" id="players-container">
@@ -115,14 +115,14 @@
     </div>
 
     <div id="game-ui" style="display: none;"> 
-        <div class="container container--row container--neutral borders--bottom-right position-top-left" id="player-window">
+        <div class="container container--row container--set-colors borders--bottom-right position-top-left" id="player-window">
             <div class="container container--col">
                 <div class="container container--col" id="avatar-name-container">
                     <div class="avatar-container avatar-container--big">
                         <img class="avatar avatar--big" id="player-avatar" src="">
                         <div class="textbox-circle textbox--fill --fancy-font" id="witcher-level">-</div>
                     </div>
-                    <div class="textbox textbox--fill textbox--fancy-font" id="player-name-container">
+                    <div class="textbox textbox--fill textbox--fancy-font name-container">
                         <p id="player-name">NAME</p>
                     </div>
                 </div>
@@ -136,6 +136,14 @@
                         <div class="tooltip-icon material-symbols-outlined filled">trophy</div>
                         <div class="tooltip-text tooltip-text--bottom">Trophäen</div> 
                         <div class="text-single-number --fancy-font" id="trophy-amount">-</div>
+                    </div>
+                </div>
+                <div class="line line--neutral" id="hp-separator"></div>
+                <div class="container container--row" id="player-hp-container">
+                    <div class="container container--row container--no-padding">
+                        <div class="tooltip-icon material-symbols-outlined filled">favorite</div>
+                        <div class="tooltip-text tooltip-text--bottom">Lebenspunkte (HP) (Handkarten + Deck-Karten)</div> 
+                        <div class="text-single-number --fancy-font" id="player-hp-amount">-</div>
                     </div>
                 </div>
                 <div class="line line--neutral"></div>
@@ -272,30 +280,44 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="container container--row position-top-left" id="combat-ui" style="display: none;">
-            <div class="container container--row container--neutral borders--all" id="battle-monster-window" data-theme="Monster">
+            <div class="container container--row container--set-colors borders--all" id="battle-monster-window" data-theme="Monster">
                 <div class="container container--col">
                     <div class="container container--col" id="avatar-name-container">
                         <div class="avatar-container avatar-container--big">
                             <img class="avatar avatar--big" id="monster-avatar" src="">
-                            <div class="textbox-circle textbox--fill --fancy-font" id="monster-health">5</div>
+                            <div class="textbox-circle textbox--fill --fancy-font" id="monster-level">-</div>
                         </div>
-                        <div class="textbox textbox--fill textbox--fancy-font" id="player-name-container">
+                        <div class="textbox textbox--fill textbox--fancy-font name-container">
                             <p id="monster-name">Monster</p>
                         </div>
                     </div>
+                    <div class="line line--neutral" id="monster-hp-separator"></div>
+                    <div class="container container--row" id="monster-hp-container">
+                        <div class="container container--row container--no-padding">
+                            <div class="tooltip-icon material-symbols-outlined filled">favorite</div>
+                            <div class="tooltip-text tooltip-text--bottom">Lebenspunkte (HP) (Handkarten + Deck-Karten)</div> 
+                            <div class="text-single-number --fancy-font" id="monster-hp-amount">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container container--row container--no-padding card-stacks-container" id="monster-card-stacks" data-theme="Monster">
+                <div class="container card card--small deck-stack" id="monster-deck-stack">
+                    <div class="container container--set-colors borders--all --fancy-font deck-number" id="monster-deck-number">99</div>
                 </div>
             </div>
         </div>
 
         <div id="notification-box">
-            <div class="container container--row container--neutral" id="notification-banner">
+            <div class="container container--row container--set-colors" id="notification-banner">
                 NOTIFICATION
             </div>
             <div class="textbox-circle textbox--fill" id="notifications">0</div>
         </div>
-        <div class="container container--col container--neutral" id="log-window"> 
+
+        <div class="container container--col container--set-colors" id="log-window"> 
             <div id="log-toggle-btn">
                 <span class="material-symbols-outlined" id="log-toggle-icon">arrow_forward_ios</span>
             </div>
@@ -305,7 +327,7 @@
             </ul>
         </div>
 
-        <div class="container borders--all container--neutral container--col" id="phase-two-options-menu" style="display: none;">
+        <div class="container borders--all container--set-colors container--col" id="phase-two-options-menu" style="display: none;">
             <div class="--fancy-font" id="phase-two-header">
                 Wähle eine Aktion für Phase 2
             </div>
@@ -329,7 +351,7 @@
             </div>
         </div>
 
-        <div class="container borders--all container--neutral container--col" id="explore-window" style="display: none;">
+        <div class="container borders--all container--set-colors container--col" id="explore-window" style="display: none;">
             <span id ="explore-header">Explore-header</span>
             <span id="explore-txt">Explore-Txt</span>
             <div class= "container container--col" id="explore-options-btn">
@@ -340,7 +362,7 @@
         </div>
 
         <div class=" container--row position-top-right" id="top-right-ui"> 
-            <div class="container container--col container--neutral borders--all --fancy-font" id="glossar-window">
+            <div class="container container--col container--set-colors borders--all --fancy-font" id="glossar-window">
                 <div class="" id="glossar-window-icon"> 
                     ?
                 </div>
@@ -367,10 +389,18 @@
                     Überspringen & Nachziehen
                 </div>
             </div>  
-            
         </div>
 
-        <div class="container container--col container--neutral borders--all" id="town-window">
+        <div class="container container--row container--no-padding position-bottom-left card-stacks-container" id="player-card-stacks">
+            <div class="container card card--small deck-stack deck-stack--selectable" id="player-deck-stack">
+                <div class="container container--set-colors borders--all --fancy-font deck-number" id="player-deck-number">99</div>
+            </div>
+            <div class="container container--no-padding" id="discard-stack">
+                <div class="container" id="discard-card"></div>
+            </div>
+        </div>
+
+        <div class="container container--col container--set-colors borders--all" id="town-window">
             <div class="container container--row container--justify-between">
                 <div class="material-symbols-outlined filled" id="town-symbol">forest</div>
                 <div class="--fancy-font" id="town-name">TOWN-NAME</div>
@@ -387,23 +417,25 @@
             <div class="textbox textbox--fill button" id="town-button">Gehe hierhin</div>
         </div>
         
-        <div class="container container--col container--neutral borders--all" id="shop-window" style="display: none;">
+        <div class="container container--col container--set-colors borders--all" id="shop-window" style="display: none;">
             <div class="textbox textbox--fill button" id="shop-button">Kaufen</div>
         </div>
 
         <div id="battle-window" style="display: flex;">
-            <div class="container container--col container--neutral borders--all" id="battle-player-window" style="display: none;">
-                <div class="textbox textbox--fill button" id="button-special">
-                    Special Nutzen
-                </div>
-                <div class="textbox textbox--fill button" id="button-play">
-                    Combo Spielen
+            <div class="container container--col container--set-colors borders--all" id="battle-player-window" style="display: none;">
+                <div class="container container--row" id="battle-buttons-container">
+                    <div class="textbox textbox--fill button" id="button-play">
+                        Karte/n Spielen
+                    </div>
+                    <div class="textbox textbox--fill button" id="button-special">
+                        Spezialfähigkeit Nutzen
+                    </div>
+                    <div class="material-symbols-outlined glyph-button" id="battle-info-button">info</div>
                 </div>
             </div>
         </div>
 
-
-        <div class="container container--col borders--top-right container--neutral position-bottom-left" id="debug-menu" style="display: none;">
+        <div class="container container--col borders--top-right container--set-colors position-bottom-left" id="debug-menu">
             <div class="--fancy-font">Debug Menu</div>
             <div class="textbox textbox--fill button" id="debug-next-phase-button">Skip Phase</div>
             <div class="textbox textbox--fill button" id="debug-upgrade-skill-button">Upgrade Skill</div>
@@ -413,7 +445,7 @@
         </div>
 
         <div id="turn-change-overlay" class="overlay--hidden">
-            <div id="turn-change-modal" class="container container--col container--neutral borders--all" style="padding: 30px; gap: 20px; width: 280px;">
+            <div id="turn-change-modal" class="container container--col container--set-colors borders--all" style="padding: 30px; gap: 20px; width: 280px;">
                 <div class="avatar-container" style="width: 140px; height: 140px;">
                     <img class="avatar" id="turn-change-avatar" src="" style="width: 100%; height: 100%;">
                 </div>
@@ -425,7 +457,7 @@
         </div>
 
         <div id="end-game-overlay">
-            <div id="end-game-modal" class="container container--col container--neutral borders--all" style="padding: 30px; gap: 20px; width: 280px;">
+            <div id="end-game-modal" class="container container--col container--set-colors borders--all" style="padding: 30px; gap: 20px; width: 280px;">
                 <div class="avatar-container" style="width: 140px; height: 140px;">
                     <img class="avatar" id="winner-avatar" src="" style="width: 100%; height: 100%;">
                 </div>
@@ -442,6 +474,7 @@
             </div>
         </div>
     </div>
+
     
     
 </body>

@@ -61,6 +61,14 @@ export const broadcasts = (() => {
             return {topic: 'player.updateHandCardsUI', mode: mode, card: card};
         }
 
+        static UpdateDiscardCardsUI(card, noUIUpdate) {
+            return {topic: 'player.updateDiscardCardsUI', card: card, noUIUpdate: noUIUpdate};
+        }
+
+        static UpdateDeckCardsUI(card, noUIUpdate) {
+            return {topic: 'player.updateDeckCardsUI', card: card, noUIUpdate: noUIUpdate};
+        }
+
         /**
          * 
          * @param {object} status
@@ -419,8 +427,8 @@ export const broadcasts = (() => {
             return {topic: 'game.updateDiscardButton', active: active}
         }
 
-        static ApplyDamage(amount) {
-            return {topic: 'game.applyDamage', amount: amount}
+        static ApplyDamage(amount, victim) {
+            return {topic: 'game.applyDamage', amount: amount, victim: victim}
         }
 
         static CreateNewMonster(rank, region, newMonster) {
@@ -579,12 +587,40 @@ export const broadcasts = (() => {
             return {topic: 'battle.startBattle', player: player, monster: monster}
         }
 
-        static EndBattle(){
-            return {topic: 'battle.endBattle'}
+        static EndBattle(player){
+            return {topic: 'battle.endBattle', player: player}
         }
 
         static UseSpecial(){
             return {topic: 'battle.special'}
+        }
+
+        static HighlightMonster() {
+            return {topic: 'battle.highlightMonster'};
+        }
+
+        static HighlightPlayer() {
+            return {topic: 'battle.highlightPlayer'};
+        }
+
+        static UpdateHealth(damageAmount, victim) {
+            return {topic: 'battle.updateHealth', damageAmount: damageAmount, victim: victim};
+        }
+
+        static ShowWinMessage(winningEntity, isDraw) {
+            return {topic: 'battle.showWinMessage', winningEntity: winningEntity, isDraw: isDraw};
+        }
+
+        static ResolvePlayerWin() {
+            return {topic: 'battle.resolvePlayerWin'};
+        }
+
+        static ResolveMonsterWin() {
+            return {topic: 'battle.resolveMonsterWin'};
+        }
+
+        static ResolveDraw() {
+            return {topic: 'battle.resolveDraw'};
         }
     }
 

@@ -1,6 +1,7 @@
 import { pass } from "three/tsl";
 import { component } from "../Interfaces/component";
 import * as THREE from 'three';
+import { broadcasts } from "../Interfaces/broadcasts";
 
 export const camera_position = (() => {
 
@@ -9,7 +10,7 @@ export const camera_position = (() => {
         #currentLookat;
         #target;
         #controlable;
-        #direction;
+        #directions;
 
         /**
          * Manager for position of camera
@@ -20,7 +21,7 @@ export const camera_position = (() => {
             this.#currentLookat = new THREE.Vector3();
             this.#target = undefined;
             this.#controlable = true;
-            this.#direction = Direction.None();
+            this.#directions = new Map([[Direction.Down().toIdentifier(), false], [Direction.Left().toIdentifier(), false], [Direction.Right().toIdentifier(),false], [Direction.Up().toIdentifier(), false]]);
         }
 
         /**
@@ -32,8 +33,6 @@ export const camera_position = (() => {
             this._RegisterHandler("camera.focusOnShop", (msg) => {this.#FocusOnShop(msg)});
             this._RegisterHandler("camera.stopFocusShop", (msg) => {this.#StopFocusShop(msg)});
             this._RegisterHandler("camera.stopFocus", (msg) => {this.#StopFocus(msg)});
-            this._RegisterHandler('battle.startBattle', (msg) => {this.#StartBattle(msg)});
-            this._RegisterHandler('battle.endBattle', (msg) => {this.#EndBattle(msg)})
 
             window.addEventListener("keydown", (event) => {this.#onKeyDown(event)});
             window.addEventListener("keyup", (event) => {this.#onKeyUp(event)});
@@ -57,6 +56,7 @@ export const camera_position = (() => {
             this._parent.controls.enableDamping = false;
             this.#target = msg.target;
             this._parent.controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
+            this.FindComponent("CubicHitbox").hitbox.position.set(this.#target.position.x, 0, this.#target.position.z);
         }
 
         /**
@@ -88,14 +88,7 @@ export const camera_position = (() => {
             this._parent.controls.enableDamping = true;
             this.#target = undefined;
             this._parent.controls.target.set(0,0,0);
-        }
-
-        #StartBattle(msg) {
-            return;
-        }
-
-        #EndBattle(msg) {
-            return;
+            this.FindComponent("CubicHitbox").hitbox.position.set(0, 0, 0);
         }
 
         /**
@@ -103,22 +96,58 @@ export const camera_position = (() => {
          * @param {object} event 
          */
         #onKeyDown(event) {
+
             if (this._parent.controls.enabled) {
+                this.#createButton();
                 switch (event.keyCode) {
                     case 87: // W
-                        this.#direction = Direction.Up();
+                        this.#directions.set(Direction.Up().toIdentifier(), true);
                         break;
                     case 83: // S
-                        this.#direction = Direction.Down();
+                        this.#directions.set(Direction.Down().toIdentifier(), true);
                         break;
                     case 65: // A
-                        this.#direction = Direction.Left();
+                        this.#directions.set(Direction.Left().toIdentifier(), true);
                         break;
                     case 68: // D
-                        this.#direction = Direction.Right();
+                        this.#directions.set(Direction.Right().toIdentifier(), true);
+                        break;
+                    case 32: // Space
+                        
+                        this.#directions = new Map([[Direction.Down().toIdentifier(), false], [Direction.Left().toIdentifier(), false], [Direction.Right().toIdentifier(),false], [Direction.Up().toIdentifier(), false]]);
+                        this._parent.controls.enableDamping = false;
+                        this.#target = this.FindEntity("GameArea").FindComponent("GameManager").currentPlayer;
+                        this._parent.controls.target.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
+                        this.FindComponent("CubicHitbox").hitbox.position.set(this.#target.position.x, this.#target.position.y, this.#target.position.z);
+
+                        this.#deleteButton()
+    
                         break;
                 }
             }
+        }
+
+        #createButton(){
+            if (!document.getElementById("reset-camera-button")) {
+                let resetButton = document.createElement("div");
+                resetButton.classList.add("textbox", "textbox--fill", "button", "position-bottom-center");
+                resetButton.id = "reset-camera-button";
+                resetButton.innerHTML = "Zurück zu meiner Spielfigur";
+                document.getElementById("game-ui").appendChild(resetButton);
+    
+                resetButton.addEventListener("click", () => {
+                    this.Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#target));
+                    this.#deleteButton();
+                })
+            }
+        }
+
+        #deleteButton() {
+            if (document.getElementById("reset-camera-button")){
+                let resetButton = document.getElementById("reset-camera-button");
+                resetButton.remove()
+            }
+
         }
 
         /**
@@ -126,8 +155,19 @@ export const camera_position = (() => {
          * @param {object} event 
          */
         #onKeyUp(event) {
-            if (event.keyCode == 87 || event.keyCode == 83 || event.keyCode == 65 || event.keyCode == 68) {
-                this.#direction = Direction.None();
+             switch (event.keyCode) {
+                    case 87: // W
+                        this.#directions.set(Direction.Up().toIdentifier(), false);
+                        break;
+                    case 83: // S
+                        this.#directions.set(Direction.Down().toIdentifier(), false);
+                        break;
+                    case 65: // A
+                        this.#directions.set(Direction.Left().toIdentifier(), false);
+                        break;
+                    case 68: // D
+                        this.#directions.set(Direction.Right().toIdentifier(), false);
+                        break;
             }
         }
 
@@ -137,25 +177,51 @@ export const camera_position = (() => {
          */
         Update(timeElapsed) {   
             const t = 1.0 - Math.pow(0.01, timeElapsed);
-            switch (this.#direction.getIdentifier()) {
-                case "up":
-                    this._parent.controls.target.z -= 1 * t;
-                    break;
-                case "down":
-                    this._parent.controls.target.z += 1 * t;
-                    break;
-                case "right":
-                    this._parent.controls.target.x += 1 * t;
-                    break;
-                case "left":
-                    this._parent.controls.target.x += -1 * t;
-                    break;
-                case "none":
-                    if (this._parent.controls.enabled) {
-                        this._parent.controls.target.set(this.#target?.position.x ?? 0, this.#target?.position.y ?? 0, this.#target?.position.z ?? 0);
-                    }
-                    break;
-            }  
+            let h = this.FindComponent("CubicHitbox").hitbox;
+            let y = this._parent.camera.position.y;
+            for (let [key, value] of this.#directions.entries()) {
+                switch (key) {
+                    case "up":
+                        if (value) {
+                            this._parent.camera.translateZ(- (3 * t));
+                            h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                            h.translateZ(- (3 * t));
+                            h.position.y = 0;
+                            this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        }
+                        break;
+                    case "down":
+                        if (value) {
+                            this._parent.camera.translateZ((3 * t));
+                            h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                            h.translateZ((3 * t));
+                            h.position.y = 0;
+                            this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        }
+                        break;
+                    case "right":
+                        if (value) {
+                            this._parent.camera.translateX((3 * t));
+                            h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                            h.translateX((3 * t));
+                            h.position.y = 0;
+                            this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        }
+                        break;
+                    case "left":
+                        if (value) {
+                            this._parent.camera.translateX(- (3 * t));
+                            h.rotation.set(this._parent.camera.rotation.x, this._parent.camera.rotation.y, this._parent.camera.rotation.z);
+                            h.translateX(-(3 * t));
+                            h.position.y = 0;
+                            this._parent.controls.target.set((h.position.x), (h.position.y), (h.position.z));
+                        }
+                        break;
+                    case "none":
+                        break;
+                }  
+            }
+            this._parent.camera.position.y = y;
         }
     }
 
@@ -182,7 +248,7 @@ export const camera_position = (() => {
          * Get identifier of enum
          * @returns {string}
          */
-        getIdentifier() {
+        toIdentifier() {
             return this.#direction;
         }
     }

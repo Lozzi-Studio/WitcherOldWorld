@@ -254,8 +254,8 @@ export const player_skills = (() => {
          */
         constructor() {
             super();
-            this.#amount = 0;
             this.#maxAmount = 1;
+            this.#amount = this.#maxAmount;
         }
 
         /**
