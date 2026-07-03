@@ -239,6 +239,8 @@ export const ui_manager = (() => {
             document.getElementById("close-player-window-button").addEventListener("click", this.HandleClosePlayerClick);
 
             document.getElementById("log-toggle-btn").addEventListener("click", this.handleLogToggleClick);
+            document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
+            document.getElementById("button-special").addEventListener("click", this.handleSpecialClick);
         }
 
         get phasethreeparttwo() {
@@ -1113,21 +1115,27 @@ export const ui_manager = (() => {
 
         #OnBattlePlayerTurn(msg) {
             document.getElementById("battle-player-window").style.display = "flex";
-            document.getElementById("button-play").addEventListener("click", this.handlePlayClick);
-            document.getElementById("button-special").addEventListener("click", this.handleSpecialClick);
+            
+            let playBtn = document.getElementById("button-play");
+             specialBtn = document.getElementById("button-special");
+            
             if (msg.emptyHand) {
-                document.getElementById("button-play").innerHTML = "Zug Aussetzen"
+                playBtn.innerHTML = "Zug Aussetzen";
                 this.UpdateButtonState("button-play", true);
+                playBtn.removeAttribute("data-tooltip");
             } else {
-                document.getElementById("button-play").innerHTML = "Combo Auspielen"
+                playBtn.innerHTML = "Combo Auspielen";
                 this.UpdateButtonState("button-play", false);
+                playBtn.setAttribute("data-tooltip", "Bitte wähle Karten aus, die sich miteinander kombinieren lassen.");
             }
+
             if (msg.specialUsed) {
                 this.UpdateButtonState("button-special", false);
+                specialBtn.setAttribute("data-tooltip", "Du kannst deine Spezialfähigkeit nur einmal pro Kampf nutzen oder hast eine passive Fähigkeit.");
             } else {
                 this.UpdateButtonState("button-special", true);
+                specialBtn.removeAttribute("data-tooltip");
             }
-            
         }
 
         #UpdatePlayButton(msg)  {

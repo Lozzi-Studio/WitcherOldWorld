@@ -118,7 +118,7 @@ export const carddeck_component = (() => {
                             this.#cardDeck.push(new card.Card("Viper Quen", card_options.Color.Yellow(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(1,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,2,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Viper Yrden", card_options.Color.Yellow(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(2,0,0,false,false)]]), card_options.CardEffect.createCardEffect(0,0,0,false,false), region.Region.Forest(), 0));
                             this.#cardDeck.push(new card.Card("Viper Spaltschlag", card_options.Color.Red(), new Map(), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Joker(), 0));
-                            this.#cardDeck.push(new card.Card("Viper Spaltschlag", card_options.Color.Red(), new Map(), card_options.CardEffect.createCardEffect(2,0,2,false,false), region.Region.River(), 0));
+                            this.#cardDeck.push(new card.Card("Viper Spaltschlag", card_options.Color.Red(), new Map(), card_options.CardEffect.createCardEffect(2,0,-2,false,false), region.Region.River(), 0));
                             this.#cardDeck.push(new card.Card("Viper Stoß", card_options.Color.Green(), new Map([[card_options.Color.Purple(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Mountain(), 0));
                             this.#cardDeck.push(new card.Card("Viper Stoß", card_options.Color.Green(), new Map([[card_options.Color.Blue(), card_options.CardEffect.createCardEffect(0,0,1,false,false)]]), card_options.CardEffect.createCardEffect(0,1,0,false,false), region.Region.Forest(), 0));
                             this.#cardDeck.push(new card.Card("Viper Schneller Hieb", card_options.Color.Blue(), new Map(), card_options.CardEffect.createCardEffect(1,0,0,false,false), region.Region.Mountain(), 0));
@@ -263,6 +263,7 @@ export const carddeck_component = (() => {
                             this.#cardHand.push(this.#cardDeck.pop());
                             if (!this.#noUiUpdate) {
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", msg.card));
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                             }
                         }
                         break;
@@ -277,6 +278,7 @@ export const carddeck_component = (() => {
                         this.#cardHand.push(drawnCard);
                         if (!this.#noUiUpdate) {
                             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", drawnCard));
+                            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                         }
                         break;
                     case "Discard":
@@ -285,6 +287,7 @@ export const carddeck_component = (() => {
                             this.#cardHand.push(discardedCard)
                             if (!this.#noUiUpdate) {
                                 this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("draw", discardedCard));
+                                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
                             }
                         }
                         break;
@@ -330,10 +333,12 @@ export const carddeck_component = (() => {
                     break;
                 case "Discard":
                     this.#cardDiscard.push(msg.card);
+                    this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
                     break;
                 case "Deck":
                     this.#cardDeck.push(msg.card)
                     this.#Shuffle({includeDiscard: false});
+                    this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                     break;
             }
         }
@@ -359,9 +364,11 @@ export const carddeck_component = (() => {
                         }  else if (this.#cardDiscard.includes(msg.card)) {
                             this.#cardDiscard.splice(this.#cardDiscard.indexOf(msg.card),1);
                         }
-                    break;
-            }
+                        break;
+                    }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", msg.card));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
         }
 
         /**
@@ -390,18 +397,21 @@ export const carddeck_component = (() => {
                     let cardText = discardedCard.name ? "die Karte " + discardedCard.name : "eine Karte";
                     this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification(displayName + " hat " + cardText + " abgeworfen."));
                 }
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
             }
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
         }
 
         #ApplyDamage(msg) {
-            if (!(this.#noUiUpdate) && msg.amount != 0) {
+            let amount = msg.amount;
+            if ((!(this.#noUiUpdate)) && amount > 0) {
                 let currentShield = this.FindComponent("Shield").amount;
                 for (let i = 0; i < currentShield; i++) {
-                    msg.amount -= 1;
+                    amount -= 1;
                     this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Decrease", this.FindComponent("PlayerSkills").defense, 1));
                 } 
             }
-            for (let i = 0; i < msg.amount; i++) {
+            for (let i = 0; i < amount; i++) {
                 if (this.#cardDeck.length > 0) {
                     this.#cardDiscard.push(this.#cardDeck.pop());
                 } else if (this.#cardHand.length > 0) {
@@ -416,7 +426,9 @@ export const carddeck_component = (() => {
                     break;
                 }
             }
-            this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateGame.ApplyDamage(0))
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
+            this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI((this.#cardDiscard.length > 0) ? this.#cardDiscard[this.#cardDiscard.length - 1] : msg.card, this.#noUiUpdate));
+            this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UpdateHealth(amount, msg.victim));
         }
 
         /**
@@ -431,18 +443,21 @@ export const carddeck_component = (() => {
                 if (!this.#noUiUpdate) {
                     for (let card of oldHand) {
                         this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateHandCardsUI("discard", card));
+                        this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
                     }
                 }
             }
-
+            
             if (msg.includeDiscard) {
                 this.#cardDeck = this.#cardDeck.concat(this.#cardDiscard);
                 this.#cardDiscard = [];
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
+                this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI(msg.card, this.#noUiUpdate));
             }
             //Fisher-Yates_shuffle (src:https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
             for (let i = this.#cardDeck.length - 1; i >= 1; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [this.#cardDeck[i], this.#cardDeck[j]] = [this.#cardDeck[j], this.#cardDeck[i]];
+                const j = Math.floor(Math.random() * (i + 1));
+                [this.#cardDeck[i], this.#cardDeck[j]] = [this.#cardDeck[j], this.#cardDeck[i]];
             }
         }
 

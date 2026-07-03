@@ -80,7 +80,7 @@ export const game_manager = (() => {
             if (this.#currentPlayer.FindComponent("MoneyStorage").amount == 0) {
                 this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.ChangeMoney(1));
             }
-            this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.FindEntity("Cardshop").FindComponent("Carddeck").hand,[1,2], "Entfernen aus dem Shop", false).then(
+            this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.FindEntity("Cardshop").FindComponent("Carddeck").hand,[1,2], "Entfernen aus dem Shop", false, "Ortsaktion").then(
                 (result) => {   
                     if (result != null) {
                         for (let card of result) {
@@ -98,14 +98,14 @@ export const game_manager = (() => {
          */
         #SwapoutCard(msg){
             let removedCard = null;
-             this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#currentPlayer.FindComponent("Carddeck").hand,1, "Entfernen aus deiner Hand", true).then(
+             this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(this.#currentPlayer.FindComponent("Carddeck").hand,1, "Entfernen aus deiner Hand", true, "Ortsaktion").then(
                 (result) => {   
                     if (result != null) {
                         this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplateCards.DiscardCard(result[0], "Delete"));
                         removedCard = result[0];
                         let shopCards = this.FindEntity("Cardshop").FindComponent("Carddeck").hand.filter(card => card.cost <= removedCard.cost + 1)
                         if (shopCards.length > 0) {
-                            this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(shopCards,1, "Erhalten auf deine Hand", true).then(
+                            this.FindComponent("CardSelectUI").GetCardSelectionFromPlayerPrompt(shopCards,1, "Erhalten auf deine Hand", true, "Ortsaktion").then(
                                 (result) => {   
                                     if (result != null) {
                                         for (let card of result) {
@@ -165,6 +165,8 @@ export const game_manager = (() => {
                     this.#isHuntMusic = true;
                 }
                 this.Broadcast(broadcasts.BroadcastTemplateGame.NextPlayer(this.#currentPlayer));
+                let discardDeck = this.#currentPlayer.FindComponent("Carddeck").discard;
+                this.Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI((discardDeck.length > 0) ? discardDeck[discardDeck.length - 1] : undefined, false));
                 this.FindEntity("Camera").Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
             }
         }
@@ -466,10 +468,10 @@ export const game_manager = (() => {
                 }
             }
             this._parent._parent.scene.remove(this.#currentMonster.get(msg.region).FindComponent("MonsterFigure").mesh);
-            const newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(newRegion, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
-            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Ein neues Monster der Stufe " + newMonster.rank + " ist in " + newMonster.town.town_name + " erschienen."));
+            let newMonster = new monster_entity.MonsterEntity("Monster", this.FindComponent("TownManager").GetRandomTownFromRegionPool(newRegion, playerTownPositions, false), hpPool[(msg.rank - 1)], msg.rank);
             this.#currentMonster.set(newRegion.toIdentifier(), newMonster);
             this._parent._parent.AddEntity(newMonster, "Monster_" + newRegion.toIdentifier());
+            this.Broadcast(broadcasts.BroadcastTemplateNotification.CustomNotification("Ein neues Monster der Stufe " + newMonster.rank + " ist in " + newMonster.town.town_name + " erschienen."));
         }
 
         #isBattleTurn(msg) {
