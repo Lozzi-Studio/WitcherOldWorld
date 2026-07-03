@@ -161,7 +161,6 @@ export const battle_manager = (() => {
                 }
             } else if (this.#monster.GetCurrentHealth() <= 0) {
                 this.Broadcast(broadcasts.BroadcastTemplateBattle.HighlightPlayer());
-                console.log("t1", this.#monster.GetCurrentHealth());
                 this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
             } else{
                 this.#PlayerTurn();
@@ -302,7 +301,6 @@ export const battle_manager = (() => {
                 if (this.#player.GetHealth() <= 0 ) {
                     this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#monster, true)); // Unentschieden / Draw
                 } else {
-                    console.log("t2", this.#monster.GetCurrentHealth());
                     this.Broadcast(broadcasts.BroadcastTemplateBattle.ShowWinMessage(this.#player));
                 }
             } else {
