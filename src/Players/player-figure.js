@@ -26,18 +26,46 @@ export const player_figure = (() =>{
          */
         InitComponent(){
             this._RegisterHandler('player.move', (msg) => {this.#OnPlayerMove(msg)});
-            const loader = new GLTFLoader();
-            loader.load("resources/assets/PlayerBaseModel.glb", (glb) =>{
-                glb.scene.traverse((child) =>{
+            let schoolName = "";
+            switch(this._parent.witcherSchool.name){
+                case "Vipernschule":
+                    schoolName = "viper_"
+                    break;
+                case "Katzenschule":
+                    schoolName = "cat_"
+                    break;
+                case "Baerenschule":
+                    schoolName = "bear_"
+                    break;
+                case "Wolfsschule":
+                    schoolName = "wolf_"
+                    break;
+                case "Greifenschule":
+                    schoolName = "griffin_"
+                    break;
+            }
+            let model = this._parent.GetFromCache((schoolName + "player_model"));
+            let pointLight = new THREE.PointLight("white", 12, 2, 3)
+            pointLight.position.set(0, 6, 5)
+            if (model == undefined) {
+                let default_model = this._parent.GetFromCache((schoolName + "default_figure"));
+                default_model.traverse((child) =>{
                     if (child.isMesh) {
                         child.material.fog = false;
                         child.material.color.setHex('0x' + this.#color.toString(16));
                     }
                 });
-                this.#mesh = glb.scene;
+                default_model.name = (schoolName + "default_figure");
+                this.#mesh = default_model;
                 this.#mesh.position.copy(this.#startPosition);
+                this.#mesh.add(pointLight);
                 this._parent._parent.scene.add(this.#mesh);
-            });
+            } else {
+                this.#mesh = model ;
+                this.#mesh.position.copy(this.#startPosition);
+                this.#mesh.add(pointLight);
+                this._parent._parent.scene.add(this.#mesh);
+            }
         }
 
         /**
