@@ -188,6 +188,24 @@ export const tutorial_component = (() => {
             ],[
                 () => {
                     let element = document.createElement("div");
+                    element.innerHTML = "Kamera Steuerung";
+                    element.classList.add("--fancy-font");
+                    element.style.textAlign = "center";
+                    element.style.fontSize = "30px"
+                    return element;
+                },
+                () => {
+                    let img = document.createElement("img");
+                    img.src = "./resources/assets/tutorial/kamera.png";
+                    img.style.maxWidth = "100%";
+                    img.style.height = "auto";
+                    img.style.display = "block";
+                    img.style.marginTop = "10vh";
+                    return img;
+                }
+            ],[
+                () => {
+                    let element = document.createElement("div");
                     element.innerHTML = "Fragen";
                     element.classList.add("--fancy-font");
                     element.style.textAlign = "center";
@@ -198,7 +216,7 @@ export const tutorial_component = (() => {
                     let element = document.createElement("div");
                     element.style.marginTop = "2vh";
                     element.style.marginBottom = "2vh";
-                    element.innerHTML = "Falls es noch Fragen gibt, nutze gerne dem spielinternem Glossar zum Nachschlagen von Details. Du findest das Glossar oben rechts am Spielfeldrand. Ansonsten wünschen wir viel Spaß beim Spielen.";
+                    element.innerHTML = "Falls es noch Fragen gibt, nutze gerne dem spielinternem Glossar zum Nachschlagen von Details. Du findest den Glossar oben rechts am Spielfeldrand. Ansonsten wünschen wir viel Spaß beim Spielen.";
                     return element;
                 },
                 () => {
