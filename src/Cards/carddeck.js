@@ -403,14 +403,15 @@ export const carddeck_component = (() => {
         }
 
         #ApplyDamage(msg) {
-            if (!(this.#noUiUpdate) && msg.amount != 0) {
+            let amount = msg.amount;
+            if ((!(this.#noUiUpdate)) && amount > 0) {
                 let currentShield = this.FindComponent("Shield").amount;
                 for (let i = 0; i < currentShield; i++) {
-                    msg.amount -= 1;
+                    amount -= 1;
                     this.Broadcast(broadcasts.BroadcastTemplateSkills.ChangeShield("Decrease", this.FindComponent("PlayerSkills").defense, 1));
                 } 
             }
-            for (let i = 0; i < msg.amount; i++) {
+            for (let i = 0; i < amount; i++) {
                 if (this.#cardDeck.length > 0) {
                     this.#cardDiscard.push(this.#cardDeck.pop());
                 } else if (this.#cardHand.length > 0) {
@@ -427,7 +428,7 @@ export const carddeck_component = (() => {
             }
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDeckCardsUI(msg.card, this.#noUiUpdate));
             this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.UpdateDiscardCardsUI((this.#cardDiscard.length > 0) ? this.#cardDiscard[this.#cardDiscard.length - 1] : msg.card, this.#noUiUpdate));
-            this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UpdateHealth(msg.amount, msg.victim));
+            this.FindEntity("BattleEntity").Broadcast(broadcasts.BroadcastTemplateBattle.UpdateHealth(amount, msg.victim));
         }
 
         /**
