@@ -117,7 +117,7 @@ export const glossar_component = (() => {
                     glossarEntry.innerHTML = "<b>" + entry[0] + ":</b> ";
                 }
                 glossarEntry.style.fontSize = bodyFontSize;
-                glossarEntry.style.marginBottom = "8px";
+                glossarEntry.style.marginBottom = "12px";
                 let cites = [];
                 for (let word of entry[1].split(/[\s]+/)) {
                     let s = "\\b" + word.split(/[,.?!:()]+/)[0] + "\\b";

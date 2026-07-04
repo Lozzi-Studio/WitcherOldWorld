@@ -299,6 +299,7 @@ export const tutorial_component = (() => {
             document.getElementById("loading-screen-info").appendChild(tutorialContainer);
             // document.getElementById("loading-screen-info").insertBefore(tutorialContainer, document.getElementById("loading-tip"));
             this.#tutorialContent[0].forEach((element) => {
+                element.width = "100%";
                 content.appendChild(element());
             });
 
