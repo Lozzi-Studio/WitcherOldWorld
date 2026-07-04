@@ -1482,6 +1482,10 @@ input {
     margin-left: 12px;
 }
 
+#entries-glossar {
+    min-height: 420px;
+}
+
 .card-stacks-container {
     padding-left: 4px;
     padding-bottom: 4px;
