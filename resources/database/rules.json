@@ -7,7 +7,7 @@
     ["Spezialfähigkeit Attribut" , "Das Attribut der Spezialfähigkeit bestimmt die Stärke dieser Fähigkeit und ist die Effekten sind Abhängig von der Schule des Hexers."],
     ["Schild" , "Schild verhindert Schaden im Kapf und wird immer zuerst abgezogen bei der Schadensberechnung. Das Maximum dieses Wertes entspricht dem Verteidigungs Attribut des Hexers."],
     ["Tranklimit" , "Ein Hexer kann höchstens 4 Tränke mit sich führen."],
-    ["Trophäe" , "Trophäen dienen als Punkte in diesem Spiel. Der erste Hexer der 4 Trophäen besitzt gewinnt das Spiel. Immer wenn ein Hexer eine Trophäe erhält, muss er Karten asu seinem Besitz in Höhe seiner neün Trophäenanzahl entfernen."],
+    ["Trophäe" , "Trophäen dienen als Punkte in diesem Spiel. Der erste Hexer der 4 Trophäen besitzt gewinnt das Spiel. Immer wenn ein Hexer eine Trophäe erhält, erleidet er Erschöpfung."],
     ["Hexerlevel" , "Dein Hexerlevel entspricht immer dem niedrigsten Attributsstufe des Hexers. Bei Level Up darf der Hexer Karten ziehen. Einige Stadtaktionen sind an das Hexerlevel gebunden."],
     ["Hexerschule" , "Die Hexerschule eines Hexers bestimmt die Startkarten des Hexers, seinen Startort und seine Spezialfähigkeit"],
     ["Spezialfähigkeit" , "Spezialfähigkeit können einmal pro Kampf verwendet werden und hängen von der Hexerschule ab."],
@@ -51,6 +51,13 @@
     ["Karte ziehen", "Wenn ein Hexer eine Karten zieht, wird die oberste Karte des Decks der Hand des Hexers hinzugefügt."],
     ["Kartenshop", "Der Kartenshop erlaubt es Hexern neue Karten für ihr Deck zu erwerben. Dafür muss der Hexer Handkarten in Höhe der modifizierten Kosten abwerfen."],
     ["Kartenshop Modifikatoren", "Die Slot rechts außen im Kartenshop verringert die Kosten um 1. Die beiden Slots links außen erhöhen die Kosten der Karten um 1. Die anderen Kartenslots sind nicht beinflusst von Modifikatoren"],
-    ["Gold" , "Gold ist die Währung in The Witcher Old World. Dieses kann für diverse Ortsaktionen und Interaktionen genuzt werden."]
-
+    ["Gold" , "Gold ist die Währung in The Witcher Old World. Dieses kann für diverse Ortsaktionen und Interaktionen genuzt werden."],
+    ["Trank", "Tränke sind einmalig nutzbare Karten, welche der Hexer im Kampf nutzen kann, um sich ein Vorteil zu verschaffen und seine Angriffe zu verstärken."],
+    ["Region: Wald", "Waldregionen sind an ihrer grünen Farben und dem erhöhten Aufkommen an Bäumen zu erkennen. Um diese Region zu besuchen, benötigt der Hexer eine Karte mit der passenden Region."],
+    ["Region: Berge", "Bergregionen sind an ihrer grauen Farben und dem erhöhten Aufkommen an Bergen und Minen zu erkennen. Um diese Region zu besuchen, benötigt der Hexer eine Karte mit der passenden Region."],
+    ["Region: Flüsse", "Flussregionen sind an ihrer blauen Farben und dem erhöhten Aufkommen von Häfen und Gewässern zu erkennen. Um diese Region zu besuchen, benötigt der Hexer eine Karte mit der passenden Region."],
+    ["Region: Joker", "In Jokerregionen vermischen sich die Eigenschaften aller Regionen. Karten mit diesem Regionssymbol (erkennbar an der Kombination aus den anderen drei Symbolen) können zur Fortbewegung in alle anderen Regionen genutzt werden. Die Stadt Behelt Nar kann dementsprechend auch mit Karten von jeder Region betreten werden."],
+    ["Karten neuziehen", "Am Anfang von Phase 3 zieht der Hexer seine Handkarten auf 3 Karten wieder nach. Dieser Wert kann durch diverse Modifikatoren, wie Ereignise und Niederlagen in Kämpfen sowohl positiv als auch negativ verändert werden."],
+    ["Erschöpfung", "Wenn der Hexer Erschöpfung erleidet beim Erhalt von Trophäen, muss er Karten aus seinem Besitz in Höhe seiner neuen Trophäenanzahl entfernen"],
+    ["Siegbedingung", "Der erste Hexer, der 4 Trophäen in seinem Besitz hat, gewinnt das Spiel."]
 ]}
