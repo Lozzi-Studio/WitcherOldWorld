@@ -75,7 +75,7 @@ export const glossar_component = (() => {
             document.getElementById("game-ui").appendChild(glossar)
             this.#GetEntries();
 
-            document.getElementById("glossar-window").addEventListener("click", (event) => {document.getElementById("glossar").style.display = "flex"})
+            document.getElementById("glossar-button").addEventListener("click", (event) => {glossar.style.display = "flex"})
 
         }
 
@@ -83,35 +83,35 @@ export const glossar_component = (() => {
             const bodyFontSize = "16px";
             let dataset = this.#data;
             try {
-                document.getElementById("glossar").removeChild(document.getElementById("entries_glossar"));
+                document.getElementById("glossar").removeChild(document.getElementById("entries-glossar"));
             } catch (e){}
             if (filterBy.length > 0 ) {
                 dataset = dataset.filter((data) => data[0].toLowerCase().includes(filterBy.toLowerCase()));
             }
             let entries = document.createElement("ul");
-            entries.id = "entries_glossar";
+            entries.id = "entries-glossar";
             entries.classList.add("cotainer--col", "container--justify");
             entries.style.position = "relative";
             entries.style.overflowY = "auto";
             entries.style.overflowX = "hidden";
         
             for (let entry of dataset.sort((a, b) => a[0].localeCompare(b[0]))) {
-                let glossaerEntry = document.createElement("li");
+                let glossarEntry = document.createElement("li");
                 if (entry[0].includes("Icon")) {
                     let img = document.createElement("img");
                     img.src = "./resources/assets/tutorial/" + entry[0] + ".png";
                     img.style.maxWidth = "100%";
                     img.style.height = "auto";
                     img.style.margin = "auto";
-                    glossaerEntry.appendChild(img);
+                    glossarEntry.appendChild(img);
                     let space = document.createElement("span");
                     space.innerHTML = " : ";
-                    glossaerEntry.appendChild(space);
+                    glossarEntry.appendChild(space);
                 } else {
-                    glossaerEntry.innerHTML = "<b>" + entry[0] + ":</b> ";
+                    glossarEntry.innerHTML = "<b>" + entry[0] + ":</b> ";
                 }
-                glossaerEntry.style.fontSize = bodyFontSize;
-                glossaerEntry.style.marginBottom = "8px";
+                glossarEntry.style.fontSize = bodyFontSize;
+                glossarEntry.style.marginBottom = "8px";
                 let cites = [];
                 for (let word of entry[1].split(/[\s]+/)) {
                     let s = "\\b" + word.split(/[,.?!:()]+/)[0] + "\\b";
@@ -120,22 +120,22 @@ export const glossar_component = (() => {
                     if (foundEntry.length > 0) {
                         let span = document.createElement("span");
                         span.addEventListener("click", (event)=> {
-                            document.getElementById("search-glossar").value = event.target.innerHTML.split(/[,.?!:()]+/)[0];
-                            document.getElementById("search-glossar").dispatchEvent(new CustomEvent("input"));
+                            document.getElementById("search-glossar-input").value = event.target.innerHTML.split(/[,.?!:()]+/)[0];
+                            document.getElementById("search-glossar-input").dispatchEvent(new CustomEvent("input"));
                         })
                         span.innerHTML = "<u><b>"+ word +"</b></u> ";
                         span.style.fontSize = bodyFontSize;
                         span.classList.add("glossar-link");
-                        glossaerEntry.appendChild(span)
+                        glossarEntry.appendChild(span)
                         continue;
                     } 
                     let span = document.createElement("span");
                     span.innerHTML = word +" ";
                     span.style.fontSize = bodyFontSize;
-                    glossaerEntry.appendChild(span)
+                    glossarEntry.appendChild(span)
 
                 }
-                entries.appendChild(glossaerEntry);
+                entries.appendChild(glossarEntry);
             }
             document.getElementById("glossar").appendChild(entries);
         }

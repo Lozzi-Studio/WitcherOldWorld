@@ -1440,21 +1440,21 @@ input {
     align-items: start;
 }
 
-#glossar-window {
+#glossar-button {
     margin-right: 4px;
     height: 32px;
     width: 32px;
 }
 
-#glossar-window-icon {
+#glossar-button-icon {
     transition: transform 200ms;
 }
 
-#glossar-window:hover {
+#glossar-button:hover {
     cursor: var(--cursor-pointer), pointer;
 }
 
-#glossar-window:hover #glossar-window-icon {
+#glossar-button:hover #glossar-button-icon {
     color: var(--color-hover);
     transform: scale(1.1);
 }
@@ -1479,7 +1479,7 @@ input {
 }
 
 #search-glossar-input {
-    color: var(--color-primary);
+    margin-left: 12px;
 }
 
 .card-stacks-container {
