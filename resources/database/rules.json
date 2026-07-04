@@ -7,7 +7,7 @@
     ["Spezialfähigkeit Attribut" , "Das Attribut der Spezialfähigkeit bestimmt die Stärke dieser Fähigkeit und ist die Effekten sind Abhängig von der Schule des Hexers."],
     ["Schild" , "Schild verhindert Schaden im Kapf und wird immer zuerst abgezogen bei der Schadensberechnung. Das Maximum dieses Wertes entspricht dem Verteidigungs Attribut des Hexers."],
     ["Tranklimit" , "Ein Hexer kann höchstens 4 Tränke mit sich führen."],
-    ["Trophäe" , "Trophäen dienen als Punkte in diesem Spiel. Der erste Hexer der 4 Trophäen besitzt gewinnt das Spiel. Immer wenn ein Hexer eine Trophäe erhält, muss er Karten asu seinem Besitz in Höhe seiner neün Trophäenanzahl entfernen."],
+    ["Trophäe" , "Trophäen dienen als Punkte in diesem Spiel. Der erste Hexer der 4 Trophäen besitzt gewinnt das Spiel. Immer wenn ein Hexer eine Trophäe erhält, erleidet er Erschöpfung."],
     ["Hexerlevel" , "Dein Hexerlevel entspricht immer dem niedrigsten Attributsstufe des Hexers. Bei Level Up darf der Hexer Karten ziehen. Einige Stadtaktionen sind an das Hexerlevel gebunden."],
     ["Hexerschule" , "Die Hexerschule eines Hexers bestimmt die Startkarten des Hexers, seinen Startort und seine Spezialfähigkeit"],
     ["Spezialfähigkeit" , "Spezialfähigkeit können einmal pro Kampf verwendet werden und hängen von der Hexerschule ab."],
@@ -39,7 +39,7 @@
     ["Kampf" , "Wenn der Hexer sich in der selben Stadt aufhält, hat er die Möglichkeit das Monster zu bekämpfen. Im Kampf ziehen Spieler und Monster abwechselnd. Das Monster beginnt den Kampf, es sei den der Hexer besitzt eine Spur von der Region der Stadt in das Monster lebt. Während seines Zuges kann der Spieler eine Combo aus Karten ausspielen. Wer zuerst auf 0 Lebenspunkte fällt verliert den Kampf. Falls beide Seiten gleichzeitig auf 0 Lebenspunkte fallen, zählt es als Unentschieden. Der Hexer bekommt bei einem Sieg eine Trophäe."],
     ["Lebenspunkte" , "Die Lebenspunkte werden durch das Bilden eines Kampfdecks gebildet. Am Anfang des Kampfes wird das Kampfdeck aus dem Ablagestapel und dem Deck gebildet. Wenn die Lebenspunkte durch Schaden verringert werden, werden genauso viele Karten von dem Kampfdeck auf den Ablegestapel gelegt. Die Lebenspunkte eines Hexers gelten als 0, wenn das Kampfdeck & die Hand des Hexers leer ist."],
     ["Hexersieg Kampf" , "Wenn der Hexer den Kampf gewinnt, bekommt er eine Trophäe und 2 Gold. Außerdem wird sein Schildwert auf das Maximum gesetzt. Die Karten des Hexers werden zusammen gemischt in das Deck des Hexers. Danach erscheint ein neüs Monster auf der Karte mit einer höheren Stufe (Maximum 3)."],
-    ["Unentschiede Kampf" , "Falls der Kampf als Unentschieden aus geht, flieht das Monster. Es erschient an der andere Stelle ein neüs Monster der selben Stufe. Der Hexer erhält 2 Gold und eine zufällige Karte aus dem Shop mit den Kosten 0. Die Karten des Hexers werden zusammen gemischt in das Deck des Hexers."],
+    ["Unentschieden Kampf" , "Falls der Kampf als Unentschieden aus geht, flieht das Monster. Es erschient an der andere Stelle ein neüs Monster der selben Stufe. Der Hexer erhält 2 Gold und eine zufällige Karte aus dem Shop mit den Kosten 0. Die Karten des Hexers werden zusammen gemischt in das Deck des Hexers."],
     ["Monstersieg Kampf" , "Wenn das Monster gewinnt, erhält der Hexer eine Spur von dem Monster und eine zufällige Karte aus dem Shop mit den Kosten 0. Die Karten des Hexers werden zusammen gemischt in das Deck des Hexers. In Phase 3 ziehst du eine Karte weniger."],
     ["Monster" , "Monster tauchen auf der Karte auf und können für Trophäen bekämpft werden von den Hexern. Monster können erscheine in 3 verschiedenen Stufen, welche die Höhe der Lebenspunkte des Monsters bestimmt. Höher stufige Monster erscheinen erst, nachdem ein Monster von der niedriegeren Stufe besiegt wurde."],
     ["Erkunden Stadt" , "Wenn der Hexer wählt die Stadt zu erkunden, wird der Hexer mit einem Ereignis in der Stadt konfrontiert."],
@@ -51,6 +51,13 @@
     ["Karte ziehen", "Wenn ein Hexer eine Karten zieht, wird die oberste Karte des Decks der Hand des Hexers hinzugefügt."],
     ["Kartenshop", "Der Kartenshop erlaubt es Hexern neue Karten für ihr Deck zu erwerben. Dafür muss der Hexer Handkarten in Höhe der modifizierten Kosten abwerfen."],
     ["Kartenshop Modifikatoren", "Die Slot rechts außen im Kartenshop verringert die Kosten um 1. Die beiden Slots links außen erhöhen die Kosten der Karten um 1. Die anderen Kartenslots sind nicht beinflusst von Modifikatoren"],
-    ["Gold" , "Gold ist die Währung in The Witcher Old World. Dieses kann für diverse Ortsaktionen und Interaktionen genuzt werden."]
-
+    ["Gold" , "Gold ist die Währung in The Witcher Old World. Dieses kann für diverse Ortsaktionen und Interaktionen genuzt werden."],
+    ["Trank", "Tränke sind einmalig nutzbare Karten, welche der Hexer im Kampf nutzen kann, um sich ein Vorteil zu verschaffen und seine Angriffe zu verstärken."],
+    ["Region: Wald", "Waldregionen sind an ihrer grünen Farben und dem erhöhten Aufkommen an Bäumen zu erkennen. Um diese Region zu besuchen, benötigt der Hexer eine Karte mit der passenden Region."],
+    ["Region: Berge", "Bergregionen sind an ihrer grauen Farben und dem erhöhten Aufkommen an Bergen und Minen zu erkennen. Um diese Region zu besuchen, benötigt der Hexer eine Karte mit der passenden Region."],
+    ["Region: Flüsse", "Flussregionen sind an ihrer blauen Farben und dem erhöhten Aufkommen von Häfen und Gewässern zu erkennen. Um diese Region zu besuchen, benötigt der Hexer eine Karte mit der passenden Region."],
+    ["Region: Joker", "In Jokerregionen vermischen sich die Eigenschaften aller Regionen. Karten mit diesem Regionssymbol (erkennbar an der Kombination aus den anderen drei Symbolen) können zur Fortbewegung in alle anderen Regionen genutzt werden. Die Stadt Behelt Nar kann dementsprechend auch mit Karten von jeder Region betreten werden."],
+    ["Karten neuziehen", "Am Anfang von Phase 3 zieht der Hexer seine Handkarten auf 3 Karten wieder nach. Dieser Wert kann durch diverse Modifikatoren, wie Ereignise und Niederlagen in Kämpfen sowohl positiv als auch negativ verändert werden."],
+    ["Erschöpfung", "Wenn der Hexer Erschöpfung erleidet beim Erhalt von Trophäen, muss er Karten aus seinem Besitz in Höhe seiner neuen Trophäenanzahl entfernen"],
+    ["Siegbedingung", "Der erste Hexer, der 4 Trophäen in seinem Besitz hat, gewinnt das Spiel."]
 ]}

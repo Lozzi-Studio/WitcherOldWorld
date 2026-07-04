@@ -52,7 +52,7 @@ export const game = (() => {
          */
         InitSceneEntities() {
             document.getElementById('game-loading-screen').style.display = 'flex';
-            document.getElementById('loading_tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
+            document.getElementById('loading-tip').innerHTML = data["tooltips"][Math.floor(Math.random() * data["tooltips"].length)]
             this._entityManager.AddEntity(new tutorial_entity.TutorialEntity());
             this._entityManager.FindEntity("TutorialEntity").Broadcast(broadcasts.BroadcastTemplateGame.LoadTutorial());
             this._entityManager.AddEntity(new notification_entity.NotificationEntity(), "NotificationEntity", true);
@@ -142,7 +142,7 @@ export const game = (() => {
             startButton.id = "game-start-button-loading";
             startButton.innerHTML = "Spiel beginnen";
             startButton.classList.add(
-                "container", "textbox", "textbox--fill",  "button", "--fancy-font"
+                "container", "textbox", "textbox--fill",  "button", "--fancy-font", "font-size-large"
             )
             startButton.addEventListener("click", () => {
                 this._entityManager.FindEntity("TutorialEntity").Broadcast(broadcasts.BroadcastTemplateGame.CloseTutorial());
