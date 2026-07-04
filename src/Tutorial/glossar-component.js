@@ -61,7 +61,10 @@ export const glossar_component = (() => {
             let close = document.createElement("div");
             close.innerHTML = "close";
             close.classList.add("material-symbols-outlined", "filled", "glyph-button");
-            close.addEventListener("click", (event) => {document.getElementById("glossar").style.display = "none"})
+            close.addEventListener("click", (event) => {
+                document.getElementById("glossar").style.display = "none"
+                this.FindEntity("Camera").controls.enabled = true;
+            })
             let closeDummy = close.cloneNode(true);
             closeDummy.style.visibility = "hidden";
             header.appendChild(closeDummy);
@@ -75,7 +78,10 @@ export const glossar_component = (() => {
             document.getElementById("game-ui").appendChild(glossar)
             this.#GetEntries();
 
-            document.getElementById("glossar-window").addEventListener("click", (event) => {document.getElementById("glossar").style.display = "flex"})
+            document.getElementById("glossar-window").addEventListener("click", (event) => {
+                document.getElementById("glossar").style.display = "flex";
+                this.FindEntity("Camera").controls.enabled = false;
+            })
 
         }
 

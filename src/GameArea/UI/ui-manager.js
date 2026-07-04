@@ -4,6 +4,7 @@ import { shiftLeft } from "three/tsl";
 import { player_skills } from "../../Players/player-skills";
 import { cards } from "../../Cards/card-templates";
 import { card } from "../../Cards/card";
+import { player_options } from "../../Players/player-options";
 
 export const ui_manager = (() => {
 
@@ -1049,9 +1050,14 @@ export const ui_manager = (() => {
             const currentPlayerId = this.FindComponent("GameManager").currentPlayerId;
             this.#SetPlayerAvatarsStatus(playerList, currentPlayerId);
 
+
             this.#ShowTurnChangePopup(msg.player);
 
             document.documentElement.dataset["theme"] = msg.player.witcherSchool.name;
+            let value = player_options.WitcherSchool.getAbilityFromName(msg.player.witcherSchool.name).value
+            for (let i = 1; i < 6; i++) {
+                document.getElementById(("special-level-bonus-" + i)).innerHTML = Math.abs(value[i-1][0]) + "&nbsp;&nbsp;&nbsp;" + Math.abs(value[i-1][1]) ;
+            }
         }
 
         /**
