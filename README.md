@@ -18,7 +18,15 @@ In Phase zwei kann der Spieler zwischen verschiedenen Hauptaktionen wählen:
 In Phase drei kann der Spieler so viele Karten abwerfen, wie er möchte. Anschließend zieht er seine Hand wieder auf drei Karten nach (außer ein aktiver Statuseffekt besagt, dass er weniger ziehen muss). Daraufhin kann er im Karten-Shop eine neue Karte erwerben, die mit den eigenen Handkarten bezahlt wird.
 
 ## Steuerung
-Das Spiel wird komplett mit der Maus gesteuert. Die Kamera kann durch Klicken und Ziehen der Maus in die gewünschte Richtung gedreht werden.
+Das Spiel wird mit der Maus über gegebene Buttons gesteuert. 
+Kamera:
+Ziehen der Maus – Drehen
+WASD – Bewegen der Kamera
+Space – Zurücksetzen der Kamera auf aktiven Spieler
+
+## Detailiertes Regelwerk
+Das Spiel beinhaltet eine kürze Einführung und einen Glossar für Begriffserklärungen. Falls es aber noch Fragen geben sollte, kann man hier die Regeln nachlesen:
+https://gamers-hq.de/media/pdf/d5/d0/33/The-Witcher_Alte_Welt_Regelwerk_DE.pdf
 
 ## Starten des Projekts
 1. Lade dir das Repository herunter.
