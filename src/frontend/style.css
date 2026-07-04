@@ -1461,10 +1461,11 @@ input {
 
 #glossar-header {
     width: 100%;
+    height: 4%;
 }
 
 #glossar {
-    gap: 16px;
+    justify-content: space-between;
     align-items: flex-start;
     padding: 12px;
 }
@@ -1483,7 +1484,7 @@ input {
 }
 
 #entries-glossar {
-    min-height: 420px;
+    height: 96%;
 }
 
 .card-stacks-container {
