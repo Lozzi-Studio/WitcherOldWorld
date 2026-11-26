@@ -1,3 +1,6 @@
+# Copyright Disclaimer
+All rights to the content belong to CD Projekt Red. This was developed for a university project at Munich University of Applied Sciences.
+
 # The Witcher: Old World — Projektmodul Interaktion
 Witcher: Old World ist ein Abenteuer-Brettspiel, das die Spieler auf eine Reise durch eine fantastische Welt voller Gefahren, mysteriöser Magie, dunkler Geheimnisse und ungewöhnlicher Orte mitnimmt, die nur darauf warten, entdeckt zu werden.
 
@@ -43,7 +46,7 @@ https://gamers-hq.de/media/pdf/d5/d0/33/The-Witcher_Alte_Welt_Regelwerk_DE.pdf
 * **Witcher-Kämpfe** Kämpfe gegen andere Hexer sind nicht möglich.
 * **Quests:** Komplexe Questreihen inklusive einer Questverfolgung wurden nicht implementiert.
 
-## Das Team: Gruppe 06
+## Das Team
 - Janik Kusch
 - Lana Michler
 - Tim Förster
