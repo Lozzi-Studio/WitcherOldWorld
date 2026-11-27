@@ -232,6 +232,7 @@ export const game_manager = (() => {
                 let allowedCards = this.ValidateMove().allowedCards;
                 if (moveAllowed){
                     this.#currentPlayer.Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
+                    this.FindEntity('Camera').Broadcast(broadcasts.BroadcastTemplateCamera.FocusOn(this.#currentPlayer));
                     this.FindEntity("GameArea").Broadcast(broadcasts.BroadcastTemplatePlayer.PlayerMove(this.#selectedTown, this.#selectedTown.position));
                     this.#selectedTown.Broadcast(broadcasts.BroadcastTemplateTown.ResetTownAction());
                     for (let card of allowedCards) {
